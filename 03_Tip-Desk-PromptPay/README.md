@@ -1,33 +1,41 @@
-# Tip Desk
+# 💳 Tip Desk — Real-time PromptPay Donation & Voice Alert System
 
-ระบบรับโดเนทส่วนตัวด้วย React, FastAPI และ PromptPay QR
+> **หมวดหมู่:** FinTech / Modern Full-Stack Application  
+> **ผู้พัฒนา:** ภคพล (ฟาง) / Phakaphon  
 
-## เริ่มใช้งาน
+---
 
-1. คัดลอก `backend/.env.example` เป็น `backend/.env` แล้วใส่เลขพร้อมเพย์ของคุณ
-2. เปิด backend:
+## 📖 คู่มือการติดตั้งและทดลองใช้งานสำหรับกรรมการ (Examiner's Guide)
 
+### 1. สิ่งที่ต้องมีในเครื่อง (Prerequisites)
+* Python 3.10+ และ Node.js 18+
+
+### 2. การติดตั้งและเปิดระบบ
+
+**Terminal ที่ 1 (Backend FastAPI & EMVCo Engine):**
 ```bash
-source .venv/bin/activate
-uvicorn backend.main:app --reload --port 8000 --env-file backend/.env
+cd backend
+pip install -r requirements.txt
+cp .env.example .env
+uvicorn main:app --reload --port 8000
 ```
 
-3. เปิดอีก terminal แล้วเริ่มหน้าเว็บ:
-
+**Terminal ที่ 2 (Frontend React 19 UI):**
 ```bash
+npm install
 npm run dev
 ```
+เปิดเบราว์เซอร์ไปที่: `http://localhost:5173`
 
-เปิด `http://localhost:5173`
+### 3. ขั้นตอนการทดลองใช้งานจริง
+1. ในหน้าเว็บ กรอกชื่อผู้สนับสนุน เช่น *"กรรมการสอบสัมภาษณ์"*
+2. ระบุจำนวนเงิน (เช่น `50` หรือ `100` บาท) และพิมพ์ข้อความให้กำลังใจ
+3. กดปุ่ม **"Confirm Donation"**
+4. หน้าต่าง Modal จะเด้งขึ้นมาพร้อม **PromptPay QR Code มาตรฐาน EMVCo** ที่มีจำนวนเงินตรงตามที่ระบุ
+5. เมื่อจำลองการชำระเงินสำเร็จ ระบบจะมี **เสียงสังเคราะห์ Text-to-Speech (TTS)** พูดขอบคุณผู้บริจาคออกทางลำโพงทันที และมีรายการขึ้นบน Live Donation Feed
 
-## การรับเงินจริง
-
-QR ที่สร้างเป็น EMVCo PromptPay QR แบบระบุยอดเงิน ผู้สนับสนุนสามารถสแกนและจ่ายเงินจริงผ่านแอปธนาคารได้ทันที แต่ QR เพียงอย่างเดียวไม่สามารถแจ้งระบบว่ามีเงินเข้าแล้ว จึงมีปุ่มยืนยันสำหรับการทดสอบ และ endpoint `POST /api/webhooks/payment` สำหรับต่อกับธนาคารหรือ payment provider ที่รองรับ webhook
-
-Webhook ต้องส่ง header `X-Tip-Signature` เป็น HMAC-SHA256 ของ request body โดยใช้ `WEBHOOK_SECRET` และ body อย่างน้อยต้องมี `tip_id` เช่น:
-
-```json
-{"tip_id":"รายการที่ต้องการยืนยัน"}
+#### โหมดทดสอบด่วน (Quick Test):
+```bash
+python3 test_simulation.py
 ```
-
-ก่อนเปิดใช้งานจริง ควรใช้ HTTPS, ตั้ง `WEBHOOK_SECRET` ใหม่ และใช้ webhook จากผู้ให้บริการที่ตรวจสอบรายการเงินเข้าได้จริง
+---

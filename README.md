@@ -4,23 +4,25 @@
 > **สถานะชุดทดสอบระบบ:** `9/9 Projects Passed (100% Operational)` ✅  
 > **อัปเดตล่าสุด:** 24 ตุลาคม 2569  
 
-ยินดีต้อนรับสู่คลังรวบรวมผลงานฉบับสมบูรณ์ ประกอบด้วยระบบ **AI ตรวจจับคลื่นวิทยุทะลุกำแพง (RF Sensing)**, **Computer Vision**, **GenAI Agent**, **ระบบการเงิน FinTech**, **Full-Stack Web Management**, และ **DevOps & Cloud Infrastructure** ทุกผลงานผ่านการทดสอบจริง มีชุดทดสอบอัตโนมัติ (Automated Test Simulation) และสามารถกดเข้าไปดูซอร์สโค้ดในแต่ละโฟลเดอร์ได้โดยตรง
+ยินดีต้อนรับสู่คลังรวบรวมผลงานฉบับสมบูรณ์ ประกอบด้วยระบบ **AI ตรวจจับคลื่นวิทยุทะลุกำแพง (RF Sensing)**, **Computer Vision**, **GenAI Agent**, **ระบบการเงิน FinTech**, **Full-Stack Web Management**, และ **DevOps & Cloud Infrastructure** 
+
+ทุกผลงานในคลังนี้ผ่านการทดสอบจริง มี **ชุดทดสอบอัตโนมัติ (Automated Test Simulation)** และ **คู่มือการติดตั้งเพื่อให้กรรมการสามารถนำไปเปิดทดสอบได้เองอย่างง่ายดาย** สามารถคลิกดูซอร์สโค้ดในแต่ละโฟลเดอร์ได้โดยตรง
 
 ---
 
-## 🧭 สารบัญผลงานและทางลัดเข้าสู่โฟลเดอร์โค้ด
+## 🧭 สารบัญผลงานและตารางเปิดใช้งานด่วน (Quick Ports & Launch Cheat Sheet)
 
-| ลำดับ | โฟลเดอร์ใน Git Repo | หมวดหมู่เทคโนโลยี | จุดเด่นของระบบ | ชุดทดสอบอัตโนมัติ |
-| :---: | :--- | :--- | :--- | :---: |
-| **01** | [📁 `01_AI-WiFi-Sensing-Wall`](./01_AI-WiFi-Sensing-Wall) | **AI & RF Sensing / IoT** | ตรวจจับคนเดิน/หกล้มทะลุกำแพงด้วย WiFi CSI ไม่ใช้กล้อง | `test_simulation.py` ✅ |
-| **02** | [📁 `02_Smart-Doc-AI`](./02_Smart-Doc-AI) | **GenAI Agent / Full-Stack** | ค้นคว้างานวิจัยและสังเคราะห์เอกสาร Word `.docx` อัตโนมัติ | `test_simulation.py` ✅ |
-| **03** | [📁 `03_Tip-Desk-PromptPay`](./03_Tip-Desk-PromptPay) | **FinTech / Web Application** | รับบริจาคเงิน PromptPay Real-time พร้อมเสียงอ่านชื่อ TTS | `test_simulation.py` ✅ |
-| **04** | [📁 `04_Club-Management-System`](./04_Club-Management-System) | **Management System / Web** | ระบบทะเบียนและเช็คชื่อสมาชิกชมรม สิทธิ์ JWT & Superadmin | `test_simulation.js` ✅ |
-| **05** | [📁 `05_ATM-YOLOv8-Detector`](./05_ATM-YOLOv8-Detector) | **Computer Vision / Security** | เฝ้าระวังความปลอดภัยหน้าตู้ ATM ด้วยโมเดล YOLOv8 | `test_simulation.py` ✅ |
-| **06** | [📁 `06_Karaoke-Streaming-System`](./06_Karaoke-Streaming-System) | **Multimedia Streaming / Web** | เซิร์ฟเวอร์คาราโอเกะพร้อมเว็บรีโมตมือถือสำหรับสั่งคิวเพลง | `test_simulation.py` ✅ |
-| **07** | [📁 `07_AdGuard-Time-Portal`](./07_AdGuard-Time-Portal) | **Network & Automation** | ระบบ Portal จำกัดโควต้าเวลาใช้งานเน็ตผ่าน AdGuard API | `test_simulation.js` ✅ |
-| **08** | [📁 `08_System-Monitor-Desktop-App`](./08_System-Monitor-Desktop-App) | **Desktop Utility App** | โปรแกรมมอนิเตอร์ฮาร์ดแวร์ Standalone `.exe` บน Windows | `test_simulation.js` ✅ |
-| **09** | [📁 `09_HomeServer-Infrastructure`](./09_HomeServer-Infrastructure) | **DevOps & Infrastructure** | สถาปัตยกรรม Private Cloud, Docker, Proxmox & Tunnels | `test_simulation.py` ✅ |
+| ลำดับ | โฟลเดอร์ใน Git Repo | หมวดหมู่ | คำสั่งเปิดใช้งานระบบ (Launch Command) | พอร์ต / URL สำหรับทดสอบ | ชุดทดสอบด่วน |
+| :---: | :--- | :--- | :--- | :---: | :---: |
+| **01** | [📁 `01_AI-WiFi-Sensing-Wall`](./01_AI-WiFi-Sensing-Wall) | **AI & RF Sensing** | `python3 ai_web_server.py` | `http://localhost:8080/ai_index.html` | `python3 test_simulation.py` ✅ |
+| **02** | [📁 `02_Smart-Doc-AI`](./02_Smart-Doc-AI) | **GenAI Agent** | `docker compose up -d` หรือรันแยก Vite+FastAPI | `http://localhost:5173` | `python3 test_simulation.py` ✅ |
+| **03** | [📁 `03_Tip-Desk-PromptPay`](./03_Tip-Desk-PromptPay) | **FinTech / Web** | `uvicorn main:app` & `npm run dev` | `http://localhost:5173` | `python3 test_simulation.py` ✅ |
+| **04** | [📁 `04_Club-Management-System`](./04_Club-Management-System) | **Web Management** | `cd backend && node server.js` | `http://localhost:3000` | `node test_simulation.js` ✅ |
+| **05** | [📁 `05_ATM-YOLOv8-Detector`](./05_ATM-YOLOv8-Detector) | **Computer Vision** | `python3 person_detector.py` | หน้าต่างกล้อง CCTV GUI | `python3 test_simulation.py` ✅ |
+| **06** | [📁 `06_Karaoke-Streaming-System`](./06_Karaoke-Streaming-System) | **Streaming Server** | `python3 main.py` | `http://localhost:8000` (รีโมต: `/remote`) | `python3 test_simulation.py` ✅ |
+| **07** | [📁 `07_AdGuard-Time-Portal`](./07_AdGuard-Time-Portal) | **Network & Admin** | `node server.js` | `http://localhost:8080` (แอดมิน: `/admin.html`) | `node test_simulation.js` ✅ |
+| **08** | [📁 `08_System-Monitor-Desktop-App`](./08_System-Monitor-Desktop-App) | **Desktop Utility** | ดับเบิลคลิก `.exe` (Win) หรือ `node server.js` | `http://localhost:3000` | `node test_simulation.js` ✅ |
+| **09** | [📁 `09_HomeServer-Infrastructure`](./09_HomeServer-Infrastructure) | **DevOps & Cloud** | `docker compose up -d` | `http://localhost:8001` | `python3 test_simulation.py` ✅ |
 
 ---
 
@@ -29,18 +31,19 @@
 ```bash
 ./run_all_tests.sh
 ```
-ผลลัพธ์: ตรวจสอบและผ่านการทดสอบทั้งหมด **9/9 โครงการ** (100% Operational)
+*ผลการทดสอบ:* ตรวจสอบและผ่านการทดสอบทั้งหมด **9/9 โครงการ** (100% Operational)
 
 ---
 
-## 📌 เจาะลึกรายละเอียด การทำงาน และภาพจำลองของแต่ละโปรเจกต์
+## 📌 เจาะลึกรายละเอียด การทำงาน ภาพจำลอง และคู่มือติดตั้งของแต่ละโปรเจกต์
 
 ---
 
 ### 1. 📡 [01_AI-WiFi-Sensing-Wall](./01_AI-WiFi-Sensing-Wall) — AI ตรวจจับคนทะลุกำแพงด้วย WiFi CSI
 
 > **โฟลเดอร์โค้ด:** [คลิกเปิดโฟลเดอร์ `01_AI-WiFi-Sensing-Wall`](./01_AI-WiFi-Sensing-Wall)  
-> **เทคโนโลยี:** ESP32, WiFi CSI (Channel State Information), Scikit-Learn (Random Forest), Python, HTML5 Real-time Dashboard  
+> **คู่มือย่อยในโฟลเดอร์:** [อ่านคู่มือ `01_AI-WiFi-Sensing-Wall/README.md`](./01_AI-WiFi-Sensing-Wall/README.md)  
+> **เทคโนโลยี:** ESP32, WiFi CSI (Channel State Information), Scikit-Learn (Random Forest), Python, HTML5 Dashboard  
 
 #### 💡 แนวคิดและสถานการณ์การใช้งานจริง (Problem & Real-World Use Case)
 ในพื้นที่ที่ต้องการความเป็นส่วนตัวสูง เช่น **ห้องนอนผู้สูงอายุ**, **ห้องน้ำในบ้าน**, หรือ **พื้นที่ภัยพิบัติ/กู้ภัย** การติดตั้งกล้องวงจรปิดเพื่อเฝ้าระวังจะละเมิดความเป็นส่วนตัวอย่างรุนแรง ระบบนี้แก้ปัญหาโดยการใช้ **"คลื่นวิทยุ WiFi ธรรมดา"** ที่แพร่กระจายผ่านกำแพงคอนกรีต เมื่อมีมนุษย์เคลื่อนไหว คลื่นสัญญาณ CSI (ความแรงและเฟส) จะเกิดการกระเจิง (Scattering) และดูดกลืน AI จะเรียนรู้รูปแบบความผิดปกตินี้เพื่อจำแนกว่าคนกำลังเดิน กำลังล้ม หรือห้องว่าง โดยไม่ต้องมีเลนส์กล้องแม้แต่ตัวเดียว
@@ -63,24 +66,33 @@ flowchart TD
     H & I & J --> K[🖥️ Real-time Web Dashboard]
 ```
 
-#### 🛠️ การทำงานเชิงลึกของโค้ด (How It Works)
-1. **การดักจับสัญญาณ:** เฟิร์มแวร์ ESP32 (`sketch_jul24a.ino`) เปิดโหมด promiscuous เพื่อดักจับข้อมูล Channel State Information (CSI) 64 Subcarriers ต่อเฟรม
-2. **การสกัดคุณลักษณะ (Feature Extraction):** ดึงค่า Amplitude และ Phase shift ที่ความถี่ต่าง ๆ บันทึกเป็นเวกเตอร์มิติสูง (`dataset_empty.csv`, `dataset_walking.csv`, `dataset_falling.csv`)
-3. **การเทรน AI:** สคริปต์ `ai_trainer.py` ใช้ Random Forest จาก Scikit-Learn ทำ Cross-Validation และบันทึกโมเดลลง `ai_model.pkl` (ความแม่นยำ 75.47% และ F1-Score สำหรับการตรวจจับคนล้มสูงถึง 83%)
-4. **การแสดงผล:** `ai_web_server.py` สตรีมสถานะผ่าน UDP และแสดงผลบน Web Dashboard (`ai_index.html`) แบบ Real-time
-
-#### 🧪 การรันชุดทดสอบ (Automated Test Simulation)
-```bash
-cd 01_AI-WiFi-Sensing-Wall
-python3 test_simulation.py
-```
-*ผลการทดสอบ:* โหลดโมเดล `ai_model.pkl` และทดสอบสุ่มตัวอย่างข้อมูลจากทั้ง 3 สถานะ — **ผ่าน 100% (Accuracy 95.00%)**
+#### 📖 คู่มือการติดตั้งและทดลองใช้งานจริงสำหรับกรรมการ (Examiner's Quick-Start)
+1. **สิ่งที่ต้องมี:** Python 3.9+ (ติดตั้ง dependencies ด้วยคำสั่ง):
+   ```bash
+   cd 01_AI-WiFi-Sensing-Wall
+   pip install scikit-learn pandas numpy joblib
+   ```
+2. **วิธีทดสอบโหมดจำลอง (ไม่ต้องมีบอร์ดฮาร์ดแวร์):**
+   ```bash
+   python3 test_simulation.py
+   ```
+   *(ระบบจะโหลด `ai_model.pkl` และสุ่มสัญญาณจากชุดข้อมูล 1,851 ตัวอย่างมาทำนายผล แสดงความแม่นยำสูงถึง 95%)*
+3. **วิธีเปิดหน้า Web Dashboard แสดงผลจริง:**
+   ```bash
+   python3 ai_web_server.py
+   ```
+   เปิดเบราว์เซอร์ไปที่: `http://localhost:8080/ai_index.html`  
+   * **สิ่งที่กรรมการจะเห็น:** หน้าจอแดชบอร์ดเปลี่ยนสีตามสถานะคลื่นสัญญาณ:
+     * 🟢 **สีเขียว (Empty):** ห้องว่าง
+     * 🔵 **สีน้ำเงิน (Walking):** มีคนเดิน
+     * 🔴 **สีแดง (Falling Alert):** สัญญาณคนหกล้มฉับพลัน
 
 ---
 
 ### 2. 📝 [02_Smart-Doc-AI](./02_Smart-Doc-AI) — ระบบ AI ช่วยค้นคว้าวิจัยและร่างเอกสารวิชาการอัตโนมัติ
 
 > **โฟลเดอร์โค้ด:** [คลิกเปิดโฟลเดอร์ `02_Smart-Doc-AI`](./02_Smart-Doc-AI)  
+> **คู่มือย่อยในโฟลเดอร์:** [อ่านคู่มือ `02_Smart-Doc-AI/README.md`](./02_Smart-Doc-AI/README.md)  
 > **เทคโนโลยี:** React, Tailwind CSS, Vite, FastAPI (Python), Wikipedia API, DuckDuckGo, ArXiv API, python-docx, Docker  
 
 #### 💡 แนวคิดและสถานการณ์การใช้งานจริง (Problem & Real-World Use Case)
@@ -105,23 +117,29 @@ flowchart LR
     I --> J[⬇️ ดาวน์โหลดเอกสารวิชาการพร้อมใช้]
 ```
 
-#### 🛠️ การทำงานเชิงลึกของโค้ด (How It Works)
-1. **Frontend:** React + Tailwind พร้อม Stepper แสดงสถานะแอนิเมชัน 4 ขั้นตอน: วิเคราะห์คำค้น -> ค้นคว้าสารานุกรม -> ค้นคว้างานวิจัย -> สร้างเอกสาร Word
-2. **Backend Engine:** FastAPI รับ Request แล้วเรียก Library `wikipedia`, `duckduckgo_search`, และ `arxiv` ดึงบทคัดย่อและแหล่งอ้างอิง
-3. **Docx Rendering:** ใช้ `python-docx` สร้าง Document Object ใส่ Style หัวเรื่อง, ย่อหน้า, ระยะขอบ 1 นิ้วตามมาตรฐานวิทยานิพนธ์, และส่งเป็น Streaming Response กลับไปยังเบราว์เซอร์
-
-#### 🧪 การรันชุดทดสอบ (Automated Test Simulation)
-```bash
-cd 02_Smart-Doc-AI
-python3 test_simulation.py
-```
-*ผลการทดสอบ:* สังเคราะห์ข้อมูลจำลอง และสร้างไฟล์ Word `.docx` สำเร็จ — **ผ่าน 100% (Verified 36.8 KB)**
+#### 📖 คู่มือการติดตั้งและทดลองใช้งานจริงสำหรับกรรมการ (Examiner's Quick-Start)
+* **วิธีรันผ่าน Docker Compose (แนะนำ สะดวกที่สุด):**
+  ```bash
+  cd 02_Smart-Doc-AI
+  docker compose up -d
+  ```
+  เปิดเบราว์เซอร์ที่: `http://localhost:5173`
+* **วิธีรันแบบ Manual:**
+  * Terminal 1 (Backend): `cd 02_Smart-Doc-AI/app && pip install -r requirements.txt && uvicorn main:app --reload --port 8000`
+  * Terminal 2 (Frontend): `cd 02_Smart-Doc-AI/frontend && npm install && npm run dev`
+  * เปิดเบราว์เซอร์ที่: `http://localhost:5173`
+* **วิธีทดลองใช้งาน:**
+  1. พิมพ์คำค้น เช่น `"Quantum Computing"` หรือ `"Machine Learning"`
+  2. กดปุ่ม **"ค้นคว้าและสร้างเอกสาร" (Generate Document)**
+  3. สังเกตแอนิเมชัน Pipeline ค้นหาข้อมูลจาก Wikipedia และ ArXiv
+  4. กดปุ่ม **"Download .docx"** เพื่อรับไฟล์ Word ที่สังเคราะห์เนื้อหาพร้อมจัดหน้าเรียบร้อย
 
 ---
 
 ### 3. 💳 [03_Tip-Desk-PromptPay](./03_Tip-Desk-PromptPay) — ระบบรับโดเนท PromptPay Real-time พร้อมเสียงอ่านชื่อ
 
 > **โฟลเดอร์โค้ด:** [คลิกเปิดโฟลเดอร์ `03_Tip-Desk-PromptPay`](./03_Tip-Desk-PromptPay)  
+> **คู่มือย่อยในโฟลเดอร์:** [อ่านคู่มือ `03_Tip-Desk-PromptPay/README.md`](./03_Tip-Desk-PromptPay/README.md)  
 > **เทคโนโลยี:** React 19, TypeScript, Vite, FastAPI, SQLite, EMVCo QR Code Engine, Web Speech API (TTS)  
 
 #### 💡 แนวคิดและสถานการณ์การใช้งานจริง (Problem & Real-World Use Case)
@@ -143,23 +161,33 @@ flowchart TD
     H -->|Web Speech API| I[🔊 เสียงสังเคราะห์อ่านชื่อและข้อความ TTS]
 ```
 
-#### 🛠️ การทำงานเชิงลึกของโค้ด (How It Works)
-1. **EMVCo CRC16 Engine:** ใน `backend/main.py` มีฟังก์ชันคำนวณ Tag-Length-Value (TLV) และ Polynomial CRC16-CCITT (`0xFFFF`) เพื่อสร้าง QR Code ที่แอปพลิเคชันธนาคารทุกแห่งในไทยสามารถสแกนจ่ายได้ถูกต้อง 100%
-2. **Real-time Event Push:** ใช้ Generator Function สตรีมข้อมูลรายการบริจาคใหม่ไปยัง Client ทันที
-3. **Voice TTS:** Frontend ใน `src/App.tsx` เชื่อมต่อ `window.speechSynthesis` ดึงเสียงภาษาไทยมาอ่านข้อความขอบคุณแบบเรียลไทม์
-
-#### 🧪 การรันชุดทดสอบ (Automated Test Simulation)
-```bash
-cd 03_Tip-Desk-PromptPay
-python3 test_simulation.py
-```
-*ผลการทดสอบ:* คำนวณ Checksum EMVCo QR และบันทึก/ดึงข้อมูลทิปลง SQLite — **ผ่าน 100%**
+#### 📖 คู่มือการติดตั้งและทดลองใช้งานจริงสำหรับกรรมการ (Examiner's Quick-Start)
+1. **เปิดเซิร์ฟเวอร์ Backend (FastAPI):**
+   ```bash
+   cd 03_Tip-Desk-PromptPay/backend
+   pip install -r requirements.txt
+   cp .env.example .env
+   uvicorn main:app --reload --port 8000
+   ```
+2. **เปิดหน้าเว็บ Frontend (React 19):**
+   ```bash
+   cd 03_Tip-Desk-PromptPay
+   npm install
+   npm run dev
+   ```
+   เปิดเบราว์เซอร์ที่: `http://localhost:5173`
+3. **ขั้นตอนการทดสอบ:**
+   * กรอกชื่อผู้บริจาค เช่น *"กรรมการสอบสัมภาษณ์"*
+   * ระบุจำนวนเงิน เช่น `100` บาท และพิมพ์ข้อความ
+   * กด **"Confirm Donation"** -> สังเกตหน้าต่าง QR Code พร้อมยอดเงินถูกต้องตามมาตรฐาน EMVCo
+   * เมื่อจำลองกดยืนยัน จะได้ยินเสียงอ่านชื่อและข้อความผ่านลำโพงทันที (Text-to-Speech)
 
 ---
 
 ### 4. 👥 [04_Club-Management-System](./04_Club-Management-System) — ระบบลงทะเบียนและเช็คชื่อสมาชิกชมรม
 
 > **โฟลเดอร์โค้ด:** [คลิกเปิดโฟลเดอร์ `04_Club-Management-System`](./04_Club-Management-System)  
+> **คู่มือย่อยในโฟลเดอร์:** [อ่านคู่มือ `04_Club-Management-System/README.md`](./04_Club-Management-System/README.md)  
 > **เทคโนโลยี:** Node.js, Express.js, SQLite3, Tailwind CSS, JWT Authentication, HTML5/Vanilla JS  
 
 #### 💡 แนวคิดและสถานการณ์การใช้งานจริง (Problem & Real-World Use Case)
@@ -177,23 +205,26 @@ flowchart TD
     F --> H[📊 ตรวจสอบสถิติและพิมพ์รายงาน Data]
 ```
 
-#### 🛠️ การทำงานเชิงลึกของโค้ด (How It Works)
-* **ฐานข้อมูล:** มี 9 ตารางหลักรองรับความสัมพันธ์ของระบบ: `members`, `clubs`, `clubQuotas`, `activities`, `attendance`, `systemStatus`, `admins`, `settings`
-* **ระบบความปลอดภัย:** ใช้ `jsonwebtoken (JWT)` ป้องกันสิทธิ์การแก้ไขข้อมูลกิจกรรมและการเช็คชื่อย้อนหลัง
-* **ส่วนติดต่อผู้ใช้:** พัฒนาด้วย Tailwind CSS สไตล์ Modern Clean ใช้งานได้ลื่นไหลทั้งบนคอมพิวเตอร์และมือถือ
-
-#### 🧪 การรันชุดทดสอบ (Automated Test Simulation)
-```bash
-cd 04_Club-Management-System
-node test_simulation.js
-```
-*ผลการทดสอบ:* ตรวจสอบการเชื่อมต่อฐานข้อมูลและการดึงข้อมูลตารางระบบ 9 ตาราง — **ผ่าน 100%**
+#### 📖 คู่มือการติดตั้งและทดลองใช้งานจริงสำหรับกรรมการ (Examiner's Quick-Start)
+1. **การติดตั้งและเปิดเซิร์ฟเวอร์:**
+   ```bash
+   cd 04_Club-Management-System/backend
+   npm install
+   cp .env.example .env
+   node server.js
+   ```
+   เปิดใช้งานที่พอร์ต `3000`
+2. **ลิงก์หน้าเว็บสำหรับทดสอบ:**
+   * 📝 **หน้าลงทะเบียนสมาชิกใหม่:** `http://localhost:3000/register.html`
+   * ✅ **หน้าเช็คชื่อเข้าร่วมกิจกรรม:** `http://localhost:3000/attendance.html`
+   * 🔐 **หน้า Dashboard แอดมินดูสถิติ:** `http://localhost:3000/admin.html`
 
 ---
 
 ### 5. 👁️ [05_ATM-YOLOv8-Detector](./05_ATM-YOLOv8-Detector) — ระบบเฝ้าระวังความปลอดภัยหน้าตู้ ATM ด้วย YOLOv8
 
 > **โฟลเดอร์โค้ด:** [คลิกเปิดโฟลเดอร์ `05_ATM-YOLOv8-Detector`](./05_ATM-YOLOv8-Detector)  
+> **คู่มือย่อยในโฟลเดอร์:** [อ่านคู่มือ `05_ATM-YOLOv8-Detector/README.md`](./05_ATM-YOLOv8-Detector/README.md)  
 > **เทคโนโลยี:** Python, OpenCV, Ultralytics YOLOv8 (`yolov8n.pt`), JSON Event Logging  
 
 #### 💡 แนวคิดและสถานการณ์การใช้งานจริง (Problem & Real-World Use Case)
@@ -214,22 +245,29 @@ flowchart LR
     D -->|ไม่ใช่| H[ประมวลผลเฟรมถัดไป]
 ```
 
-#### 🛠️ การทำงานเชิงลึกของโค้ด (How It Works)
-* **Deep Learning Model:** รันน้ำหนัก `yolov8n.pt` ที่ปรับจูนให้มีความเร็วสูงระดับ Real-time (ใช้เวลาประมวลผลเพียงไม่กี่มิลลิวินาทีต่อเฟรม)
-* **การจัดการทรัพยากร:** มีกลไก Smoothing ป้องกันการบันทึกภาพซ้ำซ้อนในขณะที่คนเดิมยืนอยู่หน้าตู้
-
-#### 🧪 การรันชุดทดสอบ (Automated Test Simulation)
-```bash
-cd 05_ATM-YOLOv8-Detector
-python3 test_simulation.py
-```
-*ผลการทดสอบ:* โหลดโมเดล 80 คลาส และทดสอบการ Inference บนภาพจำลอง — **ผ่าน 100%**
+#### 📖 คู่มือการติดตั้งและทดลองใช้งานจริงสำหรับกรรมการ (Examiner's Quick-Start)
+1. **ติดตั้ง Dependencies:**
+   ```bash
+   cd 05_ATM-YOLOv8-Detector
+   pip install ultralytics opencv-python numpy
+   ```
+2. **รันระบบตรวจจับผ่านกล้องเว็บแคม (Live Camera Mode):**
+   ```bash
+   python3 person_detector.py
+   ```
+   * กล้องจะเปิดขึ้นและตีกรอบสีเขียวล้อมรอบตัวบุคคล พร้อมระบุค่าความมั่นใจ (Confidence Score เช่น 98%)
+   * รูปภาพจะถูกบันทึกอัตโนมัติลงโฟลเดอร์ `snapshots/` และเขียน Log ลง `detection_log.json`
+3. **หรือรันชุดทดสอบจำลอง (Simulation Mode):**
+   ```bash
+   python3 test_simulation.py
+   ```
 
 ---
 
 ### 6. 🎤 [06_Karaoke-Streaming-System](./06_Karaoke-Streaming-System) — เซิร์ฟเวอร์คาราโอเกะพร้อมรีโมตมือถือ
 
 > **โฟลเดอร์โค้ด:** [คลิกเปิดโฟลเดอร์ `06_Karaoke-Streaming-System`](./06_Karaoke-Streaming-System)  
+> **คู่มือย่อยในโฟลเดอร์:** [อ่านคู่มือ `06_Karaoke-Streaming-System/README.md`](./06_Karaoke-Streaming-System/README.md)  
 > **เทคโนโลยี:** FastAPI, yt-dlp, HTML5 Video/Audio, WebSocket & REST API, Docker  
 
 #### 💡 แนวคิดและสถานการณ์การใช้งานจริง (Problem & Real-World Use Case)
@@ -246,18 +284,24 @@ flowchart TD
     B -->|อัปเดตลำดับคิว| C & D
 ```
 
-#### 🧪 การรันชุดทดสอบ (Automated Test Simulation)
-```bash
-cd 06_Karaoke-Streaming-System
-python3 test_simulation.py
-```
-*ผลการทดสอบ:* ตรวจสอบความถูกต้องของเส้นทาง API 15 Routes และไฟล์ Asset หน้าเว็บ/รีโมต — **ผ่าน 100%**
+#### 📖 คู่มือการติดตั้งและทดลองใช้งานจริงสำหรับกรรมการ (Examiner's Quick-Start)
+1. **ติดตั้งและรันเซิร์ฟเวอร์:**
+   ```bash
+   cd 06_Karaoke-Streaming-System
+   pip install fastapi uvicorn yt-dlp
+   python3 main.py
+   ```
+2. **ทดสอบใช้งานแบบ 2 จอ (จำลองจอทีวี + จอมือถือ):**
+   * **จอทีวีหลัก (Player):** เปิดที่ `http://localhost:8000`
+   * **จอรีโมตมือถือ (Remote):** เปิดแท็บใหม่ที่ `http://localhost:8000/remote.html` (หรือสแกนเปิดบนมือถือในวงแลนเดียวกัน)
+   * **การสั่งการ:** พิมพ์ค้นหาเพลงในหน้ารีโมต -> กดเพิ่มเข้าคิว -> สังเกตหน้าจอทีวีหลักจะอัปเดตคิวและเล่นเพลงอัตโนมัติ
 
 ---
 
 ### 7. ⏱️ [07_AdGuard-Time-Portal](./07_AdGuard-Time-Portal) — ระบบจัดการเวลาเล่นเน็ตผ่าน AdGuard Home API
 
 > **โฟลเดอร์โค้ด:** [คลิกเปิดโฟลเดอร์ `07_AdGuard-Time-Portal`](./07_AdGuard-Time-Portal)  
+> **คู่มือย่อยในโฟลเดอร์:** [อ่านคู่มือ `07_AdGuard-Time-Portal/README.md`](./07_AdGuard-Time-Portal/README.md)  
 > **เทคโนโลยี:** Node.js, Express.js, AdGuard Home REST API, SQLite, Node-Schedule  
 
 #### 💡 แนวคิดและสถานการณ์การใช้งานจริง (Problem & Real-World Use Case)
@@ -275,18 +319,25 @@ flowchart LR
     F -->|ใช่| G[ส่งคำสั่ง Block IP กลับไปยัง AdGuard Home]
 ```
 
-#### 🧪 การรันชุดทดสอบ (Automated Test Simulation)
-```bash
-cd 07_AdGuard-Time-Portal
-node test_simulation.js
-```
-*ผลการทดสอบ:* ตรวจสอบการเชื่อมต่อตาราง `pins` และตรรกะคำสั่งโควต้าเวลา — **ผ่าน 100%**
+#### 📖 คู่มือการติดตั้งและทดลองใช้งานจริงสำหรับกรรมการ (Examiner's Quick-Start)
+1. **ติดตั้งและเริ่มทำงาน:**
+   ```bash
+   cd 07_AdGuard-Time-Portal
+   npm install
+   cp .env.example .env
+   node server.js
+   ```
+   เปิดใช้งานที่พอร์ต `8080`
+2. **ทดลองเปิดดูหน้าเว็บ:**
+   * หน้ากรอกรหัส PIN ผู้ใช้: `http://localhost:8080/index.html`
+   * หน้าแอดมินสร้างรหัส PIN กำหนดเวลา: `http://localhost:8080/admin.html`
 
 ---
 
 ### 8. 💻 [08_System-Monitor-Desktop-App](./08_System-Monitor-Desktop-App) — โปรแกรมมอนิเตอร์เครื่อง Standalone Windows
 
 > **โฟลเดอร์โค้ด:** [คลิกเปิดโฟลเดอร์ `08_System-Monitor-Desktop-App`](./08_System-Monitor-Desktop-App)  
+> **คู่มือย่อยในโฟลเดอร์:** [อ่านคู่มือ `08_System-Monitor-Desktop-App/README.md`](./08_System-Monitor-Desktop-App/README.md)  
 > **เทคโนโลยี:** Node.js, Express, pkg (คอมไพล์เป็นไฟล์เดี่ยว `.exe` สำหรับ Windows)  
 
 #### 💡 แนวคิดและสถานการณ์การใช้งานจริง (Problem & Real-World Use Case)
@@ -301,18 +352,24 @@ flowchart LR
     D -->|แสดงผล Gauge กราฟและตัวเลข| E[ผู้ใช้งาน]
 ```
 
-#### 🧪 การรันชุดทดสอบ (Automated Test Simulation)
-```bash
-cd 08_System-Monitor-Desktop-App
-node test_simulation.js
-```
-*ผลการทดสอบ:* สกัดค่า System Telemetry (CPU Cores, RAM, Platform) ถูกต้องแม่นยำ — **ผ่าน 100%**
+#### 📖 คู่มือการติดตั้งและทดลองใช้งานจริงสำหรับกรรมการ (Examiner's Quick-Start)
+* **บน Windows (ไม่ต้องติดตั้งโปรแกรมเสริม):**  
+  ดับเบิลคลิกเปิดไฟล์ `fang-monitor-app-win-x64.exe` ได้ทันที
+* **บน macOS / Linux:**  
+  ```bash
+  cd 08_System-Monitor-Desktop-App
+  npm install
+  node server.js
+  ```
+  เปิดเบราว์เซอร์ที่: `http://localhost:3000`  
+  *กรรมการจะเห็นมาตรวัด CPU Cores, RAM ทั้งหมด และสถานะ Uptime ของเครื่องแบบสด*
 
 ---
 
 ### 9. 🌐 [09_HomeServer-Infrastructure](./09_HomeServer-Infrastructure) — สถาปัตยกรรม Private Cloud & DevOps
 
 > **โฟลเดอร์โค้ด:** [คลิกเปิดโฟลเดอร์ `09_HomeServer-Infrastructure`](./09_HomeServer-Infrastructure)  
+> **คู่มือย่อยในโฟลเดอร์:** [อ่านคู่มือ `09_HomeServer-Infrastructure/README.md`](./09_HomeServer-Infrastructure/README.md)  
 > **เทคโนโลยี:** Docker, Docker Compose, Homepage Dashboard, Proxmox Integration, Cloudflare Tunnels  
 
 #### 💡 แนวคิดและสถานการณ์การใช้งานจริง (Problem & Real-World Use Case)
@@ -333,12 +390,14 @@ flowchart TD
     end
 ```
 
-#### 🧪 การรันชุดทดสอบ (Automated Test Simulation)
-```bash
-cd 09_HomeServer-Infrastructure
-python3 test_simulation.py
-```
-*ผลการทดสอบ:* ตรวจสอบไวยากรณ์และความถูกต้องของคอนฟิก YAML ทุกไฟล์ — **ผ่าน 100%**
+#### 📖 คู่มือการติดตั้งและทดลองใช้งานจริงสำหรับกรรมการ (Examiner's Quick-Start)
+1. **การเปิดใช้งาน Dashboard ด้วย Docker:**
+   ```bash
+   cd 09_HomeServer-Infrastructure
+   docker compose up -d
+   ```
+2. เปิดเบราว์เซอร์ที่: `http://localhost:8001`
+3. **สิ่งที่กรรมการจะเห็น:** แผงควบคุมเซิร์ฟเวอร์ Homepage มอนิเตอร์ Docker Containers, ทรัพยากรโฮสต์ Proxmox, และบุ๊กมาร์ก Service ในบ้านทั้งหมด
 
 ---
 
