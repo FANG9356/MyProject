@@ -11,7 +11,7 @@
 
 | ลำดับ | โปรเจกต์ | หมวดหมู่ | คำสั่งรัน | URL | คำสั่งทดสอบ |
 | :---: | :--- | :--- | :--- | :---: | :---: |
-| **01** | [`01_AI-WiFi-Sensing-Wall`](./01_AI-WiFi-Sensing-Wall) | AI & RF Sensing | `python3 ai_web_server.py` | `http://localhost:8080/ai_index.html` | `python3 test_simulation.py` |
+| **01** | [`01_AI-WiFi-Sensing-Wall`](./01_AI-WiFi-Sensing-Wall) | AI & RF Sensing | `python3 ai_web_server.py` | `http://localhost:8050` | `python3 test_simulation.py` |
 | **02** | [`02_Smart-Doc-AI`](./02_Smart-Doc-AI) | GenAI Agent | `docker compose up -d` | `http://localhost:5173` | `python3 test_simulation.py` |
 | **03** | [`03_Tip-Desk-PromptPay`](./03_Tip-Desk-PromptPay) | FinTech / Web | `uvicorn main:app` & `npm run dev` | `http://localhost:5173` | `python3 test_simulation.py` |
 | **04** | [`04_Club-Management-System`](./04_Club-Management-System) | Web Management | `cd backend && node server.js` | `http://localhost:3000` | `node test_simulation.js` |
@@ -77,7 +77,7 @@ flowchart TD
   ```bash
   python3 ai_web_server.py
   ```
-  เปิดเบราว์เซอร์ที่: `http://localhost:8080/ai_index.html`
+  เปิดเบราว์เซอร์ที่: `http://localhost:8050`
 
 ---
 

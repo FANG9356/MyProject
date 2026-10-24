@@ -8,11 +8,11 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 from collections import Counter
 
 try:
-    print(" กำลังปลุกสมองกล AI...")
+    print("[INIT] Loading AI Model...")
     ai_model = joblib.load('ai_model.pkl')
-    print(" ปลุกสำเร็จ พร้อมทำงาน!")
+    print("[OK] Model loaded successfully.")
 except Exception as e:
-    print(" ไม่พบไฟล์ ai_model.pkl กรุณากลับไปรัน ai_trainer.py ก่อนครับ")
+    print("[ERROR] ai_model.pkl not found.")
     exit()
 
 ESP32_IP = "192.168.4.1"
@@ -26,7 +26,7 @@ current_status = "Waiting for data..."
 
 def radar_pinger():
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    print(" Started Radar Wave Generator...")
+    print("[STATUS] Started Radar Wave Generator...")
     while True:
         try:
             sock.sendto(b"PING", (ESP32_IP, ESP32_PING_PORT))
@@ -65,7 +65,7 @@ class RequestHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         global current_status
         
-        if self.path == '/':
+        if self.path in ('/', '/ai_index.html'):
             self.send_response(200)
             self.send_header('Content-type', 'text/html; charset=utf-8')
             self.end_headers()
@@ -96,12 +96,12 @@ def main():
     threading.Thread(target=udp_listener, daemon=True).start()
     
     print("="*50)
-    print(" Phase 3: Live AI Dashboard (Standalone)")
+    print("Live AI Dashboard Active")
     print("="*50)
-    print(" Starting Web Server at http://localhost:8000")
-    print(" Open your browser and go to: http://localhost:8000")
+    print("Starting Web Server at http://localhost:8050")
+    print("Open your browser at: http://localhost:8050")
     
-    server = HTTPServer(('0.0.0.0', 8000), RequestHandler)
+    server = HTTPServer(('0.0.0.0', 8050), RequestHandler)
     try:
         server.serve_forever()
     except KeyboardInterrupt:

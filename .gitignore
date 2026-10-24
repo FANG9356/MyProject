@@ -53,8 +53,6 @@ cookies.txt
 *.part
 !**/.gitkeep
 
-# Exclude oversized local template (135MB, exceeds GitHub 100MB limit)
-02_Smart-Doc-AI/app/template.docx
 
 # ==========================================
 # IDE & Editor Specific
