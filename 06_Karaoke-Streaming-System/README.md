@@ -5,6 +5,9 @@
 
 ---
 
+| ![Karaoke Player](../assets/real_web_06_karaoke_player.png) | <img src="../assets/real_web_06_karaoke_remote.png" width="320" alt="Karaoke Remote" /> |
+| :---: | :---: |
+
 ## วิธีติดตั้งและเริ่มใช้งาน (Quick Start)
 
 ### 1. สิ่งที่ต้องมีในเครื่อง (Prerequisites)

@@ -5,6 +5,8 @@
 
 ---
 
+![System Monitor Dashboard](../assets/real_web_08_sysmonitor.png)
+
 ## วิธีติดตั้งและเริ่มใช้งาน (Quick Start)
 
 ### 1. วิธีใช้งานบน Windows (ไม่ต้องติดตั้งโปรแกรมเสริม)

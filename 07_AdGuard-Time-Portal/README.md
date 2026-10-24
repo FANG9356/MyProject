@@ -5,6 +5,9 @@
 
 ---
 
+| ![AdGuard User Portal](../assets/real_web_07_adguard_portal.png) | ![AdGuard Admin Console](../assets/real_web_07_adguard_admin.png) |
+| :---: | :---: |
+
 ## วิธีติดตั้งและเริ่มใช้งาน (Quick Start)
 
 ### 1. สิ่งที่ต้องมีในเครื่อง (Prerequisites)

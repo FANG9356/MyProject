@@ -5,6 +5,9 @@
 
 ---
 
+| ![HomeServer Services Hub](../assets/real_web_09_homeserver.png) | ![Cross-VLAN Network Scanner](../assets/real_web_09_scanner.png) |
+| :---: | :---: |
+
 ## โครงสร้างระบบ (System Overview)
 
 แดชบอร์ดรวมศูนย์สำหรับเปิดดูสถานะบริการภายในบ้าน และเครื่องมือสแกนหา IP อุปกรณ์ในเครือข่าย:

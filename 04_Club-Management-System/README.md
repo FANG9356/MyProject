@@ -5,6 +5,9 @@
 
 ---
 
+| ![Club Registration](../assets/real_web_04_club_register.png) | ![Club Attendance](../assets/real_web_04_club_attendance.png) |
+| :---: | :---: |
+
 ## วิธีติดตั้งและเริ่มใช้งาน (Quick Start)
 
 ### 1. สิ่งที่ต้องมีในเครื่อง (Prerequisites)

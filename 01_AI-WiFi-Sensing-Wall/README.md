@@ -5,6 +5,8 @@
 
 ---
 
+![AI WiFi Wall Dashboard](../assets/real_web_01_wifiwall.png)
+
 ## วิธีติดตั้งและเริ่มใช้งาน (Quick Start)
 
 ### 1. สิ่งที่ต้องมีในเครื่อง (Prerequisites)

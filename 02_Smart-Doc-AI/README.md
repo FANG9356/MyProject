@@ -5,6 +5,8 @@
 
 ---
 
+![Smart Doc AI Dashboard](../assets/real_web_02_smartdoc.png)
+
 ## วิธีติดตั้งและเริ่มใช้งาน (Quick Start)
 
 ### 1. สิ่งที่ต้องมีในเครื่อง (Prerequisites)

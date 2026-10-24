@@ -5,6 +5,8 @@
 
 ---
 
+![ATM Security Person Detection](../assets/atm_detector_simulation.jpg)
+
 ## วิธีติดตั้งและเริ่มใช้งาน (Quick Start)
 
 ### 1. สิ่งที่ต้องมีในเครื่อง (Prerequisites)
