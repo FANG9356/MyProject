@@ -1,4 +1,4 @@
-# My Projects (คลังรวมโปรเจกต์ที่ทำเสร็จแล้ว)
+# My Projects 
 > **ผู้พัฒนา:** Phakhaphon Sukmee
 > **GitHub Repository:** [FANG9356/MyProject](https://github.com/FANG9356/MyProject)
 > **สถานะชุดทดสอบ:** `9/9 Projects Passed`
