@@ -10,6 +10,8 @@
 #### ภาพเคลื่อนไหวจำลองการทำงาน (Live Simulation Demo)
 ![Live Simulation Demo](../assets/demo_08_sys_monitor.gif)
 
+[ดูวิดีโอสาธิตการทำงานแบบเต็ม (Full HD MP4)](../assets/demo_08_sys_monitor.mp4)
+
 
 ## วิธีติดตั้งและเริ่มใช้งาน (Quick Start)
 

@@ -10,6 +10,8 @@
 #### ภาพเคลื่อนไหวจำลองการทำงาน (Live Simulation Demo)
 ![Live Simulation Demo](../assets/demo_01_wifi_sensing.gif)
 
+[ดูวิดีโอสาธิตการทำงานแบบเต็ม (Full HD MP4)](../assets/demo_01_wifi_sensing.mp4)
+
 
 ## วิธีติดตั้งและเริ่มใช้งาน (Quick Start)
 

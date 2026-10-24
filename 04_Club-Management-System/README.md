@@ -9,6 +9,8 @@
 
 #### ภาพเคลื่อนไหวจำลองการทำงาน (Live Simulation Demo)
 ![Live Simulation Demo](../assets/demo_04_club_management.gif)
+
+[ดูวิดีโอสาธิตการทำงานแบบเต็ม (Full HD MP4)](../assets/demo_04_club_management.mp4)
  |
 | :---: | :---: |
 

@@ -52,6 +52,8 @@
 
 ![Live Simulation Demo](./assets/demo_01_wifi_sensing.gif)
 
+[ดูวิดีโอสาธิตการทำงานแบบเต็ม (Full HD MP4)](./assets/demo_01_wifi_sensing.mp4)
+
 #### แผนภาพการทำงาน (Architecture)
 ```mermaid
 flowchart TD
@@ -100,6 +102,8 @@ flowchart TD
 
 ![Live Simulation Demo](./assets/demo_02_smart_doc.gif)
 
+[ดูวิดีโอสาธิตการทำงานแบบเต็ม (Full HD MP4)](./assets/demo_02_smart_doc.mp4)
+
 #### แผนภาพการทำงาน (Architecture)
 ```mermaid
 flowchart LR
@@ -142,6 +146,8 @@ flowchart LR
 
 
 ![Live Simulation Demo](./assets/demo_03_tip_desk.gif)
+
+[ดูวิดีโอสาธิตการทำงานแบบเต็ม (Full HD MP4)](./assets/demo_03_tip_desk.mp4)
 
 #### แผนภาพการทำงาน (Architecture)
 ```mermaid
@@ -189,6 +195,8 @@ flowchart TD
 
 ![Live Simulation Demo](./assets/demo_04_club_management.gif)
 
+[ดูวิดีโอสาธิตการทำงานแบบเต็ม (Full HD MP4)](./assets/demo_04_club_management.mp4)
+
 #### แผนภาพการทำงาน (Architecture)
 ```mermaid
 flowchart TD
@@ -227,6 +235,8 @@ node server.js
 
 
 ![Live Simulation Demo](./assets/demo_05_atm_detector.gif)
+
+[ดูวิดีโอสาธิตการทำงานแบบเต็ม (Full HD MP4)](./assets/demo_05_atm_detector.mp4)
 
 #### แผนภาพการทำงาน (Architecture)
 ```mermaid
@@ -276,6 +286,8 @@ flowchart LR
 
 ![Live Simulation Demo](./assets/demo_06_karaoke_streaming.gif)
 
+[ดูวิดีโอสาธิตการทำงานแบบเต็ม (Full HD MP4)](./assets/demo_06_karaoke_streaming.mp4)
+
 #### แผนภาพการทำงาน (Architecture)
 ```mermaid
 flowchart TD
@@ -315,6 +327,8 @@ flowchart TD
 
 ![Live Simulation Demo](./assets/demo_07_adguard_portal.gif)
 
+[ดูวิดีโอสาธิตการทำงานแบบเต็ม (Full HD MP4)](./assets/demo_07_adguard_portal.mp4)
+
 #### แผนภาพการทำงาน (Architecture)
 ```mermaid
 flowchart LR
@@ -352,6 +366,8 @@ node server.js
 
 
 ![Live Simulation Demo](./assets/demo_08_sys_monitor.gif)
+
+[ดูวิดีโอสาธิตการทำงานแบบเต็ม (Full HD MP4)](./assets/demo_08_sys_monitor.mp4)
 
 #### แผนภาพการทำงาน (Architecture)
 ```mermaid
@@ -391,6 +407,8 @@ flowchart LR
 
 
 ![Live Simulation Demo](./assets/demo_09_homeserver_scanner.gif)
+
+[ดูวิดีโอสาธิตการทำงานแบบเต็ม (Full HD MP4)](./assets/demo_09_homeserver_scanner.mp4)
 
 #### แผนภาพการทำงาน (Architecture)
 ```mermaid
@@ -437,6 +455,8 @@ flowchart TD
 
 
 ![Live Simulation Demo](./assets/demo_10_music_shuffle.gif)
+
+[ดูวิดีโอสาธิตการทำงานแบบเต็ม (Full HD MP4)](./assets/demo_10_music_shuffle.mp4)
 
 #### สถาปัตยกรรมระบบ
 ```mermaid

@@ -9,6 +9,8 @@
 
 #### ภาพเคลื่อนไหวจำลองการทำงาน (Live Simulation Demo)
 ![Live Simulation Demo](../assets/demo_09_homeserver_scanner.gif)
+
+[ดูวิดีโอสาธิตการทำงานแบบเต็ม (Full HD MP4)](../assets/demo_09_homeserver_scanner.mp4)
  |
 | :---: | :---: |
 

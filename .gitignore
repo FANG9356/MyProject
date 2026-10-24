@@ -47,6 +47,7 @@ cookies.txt
 # Media & Temporary Large Files (> 50MB)
 # ==========================================
 *.mp4
+!assets/*.mp4
 *.mp3
 *.wav
 *.avi
