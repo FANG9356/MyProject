@@ -5,7 +5,7 @@
 
 ---
 
-## 📌 ภาพรวมและจุดเด่นของผลงาน (Portfolio Pitch)
+## 📌 ภาพรวมโครงการ (Project Overview)
 ระบบตรวจจับบุคคลและเฝ้าระวังความปลอดภัยหน้าตู้ ATM ด้วย Computer Vision ใช้โมเดล YOLOv8 ตรวจจับบุคคลแบบเรียลไทม์ พร้อมบันทึกภาพถ่าย Snapshot และเก็บสถิติประวัติการเข้าใช้งานลง JSON Log
 
 ---
@@ -16,4 +16,4 @@ python3 person_detector.py
 ```
 
 ---
-*จัดเตรียมข้อมูลสำหรับ Portfolio — Phakhaphon Sukmee*
+*Author: Phakhaphon Sukmee*

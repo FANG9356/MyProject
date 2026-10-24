@@ -5,7 +5,7 @@
 
 ---
 
-## 📖 คู่มือการติดตั้งและทดลองใช้งานสำหรับกรรมการ (Examiner's Guide)
+## 📖 วิธีติดตั้งและเริ่มใช้งาน (Quick Start)
 
 ### 1. สิ่งที่ต้องมีในเครื่อง (Prerequisites)
 * Docker และ Docker Compose
@@ -17,7 +17,7 @@ docker compose up -d
 ```
 เปิดเบราว์เซอร์ไปที่: `http://localhost:8001`
 
-### 3. สิ่งที่กรรมการจะเห็นในหน้า Dashboard
+### 3. การแสดงผลของระบบในหน้า Dashboard
 * **หน้า Homepage Dashboard:** รวม Service ที่โฮสต์เองภายในบ้าน
 * **วิดเจ็ตแสดงผลสถานะ:** CPU, RAM, อุณหภูมิ, และการเชื่อมต่อ Proxmox Node
 * **การจัดกลุ่มบริการ:** Docker Containers, สื่อบันเทิง (Jellyfin), คลังรหัสผ่าน (Vaultwarden), และระบบคลาวด์รูปภาพ (Immich)

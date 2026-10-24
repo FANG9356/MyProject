@@ -5,7 +5,7 @@
 
 ---
 
-## 📌 ภาพรวมและจุดเด่นของผลงาน (Portfolio Pitch)
+## 📌 ภาพรวมโครงการ (Project Overview)
 ระบบ AI Agent สำหรับช่วยค้นคว้าวิจัยและร่างเอกสารทางวิชาการอัตโนมัติ เพียงกรอกหัวข้อ ระบบจะค้นคว้าข้อมูลจากแหล่งอ้างอิงระดับโลก (Wikipedia, งานวิจัย ArXiv, ข่าวสารเว็บ) สรุปเนื้อหา และสร้างออกมาเป็นไฟล์ Word (.docx) ตาม Template มาตรฐาน
 
 ---
@@ -18,4 +18,4 @@ Frontend: cd frontend && npm run dev (เข้า http://localhost:5173)
 ```
 
 ---
-*จัดเตรียมข้อมูลสำหรับ Portfolio — Phakhaphon Sukmee*
+*Author: Phakhaphon Sukmee*

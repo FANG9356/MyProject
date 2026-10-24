@@ -1,15 +1,11 @@
-# 🚀 คลังผลงานด้านวิศวกรรมคอมพิวเตอร์และซอฟต์แวร์ (Comprehensive Engineering Portfolio)
+# 💻 My Projects (คลังรวมโปรเจกต์ที่ทำเสร็จแล้ว)
 > **ผู้พัฒนา:** Phakhaphon Sukmee  
 > **GitHub Repository:** [FANG9356/MyProject](https://github.com/FANG9356/MyProject)  
-> **สถานะชุดทดสอบระบบ:** `9/9 Projects Passed (100% Operational)` ✅  
-> **อัปเดตล่าสุด:** 24 ตุลาคม 2569  
+> **สถานะชุดทดสอบ:** `9/9 Projects Passed` ✅  
 
-ยินดีต้อนรับสู่คลังรวบรวมผลงานฉบับสมบูรณ์ ประกอบด้วยระบบ **AI ตรวจจับคลื่นวิทยุทะลุกำแพง (RF Sensing)**, **Computer Vision**, **GenAI Agent**, **ระบบการเงิน FinTech**, **Full-Stack Web Management**, และ **DevOps & Cloud Infrastructure** 
-
-ทุกผลงานในคลังนี้ **ผ่านการทดสอบจริง**, **มีภาพถ่ายหน้าจอของระบบจริง (Live Web UI Screenshots)**, **มีภาพจำลองระบบใช้งานจริง (Simulation Mockups)**, **แผนภาพ Infographic ขั้นตอนการทำงาน (Mermaid Workflows)** และ **คู่มือการติดตั้งเพื่อให้กรรมการสามารถนำไปเปิดทดสอบได้เองอย่างง่ายดาย** สามารถคลิกดูซอร์สโค้ดในแต่ละโฟลเดอร์ได้โดยตรง
+คลังเก็บซอร์สโค้ดและโปรเจกต์ต่างๆ ที่ทำเสร็จแล้ว ทั้งด้าน **AI / RF Sensing**, **Computer Vision**, **GenAI Agent**, **ระบบการเงิน FinTech**, **Web Management**, และ **DevOps & Cloud Infrastructure** แต่ละโฟลเดอร์มีซอร์สโค้ด ตัวอย่างการรัน และสคริปต์ทดสอบระบบไว้ครบถ้วน
 
 ---
-
 ## 🧭 สารบัญผลงานและตารางเปิดใช้งานด่วน (Quick Ports & Launch Cheat Sheet)
 
 | ลำดับ | โฟลเดอร์ใน Git Repo | หมวดหมู่ | คำสั่งเปิดใช้งานระบบ (Launch Command) | พอร์ต / URL สำหรับทดสอบ | ชุดทดสอบด่วน |
@@ -69,7 +65,7 @@ flowchart TD
     H & I & J --> K[🖥️ Real-time Web Dashboard: ai_index.html]
 ```
 
-#### 📖 คู่มือการติดตั้งและทดลองใช้งานจริงสำหรับกรรมการ (Examiner's Quick-Start)
+#### 📖 วิธีติดตั้งและเริ่มใช้งาน (Quick Start)
 1. **สิ่งที่ต้องมี:** Python 3.9+ (ติดตั้ง dependencies ด้วยคำสั่ง):
    ```bash
    cd 01_AI-WiFi-Sensing-Wall
@@ -85,7 +81,7 @@ flowchart TD
    python3 ai_web_server.py
    ```
    เปิดเบราว์เซอร์ไปที่: `http://localhost:8080/ai_index.html`  
-   * **สิ่งที่กรรมการจะเห็น:** หน้าจอแดชบอร์ดเปลี่ยนสีตามสถานะคลื่นสัญญาณ:
+   * **การแสดงผลของระบบ:** หน้าจอแดชบอร์ดเปลี่ยนสีตามสถานะคลื่นสัญญาณ:
      * 🟢 **สีเขียว (Empty):** ห้องว่าง
      * 🔵 **สีน้ำเงิน (Walking):** มีคนเดิน
      * 🔴 **สีแดง (Falling Alert):** สัญญาณคนหกล้มฉับพลัน
@@ -123,7 +119,7 @@ flowchart LR
     I --> J[⬇️ ดาวน์โหลดเอกสารวิชาการพร้อมใช้]
 ```
 
-#### 📖 คู่มือการติดตั้งและทดลองใช้งานจริงสำหรับกรรมการ (Examiner's Quick-Start)
+#### 📖 วิธีติดตั้งและเริ่มใช้งาน (Quick Start)
 * **วิธีรันผ่าน Docker Compose (แนะนำ สะดวกที่สุด):**
   ```bash
   cd 02_Smart-Doc-AI
@@ -170,7 +166,7 @@ flowchart TD
     H -->|Web Speech API| I[🔊 เสียงสังเคราะห์อ่านชื่อและข้อความ TTS]
 ```
 
-#### 📖 คู่มือการติดตั้งและทดลองใช้งานจริงสำหรับกรรมการ (Examiner's Quick-Start)
+#### 📖 วิธีติดตั้งและเริ่มใช้งาน (Quick Start)
 1. **เปิดเซิร์ฟเวอร์ Backend (FastAPI):**
    ```bash
    cd 03_Tip-Desk-PromptPay/backend
@@ -186,7 +182,7 @@ flowchart TD
    ```
    เปิดเบราว์เซอร์ที่: `http://localhost:5173`
 3. **ขั้นตอนการทดสอบ:**
-   * กรอกชื่อผู้บริจาค เช่น *"กรรมการสอบสัมภาษณ์"*
+   * กรอกชื่อผู้บริจาค เช่น *"ผู้สนับสนุน"* หรือชื่อที่ต้องการ
    * ระบุจำนวนเงิน เช่น `100` บาท และพิมพ์ข้อความ
    * กด **"Confirm Donation"** -> สังเกตหน้าต่าง QR Code พร้อมยอดเงินถูกต้องตามมาตรฐาน EMVCo
    * เมื่อจำลองกดยืนยัน จะได้ยินเสียงอ่านชื่อและข้อความผ่านลำโพงทันที (Text-to-Speech)
@@ -213,13 +209,13 @@ flowchart TD
     A[นักเรียน / สมาชิก] -->|กรอกรหัสนักศึกษา & ข้อมูล| B[📝 หน้าลงทะเบียน Register]
     B --> C[เซิร์ฟเวอร์ Express.js API]
     C -->|ตรวจสอบโควต้าว่าง & บันทึก| D[(SQLite Database: database.sqlite)]
-    E[อาจารย์ / กรรมการชมรม] -->|เข้าสู่ระบบด้วย JWT Token| F[🔐 หน้าผู้ดูแลระบบ Admin Panel]
+    E[ผู้ดูแลระบบชมรม] -->|เข้าสู่ระบบด้วย JWT Token| F[🔐 หน้าผู้ดูแลระบบ Admin Panel]
     F --> G[✅ เช็คชื่อเข้าร่วมกิจกรรม Attendance]
     G --> D
     F --> H[📊 ตรวจสอบสถิติและพิมพ์รายงาน Data]
 ```
 
-#### 📖 คู่มือการติดตั้งและทดลองใช้งานจริงสำหรับกรรมการ (Examiner's Quick-Start)
+#### 📖 วิธีติดตั้งและเริ่มใช้งาน (Quick Start)
 1. **การติดตั้งและเปิดเซิร์ฟเวอร์:**
    ```bash
    cd 04_Club-Management-System/backend
@@ -259,7 +255,7 @@ flowchart LR
     D -->|ไม่ใช่| H[ประมวลผลเฟรมถัดไป]
 ```
 
-#### 📖 คู่มือการติดตั้งและทดลองใช้งานจริงสำหรับกรรมการ (Examiner's Quick-Start)
+#### 📖 วิธีติดตั้งและเริ่มใช้งาน (Quick Start)
 1. **ติดตั้ง Dependencies:**
    ```bash
    cd 05_ATM-YOLOv8-Detector
@@ -309,7 +305,7 @@ flowchart TD
     B -->|อัปเดตลำดับคิว| C & D
 ```
 
-#### 📖 คู่มือการติดตั้งและทดลองใช้งานจริงสำหรับกรรมการ (Examiner's Quick-Start)
+#### 📖 วิธีติดตั้งและเริ่มใช้งาน (Quick Start)
 1. **ติดตั้งและรันเซิร์ฟเวอร์:**
    ```bash
    cd 06_Karaoke-Streaming-System
@@ -349,7 +345,7 @@ flowchart LR
     F -->|ใช่| G[ส่งคำสั่ง Block IP กลับไปยัง AdGuard Home]
 ```
 
-#### 📖 คู่มือการติดตั้งและทดลองใช้งานจริงสำหรับกรรมการ (Examiner's Quick-Start)
+#### 📖 วิธีติดตั้งและเริ่มใช้งาน (Quick Start)
 1. **ติดตั้งและเริ่มทำงาน:**
    ```bash
    cd 07_AdGuard-Time-Portal
@@ -385,7 +381,7 @@ flowchart LR
     D -->|แสดงผล Gauge กราฟและตัวเลข| E[ผู้ใช้งาน]
 ```
 
-#### 📖 คู่มือการติดตั้งและทดลองใช้งานจริงสำหรับกรรมการ (Examiner's Quick-Start)
+#### 📖 วิธีติดตั้งและเริ่มใช้งาน (Quick Start)
 * **บน Windows (ไม่ต้องติดตั้งโปรแกรมเสริม):**  
   ดับเบิลคลิกเปิดไฟล์ `sys-monitor-app-win-x64.exe` ได้ทันที
 * **บน macOS / Linux:**  
@@ -395,7 +391,7 @@ flowchart LR
   node server.js
   ```
   เปิดเบราว์เซอร์ที่: `http://localhost:3000`  
-  *กรรมการจะเห็นมาตรวัด CPU Cores, RAM ทั้งหมด และสถานะ Uptime ของเครื่องแบบสด*
+  *หน้าจอจะแสดงมาตรวัด CPU Cores, RAM ทั้งหมด และสถานะ Uptime ของเครื่องแบบสด*
 
 ---
 
@@ -423,14 +419,14 @@ flowchart TD
     end
 ```
 
-#### 📖 คู่มือการติดตั้งและทดลองใช้งานจริงสำหรับกรรมการ (Examiner's Quick-Start)
+#### 📖 วิธีติดตั้งและเริ่มใช้งาน (Quick Start)
 1. **การเปิดใช้งาน Dashboard ด้วย Docker:**
    ```bash
    cd 09_HomeServer-Infrastructure
    docker compose up -d
    ```
 2. เปิดเบราว์เซอร์ที่: `http://localhost:8001`
-3. **สิ่งที่กรรมการจะเห็น:** แผงควบคุมเซิร์ฟเวอร์ Homepage มอนิเตอร์ Docker Containers, ทรัพยากรโฮสต์ Proxmox, และบุ๊กมาร์ก Service ในบ้านทั้งหมด
+3. **ผลลัพธ์การทำงาน:** แผงควบคุมเซิร์ฟเวอร์ Homepage มอนิเตอร์ Docker Containers, ทรัพยากรโฮสต์ Proxmox, และบุ๊กมาร์ก Service ในบ้านทั้งหมด
 
 ---
 

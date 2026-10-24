@@ -5,7 +5,7 @@
 
 ---
 
-## 📌 ภาพรวมและจุดเด่นของผลงาน (Portfolio Pitch)
+## 📌 ภาพรวมโครงการ (Project Overview)
 โปรแกรมตรวจสอบสถานะการทำงานของเครื่องคอมพิวเตอร์แบบ Lightweight แพ็กเกจเป็นไฟล์ .exe แบบ Standalone สำหรับรันบน Windows ได้ทันทีโดยไม่ต้องติดตั้ง Node.js ล่วงหน้า
 
 ---
@@ -16,4 +16,4 @@
 ```
 
 ---
-*จัดเตรียมข้อมูลสำหรับ Portfolio — Phakhaphon Sukmee*
+*Author: Phakhaphon Sukmee*

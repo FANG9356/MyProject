@@ -5,7 +5,7 @@
 
 ---
 
-## 📌 ภาพรวมและจุดเด่นของผลงาน (Portfolio Pitch)
+## 📌 ภาพรวมโครงการ (Project Overview)
 ระบบรับเงินบริจาค/ทิปส่วนตัวแบบเรียลไทม์ สร้าง PromptPay QR Code ตามมาตรฐาน EMVCo อัตโนมัติ พร้อมระบบแจ้งเตือนแบบสดและเสียงอ่านข้อความผู้สนับสนุนด้วย Text-to-Speech (TTS)
 
 ---
@@ -17,4 +17,4 @@ Frontend: npm run dev (เข้า http://localhost:5173)
 ```
 
 ---
-*จัดเตรียมข้อมูลสำหรับ Portfolio — Phakhaphon Sukmee*
+*Author: Phakhaphon Sukmee*

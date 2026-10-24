@@ -5,7 +5,7 @@
 
 ---
 
-## 📖 คู่มือการติดตั้งและทดลองใช้งานสำหรับกรรมการ (Examiner's Guide)
+## 📖 วิธีติดตั้งและเริ่มใช้งาน (Quick Start)
 
 ### 1. สิ่งที่ต้องมีในเครื่อง (Prerequisites)
 * Python 3.10+ และ Node.js 18+ (หรือติดตั้ง Docker & Docker Compose)
