@@ -1,19 +1,24 @@
-# Home Server & DevOps Infrastructure
+# HomeServer Infrastructure & Cross-VLAN Network Scanner
 
-**หมวดหมู่:** DevOps & Infrastructure as Code
-**เทคโนโลยีหลัก (Tech Stack):** Docker, Docker Compose, Homepage Dashboard, Proxmox Integration, Cloudflare Tunnels
+**หมวดหมู่:** Network Engineering, Infrastructure Management & Full-Stack Cloud
+**เทคโนโลยีหลัก (Tech Stack):** Go (Goroutines), SQLite3, React 18, Tailwind CSS, Docker
 
 ---
 
 ## ภาพรวมโครงการ (Project Overview)
-สถาปัตยกรรม Home Server & Private Cloud ส่วนตัว รวม Dashboard มอนิเตอร์เครื่องเซิร์ฟเวอร์, คอนเทนเนอร์ Docker, Proxmox Node และบริการภายในบ้านทั้งหมดไว้ในที่เดียว ปลอดภัยด้วย Cloudflare Tunnels
+ระบบศูนย์กลางบริหารจัดการ Private Cloud Services และเครื่องมือค้นหาอุปกรณ์เครือข่ายข้าม VLAN (Cross-VLAN Network Scanner) ที่เขียนขึ้นเองทั้งหมดโดยใช้ Go Goroutines ในการยิงโพรบพอร์ตแบบขนาน จัดเก็บข้อมูลใน SQLite3 และแสดงผลผ่านหน้าเว็บ React + Tailwind CSS แบบเรียลไทม์
 
 ---
 
 ## วิธีการรันและทดสอบระบบ (How to Run)
 ```bash
-docker compose up -d (เข้า Dashboard ที่ http://localhost:8001)
+# รัน Backend (Go)
+cd backend && go run .
+
+# หรือรันผ่าน Docker
+docker compose up -d --build
 ```
+เข้าใช้งานผ่านเบราว์เซอร์ที่: `http://localhost:8001`
 
 ---
 *Author: Phakhaphon Sukmee*

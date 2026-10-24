@@ -72,3 +72,6 @@ cookies.txt
 dist/
 build/
 *.log
+server
+*.exe
+*.db

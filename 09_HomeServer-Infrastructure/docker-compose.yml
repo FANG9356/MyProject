@@ -1,11 +1,14 @@
 services:
-  homepage:
-    image: ghcr.io/gethomepage/homepage:latest
-    container_name: home_dashboard
+  homeserver-infra:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: homeserver_infra
     ports:
-      - 8001:3000
-    environment:
-      - HOMEPAGE_ALLOWED_HOSTS=*
+      - "8001:8001"
     volumes:
-      - ./config:/app/config
-    restart: always
+      - infra-data:/app/backend
+    restart: unless-stopped
+
+volumes:
+  infra-data:

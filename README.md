@@ -18,7 +18,7 @@
 | **06** | [`06_Karaoke-Streaming-System`](./06_Karaoke-Streaming-System) | **Streaming Server** | `python3 main.py` | `http://localhost:8000` (รีโมต: `/remote`) | `python3 test_simulation.py` |
 | **07** | [`07_AdGuard-Time-Portal`](./07_AdGuard-Time-Portal) | **Network & Admin** | `node server.js` | `http://localhost:8080` (แอดมิน: `/admin.html`) | `node test_simulation.js` |
 | **08** | [`08_System-Monitor-Desktop-App`](./08_System-Monitor-Desktop-App) | **Desktop Utility** | ดับเบิลคลิก `.exe` (Win) หรือ `node server.js` | `http://localhost:3000` | `node test_simulation.js` |
-| **09** | [`09_HomeServer-Infrastructure`](./09_HomeServer-Infrastructure) | **DevOps & Cloud** | `docker compose up -d` | `http://localhost:8001` | `python3 test_simulation.py` |
+| **09** | [`09_HomeServer-Infrastructure`](./09_HomeServer-Infrastructure) | **Go, SQLite & React** | `cd backend && go run .` | `http://localhost:8001` | `python3 test_simulation.py` |
 
 ---
 
@@ -396,38 +396,53 @@ flowchart LR
 
 ---
 
-### 9. [09_HomeServer-Infrastructure](./09_HomeServer-Infrastructure) — สถาปัตยกรรม Private Cloud & DevOps
+### 9. [09_HomeServer-Infrastructure](./09_HomeServer-Infrastructure) — สถาปัตยกรรม Private Cloud & Cross-VLAN Network Scanner
 
 > **โฟลเดอร์โค้ด:** [คลิกเปิดโฟลเดอร์ `09_HomeServer-Infrastructure`](./09_HomeServer-Infrastructure)
 > **คู่มือย่อยในโฟลเดอร์:** [อ่านคู่มือ `09_HomeServer-Infrastructure/README.md`](./09_HomeServer-Infrastructure/README.md)
-> **เทคโนโลยี:** Docker, Docker Compose, Homepage Dashboard, Proxmox Integration, Cloudflare Tunnels
+> **เทคโนโลยี:** Go (Goroutines, Net/TCP Prober), SQLite3, React 18, Tailwind CSS, Docker
 
 #### แนวคิดและสถานการณ์การใช้งานจริง (Problem & Real-World Use Case)
-ศูนย์กลางการควบคุมและบริหารจัดการระบบเซิร์ฟเวอร์ส่วนตัวภายในบ้าน (Self-Hosted Home Lab) รวมหน้าจอแสดงสถานะของเครื่อง Proxmox VE, คอนเทนเนอร์ Docker ทั้งหมด (เช่น Jellyfin, Vaultwarden, Immich, Karaoke) ไว้ใน Dashboard เดียว และมีความปลอดภัยสูงเพราะเชื่อมต่อภายนอกผ่าน Cloudflare Tunnels โดยไม่ต้องเปิด Port Forwarding
+ระบบศูนย์กลางบริหารจัดการ Private Cloud Services และระบบค้นหาอุปกรณ์เครือข่ายข้าม VLAN (Cross-VLAN Network Scanner) ที่เขียนขึ้นเองทั้งหมด 100%:
+1. **Cloud Services Hub:** หน้าเว็บแดชบอร์ดตรวจสอบสถานะและวัดค่า Latency ของบริการภายในบ้านแบบเรียลไทม์ (Immich, Jellyfin, FileBrowser, Bitwarden, Memos)
+2. **Cross-VLAN Network Scanner:** เอนจินสแกนหาไอพีและอุปกรณ์ในวงเน็ตเวิร์กที่เชื่อมต่ออยู่ และสามารถสแกนข้ามวงเน็ตเวิร์ก/ข้าม VLAN ได้พร้อมกันหลาย Subnets แบบความเร็วสูงด้วย Go Goroutines ตรวจจับพอร์ตบริการที่เปิดอยู่ (เช่น HTTP, HTTPS, SSH, DNS, SMB) พร้อมคำนวณ Round-trip Latency และบันทึกประวัติลงฐานข้อมูล SQLite
+
+#### ตัวอย่างหน้าจอการทำงานจริงของเว็บ (Real Web Application Previews)
+| Private Cloud Services Hub | Cross-VLAN Network Scanner (Concurrent Prober) |
+| :---: | :---: |
+| ![HomeServer Services Hub](./assets/real_web_09_homeserver.png) | ![Cross-VLAN Network Scanner](./assets/real_web_09_scanner.png) |
 
 #### Infographic แผนภาพขั้นตอนการทำงาน (Workflow Architecture)
 ```mermaid
 flowchart TD
- A[ผู้ใช้งานภายนอก] -->|เชื่อมต่อผ่าน Domain ปลอดภัย| B[Cloudflare Zero Trust Tunnel]
- B --> C[Home Server Docker Network]
- subgraph Container_Stack [Docker Services & Infrastructure]
- C --> D[Homepage Dashboard: พอร์ต 8001]
- D --> E[Proxmox VE API - สถานะ CPU/RAM โฮสต์]
- D --> F[Docker Socket - สถานะ Container ทั่วระบบ]
- D --> G[Jellyfin Media Server]
- D --> H[Vaultwarden Password Manager]
- D --> I[Immich Photos Cloud]
- end
+  User[ผู้ใช้งานผ่านหน้าเว็บ React + Tailwind] -->|REST API Request / HTTP| GoServer[Go Backend Server: พอร์ต 8001]
+  GoServer -->|Query / Update Status| DB[(SQLite Database: infrastructure.db)]
+  
+  subgraph Engine_Features [Go Backend High-Concurrency Engine]
+    GoServer -->|Parallel Goroutines| Scanner[Cross-VLAN Network Scanner]
+    GoServer -->|Health Check Probe| ServiceHub[Cloud Services Monitor]
+  end
+
+  Scanner -->|TCP Ping & Port Scan| Subnets[Local & Cross-VLAN Subnets\n192.168.1.x / 192.168.10.x / 10.0.0.x]
+  Subnets -->|Discovered Devices & Ports| Scanner
+  Scanner -->|Save Discovered Nodes| DB
 ```
 
 #### วิธีติดตั้งและเริ่มใช้งาน (Quick Start)
-1. **การเปิดใช้งาน Dashboard ด้วย Docker:**
- ```bash
- cd 09_HomeServer-Infrastructure
- docker compose up -d
- ```
-2. เปิดเบราว์เซอร์ที่: `http://localhost:8001`
-3. **ผลลัพธ์การทำงาน:** แผงควบคุมเซิร์ฟเวอร์ Homepage มอนิเตอร์ Docker Containers, ทรัพยากรโฮสต์ Proxmox, และบุ๊กมาร์ก Service ในบ้านทั้งหมด
+1. **การรัน Backend (Go):**
+  ```bash
+  cd 09_HomeServer-Infrastructure/backend
+  go run .
+  ```
+2. **การรัน Frontend (React + Tailwind):**
+  ```bash
+  cd 09_HomeServer-Infrastructure/frontend
+  npm install
+  npm run dev
+  ```
+  *(หรือรันระบบทั้งหมดผ่าน Docker: `docker compose up -d --build`)*
+3. เปิดเบราว์เซอร์ที่: `http://localhost:8001`
+4. **ผลลัพธ์การทำงาน:** แดชบอร์ดตรวจสอบสถานะ Cloud Services และหน้าจอสั่งสแกน IP อุปกรณ์เครือข่ายข้าม VLAN แบบเรียลไทม์
 
 ---
 

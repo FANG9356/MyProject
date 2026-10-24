@@ -1,6 +1,0 @@
----
-title: "Home Cloud Station"
-providers:
-  openweathermap: openweathermapapikey
-  weatherapi: weatherapiapikey
-  hideVersion: true 
