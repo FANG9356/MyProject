@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ลงทะเบียนเลือกชมรม</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>body { font-family: 'Sarabun', sans-serif; }</style>
+
+    <!-- Security -->
+    <script src="auth.js"></script>
+    <script>blockDevTools();</script>
+
+</head>
+<body class="bg-gray-100 p-6">
+    <div class="max-w-7xl mx-auto">
+        <!-- Navigation Bar -->
+        <nav class="bg-white shadow-sm border border-gray-200 mb-8 rounded-2xl px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <img src="https://rms.utc.ac.th/files/01013_1809190994117.png" alt="Logo" class="h-10 w-10 rounded-full shadow-sm">
+                <span class="text-xl font-bold text-indigo-700">ระบบจัดการชมรม</span>
+            </div>
+            <div class="flex flex-wrap justify-center gap-2">
+                <a href="index.html" class="px-4 py-2 text-gray-600 font-semibold rounded-lg hover:bg-gray-100 hover:text-indigo-600 transition-colors text-sm">หน้าหลัก</a>
+                <a href="register.html" class="px-4 py-2 bg-indigo-50 text-indigo-700 font-semibold rounded-lg transition-colors text-sm shadow-sm">ลงทะเบียน</a>
+                <a href="statusattendance.html" class="px-4 py-2 text-gray-600 font-semibold rounded-lg hover:bg-gray-100 hover:text-indigo-600 transition-colors text-sm">เช็คสถานะการเข้าชมรม</a>
+                <a href="admin.html" class="px-4 py-2 text-gray-600 font-semibold rounded-lg hover:bg-gray-100 hover:text-indigo-600 transition-colors text-sm">ระบบแอดมิน</a>
+            </div>
+        </nav>
+
+        <div class="max-w-lg mx-auto bg-white p-8 rounded-2xl shadow-sm border border-gray-200 relative overflow-hidden">
+        <div class="text-center mb-6">
+            <img src="https://rms.utc.ac.th/files/01013_1809190994117.png" alt="Logo" class="h-16 w-16 mx-auto mb-2">
+            <h1 class="text-2xl font-bold text-gray-800">ลงทะเบียนเลือกชมรม</h1>
+            <p class="text-sm text-gray-500" id="header-subtitle">กรุณากรอกข้อมูลให้ครบถ้วนเพื่อเข้าชมรม</p>
+        </div>
+
+        <div id="closed-message" class="hidden text-center py-10">
+            <div class="inline-flex items-center justify-center w-20 h-20 bg-red-100 rounded-full mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+            </div>
+            <h2 class="text-2xl font-bold text-gray-800 mb-2">ระบบปิดรับสมัครแล้ว</h2>
+            <p class="text-gray-500 text-sm">ขณะนี้สิ้นสุดระยะเวลาการเลือกชมรมแล้ว<br>หากมีข้อสงสัยหรือต้องการเปลี่ยนแปลงข้อมูล<br>กรุณาติดต่ออาจารย์หรือผู้ดูแลระบบ</p>
+        </div>
+
+        <form id="registration-form" class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700">รหัสนักศึกษา</label>
+                <input type="text" id="studentId" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:ring-indigo-500 focus:border-indigo-500">
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+                <div class="md:col-span-1">
+                    <label class="block text-sm font-medium text-gray-700">คำนำหน้า</label>
+                    <select id="titlePrefix" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border">
+                        <option value="นาย">นาย</option>
+                        <option value="นางสาว">นางสาว</option>
+                    </select>
+                </div>
+                <div class="md:col-span-3">
+                    <label class="block text-sm font-medium text-gray-700">ชื่อ</label>
+                    <input type="text" id="firstName" required placeholder="ชื่อ" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700">นามสกุล</label>
+                <input type="text" id="lastName" required placeholder="นามสกุล" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border">
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">ชั้นปี</label>
+                    <select id="grade" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border">
+                        <option value="ปวช. 1">ปวช. 1</option>
+                        <option value="ปวช. 2">ปวช. 2</option>
+                        <option value="ปวช. 3">ปวช. 3</option>
+                        <option value="ปวส. 1">ปวส. 1</option>
+                        <option value="ปวส. 2">ปวส. 2</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">สาขาวิชา</label>
+                    <select id="major" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border"></select>
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700">ชมรมที่ต้องการเข้าร่วม</label>
+                <select id="club-select" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border font-bold text-indigo-600">
+                    <option value="">-- กำลังโหลดรายชื่อชมรม --</option>
+                </select>
+                <div id="club-count-display" class="mt-2 text-sm font-semibold transition-all"></div>
+            </div>
+
+            <button type="submit" id="submit-btn" class="w-full bg-indigo-600 text-white py-3 rounded-xl font-semibold hover:bg-indigo-700 transition-all shadow-md disabled:bg-gray-400 disabled:cursor-not-allowed">
+                ยืนยันการเลือกชมรม
+            </button>
+        </form>
+    </div>
+    </div>
+
+    <script>
+        let majorList = {};
+        let gradeList = [];
+
+        const registrationForm = document.getElementById('registration-form');
+        const closedMessage = document.getElementById('closed-message');
+        const headerSubtitle = document.getElementById('header-subtitle');
+        const clubSelect = document.getElementById('club-select');
+        const gradeSelect = document.getElementById('grade');
+        const majorSelect = document.getElementById('major');
+        const countDisplay = document.getElementById('club-count-display');
+        const submitBtn = document.getElementById('submit-btn');
+
+        let membersData = [];
+        let clubQuotas = {}; 
+        let isSystemOpen = true; 
+        let dynamicClubList = [];
+
+        async function fetchData() {
+            try {
+                // Fetch Settings
+                try {
+                    const setRes = await fetch('/api/settings');
+                    const setData = await setRes.json();
+                    if (setData.gradeList) gradeList = setData.gradeList;
+                    if (setData.majorList) majorList = setData.majorList;
+                    
+                    const currentGrade = gradeSelect.value;
+                    const currentMajor = majorSelect.value;
+                    
+                    // Update grade select options
+                    gradeSelect.innerHTML = gradeList.map(g => `<option value="${g}">${g}</option>`).join('');
+                    if (currentGrade && gradeList.includes(currentGrade)) {
+                        gradeSelect.value = currentGrade;
+                    }
+                    updateMajorOptions();
+                    if (currentMajor) {
+                        majorSelect.value = currentMajor;
+                    }
+                } catch(e) {
+                    console.error('Error fetching settings', e);
+                    // Fallback
+                    gradeList = ["ปวช. 1", "ปวส. 1"];
+                    majorList = {'ปวช': ["เทคนิคคอมพิวเตอร์"], 'ปวส': ["เทคโนโลยีคอมพิวเตอร์"]};
+                    
+                    const currentGrade = gradeSelect.value;
+                    const currentMajor = majorSelect.value;
+                    
+                    gradeSelect.innerHTML = gradeList.map(g => `<option value="${g}">${g}</option>`).join('');
+                    if (currentGrade && gradeList.includes(currentGrade)) {
+                        gradeSelect.value = currentGrade;
+                    }
+                    updateMajorOptions();
+                    if (currentMajor) {
+                        majorSelect.value = currentMajor;
+                    }
+                }
+                
+                const sysRes = await fetch('/api/systemStatus');
+                const sysData = await sysRes.json();
+                isSystemOpen = sysData.registrationOpen;
+
+                if (isSystemOpen) {
+                    registrationForm.classList.remove('hidden');
+                    closedMessage.classList.add('hidden');
+                    headerSubtitle.classList.remove('hidden');
+                } else {
+                    registrationForm.classList.add('hidden');
+                    closedMessage.classList.remove('hidden');
+                    headerSubtitle.classList.add('hidden');
+                }
+
+                const memRes = await fetch('/api/clubCounts');
+                const memData = await memRes.json();
+                membersData = memData; // Dictionary of club: count
+
+                const quotaRes = await fetch('/api/clubQuotas');
+                clubQuotas = await quotaRes.json();
+
+                const clubsRes = await fetch('/api/clubs');
+                const allClubs = await clubsRes.json();
+                
+                dynamicClubList = Object.keys(allClubs).sort((a, b) => {
+                    const activeA = allClubs[a] ? 1 : 0;
+                    const activeB = allClubs[b] ? 1 : 0;
+                    if (activeA !== activeB) return activeB - activeA;
+                    return a.localeCompare(b);
+                });
+
+                const currentSelected = clubSelect.value;
+                const optionsHtml = dynamicClubList.map(club => {
+                    const isActive = allClubs[club] === true;
+                    if (isActive) {
+                        return `<option value="${club}" class="text-gray-800">${club}</option>`;
+                    } else {
+                        return `<option value="${club}" disabled class="text-rose-500 bg-rose-50">${club} (ปิดชั่วคราว)</option>`;
+                    }
+                }).join('');
+
+                clubSelect.innerHTML = `<option value="">-- เลือกชมรม --</option>` + optionsHtml;
+                
+                if (currentSelected && allClubs[currentSelected] === true) {
+                    clubSelect.value = currentSelected;
+                } else {
+                    clubSelect.value = ''; 
+                }
+
+                updateClubCount();
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+
+        function updateMajorOptions() {
+            const selectedGrade = gradeSelect.value;
+            if (!selectedGrade) return;
+            const gradeType = selectedGrade.split('.')[0].trim(); 
+            const majors = majorList[gradeType] || [];
+            majorSelect.innerHTML = majors.map(major => `<option value="${major}">${major}</option>`).join('');
+        };
+
+        const updateClubCount = () => {
+            const selectedClub = clubSelect.value;
+            if (selectedClub) {
+                const count = membersData[selectedClub] || 0;
+                const maxMembers = clubQuotas[selectedClub] || 25;
+                
+                if (count >= maxMembers) {
+                    countDisplay.innerHTML = `ชมรมนี้เต็มแล้ว (${count}/${maxMembers})`;
+                    countDisplay.className = "mt-2 text-sm font-semibold text-red-500";
+                    submitBtn.disabled = true; 
+                } else {
+                    countDisplay.innerHTML = ` ว่างเหลืออีก ${maxMembers - count} คน (มีสมาชิกแล้ว ${count}/${maxMembers})`;
+                    countDisplay.className = "mt-2 text-sm font-semibold text-indigo-500";
+                    submitBtn.disabled = false; 
+                }
+            } else {
+                countDisplay.innerText = '';
+                submitBtn.disabled = false;
+            }
+        };
+
+        gradeSelect.addEventListener('change', updateMajorOptions);
+        clubSelect.addEventListener('change', updateClubCount);
+        updateMajorOptions();
+
+        registrationForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            if (!isSystemOpen) {
+                alert('ระบบปิดรับสมัครแล้ว ไม่สามารถบันทึกข้อมูลได้');
+                return;
+            }
+            
+            const selectedClub = clubSelect.value;
+            const currentCount = membersData[selectedClub] || 0;
+            const maxMembers = clubQuotas[selectedClub] || 25;
+
+            if (currentCount >= maxMembers) {
+                alert('ชมรมนี้เพิ่งเต็มไปเมื่อสักครู่');
+                fetchData();
+                return;
+            }
+
+            const studentId = document.getElementById('studentId').value.trim();
+            const fName = document.getElementById('firstName').value.trim();
+            const lName = document.getElementById('lastName').value.trim();
+            const fullName = `${fName} ${lName}`;
+
+            const memberData = {
+                studentId: studentId,
+                titlePrefix: document.getElementById('titlePrefix').value,
+                name: fullName, 
+                grade: gradeSelect.value,
+                major: majorSelect.value, 
+                club: selectedClub
+            };
+
+            try {
+                const response = await fetch('/api/members', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(memberData)
+                });
+                
+                if (response.ok) {
+                    alert('ลงทะเบียนเรียบร้อยแล้ว');
+                    window.location.href = "index.html";
+                } else {
+                    const data = await response.json();
+                    alert('เกิดข้อผิดพลาด: ' + data.error);
+                }
+            } catch (error) {
+                alert('เกิดข้อผิดพลาด: ' + error.message);
+            }
+        });
+
+        fetchData();
+        setInterval(fetchData, 10000); // Poll for real-time updates
+    </script>
+</body>
+</html>

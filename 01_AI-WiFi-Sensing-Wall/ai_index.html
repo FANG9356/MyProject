@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Wi-Fi Sensing</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-empty: #064e3b; /* Dark Green */
+            --bg-walking: #1e3a8a; /* Dark Blue */
+            --bg-falling: #7f1d1d; /* Dark Red */
+            --text-color: #f8fafc;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background-color: #0f172a;
+            color: var(--text-color);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: background-color 0.5s ease;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .header {
+            position: absolute;
+            top: 40px;
+            text-align: center;
+            opacity: 0.8;
+            letter-spacing: 2px;
+            font-weight: 300;
+            text-transform: uppercase;
+        }
+
+        .ai-badge {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+
+        .status-container {
+            text-align: center;
+            z-index: 10;
+        }
+
+        .icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .status-text {
+            font-size: 80px;
+            font-weight: 800;
+            text-transform: uppercase;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            letter-spacing: 2px;
+        }
+
+        /* Glassmorphism Radar Rings */
+        .ring {
+            position: absolute;
+            border: 2px solid rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: expand 4s infinite linear;
+        }
+
+        .ring:nth-child(1) { width: 300px; height: 300px; animation-delay: 0s; }
+        .ring:nth-child(2) { width: 300px; height: 300px; animation-delay: 1.3s; }
+        .ring:nth-child(3) { width: 300px; height: 300px; animation-delay: 2.6s; }
+
+        @keyframes expand {
+            0% { width: 200px; height: 200px; opacity: 1; border-width: 5px; }
+            100% { width: 1000px; height: 1000px; opacity: 0; border-width: 1px; }
+        }
+
+        /* Alert Animation for Falling */
+        @keyframes flash {
+            0%, 100% { background-color: var(--bg-falling); }
+            50% { background-color: #dc2626; } /* Bright Red */
+        }
+        
+        .alert-mode {
+            animation: flash 1s infinite;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 30px;
+            font-weight: 300;
+            opacity: 0.5;
+        }
+
+    </style>
+</head>
+<body id="bg">
+
+    <!-- Radar Rings -->
+    <div class="ring"></div>
+    <div class="ring"></div>
+    <div class="ring"></div>
+
+    <div class="header">
+        <div class="ai-badge">AI Powered</div>
+        <h2>Non-Invasive Activity Recognition</h2>
+    </div>
+
+    <div class="status-container">
+        <div id="icon" class="icon">📡</div>
+        <div id="status" class="status-text">INITIALIZING...</div>
+    </div>
+
+    <div class="footer">
+        Based on Wi-Fi Channel State Information (CSI)
+    </div>
+
+    <script>
+        const statusEl = document.getElementById('status');
+        const iconEl = document.getElementById('icon');
+        const bodyEl = document.getElementById('bg');
+
+        async function fetchStatus() {
+            try {
+                const response = await fetch('/api/status');
+                const data = await response.json();
+                
+                const status = data.status;
+                statusEl.innerText = status;
+
+                // Update UI based on AI prediction
+                if (status === 'Empty') {
+                    bodyEl.style.backgroundColor = 'var(--bg-empty)';
+                    bodyEl.classList.remove('alert-mode');
+                    iconEl.innerText = '🛡️';
+                } 
+                else if (status === 'Walking') {
+                    bodyEl.style.backgroundColor = 'var(--bg-walking)';
+                    bodyEl.classList.remove('alert-mode');
+                    iconEl.innerText = '🚶‍♂️';
+                } 
+                else if (status === 'Falling') {
+                    bodyEl.classList.add('alert-mode');
+                    iconEl.innerText = '🚨';
+                }
+                else {
+                    bodyEl.style.backgroundColor = '#0f172a';
+                    iconEl.innerText = '📡';
+                }
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        // Fetch every 300ms for real-time feel
+        setInterval(fetchStatus, 300);
+    </script>
+</body>
+</html>

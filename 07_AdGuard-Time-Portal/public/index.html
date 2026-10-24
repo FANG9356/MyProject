@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Internet Access Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="glass-panel" id="login-panel">
+            <h1>Internet Access</h1>
+            <p>กรุณากรอกรหัส PIN 6 หลักเพื่อใช้งานอินเทอร์เน็ต</p>
+            
+            <input type="text" id="pin-input" class="pin-input" maxlength="6" placeholder="000000" autocomplete="off">
+            <button id="unlock-btn">ปลดล็อกอินเทอร์เน็ต</button>
+            
+            <div id="status-msg" class="status-message"></div>
+        </div>
+
+        <div class="glass-panel" id="active-panel" style="display: none;">
+            <h1>อินเทอร์เน็ตพร้อมใช้งาน</h1>
+            <p>เวลาคงเหลือของคุณคือ</p>
+            <div id="countdown" class="countdown">00:00:00</div>
+        </div>
+    </div>
+
+    <script>
+        const pinInput = document.getElementById('pin-input');
+        const unlockBtn = document.getElementById('unlock-btn');
+        const statusMsg = document.getElementById('status-msg');
+        const loginPanel = document.getElementById('login-panel');
+        const activePanel = document.getElementById('active-panel');
+        const countdownEl = document.getElementById('countdown');
+
+        let countdownInterval;
+
+        pinInput.addEventListener('input', (e) => {
+            e.target.value = e.target.value.replace(/[^0-9]/g, '');
+        });
+
+        async function checkStatus() {
+            try {
+                const res = await fetch('/api/status');
+                const data = await res.json();
+                if (data.active) {
+                    showActiveSession(data.expires_at);
+                } else {
+                    loginPanel.style.display = 'block';
+                    activePanel.style.display = 'none';
+                }
+            } catch (err) {
+                console.error('Error checking status', err);
+            }
+        }
+
+        function showActiveSession(expiresAt) {
+            loginPanel.style.display = 'none';
+            activePanel.style.display = 'block';
+            
+            clearInterval(countdownInterval);
+            countdownInterval = setInterval(() => {
+                const now = Date.now();
+                const diff = expiresAt - now;
+                
+                if (diff <= 0) {
+                    clearInterval(countdownInterval);
+                    checkStatus(); // re-check to show login
+                    return;
+                }
+                
+                const h = Math.floor(diff / (1000 * 60 * 60));
+                const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const s = Math.floor((diff % (1000 * 60)) / 1000);
+                
+                countdownEl.innerText = `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        unlockBtn.addEventListener('click', async () => {
+            const pin = pinInput.value;
+            if (pin.length !== 6) {
+                statusMsg.innerText = 'กรุณากรอกรหัส 6 หลัก';
+                statusMsg.className = 'status-message status-error';
+                return;
+            }
+
+            unlockBtn.disabled = true;
+            statusMsg.innerText = 'กำลังตรวจสอบ...';
+            statusMsg.className = 'status-message';
+
+            try {
+                const res = await fetch('/api/unlock', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ pin })
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    statusMsg.innerText = 'ปลดล็อกสำเร็จ!';
+                    statusMsg.className = 'status-message status-success';
+                    setTimeout(() => showActiveSession(data.expires_at), 1500);
+                } else {
+                    statusMsg.innerText = data.error || 'เกิดข้อผิดพลาด';
+                    statusMsg.className = 'status-message status-error';
+                }
+            } catch (err) {
+                statusMsg.innerText = 'ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้';
+                statusMsg.className = 'status-message status-error';
+            } finally {
+                unlockBtn.disabled = false;
+            }
+        });
+
+        // Initial check
+        checkStatus();
+    </script>
+</body>
+</html>

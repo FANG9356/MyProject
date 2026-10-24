@@ -1,0 +1,24 @@
+{
+  "name": "fang-monitor-app",
+  "version": "1.0.0",
+  "main": "server.js",
+  "bin": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "pkg": {
+    "assets": [
+      "index.html",
+      "node_modules/systeminformation/**/*"
+    ],
+    "targets": [
+      "node18-macos-arm64",
+      "node18-win-x64"
+    ]
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "socket.io": "^4.8.1",
+    "systeminformation": "^5.23.5"
+  }
+}

@@ -1,0 +1,11 @@
+services:
+  homepage:
+    image: ghcr.io/gethomepage/homepage:latest
+    container_name: fang_dashboard
+    ports:
+      - 8001:3000 # เราจะใช้พอร์ต 8001 สำหรับหน้านี้นะ
+    environment:
+      - HOMEPAGE_ALLOWED_HOSTS=*
+    volumes:
+      - ./config:/app/config # เก็บไฟล์ตั้งค่าไว้ในโฟลเดอร์ config
+    restart: always

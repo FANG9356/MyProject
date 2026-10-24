@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+python-multipart
+python-docx
+wikipedia
+duckduckgo-search
+arxiv
+deep-translator
+pythainlp
+requests 

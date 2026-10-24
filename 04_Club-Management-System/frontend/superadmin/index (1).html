@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>จัดการผู้ดูแลระบบ (Super Admin Only)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="https://rms.utc.ac.th/files/01013_1809190994117.png">
+    <style>body { font-family: 'Sarabun', sans-serif; }</style>
+
+    <!-- Shared Auth + Security -->
+    <script src="../auth.js"></script>
+    <script>blockDevTools();</script>
+
+</head>
+<body class="bg-gray-100 font-sans p-4 md:p-8 min-h-screen flex flex-col text-gray-800">
+    <div class="max-w-7xl mx-auto w-full shrink-0">
+        
+        <!-- Navigation Bar -->
+        <nav class="bg-white shadow-sm border border-gray-200 mb-8 rounded-2xl px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <img src="https://rms.utc.ac.th/files/01013_1809190994117.png" alt="Logo" class="h-10 w-10 rounded-full shadow-sm">
+                <span class="text-xl font-bold text-indigo-700">ระบบจัดการชมรม</span>
+            </div>
+            <div class="flex flex-wrap justify-center gap-2">
+                <a href="../index.html" class="px-4 py-2 text-gray-600 font-semibold rounded-lg hover:bg-gray-100 hover:text-indigo-600 transition-colors text-sm">หน้าหลัก</a>
+                <a href="../data.html" class="px-4 py-2 text-gray-600 font-semibold rounded-lg hover:bg-gray-100 hover:text-indigo-600 transition-colors text-sm">จัดการสมาชิก</a>
+                <a href="#" class="px-4 py-2 bg-indigo-50 text-indigo-700 font-semibold rounded-lg transition-colors text-sm shadow-sm">ตั้งค่าระบบ (Super Admin)</a>
+                <a href="#" onclick="logout()" class="px-4 py-2 text-rose-600 font-semibold rounded-lg hover:bg-rose-50 transition-colors text-sm">ออกจากระบบ</a>
+            </div>
+        </nav>
+
+        <div class="flex flex-col md:flex-row justify-between items-end mb-8 gap-4 px-2">
+            <div>
+                <span class="inline-block px-3 py-1 bg-indigo-100 text-indigo-700 font-bold text-xs rounded-full mb-2">SUPER ADMIN AREA</span>
+                <h1 class="text-3xl font-black text-gray-900 tracking-tight">ระบบจัดการหลังบ้าน</h1>
+                <p class="text-sm text-gray-500 mt-2">จัดการชมรม โควตา และสิทธิ์ผู้ดูแลระบบ (โปรดระมัดระวังในการเปลี่ยนแปลงข้อมูล)</p>
+            </div>
+        </div>
+
+        <!-- 1. ส่วนเปิด/ปิด ระบบลงทะเบียน -->
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 border-l-4 border-l-indigo-500 flex flex-col md:flex-row justify-between items-center mb-6">
+            <div class="mb-4 md:mb-0">
+                <h2 class="text-lg font-semibold text-slate-700 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                    สถานะการรับสมัครนักศึกษา
+                </h2>
+                <p class="text-xs text-slate-500 mt-1 pl-7">เปิดหรือปิดการแสดงผลหน้าลงทะเบียนชมรมของนักศึกษา</p>
+            </div>
+            <div>
+                <button id="toggle-status-btn" class="w-full md:w-auto px-6 py-2.5 rounded-lg font-semibold transition-all">
+                    กำลังโหลด...
+                </button>
+            </div>
+        </div>
+
+        <!-- 2. ส่วนจัดการรายชื่อชมรม -->
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 border-l-4 border-l-indigo-500 mb-6">
+            <div class="mb-5 border-b border-slate-100 pb-4">
+                <h2 class="text-lg font-semibold text-slate-700 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                    </svg>
+                    รายชื่อชมรม
+                </h2>
+            </div>
+            
+            <form id="add-club-form" class="flex flex-col md:flex-row gap-3 mb-6">
+                <input type="text" id="new-club-name" placeholder="พิมพ์ชื่อชมรมที่ต้องการเพิ่ม..." required class="flex-1 px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-100 focus:border-indigo-400 outline-none text-sm transition-colors">
+                <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-lg text-sm font-semibold shadow-sm transition-all">
+                    + เพิ่มชมรม
+                </button>
+            </form>
+
+            <div id="club-manager-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                <div class="col-span-full text-center text-slate-400 text-sm py-4 italic">กำลังโหลดรายชื่อชมรม...</div>
+            </div>
+        </div>
+
+        <!-- 3. ส่วนตั้งค่าโควตาจำนวนสมาชิกแต่ละชมรม -->
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 border-l-4 border-l-indigo-500 mb-6">
+            <div class="flex justify-between items-center mb-5 border-b border-slate-100 pb-4">
+                <h2 class="text-lg font-semibold text-slate-700 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                    ตั้งค่าโควตาจำนวนสมาชิก
+                </h2>
+                <div id="quota-status" class="text-xs font-semibold text-emerald-500 bg-emerald-50 px-3 py-1 rounded-full hidden">✓ บันทึกสำเร็จ</div>
+            </div>
+            
+            <div id="quota-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                <div class="col-span-full text-center text-slate-400 text-sm py-4">กำลังโหลดข้อมูลชมรม...</div>
+            </div>
+        </div>
+
+        <!-- 3.5. ส่วนจัดการระดับชั้นและสาขาวิชา -->
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 border-l-4 border-l-indigo-500 mb-6">
+            <div class="flex justify-between items-center mb-5 border-b border-slate-100 pb-4">
+                <h2 class="text-lg font-semibold text-slate-700 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                    </svg>
+                    จัดการระดับชั้นและสาขาวิชา
+                </h2>
+                <div id="settings-status" class="text-xs font-semibold text-emerald-500 bg-emerald-50 px-3 py-1 rounded-full hidden">✓ บันทึกสำเร็จ</div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- จัดการระดับชั้น -->
+                <div>
+                    <h3 class="text-sm font-semibold text-slate-600 mb-3 flex justify-between">
+                        1. รายชื่อระดับชั้น (เช่น ปวช. 1)
+                        <span class="text-xs text-slate-400 font-normal">เรียงตามลำดับ</span>
+                    </h3>
+                    <form id="add-grade-form" class="flex gap-2 mb-4">
+                        <input type="text" id="new-grade" placeholder="เช่น ปวช. 1" required class="flex-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-100 outline-none text-sm">
+                        <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-indigo-700">เพิ่ม</button>
+                    </form>
+                    <div id="grade-list" class="space-y-2 max-h-56 overflow-y-auto pr-2 border border-slate-100 rounded-lg p-3 bg-slate-50/50">
+                        <div class="text-center text-sm text-slate-400">กำลังโหลด...</div>
+                    </div>
+                </div>
+
+                <!-- จัดการสาขาวิชา -->
+                <div>
+                    <h3 class="text-sm font-semibold text-slate-600 mb-3 flex justify-between">
+                        2. รายชื่อสาขาวิชา
+                        <span class="text-xs text-slate-400 font-normal">แบ่งตามกลุ่มระดับชั้น</span>
+                    </h3>
+                    <form id="add-major-form" class="flex flex-col gap-2 mb-4">
+                        <div class="flex gap-2">
+                            <select id="major-grade-group" class="w-1/3 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-100 outline-none text-sm font-semibold">
+                                <option value="ปวช">ปวช</option>
+                                <option value="ปวส">ปวส</option>
+                            </select>
+                            <input type="text" id="new-major" placeholder="ชื่อสาขาวิชา..." required class="flex-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-100 outline-none text-sm">
+                        </div>
+                        <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-indigo-700 w-full shadow-sm">เพิ่มสาขาวิชา</button>
+                    </form>
+                    <div id="major-list" class="space-y-2 max-h-56 overflow-y-auto pr-2 border border-slate-100 rounded-lg p-3 bg-slate-50/50">
+                        <div class="text-center text-sm text-slate-400">กำลังโหลด...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. ส่วนเพิ่มแอดมิน -->
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 border-l-4 border-l-indigo-500 mb-6">
+            <div class="mb-5 border-b border-slate-100 pb-4">
+                <h2 class="text-lg font-semibold text-slate-700 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                    </svg>
+                    เพิ่มผู้ดูแลระบบ (Admin)
+                </h2>
+            </div>
+
+            <form id="add-admin-form" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-500 mb-1">Username</label>
+                    <input type="text" id="username" required placeholder="ตั้งชื่อผู้ใช้" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-100 outline-none text-sm transition-colors">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-500 mb-1">Password</label>
+                    <input type="text" id="password" required placeholder="ตั้งรหัสผ่าน" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-100 outline-none text-sm transition-colors">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-500 mb-1">ชื่อที่แสดง</label>
+                    <input type="text" id="displayName" required placeholder="ชื่อ-นามสกุล" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-100 outline-none text-sm transition-colors">
+                </div>
+                <div class="md:col-span-3">
+                    <button type="submit" class="w-full bg-indigo-600 text-white py-2.5 rounded-lg text-sm font-semibold hover:bg-indigo-700 transition-all shadow-sm">
+                        บันทึกข้อมูลแอดมิน
+                    </button>
+                </div>
+            </form>
+            <div id="status-message" class="text-center text-sm font-medium mt-4 hidden"></div>
+        </div>
+
+        <!-- 5. ตารางแสดงรายชื่อแอดมินที่มีอยู่ -->
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 border-l-4 border-l-indigo-500 mb-6">
+            <h2 class="text-lg font-semibold text-slate-700 mb-5 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+                รายชื่อผู้ดูแลระบบทั้งหมด
+            </h2>
+
+            <div class="overflow-x-auto border border-slate-100 rounded-xl">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-50 border-b border-slate-100">
+                            <th class="px-5 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Username</th>
+                            <th class="px-5 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">ชื่อที่แสดง</th>
+                            <th class="px-5 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider text-center">รหัสผ่าน</th>
+                            <th class="px-5 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider text-center">จัดการ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admin-list-body" class="divide-y divide-slate-50">
+                    </tbody>
+                </table>
+            </div>
+            <div id="loading-msg" class="text-center py-10 text-slate-400 text-sm italic">กำลังโหลดรายชื่อแอดมิน...</div>
+        </div>
+
+        <!-- 6. พื้นที่เก็บข้อมูลระบบ (System Storage & Backup) -->
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 border-l-4 border-l-rose-500 mb-6">
+            <h2 class="text-lg font-semibold text-slate-700 mb-5 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-rose-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
+                </svg>
+                พื้นที่เก็บข้อมูลโครงสร้างและระบบฐานข้อมูล
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 flex flex-col items-center justify-center">
+                    <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">สมาชิกทั้งหมด</span>
+                    <span id="stat-members" class="text-3xl font-black text-slate-800">...</span>
+                </div>
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 flex flex-col items-center justify-center">
+                    <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">จำนวนชมรม</span>
+                    <span id="stat-clubs" class="text-3xl font-black text-slate-800">...</span>
+                </div>
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 flex flex-col items-center justify-center">
+                    <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">ขนาดฐานข้อมูล (KB)</span>
+                    <span id="stat-db-size" class="text-3xl font-black text-slate-800">...</span>
+                </div>
+            </div>
+
+            <div class="flex flex-col md:flex-row gap-4 items-center justify-between p-4 bg-rose-50 border border-rose-100 rounded-xl">
+                <div>
+                    <h3 class="text-sm font-semibold text-rose-800">ดาวน์โหลดโครงสร้างข้อมูลดิบ (Database Backup)</h3>
+                    <p class="text-xs text-rose-600 mt-1">โหลดไฟล์ .sqlite ที่เก็บโครงสร้างและรายชื่อทั้งหมดของระบบ</p>
+                </div>
+                <a href="#" onclick="window.open('/api/backup?token=' + sessionStorage.getItem('token'), '_blank')" target="_blank" class="shrink-0 bg-white border border-rose-200 text-rose-600 px-6 py-2 rounded-lg text-sm font-semibold hover:bg-rose-600 hover:text-white transition-colors shadow-sm">
+                    ดาวน์โหลดไฟล์สำรองข้อมูล
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // === Auth & Security (using auth.js) ===
+        checkSession('../admin.html');
+        startSessionTimer('../admin.html');
+
+        // Auto-inject token in all /api/ requests
+        const _origFetch = window.fetch;
+        window.fetch = async function(resource, config) {
+            const tok = sessionStorage.getItem('token');
+            if (tok && typeof resource === 'string' && resource.startsWith('/api/')) {
+                config = config || {};
+                config.headers = { ...(config.headers || {}), 'Authorization': 'Bearer ' + tok };
+            }
+            const res = await _origFetch(resource, config);
+            if ((res.status === 401 || res.status === 403) && resource.startsWith('/api/')) {
+                clearSession('../admin.html');
+            }
+            return res;
+        };
+
+        function logout() { clearSession('../admin.html'); }
+
+        // ------------------ ส่วนจัดการปิด/เปิดระบบ ------------------
+        const toggleStatusBtn = document.getElementById('toggle-status-btn');
+        let isRegistrationOpen = true;
+
+        async function fetchSystemStatus() {
+            try {
+                const res = await fetch('/api/systemStatus');
+                const data = await res.json();
+                isRegistrationOpen = data.registrationOpen;
+                updateToggleUI();
+            } catch (e) {
+                console.error('Error fetching system status', e);
+            }
+        }
+
+        function updateToggleUI() {
+            if (isRegistrationOpen) {
+                toggleStatusBtn.innerHTML = `ระบบเปิดรับสมัครอยู่`;
+                toggleStatusBtn.className = "w-full md:w-auto px-6 py-2.5 rounded-lg text-sm font-semibold transition-all bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 shadow-sm";
+            } else {
+                toggleStatusBtn.innerHTML = `ระบบปิดรับสมัครชั่วคราว`;
+                toggleStatusBtn.className = "w-full md:w-auto px-6 py-2.5 rounded-lg text-sm font-semibold transition-all bg-rose-50 text-rose-700 border border-rose-200 hover:bg-rose-100 shadow-sm";
+            }
+        }
+
+        toggleStatusBtn.addEventListener('click', async () => {
+            const actionText = isRegistrationOpen ? "ปิด" : "เปิด";
+            if (confirm(`คุณแน่ใจหรือไม่ว่าต้องการ ${actionText} ระบบลงทะเบียน?`)) {
+                try {
+                    await fetch('/api/systemStatus', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ registrationOpen: !isRegistrationOpen })
+                    });
+                    fetchSystemStatus();
+                } catch (e) {
+                    console.error('Error updating system status', e);
+                }
+            }
+        });
+
+        // ------------------ ส่วนจัดการชมรม ------------------
+        let dynamicClubList = [];
+        let clubStatuses = {}; 
+        const clubManagerListDiv = document.getElementById('club-manager-list');
+        const addClubForm = document.getElementById('add-club-form');
+        const newClubNameInput = document.getElementById('new-club-name');
+
+        async function fetchClubs() {
+            try {
+                const res = await fetch('/api/clubs');
+                clubStatuses = await res.json();
+                dynamicClubList = Object.keys(clubStatuses);
+                renderClubManager();
+                fetchQuotas();
+            } catch (e) {
+                console.error('Error fetching clubs', e);
+            }
+        }
+
+        function renderClubManager() {
+            if (dynamicClubList.length === 0) {
+                clubManagerListDiv.innerHTML = '<div class="col-span-full text-center text-slate-400 text-sm py-4 italic">ยังไม่มีชมรมในระบบ</div>';
+                return;
+            }
+
+            let html = '';
+            dynamicClubList.forEach(club => {
+                const isActive = clubStatuses[club] === true;
+                
+                const statusBadge = isActive 
+                    ? `<span class="bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded text-[10px] font-semibold border border-emerald-100">เปิดรับ</span>` 
+                    : `<span class="bg-slate-100 text-slate-500 px-2 py-0.5 rounded text-[10px] font-semibold border border-slate-200">ปิดชั่วคราว</span>`;
+                
+                const toggleAction = isActive ? `toggleClubStatus('${club}', false)` : `toggleClubStatus('${club}', true)`;
+                const toggleBtnText = isActive ? 'ปิดชั่วคราว' : 'เปิดรับ';
+                
+                const toggleBtnClass = isActive 
+                    ? 'bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-100' 
+                    : 'bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-100';
+
+                html += `
+                    <div class="flex flex-col bg-white p-4 rounded-xl border border-slate-200 hover:border-slate-300 transition-colors shadow-sm">
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="text-sm font-semibold text-slate-700 line-clamp-2 pr-2 leading-tight" title="${club}">${club}</span>
+                            ${statusBadge}
+                        </div>
+                        <div class="flex space-x-2 mt-auto">
+                            <button onclick="${toggleAction}" class="${toggleBtnClass} px-3 py-2 rounded-lg transition-colors text-xs font-semibold flex-1">
+                                ${toggleBtnText}
+                            </button>
+                            <button onclick="deleteClub('${club}')" class="bg-slate-50 hover:bg-rose-50 text-slate-500 hover:text-rose-600 border border-slate-200 hover:border-rose-200 px-3 py-2 rounded-lg transition-colors text-xs font-semibold" title="ลบถาวร">
+                                ลบทิ้ง
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            clubManagerListDiv.innerHTML = html;
+        }
+
+        addClubForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const newClub = newClubNameInput.value.trim();
+            if (newClub) {
+                try {
+                    await fetch('/api/clubs', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ name: newClub, isActive: true })
+                    });
+                    newClubNameInput.value = '';
+                    fetchClubs();
+                } catch (e) {
+                    alert("เกิดข้อผิดพลาด: " + e.message);
+                }
+            }
+        });
+
+        window.toggleClubStatus = async function(clubName, status) {
+            try {
+                await fetch('/api/clubs', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name: clubName, isActive: status })
+                });
+                fetchClubs();
+            } catch (e) {
+                console.error('Error toggling club status', e);
+            }
+        }
+
+        window.deleteClub = async function(clubName) {
+            if (confirm(`น้องฟางแน่ใจหรือไม่ว่าต้องการ "ลบทิ้งถาวร" สำหรับชมรม "${clubName}"?\\n(หากต้องการแค่หยุดรับคนชั่วคราว ให้กดปุ่ม ปิดชั่วคราว แทนนะครับ)`)) {
+                try {
+                    await fetch(`/api/clubs/${clubName}`, { method: 'DELETE' });
+                    fetchClubs();
+                } catch (e) {
+                    console.error('Error deleting club', e);
+                }
+            }
+        }
+
+        // ------------------ ส่วนจัดการโควตาชมรม ------------------
+        const quotaListDiv = document.getElementById('quota-list');
+        const quotaStatus = document.getElementById('quota-status');
+        let currentQuotas = {};
+
+        async function fetchQuotas() {
+            try {
+                const res = await fetch('/api/clubQuotas');
+                currentQuotas = await res.json();
+                renderQuotas();
+            } catch (e) {
+                console.error('Error fetching quotas', e);
+            }
+        }
+
+        function renderQuotas() {
+            if (dynamicClubList.length === 0) {
+                quotaListDiv.innerHTML = '<div class="col-span-full text-center text-slate-400 text-sm py-4">รอเพิ่มชมรมก่อนนะครับ...</div>';
+                return;
+            }
+
+            let html = '';
+            dynamicClubList.forEach((club, index) => {
+                const maxMembers = currentQuotas[club] || 25; 
+                const inputId = `quota-input-${index}`;
+                
+                html += `
+                    <div class="flex justify-between items-center bg-white p-3 rounded-xl border border-slate-200 hover:border-slate-300 transition-colors shadow-sm">
+                        <span class="text-sm font-medium text-slate-600 truncate mr-2 flex-1" title="${club}">${club}</span>
+                        <div class="flex items-center space-x-2">
+                            <input type="number" id="${inputId}" value="${maxMembers}" min="1" class="w-14 px-2 py-1.5 text-center bg-slate-50 border border-slate-200 rounded-md focus:ring-2 focus:ring-slate-200 outline-none text-sm font-semibold text-slate-700">
+                            <button onclick="updateQuota('${club}', document.getElementById('${inputId}').value)" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-600 border border-indigo-100 px-3 py-1.5 rounded-md text-xs font-semibold transition-colors whitespace-nowrap">
+                                บันทึก
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            quotaListDiv.innerHTML = html;
+        }
+
+        window.updateQuota = async function(club, newValue) {
+            const num = parseInt(newValue);
+            if(num > 0) {
+                try {
+                    await fetch('/api/clubQuotas', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ clubName: club, maxMembers: num })
+                    });
+                    quotaStatus.classList.remove('hidden');
+                    setTimeout(() => quotaStatus.classList.add('hidden'), 2000);
+                } catch (e) {
+                    console.error('Error updating quota', e);
+                }
+            } else {
+                alert("กรุณาใส่จำนวนให้มากกว่า 0 ครับ");
+            }
+        }
+
+        // ------------------ ส่วนจัดการ Admin ------------------
+        const adminListBody = document.getElementById('admin-list-body');
+        const loadingMsg = document.getElementById('loading-msg');
+
+        async function fetchAdmins() {
+            try {
+                const res = await fetch('/api/admins');
+                const data = await res.json();
+                
+                loadingMsg.classList.add('hidden');
+                
+                if (Object.keys(data).length > 0) {
+                    const html = Object.entries(data).map(([username, info]) => {
+                        return `
+                            <tr class="hover:bg-slate-50/50 transition-colors">
+                                <td class="px-5 py-4 text-sm font-semibold text-slate-700">${username}</td>
+                                <td class="px-5 py-4 text-sm text-slate-600">${info.name}</td>
+                                <td class="px-5 py-4 text-sm text-slate-400 text-center font-mono bg-slate-50/30">${info.password}</td>
+                                <td class="px-5 py-4 text-center">
+                                    <button onclick="deleteAdmin('${username}', '${info.name}')" class="p-2 text-slate-400 hover:text-rose-500 hover:bg-rose-50 rounded-lg transition-colors" title="ลบแอดมิน">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>
+                                    </button>
+                                </td>
+                            </tr>
+                        `;
+                    }).join('');
+                    adminListBody.innerHTML = html;
+                } else {
+                    adminListBody.innerHTML = '<tr><td colspan="4" class="px-6 py-10 text-center text-slate-400 text-sm italic">ยังไม่มีรายชื่อแอดมินในระบบ</td></tr>';
+                }
+            } catch (e) {
+                console.error('Error fetching admins', e);
+            }
+        }
+
+        document.getElementById('add-admin-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const displayName = document.getElementById('displayName').value.trim();
+            const statusMessage = document.getElementById('status-message');
+
+            try {
+                await fetch('/api/admins', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password, name: displayName })
+                });
+                
+                statusMessage.innerText = `เพิ่ม "${displayName}" เรียบร้อย!`;
+                statusMessage.className = "text-center text-sm font-semibold text-emerald-600 block mt-4";
+                document.getElementById('add-admin-form').reset();
+                setTimeout(() => statusMessage.classList.add('hidden'), 3000);
+                fetchAdmins();
+            } catch (error) {
+                statusMessage.innerText = `ข้อผิดพลาด: ${error.message}`;
+                statusMessage.className = "text-center text-sm font-semibold text-rose-600 block mt-4";
+            }
+        });
+
+        window.deleteAdmin = async function(username, name) {
+            if (confirm(`คุณแน่ใจหรือไม่ว่าต้องการลบสิทธิ์แอดมินของ "${name}" (${username})?`)) {
+                try {
+                    await fetch(`/api/admins/${username}`, { method: 'DELETE' });
+                    alert(`ลบแอดมิน "${name}" ออกจากระบบแล้ว`);
+                    fetchAdmins();
+                } catch (error) {
+                    alert(`เกิดข้อผิดพลาด: ${error.message}`);
+                }
+            }
+        }
+
+        // ------------------ ส่วนจัดการระดับชั้นและสาขาวิชา ------------------
+        let globalGradeList = [];
+        let globalMajorList = {};
+        
+        async function fetchSettings() {
+            try {
+                const res = await fetch('/api/settings');
+                const data = await res.json();
+                
+                if (data.gradeList) globalGradeList = data.gradeList;
+                if (data.majorList) globalMajorList = data.majorList;
+                
+                renderGrades();
+                renderMajorGradeGroups();
+                renderMajors();
+            } catch (e) {
+                console.error('Error fetching settings', e);
+            }
+        }
+        
+        async function saveSettings(key, value) {
+            try {
+                await fetch('/api/settings', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ key, value })
+                });
+                const st = document.getElementById('settings-status');
+                st.classList.remove('hidden');
+                setTimeout(() => st.classList.add('hidden'), 2000);
+            } catch (e) {
+                console.error('Error saving settings', e);
+                alert('เกิดข้อผิดพลาดในการบันทึกข้อมูล');
+            }
+        }
+        
+        // Grades
+        function renderGrades() {
+            const container = document.getElementById('grade-list');
+            if (globalGradeList.length === 0) {
+                container.innerHTML = '<div class="text-center text-sm text-slate-400 py-2">ไม่มีข้อมูลระดับชั้น</div>';
+                return;
+            }
+            
+            container.innerHTML = globalGradeList.map((g, idx) => `
+                <div class="flex justify-between items-center bg-white p-2 rounded border border-slate-100 shadow-sm">
+                    <span class="text-sm font-medium text-slate-700">${g}</span>
+                    <button onclick="deleteGrade(${idx})" class="text-slate-400 hover:text-rose-500 transition-colors p-1" title="ลบ">
+                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                    </button>
+                </div>
+            `).join('');
+        }
+        
+        document.getElementById('add-grade-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const inp = document.getElementById('new-grade');
+            const val = inp.value.trim();
+            if (val && !globalGradeList.includes(val)) {
+                globalGradeList.push(val);
+                await saveSettings('gradeList', globalGradeList);
+                inp.value = '';
+                renderGrades();
+            }
+        });
+        
+        window.deleteGrade = async function(idx) {
+            if (confirm(`แน่ใจหรือไม่ว่าต้องการลบระดับชั้น "${globalGradeList[idx]}"?`)) {
+                globalGradeList.splice(idx, 1);
+                await saveSettings('gradeList', globalGradeList);
+                renderGrades();
+            }
+        }
+        
+        // Majors
+        function renderMajorGradeGroups() {
+            const select = document.getElementById('major-grade-group');
+            const groups = Object.keys(globalMajorList);
+            
+            if (groups.length === 0) {
+                select.innerHTML = '<option value="">ไม่มีข้อมูลกลุ่ม</option>';
+            } else {
+                select.innerHTML = groups.map(g => `<option value="${g}">${g}</option>`).join('');
+            }
+            
+            // Allow adding new major to a custom group if we want, but for now we rely on existing keys (ปวช, ปวส)
+            // If they want to add a new group, we can add a prompt, but let's keep it simple.
+            // If a new grade is added like "ปริญญาตรี", we should add it to globalMajorList if not exists.
+            globalGradeList.forEach(g => {
+                const baseGroup = g.split('.')[0].trim(); // e.g. "ปวช. 1" -> "ปวช"
+                if (!globalMajorList[baseGroup]) {
+                    globalMajorList[baseGroup] = [];
+                    saveSettings('majorList', globalMajorList);
+                }
+            });
+            
+            const updatedGroups = Object.keys(globalMajorList);
+            select.innerHTML = updatedGroups.map(g => `<option value="${g}">${g}</option>`).join('');
+        }
+        
+        function renderMajors() {
+            const container = document.getElementById('major-list');
+            let html = '';
+            
+            for (const [group, majors] of Object.entries(globalMajorList)) {
+                if (majors.length > 0) {
+                    html += `<div class="text-xs font-bold text-slate-500 mt-2 mb-1 px-1 bg-slate-100 rounded inline-block">${group}</div>`;
+                    html += majors.map((m, idx) => `
+                        <div class="flex justify-between items-center bg-white p-2 rounded border border-slate-100 shadow-sm ml-2 mb-1">
+                            <span class="text-sm font-medium text-slate-700">${m}</span>
+                            <button onclick="deleteMajor('${group}', ${idx})" class="text-slate-400 hover:text-rose-500 transition-colors p-1" title="ลบ">
+                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                </svg>
+                            </button>
+                        </div>
+                    `).join('');
+                }
+            }
+            
+            if (!html) {
+                container.innerHTML = '<div class="text-center text-sm text-slate-400 py-2">ไม่มีข้อมูลสาขาวิชา</div>';
+            } else {
+                container.innerHTML = html;
+            }
+        }
+        
+        document.getElementById('add-major-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const group = document.getElementById('major-grade-group').value;
+            const inp = document.getElementById('new-major');
+            const val = inp.value.trim();
+            
+            if (group && val) {
+                if (!globalMajorList[group]) globalMajorList[group] = [];
+                if (!globalMajorList[group].includes(val)) {
+                    globalMajorList[group].push(val);
+                    await saveSettings('majorList', globalMajorList);
+                    inp.value = '';
+                    renderMajors();
+                }
+            }
+        });
+        
+        window.deleteMajor = async function(group, idx) {
+            if (confirm(`แน่ใจหรือไม่ว่าต้องการลบสาขาวิชา "${globalMajorList[group][idx]}"?`)) {
+                globalMajorList[group].splice(idx, 1);
+                await saveSettings('majorList', globalMajorList);
+                renderMajors();
+            }
+        }
+
+        // ------------------ ส่วนจัดการพื้นที่เก็บข้อมูล (Storage Stats) ------------------
+        async function fetchSystemStats() {
+            try {
+                const res = await fetch('/api/systemStats');
+                const stats = await res.json();
+                
+                document.getElementById('stat-members').innerText = stats.memberCount !== undefined ? stats.memberCount : 0;
+                document.getElementById('stat-clubs').innerText = stats.clubCount !== undefined ? stats.clubCount : 0;
+                
+                if (stats.dbSizeBytes !== undefined) {
+                    const kb = (stats.dbSizeBytes / 1024).toFixed(2);
+                    document.getElementById('stat-db-size').innerText = kb;
+                }
+            } catch (e) {
+                console.error('Error fetching stats', e);
+            }
+        }
+
+        // Initial fetch
+        fetchSystemStatus();
+        fetchClubs();
+        fetchAdmins();
+        fetchSettings();
+        fetchSystemStats();
+    </script>
+</body>
+</html>

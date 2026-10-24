@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Generate PIN</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container admin-container">
+        <div class="glass-panel">
+            <div class="admin-header">
+                <h1>ระบบสร้างรหัสคูปองเวลา</h1>
+                <a href="/" style="color: var(--text-secondary); text-decoration: none;">กลับหน้าหลัก</a>
+            </div>
+            
+            <div class="admin-controls" style="flex-wrap: wrap;">
+                <select id="duration-select">
+                    <option value="1">1 ชั่วโมง</option>
+                    <option value="5">5 ชั่วโมง</option>
+                    <option value="24">1 วัน (24 ชั่วโมง)</option>
+                    <option value="custom">กำหนดเอง...</option>
+                </select>
+                <div id="custom-duration-container" style="display: none; flex: 1; gap: 0.5rem; min-width: 250px;">
+                    <input type="number" id="custom-hours" placeholder="ชั่วโมง (เช่น 1)" style="background: var(--surface-color); border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem; color: var(--text-primary); font-size: 0.95rem; outline: none; flex: 1; box-shadow: var(--shadow-sm); min-width: 0;" min="0" max="720">
+                    <input type="number" id="custom-minutes" placeholder="นาที (เช่น 30)" style="background: var(--surface-color); border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem; color: var(--text-primary); font-size: 0.95rem; outline: none; flex: 1; box-shadow: var(--shadow-sm); min-width: 0;" min="0" max="59">
+                </div>
+                <button id="generate-btn" style="margin-top: 0; min-width: 200px;">สร้างรหัส 6 หลัก (1 ชุด)</button>
+            </div>
+            
+            <div id="status-msg" class="status-message"></div>
+        </div>
+
+        <div class="glass-panel" style="padding: 1.5rem;">
+            <h2 style="margin-top: 0; text-align: left; font-size: 1.2rem;">รหัสที่สร้างล่าสุด (100 รายการ)</h2>
+            <div style="overflow-x: auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>รหัส PIN</th>
+                            <th>ระยะเวลา</th>
+                            <th>สถานะ</th>
+                            <th>ใช้งานเมื่อ</th>
+                            <th>หมดอายุ</th>
+                            <th>จัดการ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pins-table-body">
+                        <!-- Rows will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const durationSelect = document.getElementById('duration-select');
+        const generateBtn = document.getElementById('generate-btn');
+        const statusMsg = document.getElementById('status-msg');
+        const tableBody = document.getElementById('pins-table-body');
+
+        function formatDate(timestamp) {
+            if (!timestamp) return '-';
+            const d = new Date(timestamp);
+            return d.toLocaleString('th-TH');
+        }
+
+        function formatDuration(hours) {
+            const h = Math.floor(hours);
+            const m = Math.round((hours - h) * 60);
+            let str = [];
+            if (h > 0) str.push(`${h} ชั่วโมง`);
+            if (m > 0) str.push(`${m} นาที`);
+            return str.join(' ') || '0 นาที';
+        }
+
+        async function fetchPins() {
+            try {
+                const res = await fetch('/api/pins');
+                const data = await res.json();
+                
+                tableBody.innerHTML = '';
+                data.pins.forEach(p => {
+                    const tr = document.createElement('tr');
+                    
+                    let actionBtn = '-';
+                    let statusBadge = '';
+
+                    if (p.is_used) {
+                        if (p.expires_at > Date.now()) {
+                            statusBadge = '<span class="badge badge-active">กำลังใช้งาน</span>';
+                            actionBtn = `<button onclick="revokePin('${p.pin}')" style="padding: 0.35rem 0.75rem; font-size: 0.75rem; width: auto; margin: 0; background: #ffffff; color: #111111; border: 1px solid #111111;">ยกเลิก</button>`;
+                        } else {
+                            statusBadge = '<span class="badge badge-used">หมดอายุแล้ว</span>';
+                        }
+                    } else {
+                        statusBadge = '<span class="badge badge-new">ยังไม่ใช้</span>';
+                    }
+
+                    tr.innerHTML = `
+                        <td style="font-weight: 700; letter-spacing: 0.1em; color: var(--primary);">${p.pin}</td>
+                        <td>${formatDuration(p.duration_hours)}</td>
+                        <td>${statusBadge}</td>
+                        <td style="font-size: 0.85rem; color: var(--text-secondary);">${formatDate(p.used_at)}</td>
+                        <td style="font-size: 0.85rem; color: var(--text-secondary);">${formatDate(p.expires_at)}</td>
+                        <td>${actionBtn}</td>
+                    `;
+                    tableBody.appendChild(tr);
+                });
+            } catch (err) {
+                console.error('Error fetching pins', err);
+            }
+        }
+
+        async function revokePin(pin) {
+            if (!confirm(`คุณแน่ใจหรือไม่ที่จะยกเลิกรหัส ${pin} ? การทำเช่นนี้จะตัดเน็ตเครื่องเป้าหมายทันที`)) return;
+            
+            try {
+                const res = await fetch('/api/revoke', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ pin })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    alert('ยกเลิกรหัสและตัดเน็ตเรียบร้อยแล้ว!');
+                    fetchPins();
+                } else {
+                    alert(data.error || 'เกิดข้อผิดพลาด');
+                }
+            } catch (err) {
+                alert('ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้');
+            }
+        }
+
+        const customDurationContainer = document.getElementById('custom-duration-container');
+        const customHours = document.getElementById('custom-hours');
+        const customMinutes = document.getElementById('custom-minutes');
+
+        durationSelect.addEventListener('change', () => {
+            if (durationSelect.value === 'custom') {
+                customDurationContainer.style.display = 'flex';
+                customHours.focus();
+            } else {
+                customDurationContainer.style.display = 'none';
+            }
+        });
+
+        generateBtn.addEventListener('click', async () => {
+            let duration_hours;
+            if (durationSelect.value === 'custom') {
+                const h = parseInt(customHours.value) || 0;
+                const m = parseInt(customMinutes.value) || 0;
+                duration_hours = h + (m / 60);
+                if (duration_hours <= 0) {
+                    alert('กรุณาระบุเวลาที่ถูกต้อง (ต้องมากกว่า 0)');
+                    return;
+                }
+            } else {
+                duration_hours = parseInt(durationSelect.value);
+            }
+            generateBtn.disabled = true;
+            statusMsg.innerText = 'กำลังสร้างรหัส...';
+            statusMsg.className = 'status-message';
+
+            try {
+                const res = await fetch('/api/generate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ count: 1, duration_hours })
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    statusMsg.innerText = `สร้างรหัสสำเร็จ: ${data.pins[0].pin}`;
+                    statusMsg.className = 'status-message status-success';
+                    fetchPins();
+                } else {
+                    statusMsg.innerText = 'เกิดข้อผิดพลาดในการสร้างรหัส';
+                    statusMsg.className = 'status-message status-error';
+                }
+            } catch (err) {
+                statusMsg.innerText = 'ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้';
+                statusMsg.className = 'status-message status-error';
+            } finally {
+                generateBtn.disabled = false;
+            }
+        });
+
+        // Initial fetch
+        fetchPins();
+        
+        // Auto refresh every 5 seconds
+        setInterval(fetchPins, 5000);
+    </script>
+</body>
+</html>

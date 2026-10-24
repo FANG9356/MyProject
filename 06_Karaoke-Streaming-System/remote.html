@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Discovery Remote</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;800&display=swap');
+
+        :root {
+            --theme-rgb: 0, 113, 227;
+            --theme-color: rgb(var(--theme-rgb));
+        }
+
+        body {
+            background-color: #0a0a0c;
+            margin: 0;
+            padding: 0;
+            height: 100dvh;
+            width: 100vw;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Kanit', sans-serif;
+            color: white;
+            overflow: hidden;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            touch-action: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        #dynamic-bg {
+            position: fixed;
+            top: -20%;
+            left: -20%;
+            width: 140%;
+            height: 140%;
+            background: radial-gradient(circle at 50% 50%, rgba(var(--theme-rgb), 0.25) 0%, rgba(10, 10, 12, 1) 60%);
+            filter: blur(80px);
+            opacity: 1;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .remote-card {
+            background: rgba(var(--theme-rgb), 0.15);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 40px;
+            padding: 40px 25px 30px 25px;
+            width: 85%;
+            max-width: 380px;
+            z-index: 10;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(var(--theme-rgb), 0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        .album-art {
+            width: 170px;
+            height: 170px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 25px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 30px rgba(var(--theme-rgb), 0.5);
+            border: 3px solid rgba(255, 255, 255, 0.15);
+            animation: spin 10s linear infinite;
+            animation-play-state: paused;
+            transition: box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+        .album-art.is-playing {
+            animation-play-state: running;
+            border-color: rgba(var(--theme-rgb), 0.8);
+        }
+
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        #remoteTitle {
+            font-weight: 700;
+            font-size: 22px;
+            line-height: 1.4;
+            color: #fff;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            overflow: hidden;
+            margin-bottom: 12px;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+        }
+
+        #remoteSubtitle {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 14px;
+            margin: 0 0 25px 0;
+            font-weight: 500;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .progress-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            gap: 12px;
+            margin-bottom: 30px;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 600;
+        }
+
+        .progress-bar-bg {
+            flex: 1;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 2px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: #fff;
+            border-radius: 2px;
+            transition: width 1s linear;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .controls-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            width: 100%;
+            align-items: center;
+            justify-items: center;
+            margin-bottom: 35px;
+        }
+
+        .btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            transition: all 0.15s cubic-bezier(0.22, 1, 0.36, 1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .btn svg {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+        }
+
+        .btn-play {
+            width: 75px;
+            height: 75px;
+            background: rgba(var(--theme-rgb), 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 10px 30px rgba(var(--theme-rgb), 0.5);
+        }
+
+        .btn-play svg {
+            width: 32px;
+            height: 32px;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+        }
+
+        .btn.pressed {
+            transform: scale(0.85);
+            background: rgba(var(--theme-rgb), 0.8);
+            box-shadow: 0 0 20px rgba(var(--theme-rgb), 0.6);
+            border-color: rgba(var(--theme-rgb), 1);
+        }
+
+        .btn-play.pressed {
+            transform: scale(0.85);
+            background: var(--theme-color);
+            box-shadow: 0 0 40px rgba(var(--theme-rgb), 1);
+        }
+
+        /* 🔥 เปลี่ยนจากปุ่มเป็น ดีไซน์หลอดเสียงสุดหรู */
+        .vol-slider-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 20px;
+            padding: 15px 20px;
+            box-sizing: border-box;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            gap: 15px;
+        }
+
+        .vol-slider-container svg {
+            width: 22px;
+            height: 22px;
+            fill: rgba(255, 255, 255, 0.5);
+            flex-shrink: 0;
+        }
+
+        .vol-slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 3px;
+            outline: none;
+        }
+
+        .vol-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #fff;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="dynamic-bg"></div>
+
+    <div class="remote-card">
+        <img id="albumArt" class="album-art" src="https://cdn-icons-png.freepik.com/512/1194/1194495.png"
+            alt="Vinyl Record">
+
+        <h2 id="remoteTitle">🎵 รอเปิดเพลง...</h2>
+        <p id="remoteSubtitle">ไม่มีคิวถัดไป</p>
+
+        <div class="progress-wrapper">
+            <span id="remoteCurrentTime">0:00</span>
+            <div class="progress-bar-bg">
+                <div id="remoteProgressFill" class="progress-bar-fill"></div>
+            </div>
+            <span id="remoteDuration">0:00</span>
+        </div>
+
+        <div class="controls-grid">
+            <button class="btn" onclick="sendCommand('prev', this)"><svg viewBox="0 0 24 24">
+                    <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z" />
+                </svg></button>
+            <button class="btn btn-play" id="playBtn" onclick="sendCommand('playpause', this)"><svg viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z" />
+                </svg></button>
+            <button class="btn" onclick="sendCommand('next', this)"><svg viewBox="0 0 24 24">
+                    <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z" />
+                </svg></button>
+        </div>
+
+        <div class="vol-slider-container">
+            <svg viewBox="0 0 24 24">
+                <path d="M5 9v6h4l5 5V4L9 9H5z" />
+            </svg>
+            <input type="range" id="remoteVolSlider" class="vol-slider" min="0" max="1" step="0.01" value="1"
+                oninput="slideVolume(this.value)" onmousedown="isDraggingVol = true" onmouseup="isDraggingVol = false"
+                ontouchstart="isDraggingVol = true" ontouchend="isDraggingVol = false">
+            <svg viewBox="0 0 24 24">
+                <path
+                    d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
+            </svg>
+        </div>
+    </div>
+
+    <script>
+        let visualVolume = 1;
+        let targetVolume = 1;
+        let currentRGB = [0, 113, 227]; let targetRGB = [0, 113, 227];
+        function smoothColorLoop() {
+            currentRGB[0] += (targetRGB[0] - currentRGB[0]) * 0.05; currentRGB[1] += (targetRGB[1] - currentRGB[1]) * 0.05; currentRGB[2] += (targetRGB[2] - currentRGB[2]) * 0.05;
+            const r = Math.round(currentRGB[0]), g = Math.round(currentRGB[1]), b = Math.round(currentRGB[2]);
+            const smoothRgbStr = `${r}, ${g}, ${b}`;
+            document.documentElement.style.setProperty('--theme-rgb', smoothRgbStr);
+            let metaTheme = document.querySelector("meta[name='theme-color']");
+            if (metaTheme) metaTheme.setAttribute("content", `rgb(${smoothRgbStr})`);
+            requestAnimationFrame(smoothColorLoop);
+        }
+        requestAnimationFrame(smoothColorLoop);
+
+        function sendCommand(cmd, btnElement) {
+            fetch(`/remote/send?cmd=${cmd}`);
+            if (btnElement) {
+                btnElement.classList.add('pressed');
+                setTimeout(() => { btnElement.classList.remove('pressed'); }, 150);
+            }
+        }
+
+        // 🔥 ฟังก์ชันรับค่าจากหลอดเสียง
+        let isDraggingVol = false;
+        function slideVolume(val) {
+            fetch(`/remote/send?cmd=setvol:${val}`);
+        }
+
+        function formatTime(seconds) {
+            if (!seconds || isNaN(seconds)) return "0:00";
+            const m = Math.floor(seconds / 60); const s = Math.floor(seconds % 60);
+            return `${m}:${s < 10 ? '0' : ''}${s}`;
+        }
+
+        setInterval(async () => {
+            try {
+                const res = await fetch('/state/get'); const data = await res.json();
+
+                if (data.rgb && data.rgb !== "null") {
+                    const parts = data.rgb.split(','); targetRGB = [parseInt(parts[0]), parseInt(parts[1]), parseInt(parts[2])];
+                }
+
+                const albumArt = document.getElementById('albumArt');
+                if (data.thumbnail && data.thumbnail !== "") {
+                    // if (albumArt.src !== data.thumbnail) albumArt.src = data.thumbnail;
+                } else {
+                    if (albumArt.src !== "https://cdn-icons-png.freepik.com/512/1194/1194495.png") {
+                        albumArt.src = "https://cdn-icons-png.freepik.com/512/1194/1194495.png";
+                    }
+                }
+
+                if (data.current_song) {
+                    const cleanTitle = data.current_song === "เลือกเพลง" || data.current_song === "เพลย์ลิสต์ที่ดีที่สุด" ? "🎵 เลือกเพลงจากหน้าจอ" : data.current_song;
+                    document.getElementById('remoteTitle').innerText = cleanTitle;
+                }
+                if (data.next_song) {
+                    const cleanNext = (data.next_song === "-" || data.next_song === "") ? "ไม่มีคิวถัดไป" : `ถัดไป: ${data.next_song}`;
+                    document.getElementById('remoteSubtitle').innerText = cleanNext;
+                }
+
+                document.getElementById('remoteCurrentTime').innerText = formatTime(data.current_time);
+                document.getElementById('remoteDuration').innerText = formatTime(data.duration);
+                if (data.duration > 0) {
+                    const pct = (data.current_time / data.duration) * 100; document.getElementById('remoteProgressFill').style.width = `${pct}%`;
+                } else {
+                    document.getElementById('remoteProgressFill').style.width = `0%`;
+                }
+
+                const playBtn = document.getElementById('playBtn');
+                if (data.is_playing) {
+                    playBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>';
+                    albumArt.classList.add('is-playing');
+                } else {
+                    playBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
+                    albumArt.classList.remove('is-playing');
+                }
+
+                // 🔥 ซิงค์หลอดเสียงจาก Mac ลงมาที่มือถือ
+                if (data.volume !== undefined && !isDraggingVol) {
+                    targetVolume = parseFloat(data.volume);
+                }
+            } catch (e) { }
+        }, 1000);
+
+        // เอาไปใส่ใน remote.html (ฝั่งมือถือ)
+        setInterval(async () => {
+            try {
+                const res = await fetch('/state/get'); // ถามสถานะล่าสุดจาก Server
+                const data = await res.json();
+
+                const slider = document.getElementById('volumeSlider');
+                // ถ้าสถานะมีค่า volume และเราไม่ได้กำลังเอานิ้วแตะหลอดสไลด์อยู่ ให้มันเลื่อนตาม
+                if (data.volume !== undefined && document.activeElement !== slider) {
+                    slider.value = data.volume;
+                }
+            } catch (e) { }
+        }, 1000);
+
+        function smoothVolumeLoop() {
+            const slider = document.getElementById('remoteVolSlider');
+            if (slider && !isDraggingVol) {
+                visualVolume += (targetVolume - visualVolume) * 0.15;
+                slider.value = visualVolume;
+            }
+            requestAnimationFrame(smoothVolumeLoop);
+        }
+        requestAnimationFrame(smoothVolumeLoop);
+    </script>
+</body>
+
+</html>

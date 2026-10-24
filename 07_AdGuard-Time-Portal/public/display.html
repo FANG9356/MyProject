@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Display Board - Captive Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #000000;
+            --text-primary: #ffffff;
+            --text-secondary: #888888;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-color);
+            color: var(--text-primary);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            overflow: hidden;
+        }
+        .container {
+            max-width: 90vw;
+        }
+        .title {
+            font-size: 3vw;
+            color: var(--text-secondary);
+            margin-bottom: 2vh;
+            font-weight: 400;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+        .pin-display {
+            font-size: 20vw;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            margin: 0;
+            line-height: 1;
+            font-variant-numeric: tabular-nums;
+        }
+        .subtitle {
+            font-size: 4vw;
+            color: var(--text-secondary);
+            margin-top: 4vh;
+            font-weight: 300;
+        }
+        .active-state {
+            color: #4ade80;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="content">
+        <div class="title">กำลังโหลดข้อมูล...</div>
+    </div>
+
+    <script>
+        function formatDuration(hours) {
+            const h = Math.floor(hours);
+            const m = Math.round((hours - h) * 60);
+            let str = [];
+            if (h > 0) str.push(`${h} ชั่วโมง`);
+            if (m > 0) str.push(`${m} นาที`);
+            return str.join(' ') || '0 นาที';
+        }
+
+        function formatTimeRemaining(ms) {
+            if (ms <= 0) return "00:00:00";
+            const h = Math.floor(ms / 3600000);
+            const m = Math.floor((ms % 3600000) / 60000);
+            const s = Math.floor((ms % 60000) / 1000);
+            return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+        }
+
+        let currentActiveExpiresAt = null;
+        let currentActivePin = null;
+        let upcomingPinsHtml = '';
+
+        async function updateDisplay() {
+            try {
+                // Fetch pins unconditionally to show upcoming queue
+                const pinsRes = await fetch('/api/pins');
+                const pinsData = await pinsRes.json();
+                const unusedPins = pinsData.pins.filter(p => p.is_used === 0);
+                
+                if (unusedPins.length > 0) {
+                    const pinListItems = unusedPins.slice(0, 3).map(p => `
+                        <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.5vh 0;">
+                            <span style="color: var(--text-primary); font-weight: 700; letter-spacing: 0.15em; font-size: 2vw;">${p.pin}</span>
+                            <span style="color: var(--text-secondary); font-size: 1.2vw; margin-left: 3vw;">${formatDuration(p.duration_hours)}</span>
+                        </div>
+                    `).join('');
+                    upcomingPinsHtml = `
+                        <div style="margin-top: 6vh; font-size: 1.2vw; color: var(--text-secondary); background: #111111; padding: 3vh 4vw; border-radius: 24px; display: inline-block; text-align: left; min-width: 25vw; border: 1px solid #222222;">
+                            <div style="margin-bottom: 2vh; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid #222222; padding-bottom: 1.5vh;">รหัสสำรองถัดไป (คิว)</div>
+                            <div style="display: flex; flex-direction: column; gap: 1.5vh;">
+                                ${pinListItems}
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    upcomingPinsHtml = '';
+                }
+
+                // First check status
+                const statusRes = await fetch('/api/status');
+                const statusData = await statusRes.json();
+
+                const content = document.getElementById('content');
+
+                if (statusData.active) {
+                    currentActiveExpiresAt = statusData.expires_at;
+                    currentActivePin = statusData.pin;
+                    renderActive();
+                } else {
+                    currentActiveExpiresAt = null;
+                    currentActivePin = null;
+                    
+                    const firstUnused = unusedPins[0];
+                    if (firstUnused) {
+                        content.innerHTML = `
+                            <div class="title">รหัสผ่านสำหรับใช้งานอินเทอร์เน็ต</div>
+                            <div class="pin-display">${firstUnused.pin}</div>
+                            <div class="subtitle">ระยะเวลา: ${formatDuration(firstUnused.duration_hours)}</div>
+                            ${upcomingPinsHtml}
+                        `;
+                    } else {
+                        content.innerHTML = `
+                            <div class="title">ไม่มีรหัสผ่านที่ว่างอยู่</div>
+                            <div class="subtitle">ระบบกำลังสร้างรหัสใหม่... กรุณารอสักครู่</div>
+                        `;
+                    }
+                }
+            } catch (err) {
+                console.error('Error updating display:', err);
+            }
+        }
+
+        function renderActive() {
+            if (!currentActiveExpiresAt) return;
+            const now = Date.now();
+            const ms = currentActiveExpiresAt - now;
+            
+            const content = document.getElementById('content');
+            
+            if (ms > 0) {
+                content.innerHTML = `
+                    <div class="title active-state">กำลังใช้งานด้วยรหัส: <span style="color: #ffffff; font-weight: 700;">${currentActivePin || '-'}</span></div>
+                    <div class="pin-display" style="font-size: 15vw;">${formatTimeRemaining(ms)}</div>
+                    <div class="subtitle">เวลาที่เหลืออยู่</div>
+                    ${upcomingPinsHtml}
+                `;
+            } else {
+                updateDisplay(); // Time's up, refresh full state
+            }
+        }
+
+        // Main logic loops
+        updateDisplay();
+        setInterval(updateDisplay, 5000); // Fetch DB every 5 seconds
+        setInterval(() => {
+            if (currentActiveExpiresAt) renderActive();
+        }, 1000); // Update countdown every 1 second
+    </script>
+</body>
+</html>
