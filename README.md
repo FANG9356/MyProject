@@ -6,7 +6,7 @@
 
 ยินดีต้อนรับสู่คลังรวบรวมผลงานฉบับสมบูรณ์ ประกอบด้วยระบบ **AI ตรวจจับคลื่นวิทยุทะลุกำแพง (RF Sensing)**, **Computer Vision**, **GenAI Agent**, **ระบบการเงิน FinTech**, **Full-Stack Web Management**, และ **DevOps & Cloud Infrastructure** 
 
-ทุกผลงานในคลังนี้ผ่านการทดสอบจริง มี **ชุดทดสอบอัตโนมัติ (Automated Test Simulation)** และ **คู่มือการติดตั้งเพื่อให้กรรมการสามารถนำไปเปิดทดสอบได้เองอย่างง่ายดาย** สามารถคลิกดูซอร์สโค้ดในแต่ละโฟลเดอร์ได้โดยตรง
+ทุกผลงานในคลังนี้ **ผ่านการทดสอบจริง**, **มีภาพถ่ายหน้าจอของระบบจริง (Live Web UI Screenshots)**, **มีภาพจำลองระบบใช้งานจริง (Simulation Mockups)**, **แผนภาพ Infographic ขั้นตอนการทำงาน (Mermaid Workflows)** และ **คู่มือการติดตั้งเพื่อให้กรรมการสามารถนำไปเปิดทดสอบได้เองอย่างง่ายดาย** สามารถคลิกดูซอร์สโค้ดในแต่ละโฟลเดอร์ได้โดยตรง
 
 ---
 
@@ -31,11 +31,11 @@
 ```bash
 ./run_all_tests.sh
 ```
-*ผลการทดสอบ:* ตรวจสอบและผ่านการทดสอบทั้งหมด **9/9 โครงการ** (100% Operational)
+*ผลลัพธ์: ตรวจสอบและผ่านการทดสอบทั้งหมด **9/9 โครงการ** (100% Operational)*
 
 ---
 
-## 📌 เจาะลึกรายละเอียด การทำงาน ภาพจำลอง และคู่มือติดตั้งของแต่ละโปรเจกต์
+## 📌 เจาะลึกรายละเอียด การทำงาน หน้าตาเว็บจริง และคู่มือติดตั้ง
 
 ---
 
@@ -48,7 +48,10 @@
 #### 💡 แนวคิดและสถานการณ์การใช้งานจริง (Problem & Real-World Use Case)
 ในพื้นที่ที่ต้องการความเป็นส่วนตัวสูง เช่น **ห้องนอนผู้สูงอายุ**, **ห้องน้ำในบ้าน**, หรือ **พื้นที่ภัยพิบัติ/กู้ภัย** การติดตั้งกล้องวงจรปิดเพื่อเฝ้าระวังจะละเมิดความเป็นส่วนตัวอย่างรุนแรง ระบบนี้แก้ปัญหาโดยการใช้ **"คลื่นวิทยุ WiFi ธรรมดา"** ที่แพร่กระจายผ่านกำแพงคอนกรีต เมื่อมีมนุษย์เคลื่อนไหว คลื่นสัญญาณ CSI (ความแรงและเฟส) จะเกิดการกระเจิง (Scattering) และดูดกลืน AI จะเรียนรู้รูปแบบความผิดปกตินี้เพื่อจำแนกว่าคนกำลังเดิน กำลังล้ม หรือห้องว่าง โดยไม่ต้องมีเลนส์กล้องแม้แต่ตัวเดียว
 
-#### 🖼️ ภาพจำลองการใช้งานจริง (Real-World System Simulation)
+#### 🖥️ ภาพถ่ายหน้าจอเว็บ Dashboard จริง (Actual Live Web UI Screenshot)
+![AI WiFi Wall Live Web Dashboard](./assets/real_web_01_wifiwall.png)
+
+#### 🖼️ ภาพจำลองสภาพแวดล้อมใช้งานจริง (3D Concept Simulation)
 ![AI WiFi Sensing Simulation](./assets/wifi_sensing_simulation.jpg)
 
 #### 📊 Infographic แผนภาพขั้นตอนการทำงาน (Workflow Architecture)
@@ -63,7 +66,7 @@ flowchart TD
     G -->|ไม่มีการเคลื่อนไหว| H[🟢 ห้องว่าง: Empty Room]
     G -->|เคลื่อนไหวกระจายตัวสม่ำเสมอ| I[🔵 กำลังเดิน: Walking]
     G -->|แอมพลิจูดตกวูบฉับพลัน| J[🔴 แจ้งเตือนคนหกล้ม: Fall Alert!]
-    H & I & J --> K[🖥️ Real-time Web Dashboard]
+    H & I & J --> K[🖥️ Real-time Web Dashboard: ai_index.html]
 ```
 
 #### 📖 คู่มือการติดตั้งและทดลองใช้งานจริงสำหรับกรรมการ (Examiner's Quick-Start)
@@ -98,7 +101,10 @@ flowchart TD
 #### 💡 แนวคิดและสถานการณ์การใช้งานจริง (Problem & Real-World Use Case)
 นักเรียน นักศึกษา และนักวิจัยมักเสียเวลาหลายชั่วโมงในการเปิดค้นคว้าข้อมูลจากหลายแหล่ง (สารานุกรม ข่าว บทคัดย่อวิจัยสากล) และต้องเสียเวลาคัดลอกมาจัดหน้าใน Microsoft Word ตามฟอร์แมตมาตรฐาน ระบบนี้ทำหน้าที่เป็น **AI Research Agent** เพียงผู้ใช้พิมพ์หัวข้อที่สนใจ เช่น *"Artificial Intelligence in Healthcare"* ระบบจะค้นคว้าข้อมูล สังเคราะห์เนื้อหา และสร้างออกมาเป็นไฟล์ Word (`.docx`) พร้อมดาวน์โหลดทันที
 
-#### 🖼️ ภาพจำลองการใช้งานจริง (Real-World System Simulation)
+#### 🖥️ ภาพถ่ายหน้าจอเว็บแอปพลิเคชันจริง (Actual Live Web UI Screenshot)
+![Smart Doc AI Live Web UI](./assets/real_web_02_smartdoc.png)
+
+#### 🖼️ ภาพจำลองสภาพแวดล้อมใช้งานจริง (Pipeline & Generation Simulation)
 ![Smart Doc AI Simulation](./assets/smart_doc_simulation.jpg)
 
 #### 📊 Infographic แผนภาพขั้นตอนการทำงาน (Workflow Architecture)
@@ -145,7 +151,10 @@ flowchart LR
 #### 💡 แนวคิดและสถานการณ์การใช้งานจริง (Problem & Real-World Use Case)
 สำหรับสตรีมเมอร์ ครีเอเตอร์ หรือร้านค้าที่ต้องการระบบรับบริจาค/ทิปแบบกำหนดจำนวนเงินได้เอง โดยไม่ต้องพึ่งพา Platform ต่างประเทศที่หักค่าธรรมเนียมสูง ระบบนี้สร้าง PromptPay QR Code ตามมาตรฐาน EMVCo ของสถาบันการเงินไทยโดยตรง เมื่อมียอดเงินเข้ามาจะมีระบบแจ้งเตือนแบบสด (Live Feed) พร้อมเสียงพูดขอบคุณผู้บริจาคผ่านระบบ Text-to-Speech
 
-#### 🖼️ ภาพจำลองการใช้งานจริง (Real-World System Simulation)
+#### 🖥️ ภาพถ่ายหน้าจอเว็บแอปพลิเคชันจริง (Actual Live Web UI Screenshot)
+![Tip Desk Live Web UI](./assets/real_web_03_tipdesk.png)
+
+#### 🖼️ ภาพจำลองสภาพแวดล้อมใช้งานจริง (FinTech Payment Simulation)
 ![Tip Desk Simulation](./assets/tip_desk_simulation.jpg)
 
 #### 📊 Infographic แผนภาพขั้นตอนการทำงาน (Workflow Architecture)
@@ -193,6 +202,11 @@ flowchart TD
 #### 💡 แนวคิดและสถานการณ์การใช้งานจริง (Problem & Real-World Use Case)
 แก้ปัญหาความล่าช้าและการบันทึกข้อมูลซ้ำซ้อนของการจัดกิจกรรมชมรมในสถานศึกษา โดยเปลี่ยนจากการเซ็นชื่อบนกระดาษมาเป็นระบบลงทะเบียนออนไลน์ เช็คชื่อตามรอบกิจกรรมแบบเรียลไทม์ พร้อมหน้าต่างสำหรับ Superadmin เพื่อตรวจสอบจำนวนโควต้าสมาชิกและพิมพ์รายงานสรุปผล
 
+#### 🖥️ ภาพถ่ายหน้าจอเว็บจริง (Actual Live Web UI Screenshots)
+| หน้าลงทะเบียนสมาชิกใหม่ (`/register.html`) | หน้าเช็คชื่อเข้าร่วมกิจกรรม (`/attendance.html`) |
+| :---: | :---: |
+| ![Club Register UI](./assets/real_web_04_club_register.png) | ![Club Attendance UI](./assets/real_web_04_club_attendance.png) |
+
 #### 📊 Infographic แผนภาพขั้นตอนการทำงาน (Workflow Architecture)
 ```mermaid
 flowchart TD
@@ -230,7 +244,7 @@ flowchart TD
 #### 💡 แนวคิดและสถานการณ์การใช้งานจริง (Problem & Real-World Use Case)
 ตู้กดเงินสด (ATM) เป็นพื้นที่เสี่ยงต่อการเกิดอาชญากรรมและการติดตั้งเครื่องดักข้อมูล (Skimmer) ระบบนี้ใช้ Computer Vision จากกล้องวงจรปิด CCTV ตรวจจับการเข้าใกล้ตู้ ATM ของบุคคลแบบเรียลไทม์ พร้อมระบบกรองเฟรมเพื่อบันทึกภาพถ่าย Snapshot เมื่อมีบุคคลเข้ามาในระยะหวงห้าม และบันทึกประวัติเวลาลง JSON Log เพื่อใช้เป็นหลักฐาน
 
-#### 🖼️ ภาพจำลองการใช้งานจริง (Real-World System Simulation)
+#### 🖼️ ภาพจำลองสภาพแวดล้อมใช้งานจริง (Smart Surveillance Simulation)
 ![ATM Detector Simulation](./assets/atm_detector_simulation.jpg)
 
 #### 📊 Infographic แผนภาพขั้นตอนการทำงาน (Workflow Architecture)
@@ -273,6 +287,11 @@ flowchart LR
 #### 💡 แนวคิดและสถานการณ์การใช้งานจริง (Problem & Real-World Use Case)
 งานสังสรรค์ในบ้านมักมีปัญหาแย่งคีย์บอร์ดหรือหน้าจอกันเพื่อพิมพ์เลือกเพลงคาราโอเกะ ระบบนี้ทำหน้าที่เป็นเซิร์ฟเวอร์สตรีมมิ่งส่วนตัว โดยหน้าจอทีวีจะเปิดหน้าเล่นเพลงไว้ ส่วนเพื่อน ๆ ในงานสามารถใช้สมาร์ทโฟนของตัวเองสแกน QR Code เข้าหน้ารีโมตมือถือ (`/remote`) เพื่อค้นหาเพลงจาก YouTube และกดแทรกคิวเพลงได้พร้อมกันแบบเรียลไทม์
 
+#### 🖥️ ภาพถ่ายหน้าจอเว็บจริง (Actual Live Web UI Screenshots)
+| หน้าจอหลักเครื่องเล่นทีวี (`/index.html`) | หน้ารีโมตเลือกเพลงบนมือถือ (`/remote.html`) |
+| :---: | :---: |
+| ![Karaoke Player Web UI](./assets/real_web_06_karaoke_player.png) | ![Karaoke Mobile Remote Web UI](./assets/real_web_06_karaoke_remote.png) |
+
 #### 📊 Infographic แผนภาพขั้นตอนการทำงาน (Workflow Architecture)
 ```mermaid
 flowchart TD
@@ -306,6 +325,11 @@ flowchart TD
 
 #### 💡 แนวคิดและสถานการณ์การใช้งานจริง (Problem & Real-World Use Case)
 ระบบควบคุมการเข้าถึงอินเทอร์เน็ตของอุปกรณ์ภายในบ้านหรือห้องแล็บคอมพิวเตอร์ โดยใช้วิธีสั่งการตัดต่อระดับ DNS ผ่าน AdGuard Home API ผู้ใช้จะต้องกรอกรหัส PIN หรือรับโควต้าเวลา เมื่อหมดเวลาระบบจะส่งคำสั่งไปยัง AdGuard เพื่อบล็อกการเข้าถึงอินเทอร์เน็ตของ IP เครื่องนั้นโดยอัตโนมัติ
+
+#### 🖥️ ภาพถ่ายหน้าจอเว็บจริง (Actual Live Web UI Screenshots)
+| หน้าสำหรับผู้ใช้กรอกรหัสขอใช้เน็ต (`/index.html`) | หน้าสำหรับแอดมินสร้างรหัสกำหนดเวลา (`/admin.html`) |
+| :---: | :---: |
+| ![AdGuard Portal Web UI](./assets/real_web_07_adguard_portal.png) | ![AdGuard Admin Web UI](./assets/real_web_07_adguard_admin.png) |
 
 #### 📊 Infographic แผนภาพขั้นตอนการทำงาน (Workflow Architecture)
 ```mermaid
@@ -342,6 +366,9 @@ flowchart LR
 
 #### 💡 แนวคิดและสถานการณ์การใช้งานจริง (Problem & Real-World Use Case)
 โปรแกรมสำหรับใช้ตรวจสอบทรัพยากรเครื่องคอมพิวเตอร์ (CPU, RAM, Uptime, แพลตฟอร์ม) แบบรวดเร็วโดยไม่ต้องติดตั้งโปรแกรมหนัก ๆ ตัวแอปถูกแพ็กเกจเป็นไฟล์ `.exe` แบบ Standalone (`fang-monitor-app-win-x64.exe`) สามารถก๊อปลง Flash Drive ไปเปิดดูสเปกและสถานะเครื่องผ่านหน้าเว็บเบราว์เซอร์ได้ทันที
+
+#### 🖥️ ภาพถ่ายหน้าจอเว็บมอนิเตอร์จริง (Actual Live Web UI Screenshot)
+![System Monitor Web UI](./assets/real_web_08_sysmonitor.png)
 
 #### 📊 Infographic แผนภาพขั้นตอนการทำงาน (Workflow Architecture)
 ```mermaid
