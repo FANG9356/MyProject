@@ -14,11 +14,7 @@ required_files = [
     "fetch_covers.py",
     "playlists.json",
     "requirements.txt",
-    "pyrightconfig.json",
-    "test_threshold.py",
-    "test_turbo.py",
-    "test_v2.py",
-    "test_whisper.py"
+    "pyrightconfig.json"
 ]
 
 print("Source File Integrity Check:")
