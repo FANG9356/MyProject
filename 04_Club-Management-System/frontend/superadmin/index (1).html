@@ -4,20 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>จัดการผู้ดูแลระบบ (Super Admin Only)</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com">
+</script>
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="https://rms.utc.ac.th/files/01013_1809190994117.png">
-    <style>body { font-family: 'Sarabun', sans-serif; }</style>
+    <style>body { font-family: 'Sarabun', sans-serif; }
+</style>
 
-    <!-- Shared Auth + Security -->
-    <script src="../auth.js"></script>
-    <script>blockDevTools();</script>
+    
+    <script src="../auth.js">
+</script>
+    <script>blockDevTools();
+</script>
 
 </head>
 <body class="bg-gray-100 font-sans p-4 md:p-8 min-h-screen flex flex-col text-gray-800">
     <div class="max-w-7xl mx-auto w-full shrink-0">
         
-        <!-- Navigation Bar -->
+        
         <nav class="bg-white shadow-sm border border-gray-200 mb-8 rounded-2xl px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
             <div class="flex items-center space-x-3">
                 <img src="https://rms.utc.ac.th/files/01013_1809190994117.png" alt="Logo" class="h-10 w-10 rounded-full shadow-sm">
@@ -39,7 +43,7 @@
             </div>
         </div>
 
-        <!-- 1. ส่วนเปิด/ปิด ระบบลงทะเบียน -->
+        
         <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 border-l-4 border-l-indigo-500 flex flex-col md:flex-row justify-between items-center mb-6">
             <div class="mb-4 md:mb-0">
                 <h2 class="text-lg font-semibold text-slate-700 flex items-center">
@@ -57,7 +61,7 @@
             </div>
         </div>
 
-        <!-- 2. ส่วนจัดการรายชื่อชมรม -->
+        
         <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 border-l-4 border-l-indigo-500 mb-6">
             <div class="mb-5 border-b border-slate-100 pb-4">
                 <h2 class="text-lg font-semibold text-slate-700 flex items-center">
@@ -80,7 +84,7 @@
             </div>
         </div>
 
-        <!-- 3. ส่วนตั้งค่าโควตาจำนวนสมาชิกแต่ละชมรม -->
+        
         <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 border-l-4 border-l-indigo-500 mb-6">
             <div class="flex justify-between items-center mb-5 border-b border-slate-100 pb-4">
                 <h2 class="text-lg font-semibold text-slate-700 flex items-center">
@@ -97,7 +101,7 @@
             </div>
         </div>
 
-        <!-- 3.5. ส่วนจัดการระดับชั้นและสาขาวิชา -->
+        
         <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 border-l-4 border-l-indigo-500 mb-6">
             <div class="flex justify-between items-center mb-5 border-b border-slate-100 pb-4">
                 <h2 class="text-lg font-semibold text-slate-700 flex items-center">
@@ -110,7 +114,7 @@
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <!-- จัดการระดับชั้น -->
+                
                 <div>
                     <h3 class="text-sm font-semibold text-slate-600 mb-3 flex justify-between">
                         1. รายชื่อระดับชั้น (เช่น ปวช. 1)
@@ -125,7 +129,7 @@
                     </div>
                 </div>
 
-                <!-- จัดการสาขาวิชา -->
+                
                 <div>
                     <h3 class="text-sm font-semibold text-slate-600 mb-3 flex justify-between">
                         2. รายชื่อสาขาวิชา
@@ -148,7 +152,7 @@
             </div>
         </div>
 
-        <!-- 4. ส่วนเพิ่มแอดมิน -->
+        
         <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 border-l-4 border-l-indigo-500 mb-6">
             <div class="mb-5 border-b border-slate-100 pb-4">
                 <h2 class="text-lg font-semibold text-slate-700 flex items-center">
@@ -181,7 +185,7 @@
             <div id="status-message" class="text-center text-sm font-medium mt-4 hidden"></div>
         </div>
 
-        <!-- 5. ตารางแสดงรายชื่อแอดมินที่มีอยู่ -->
+        
         <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 border-l-4 border-l-indigo-500 mb-6">
             <h2 class="text-lg font-semibold text-slate-700 mb-5 flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -207,7 +211,7 @@
             <div id="loading-msg" class="text-center py-10 text-slate-400 text-sm italic">กำลังโหลดรายชื่อแอดมิน...</div>
         </div>
 
-        <!-- 6. พื้นที่เก็บข้อมูลระบบ (System Storage & Backup) -->
+        
         <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 border-l-4 border-l-rose-500 mb-6">
             <h2 class="text-lg font-semibold text-slate-700 mb-5 flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-rose-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -243,12 +247,9 @@
         </div>
     </div>
 
-    <script>
-        // === Auth & Security (using auth.js) ===
-        checkSession('../admin.html');
+    <script>checkSession('../admin.html');
         startSessionTimer('../admin.html');
 
-        // Auto-inject token in all /api/ requests
         const _origFetch = window.fetch;
         window.fetch = async function(resource, config) {
             const tok = sessionStorage.getItem('token');
@@ -265,7 +266,6 @@
 
         function logout() { clearSession('../admin.html'); }
 
-        // ------------------ ส่วนจัดการปิด/เปิดระบบ ------------------
         const toggleStatusBtn = document.getElementById('toggle-status-btn');
         let isRegistrationOpen = true;
 
@@ -306,9 +306,8 @@
             }
         });
 
-        // ------------------ ส่วนจัดการชมรม ------------------
         let dynamicClubList = [];
-        let clubStatuses = {}; 
+        let clubStatuses = {};
         const clubManagerListDiv = document.getElementById('club-manager-list');
         const addClubForm = document.getElementById('add-club-form');
         const newClubNameInput = document.getElementById('new-club-name');
@@ -334,16 +333,16 @@
             let html = '';
             dynamicClubList.forEach(club => {
                 const isActive = clubStatuses[club] === true;
-                
-                const statusBadge = isActive 
-                    ? `<span class="bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded text-[10px] font-semibold border border-emerald-100">เปิดรับ</span>` 
+
+                const statusBadge = isActive
+                    ? `<span class="bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded text-[10px] font-semibold border border-emerald-100">เปิดรับ</span>`
                     : `<span class="bg-slate-100 text-slate-500 px-2 py-0.5 rounded text-[10px] font-semibold border border-slate-200">ปิดชั่วคราว</span>`;
-                
+
                 const toggleAction = isActive ? `toggleClubStatus('${club}', false)` : `toggleClubStatus('${club}', true)`;
                 const toggleBtnText = isActive ? 'ปิดชั่วคราว' : 'เปิดรับ';
-                
-                const toggleBtnClass = isActive 
-                    ? 'bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-100' 
+
+                const toggleBtnClass = isActive
+                    ? 'bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-100'
                     : 'bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-100';
 
                 html += `
@@ -408,7 +407,6 @@
             }
         }
 
-        // ------------------ ส่วนจัดการโควตาชมรม ------------------
         const quotaListDiv = document.getElementById('quota-list');
         const quotaStatus = document.getElementById('quota-status');
         let currentQuotas = {};
@@ -431,9 +429,9 @@
 
             let html = '';
             dynamicClubList.forEach((club, index) => {
-                const maxMembers = currentQuotas[club] || 25; 
+                const maxMembers = currentQuotas[club] || 25;
                 const inputId = `quota-input-${index}`;
-                
+
                 html += `
                     <div class="flex justify-between items-center bg-white p-3 rounded-xl border border-slate-200 hover:border-slate-300 transition-colors shadow-sm">
                         <span class="text-sm font-medium text-slate-600 truncate mr-2 flex-1" title="${club}">${club}</span>
@@ -468,7 +466,6 @@
             }
         }
 
-        // ------------------ ส่วนจัดการ Admin ------------------
         const adminListBody = document.getElementById('admin-list-body');
         const loadingMsg = document.getElementById('loading-msg');
 
@@ -476,9 +473,9 @@
             try {
                 const res = await fetch('/api/admins');
                 const data = await res.json();
-                
+
                 loadingMsg.classList.add('hidden');
-                
+
                 if (Object.keys(data).length > 0) {
                     const html = Object.entries(data).map(([username, info]) => {
                         return `
@@ -518,7 +515,7 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ username, password, name: displayName })
                 });
-                
+
                 statusMessage.innerText = `เพิ่ม "${displayName}" เรียบร้อย!`;
                 statusMessage.className = "text-center text-sm font-semibold text-emerald-600 block mt-4";
                 document.getElementById('add-admin-form').reset();
@@ -542,18 +539,17 @@
             }
         }
 
-        // ------------------ ส่วนจัดการระดับชั้นและสาขาวิชา ------------------
         let globalGradeList = [];
         let globalMajorList = {};
-        
+
         async function fetchSettings() {
             try {
                 const res = await fetch('/api/settings');
                 const data = await res.json();
-                
+
                 if (data.gradeList) globalGradeList = data.gradeList;
                 if (data.majorList) globalMajorList = data.majorList;
-                
+
                 renderGrades();
                 renderMajorGradeGroups();
                 renderMajors();
@@ -561,7 +557,7 @@
                 console.error('Error fetching settings', e);
             }
         }
-        
+
         async function saveSettings(key, value) {
             try {
                 await fetch('/api/settings', {
@@ -577,15 +573,14 @@
                 alert('เกิดข้อผิดพลาดในการบันทึกข้อมูล');
             }
         }
-        
-        // Grades
+
         function renderGrades() {
             const container = document.getElementById('grade-list');
             if (globalGradeList.length === 0) {
                 container.innerHTML = '<div class="text-center text-sm text-slate-400 py-2">ไม่มีข้อมูลระดับชั้น</div>';
                 return;
             }
-            
+
             container.innerHTML = globalGradeList.map((g, idx) => `
                 <div class="flex justify-between items-center bg-white p-2 rounded border border-slate-100 shadow-sm">
                     <span class="text-sm font-medium text-slate-700">${g}</span>
@@ -597,7 +592,7 @@
                 </div>
             `).join('');
         }
-        
+
         document.getElementById('add-grade-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const inp = document.getElementById('new-grade');
@@ -609,7 +604,7 @@
                 renderGrades();
             }
         });
-        
+
         window.deleteGrade = async function(idx) {
             if (confirm(`แน่ใจหรือไม่ว่าต้องการลบระดับชั้น "${globalGradeList[idx]}"?`)) {
                 globalGradeList.splice(idx, 1);
@@ -617,37 +612,33 @@
                 renderGrades();
             }
         }
-        
-        // Majors
+
         function renderMajorGradeGroups() {
             const select = document.getElementById('major-grade-group');
             const groups = Object.keys(globalMajorList);
-            
+
             if (groups.length === 0) {
                 select.innerHTML = '<option value="">ไม่มีข้อมูลกลุ่ม</option>';
             } else {
                 select.innerHTML = groups.map(g => `<option value="${g}">${g}</option>`).join('');
             }
-            
-            // Allow adding new major to a custom group if we want, but for now we rely on existing keys (ปวช, ปวส)
-            // If they want to add a new group, we can add a prompt, but let's keep it simple.
-            // If a new grade is added like "ปริญญาตรี", we should add it to globalMajorList if not exists.
+
             globalGradeList.forEach(g => {
-                const baseGroup = g.split('.')[0].trim(); // e.g. "ปวช. 1" -> "ปวช"
+                const baseGroup = g.split('.')[0].trim();
                 if (!globalMajorList[baseGroup]) {
                     globalMajorList[baseGroup] = [];
                     saveSettings('majorList', globalMajorList);
                 }
             });
-            
+
             const updatedGroups = Object.keys(globalMajorList);
             select.innerHTML = updatedGroups.map(g => `<option value="${g}">${g}</option>`).join('');
         }
-        
+
         function renderMajors() {
             const container = document.getElementById('major-list');
             let html = '';
-            
+
             for (const [group, majors] of Object.entries(globalMajorList)) {
                 if (majors.length > 0) {
                     html += `<div class="text-xs font-bold text-slate-500 mt-2 mb-1 px-1 bg-slate-100 rounded inline-block">${group}</div>`;
@@ -663,20 +654,20 @@
                     `).join('');
                 }
             }
-            
+
             if (!html) {
                 container.innerHTML = '<div class="text-center text-sm text-slate-400 py-2">ไม่มีข้อมูลสาขาวิชา</div>';
             } else {
                 container.innerHTML = html;
             }
         }
-        
+
         document.getElementById('add-major-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const group = document.getElementById('major-grade-group').value;
             const inp = document.getElementById('new-major');
             const val = inp.value.trim();
-            
+
             if (group && val) {
                 if (!globalMajorList[group]) globalMajorList[group] = [];
                 if (!globalMajorList[group].includes(val)) {
@@ -687,7 +678,7 @@
                 }
             }
         });
-        
+
         window.deleteMajor = async function(group, idx) {
             if (confirm(`แน่ใจหรือไม่ว่าต้องการลบสาขาวิชา "${globalMajorList[group][idx]}"?`)) {
                 globalMajorList[group].splice(idx, 1);
@@ -696,15 +687,14 @@
             }
         }
 
-        // ------------------ ส่วนจัดการพื้นที่เก็บข้อมูล (Storage Stats) ------------------
         async function fetchSystemStats() {
             try {
                 const res = await fetch('/api/systemStats');
                 const stats = await res.json();
-                
+
                 document.getElementById('stat-members').innerText = stats.memberCount !== undefined ? stats.memberCount : 0;
                 document.getElementById('stat-clubs').innerText = stats.clubCount !== undefined ? stats.clubCount : 0;
-                
+
                 if (stats.dbSizeBytes !== undefined) {
                     const kb = (stats.dbSizeBytes / 1024).toFixed(2);
                     document.getElementById('stat-db-size').innerText = kb;
@@ -714,12 +704,11 @@
             }
         }
 
-        // Initial fetch
         fetchSystemStatus();
         fetchClubs();
         fetchAdmins();
         fetchSettings();
         fetchSystemStats();
-    </script>
+</script>
 </body>
 </html>

@@ -4,17 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ตรวจสอบสถานะการเข้ากิจกรรม</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com">
+</script>
     <link rel="icon" type="image/png" href="https://rms.utc.ac.th/files/01013_1809190994117.png">
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600&display=swap" rel="stylesheet">
-    <style>body { font-family: 'Sarabun', sans-serif; }</style>
-    <!-- Security -->
-    <script src="auth.js"></script>
-    <script>blockDevTools();</script>
+    <style>body { font-family: 'Sarabun', sans-serif; }
+</style>
+    
+    <script src="auth.js">
+</script>
+    <script>blockDevTools();
+</script>
 </head>
 <body class="bg-gray-100 font-sans p-6">
     <div class="max-w-7xl mx-auto">
-        <!-- Navigation Bar -->
+        
         <nav class="bg-white shadow-sm border border-gray-200 mb-8 rounded-2xl px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
             <div class="flex items-center space-x-3">
                 <img src="https://rms.utc.ac.th/files/01013_1809190994117.png" alt="Logo" class="h-10 w-10 rounded-full shadow-sm">
@@ -71,8 +75,7 @@
         </div>
     </div>
 
-    <script>
-        let allMembers = [];
+    <script>let allMembers = [];
         let allActivities = [];
         let dynamicClubList = [];
         let currentClub = '';
@@ -86,16 +89,16 @@
             try {
                 const clubsRes = await fetch('/api/clubs');
                 const clubsData = await clubsRes.json();
-                
+
                 dynamicClubList = Object.keys(clubsData).sort((a, b) => {
                     const activeA = clubsData[a] ? 1 : 0;
                     const activeB = clubsData[b] ? 1 : 0;
                     if (activeA !== activeB) return activeB - activeA;
                     return a.localeCompare(b);
                 });
-                
+
                 const currentSelected = clubSelect.value;
-                clubSelect.innerHTML = `<option value="">-- เลือกชมรม --</option>` + 
+                clubSelect.innerHTML = `<option value="">-- เลือกชมรม --</option>` +
                     dynamicClubList.map(club => {
                         if (clubsData[club]) {
                             return `<option value="${club}" class="text-gray-800">${club}</option>`;
@@ -107,12 +110,10 @@
                     clubSelect.value = currentSelected;
                 }
 
-                // allMembers is no longer needed
-
                 const actRes = await fetch('/api/activities');
                 const actData = await actRes.json();
                 allActivities = Object.values(actData);
-                
+
                 renderActivities();
                 if (currentClub && currentActivityId) renderAttendanceList();
             } catch(e) {
@@ -122,12 +123,12 @@
 
         function renderActivities() {
             const filteredActivities = allActivities.filter(act => act.club === currentClub);
-            
+
             activitySelect.innerHTML = `<option value="">-- เลือกกิจกรรม --</option>` + filteredActivities.map(act => {
                 const formattedDate = act.date ? new Date(act.date).toLocaleDateString('th-TH') : '';
                 return `<option value="${act.id}">${act.activityName} (${formattedDate})</option>`;
             }).join('');
-            
+
             if (!filteredActivities.find(act => String(act.id) === String(currentActivityId))) {
                 currentActivityId = null;
             }
@@ -139,16 +140,16 @@
                 memberListDiv.innerHTML = '<p class="text-gray-500 text-center py-8">กรุณาเลือกทั้งชมรมและกิจกรรมเพื่อดูสถานะ</p>';
                 return;
             }
-            
+
             try {
                 const res = await fetch(`/api/publicAttendance/${currentActivityId}`);
                 const allAttendanceData = await res.json();
-                
+
                 const clubMembers = allAttendanceData[currentClub] || [];
-                
+
                 const memberHTML = clubMembers.sort((a, b) => a.name.localeCompare(b.name, 'th')).map(member => {
                     const status = member.status || 'ไม่มา';
-                    
+
                     let statusUI = '';
                     if (status === 'มา') {
                         statusUI = '<span class="px-4 py-1.5 rounded-full bg-green-100 text-green-700 font-bold text-sm shadow-sm inline-block w-20 text-center">มา</span>';
@@ -170,7 +171,7 @@
                         </div>
                     `;
                 }).join('');
-                
+
                 memberListDiv.innerHTML = memberHTML || '<p class="text-gray-500 text-center py-8">ยังไม่มีสมาชิกในชมรมนี้</p>';
             } catch(e) {
                 console.error(e);
@@ -181,7 +182,7 @@
             currentClub = clubSelect.value;
             currentActivityId = null;
             renderActivities();
-            renderAttendanceList(); 
+            renderAttendanceList();
         });
 
         activitySelect.addEventListener('change', () => {
@@ -190,6 +191,6 @@
         });
 
         fetchAllData();
-    </script>
+</script>
 </body>
 </html>

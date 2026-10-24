@@ -26,8 +26,7 @@
         </div>
     </div>
 
-    <script>
-        const pinInput = document.getElementById('pin-input');
+    <script>const pinInput = document.getElementById('pin-input');
         const unlockBtn = document.getElementById('unlock-btn');
         const statusMsg = document.getElementById('status-msg');
         const loginPanel = document.getElementById('login-panel');
@@ -58,22 +57,22 @@
         function showActiveSession(expiresAt) {
             loginPanel.style.display = 'none';
             activePanel.style.display = 'block';
-            
+
             clearInterval(countdownInterval);
             countdownInterval = setInterval(() => {
                 const now = Date.now();
                 const diff = expiresAt - now;
-                
+
                 if (diff <= 0) {
                     clearInterval(countdownInterval);
-                    checkStatus(); // re-check to show login
+                    checkStatus();
                     return;
                 }
-                
+
                 const h = Math.floor(diff / (1000 * 60 * 60));
                 const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
                 const s = Math.floor((diff % (1000 * 60)) / 1000);
-                
+
                 countdownEl.innerText = `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
             }, 1000);
         }
@@ -114,8 +113,7 @@
             }
         });
 
-        // Initial check
         checkStatus();
-    </script>
+</script>
 </body>
 </html>

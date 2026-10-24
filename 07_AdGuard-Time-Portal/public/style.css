@@ -42,7 +42,6 @@ body {
   overflow: hidden;
 }
 
-/* Subtle premium accent line at the top of the card */
 .glass-panel::before {
   content: '';
   position: absolute;
@@ -141,25 +140,24 @@ button:disabled {
   justify-content: center;
 }
 
-.status-error { 
-  color: #111111; 
+.status-error {
+  color: #111111;
   background: #ffffff;
   border: 1px solid #111111;
-  padding: 0.75rem 1.25rem; 
-  border-radius: 6px; 
-  display: inline-block; 
+  padding: 0.75rem 1.25rem;
+  border-radius: 6px;
+  display: inline-block;
 }
 
-.status-success { 
-  color: #111111; 
+.status-success {
+  color: #111111;
   background: #ffffff;
   border: 1px solid #111111;
-  padding: 0.75rem 1.25rem; 
-  border-radius: 6px; 
-  display: inline-block; 
+  padding: 0.75rem 1.25rem;
+  border-radius: 6px;
+  display: inline-block;
 }
 
-/* Admin styles */
 .admin-container {
   max-width: 900px;
   display: flex;
@@ -175,7 +173,7 @@ button:disabled {
   margin-bottom: 1rem;
 }
 
-.admin-header h1 { 
+.admin-header h1 {
   margin: 0;
   font-size: 1.75rem;
 }

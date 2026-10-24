@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Display Board - Captive Portal</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
+    <style>:root {
             --bg-color: #000000;
             --text-primary: #ffffff;
             --text-secondary: #888888;
@@ -53,15 +52,14 @@
         .active-state {
             color: #4ade80;
         }
-    </style>
+</style>
 </head>
 <body>
     <div class="container" id="content">
         <div class="title">กำลังโหลดข้อมูล...</div>
     </div>
 
-    <script>
-        function formatDuration(hours) {
+    <script>function formatDuration(hours) {
             const h = Math.floor(hours);
             const m = Math.round((hours - h) * 60);
             let str = [];
@@ -84,11 +82,11 @@
 
         async function updateDisplay() {
             try {
-                // Fetch pins unconditionally to show upcoming queue
+
                 const pinsRes = await fetch('/api/pins');
                 const pinsData = await pinsRes.json();
                 const unusedPins = pinsData.pins.filter(p => p.is_used === 0);
-                
+
                 if (unusedPins.length > 0) {
                     const pinListItems = unusedPins.slice(0, 3).map(p => `
                         <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.5vh 0;">
@@ -108,7 +106,6 @@
                     upcomingPinsHtml = '';
                 }
 
-                // First check status
                 const statusRes = await fetch('/api/status');
                 const statusData = await statusRes.json();
 
@@ -121,7 +118,7 @@
                 } else {
                     currentActiveExpiresAt = null;
                     currentActivePin = null;
-                    
+
                     const firstUnused = unusedPins[0];
                     if (firstUnused) {
                         content.innerHTML = `
@@ -146,9 +143,9 @@
             if (!currentActiveExpiresAt) return;
             const now = Date.now();
             const ms = currentActiveExpiresAt - now;
-            
+
             const content = document.getElementById('content');
-            
+
             if (ms > 0) {
                 content.innerHTML = `
                     <div class="title active-state">กำลังใช้งานด้วยรหัส: <span style="color: #ffffff; font-weight: 700;">${currentActivePin || '-'}</span></div>
@@ -157,16 +154,15 @@
                     ${upcomingPinsHtml}
                 `;
             } else {
-                updateDisplay(); // Time's up, refresh full state
+                updateDisplay();
             }
         }
 
-        // Main logic loops
         updateDisplay();
-        setInterval(updateDisplay, 5000); // Fetch DB every 5 seconds
+        setInterval(updateDisplay, 5000);
         setInterval(() => {
             if (currentActiveExpiresAt) renderActive();
-        }, 1000); // Update countdown every 1 second
-    </script>
+        }, 1000);
+</script>
 </body>
 </html>

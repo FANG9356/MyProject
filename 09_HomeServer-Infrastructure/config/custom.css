@@ -1,7 +1,5 @@
-/* 🪄 คาถาซ่อนเลขเวอร์ชั่น (Bottom Right) */
-#footer-version, 
+#footer-version,
 .text-xs.text-neutral-500.cursor-pointer,
 a[href*="github.com/gethomepage/homepage/releases"] {
     display: none !important;
 }
-/* พี่ใส่เผื่อไว้หลายๆ ท่า เพื่อให้มันซ่อนได้ชัวร์ๆ ครับ */    

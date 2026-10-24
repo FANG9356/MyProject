@@ -5,11 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Wi-Fi Sensing</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;800&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-empty: #064e3b; /* Dark Green */
-            --bg-walking: #1e3a8a; /* Dark Blue */
-            --bg-falling: #7f1d1d; /* Dark Red */
+    <style>:root {
+            --bg-empty: #064e3b;
+            --bg-walking: #1e3a8a;
+            --bg-falling: #7f1d1d;
             --text-color: #f8fafc;
         }
 
@@ -78,7 +77,6 @@
             letter-spacing: 2px;
         }
 
-        /* Glassmorphism Radar Rings */
         .ring {
             position: absolute;
             border: 2px solid rgba(255, 255, 255, 0.05);
@@ -98,12 +96,11 @@
             100% { width: 1000px; height: 1000px; opacity: 0; border-width: 1px; }
         }
 
-        /* Alert Animation for Falling */
         @keyframes flash {
             0%, 100% { background-color: var(--bg-falling); }
-            50% { background-color: #dc2626; } /* Bright Red */
+            50% { background-color: #dc2626; }
         }
-        
+
         .alert-mode {
             animation: flash 1s infinite;
         }
@@ -114,12 +111,11 @@
             font-weight: 300;
             opacity: 0.5;
         }
-
-    </style>
+</style>
 </head>
 <body id="bg">
 
-    <!-- Radar Rings -->
+    
     <div class="ring"></div>
     <div class="ring"></div>
     <div class="ring"></div>
@@ -138,8 +134,7 @@
         Based on Wi-Fi Channel State Information (CSI)
     </div>
 
-    <script>
-        const statusEl = document.getElementById('status');
+    <script>const statusEl = document.getElementById('status');
         const iconEl = document.getElementById('icon');
         const bodyEl = document.getElementById('bg');
 
@@ -147,21 +142,20 @@
             try {
                 const response = await fetch('/api/status');
                 const data = await response.json();
-                
+
                 const status = data.status;
                 statusEl.innerText = status;
 
-                // Update UI based on AI prediction
                 if (status === 'Empty') {
                     bodyEl.style.backgroundColor = 'var(--bg-empty)';
                     bodyEl.classList.remove('alert-mode');
                     iconEl.innerText = '🛡️';
-                } 
+                }
                 else if (status === 'Walking') {
                     bodyEl.style.backgroundColor = 'var(--bg-walking)';
                     bodyEl.classList.remove('alert-mode');
                     iconEl.innerText = '🚶‍♂️';
-                } 
+                }
                 else if (status === 'Falling') {
                     bodyEl.classList.add('alert-mode');
                     iconEl.innerText = '🚨';
@@ -175,8 +169,7 @@
             }
         }
 
-        // Fetch every 300ms for real-time feel
         setInterval(fetchStatus, 300);
-    </script>
+</script>
 </body>
 </html>

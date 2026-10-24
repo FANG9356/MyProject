@@ -4,19 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>เข้าสู่ระบบ (Admin Panel)</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com">
+</script>
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="https://rms.utc.ac.th/files/01013_1809190994117.png">
-    <style>body { font-family: 'Sarabun', sans-serif; }</style>
+    <style>body { font-family: 'Sarabun', sans-serif; }
+</style>
 
-    <!-- Security -->
-    <script src="auth.js"></script>
-    <script>blockDevTools();</script>
+    
+    <script src="auth.js">
+</script>
+    <script>blockDevTools();
+</script>
 
 </head>
 <body class="bg-gray-100 p-4 md:p-8 min-h-screen flex flex-col font-sans">
     
-    <!-- Navigation Bar -->
+    
     <div class="max-w-7xl mx-auto w-full shrink-0">
         <nav class="bg-white shadow-sm border border-gray-200 mb-8 rounded-2xl px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
             <div class="flex items-center space-x-3">
@@ -32,7 +36,7 @@
         </nav>
     </div>
 
-    <!-- Login Screen -->
+    
     <div class="flex-1 flex items-center justify-center transition-opacity duration-300">
         <div class="bg-white p-8 md:p-10 rounded-3xl shadow-sm border border-gray-200 w-full max-w-md text-center relative overflow-hidden">
             <div class="absolute top-0 left-0 w-full h-2 bg-indigo-500"></div>
@@ -51,9 +55,7 @@
         </div>
     </div>
 
-    <script>
-        // Redirect to native dashboard if already logged in and session is valid
-        if (sessionStorage.getItem('adminName')) {
+    <script>if (sessionStorage.getItem('adminName')) {
             const loginTimestamp = sessionStorage.getItem('loginTimestamp');
             if (loginTimestamp && Date.now() - parseInt(loginTimestamp) <= 30 * 60 * 1000) {
                 window.location.href = 'data.html';
@@ -71,7 +73,7 @@
             e.preventDefault();
             const user = document.getElementById('admin-user').value.trim();
             const pass = document.getElementById('admin-pass').value;
-            
+
             loginBtn.innerHTML = 'กำลังตรวจสอบ...';
             loginBtn.disabled = true;
 
@@ -82,7 +84,7 @@
                     body: JSON.stringify({ username: user, password: pass })
                 });
                 const data = await res.json();
-                
+
                 if (data.success) {
                     sessionStorage.setItem('adminName', data.name);
                     sessionStorage.setItem('loginTimestamp', Date.now());
@@ -100,6 +102,6 @@
                 loginBtn.disabled = false;
             }
         });
-    </script>
+</script>
 </body>
 </html>

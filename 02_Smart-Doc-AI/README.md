@@ -1,7 +1,7 @@
 # 📝 Smart Doc AI — Automated Academic Research & Document Generator
 
 > **หมวดหมู่:** GenAI Agent / Full-Stack Web Application  
-> **ผู้พัฒนา:** ภคพล (ฟาง) / Phakaphon  
+> **ผู้พัฒนา:** Phakhaphon Sukmee  
 
 ---
 

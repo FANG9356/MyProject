@@ -124,7 +124,7 @@ def publish(tip: dict[str, Any]) -> None:
     with subscriber_lock:
         events = list(subscribers)
     for event in events:
-        event.tip = tip  # type: ignore[attr-defined]
+        event.tip = tip
         event.set()
 
 

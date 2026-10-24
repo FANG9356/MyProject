@@ -1,5 +1,5 @@
 # 🚀 คลังผลงานด้านวิศวกรรมคอมพิวเตอร์และซอฟต์แวร์ (Comprehensive Engineering Portfolio)
-> **เจ้าของผลงาน:** ภคพล / Phakaphon  
+> **ผู้พัฒนา:** Phakhaphon Sukmee  
 > **GitHub Repository:** [FANG9356/MyProject](https://github.com/FANG9356/MyProject)  
 > **สถานะชุดทดสอบระบบ:** `9/9 Projects Passed (100% Operational)` ✅  
 > **อัปเดตล่าสุด:** 24 ตุลาคม 2569  
@@ -435,7 +435,7 @@ flowchart TD
 ---
 
 ## 👨‍💻 ข้อมูลผู้พัฒนา (Author)
-* **ชื่อ-นามสกุล:** ภคพล (ฟาง) / Phakaphon
+* **ชื่อ-นามสกุล:** Phakhaphon Sukmee
 * **GitHub Profile:** [@FANG9356](https://github.com/FANG9356)
 * **Repository หลัก:** [https://github.com/FANG9356/MyProject](https://github.com/FANG9356/MyProject)
 * **ทักษะความเชี่ยวชาญ:** Artificial Intelligence, Computer Vision, IoT & RF Hardware Sensing, Full-Stack Development (React, FastAPI, Node.js), DevOps & Linux Server Infrastructure

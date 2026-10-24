@@ -18,4 +18,4 @@
 ```
 
 ---
-*จัดเตรียมข้อมูลสำหรับ Portfolio — Phakaphon*
+*จัดเตรียมข้อมูลสำหรับ Portfolio — Phakhaphon Sukmee*

@@ -18,7 +18,6 @@ function authenticateToken(req, res, next) {
     });
 }
 
-
 const app = express();
 const PORT = process.env.PORT || 3000;
 const DB_PATH = process.env.DB_PATH || './database.sqlite';
@@ -27,7 +26,6 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '../frontend')));
 
-// Initialize SQLite database
 const db = new sqlite3.Database(DB_PATH, (err) => {
     if (err) {
         console.error('Error connecting to database:', err.message);
@@ -88,13 +86,12 @@ function initDb() {
             value TEXT
         )`);
 
-        // Insert default data if empty
         db.get('SELECT COUNT(*) as count FROM admins', (err, row) => {
             if (row.count === 0) {
                 db.run(`INSERT INTO admins (username, password, name) VALUES ('admin', 'admin', 'Administrator')`);
             }
         });
-        
+
         db.get('SELECT COUNT(*) as count FROM systemStatus', (err, row) => {
             if (row.count === 0) {
                 db.run(`INSERT INTO systemStatus (key, value) VALUES ('registrationOpen', 1)`);
@@ -115,9 +112,6 @@ function initDb() {
     });
 }
 
-// --- API Endpoints ---
-
-// 1. Members
 app.get('/api/members', authenticateToken, (req, res) => {
     db.all('SELECT * FROM members', [], (err, rows) => {
         if (err) return res.status(500).json({ error: err.message });
@@ -146,8 +140,6 @@ app.delete('/api/members/:id', authenticateToken, (req, res) => {
     });
 });
 
-
-// 1.5 Club Counts (Public)
 app.get('/api/clubCounts', (req, res) => {
     db.all('SELECT club, COUNT(*) as count FROM members GROUP BY club', [], (err, rows) => {
         if (err) return res.status(500).json({ error: err.message });
@@ -157,11 +149,10 @@ app.get('/api/clubCounts', (req, res) => {
     });
 });
 
-// 1.6 Public Members (แสดงชื่อ+ชมรม ไม่มีรหัสนักศึกษา)
 app.get('/api/publicMembers', (req, res) => {
     db.all('SELECT titlePrefix, name, grade, major, club FROM members', [], (err, rows) => {
         if (err) return res.status(500).json({ error: err.message });
-        // Group by club
+
         const result = {};
         rows.forEach(r => {
             if (!result[r.club]) result[r.club] = [];
@@ -171,7 +162,6 @@ app.get('/api/publicMembers', (req, res) => {
     });
 });
 
-// 2. Clubs
 app.get('/api/clubs', (req, res) => {
     db.all('SELECT * FROM clubs', [], (err, rows) => {
         if (err) return res.status(500).json({ error: err.message });
@@ -203,7 +193,6 @@ app.delete('/api/clubs/:name', authenticateToken, (req, res) => {
     });
 });
 
-// 3. Club Quotas
 app.get('/api/clubQuotas', (req, res) => {
     db.all('SELECT * FROM clubQuotas', [], (err, rows) => {
         if (err) return res.status(500).json({ error: err.message });
@@ -225,7 +214,6 @@ app.post('/api/clubQuotas', authenticateToken, (req, res) => {
     );
 });
 
-// 4. Activities
 app.get('/api/activities', (req, res) => {
     db.all('SELECT * FROM activities', [], (err, rows) => {
         if (err) return res.status(500).json({ error: err.message });
@@ -258,7 +246,6 @@ app.delete('/api/activities/:id', authenticateToken, (req, res) => {
     });
 });
 
-// 5. Attendance
 app.get('/api/attendance', (req, res) => {
     db.all('SELECT * FROM attendance', [], (err, rows) => {
         if (err) return res.status(500).json({ error: err.message });
@@ -282,8 +269,8 @@ app.get('/api/attendance/:activityId', (req, res) => {
 
 app.get('/api/publicAttendance/:activityId', (req, res) => {
     db.all(`
-        SELECT m.titlePrefix, m.name, m.grade, m.major, m.club, COALESCE(a.status, 'ไม่มา') as status 
-        FROM members m 
+        SELECT m.titlePrefix, m.name, m.grade, m.major, m.club, COALESCE(a.status, 'ไม่มา') as status
+        FROM members m
         LEFT JOIN attendance a ON m.studentId = a.studentId AND a.activityId = ?
     `, req.params.activityId, (err, rows) => {
         if (err) return res.status(500).json({ error: err.message });
@@ -315,7 +302,6 @@ app.post('/api/attendance/:activityId/:studentId', authenticateToken, (req, res)
     );
 });
 
-// 6. System Status
 app.get('/api/systemStatus', (req, res) => {
     db.get('SELECT * FROM systemStatus WHERE key = ?', ['registrationOpen'], (err, row) => {
         if (err) return res.status(500).json({ error: err.message });
@@ -335,7 +321,6 @@ app.post('/api/systemStatus', authenticateToken, (req, res) => {
     );
 });
 
-// 7. Admins
 app.post('/api/login', (req, res) => {
     const { username, password } = req.body;
     db.get('SELECT * FROM admins WHERE username = ? AND password = ?', [username, password], (err, row) => {
@@ -377,9 +362,6 @@ app.delete('/api/admins/:username', authenticateToken, (req, res) => {
     });
 });
 
-// No catch-all route needed for basic static files
-
-// 7. Settings (Global configuration like grades and majors)
 app.get('/api/settings', (req, res) => {
     db.all('SELECT * FROM settings', [], (err, rows) => {
         if (err) return res.status(500).json({ error: err.message });
@@ -392,8 +374,8 @@ app.get('/api/settings', (req, res) => {
 app.post('/api/settings', authenticateToken, (req, res) => {
     const { key, value } = req.body;
     db.run(`INSERT INTO settings (key, value) VALUES (?, ?)
-            ON CONFLICT(key) DO UPDATE SET value = excluded.value`, 
-        [key, JSON.stringify(value)], 
+            ON CONFLICT(key) DO UPDATE SET value = excluded.value`,
+        [key, JSON.stringify(value)],
         function(err) {
             if (err) return res.status(500).json({ error: err.message });
             res.json({ success: true });
@@ -401,11 +383,9 @@ app.post('/api/settings', authenticateToken, (req, res) => {
     );
 });
 
-// 8. System Stats & Backup (Super Admin)
 app.get('/api/systemStats', authenticateToken, (req, res) => {
     let stats = {};
-    
-    // Get file size
+
     try {
         const statsObj = fs.statSync(DB_PATH);
         stats.dbSizeBytes = statsObj.size;

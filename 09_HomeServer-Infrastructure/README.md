@@ -1,7 +1,7 @@
 # 🌐 Home Server & DevOps Infrastructure
 
 > **หมวดหมู่:** DevOps, Infrastructure as Code & Private Cloud  
-> **ผู้พัฒนา:** ภคพล / Phakaphon  
+> **ผู้พัฒนา:** Phakhaphon Sukmee  
 
 ---
 

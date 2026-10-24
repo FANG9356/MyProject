@@ -1,7 +1,7 @@
 # 👥 Club Member Registration & Attendance Management System
 
 > **หมวดหมู่:** Full-Stack Web Application & Educational Management  
-> **ผู้พัฒนา:** ภคพล (ฟาง) / Phakaphon  
+> **ผู้พัฒนา:** Phakhaphon Sukmee  
 
 ---
 

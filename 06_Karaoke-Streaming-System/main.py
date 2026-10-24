@@ -18,7 +18,7 @@ class SharedState:
     theme_rgb = "0, 113, 227"
     current_song = "🎵 Smart Karaoke Studio"
     next_song = "-"
-    is_playing = False # 👈 สถานะ Play สำหรับรีโมท iPhone
+    is_playing = False
     thumbnail = "" 
     current_time = 0.0
     duration = 0.0
@@ -76,7 +76,6 @@ async def search_song(q: str):
     try:
         command = ["yt-dlp", "--extractor-args", "youtube:player_client=ios", f"ytsearch20:{q}", "--dump-json", "--flat-playlist", "--quiet"]
         
-        # 🔥 เปลี่ยนมาใช้ asyncio ไม่ให้เซิร์ฟเวอร์ค้างตอนค้นหาเพลง
         process = await asyncio.create_subprocess_exec(
             *command,
             stdout=asyncio.subprocess.PIPE,
@@ -119,7 +118,6 @@ async def add_song(url: str, title: str):
                 url
             ]
             
-            # 🔥 เปลี่ยนมาใช้ asyncio เซิร์ฟเวอร์จะได้เอาเวลาไปรับคำสั่งรีโมทต่อได้
             process = await asyncio.create_subprocess_exec(
                 *command,
                 stdout=asyncio.subprocess.PIPE,
@@ -127,7 +125,6 @@ async def add_song(url: str, title: str):
             )
             stdout, stderr = await process.communicate()
             
-            # ถ้าโหลดพัง ปริ้นท์ Error สีแดงๆ
             if process.returncode != 0:
                 print(f"\n======================================")
                 print(f"โหลดล้มเหลว!")

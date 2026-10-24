@@ -2,7 +2,7 @@ let allMembers = [];
 let allActivities = [];
 let currentClub = '';
 let currentActivityId = null;
-let dynamicClubList = []; 
+let dynamicClubList = [];
 
 const clubSelect = document.getElementById('club-select');
 const activitySelect = document.getElementById('activity-select');
@@ -15,16 +15,16 @@ async function fetchAllData() {
     try {
         const clubsRes = await fetch('/api/clubs');
         const clubsData = await clubsRes.json();
-        
+
         dynamicClubList = Object.keys(clubsData).sort((a, b) => {
             const activeA = clubsData[a] ? 1 : 0;
             const activeB = clubsData[b] ? 1 : 0;
             if (activeA !== activeB) return activeB - activeA;
             return a.localeCompare(b);
         });
-        
+
         const currentSelected = clubSelect.value;
-        clubSelect.innerHTML = `<option value="">-- เลือกชมรม --</option>` + 
+        clubSelect.innerHTML = `<option value="">-- เลือกชมรม --</option>` +
             dynamicClubList.map(club => {
                 if (clubsData[club]) {
                     return `<option value="${club}" class="text-gray-800">${club}</option>`;
@@ -32,7 +32,7 @@ async function fetchAllData() {
                     return `<option value="${club}" class="text-rose-500 bg-rose-50">${club} (ปิดชั่วคราว)</option>`;
                 }
             }).join('');
-            
+
         if (dynamicClubList.includes(currentSelected)) {
             clubSelect.value = currentSelected;
         }
@@ -61,12 +61,12 @@ function renderActivities() {
         const formattedDate = act.date ? new Date(act.date).toLocaleDateString('th-TH') : '';
         return `<option value="${act.id}">${act.activityName} (${formattedDate})</option>`;
     }).join('');
-    
+
     if (!filteredActivities.find(act => String(act.id) === String(currentActivityId))) {
         currentActivityId = null;
     }
     activitySelect.value = currentActivityId || '';
-    
+
     if (currentActivityId) {
         deleteActivityBtn.classList.remove('hidden');
     } else {
@@ -80,11 +80,11 @@ async function renderAttendanceList() {
         return;
     }
     const clubMembers = allMembers.filter(member => member.club === currentClub);
-    
+
     try {
         const res = await fetch(`/api/attendance/${currentActivityId}`);
         const attendanceData = await res.json();
-        
+
         const memberHTML = clubMembers.sort((a, b) => a.studentId.localeCompare(b.studentId)).map(member => {
             const status = attendanceData[member.studentId] || 'ไม่มา';
             return `
@@ -146,9 +146,9 @@ window.deleteActivity = async function() {
 
 clubSelect.addEventListener('change', () => {
     currentClub = clubSelect.value;
-    currentActivityId = null; 
-    renderActivities(); 
-    renderAttendanceList(); 
+    currentActivityId = null;
+    renderActivities();
+    renderAttendanceList();
 });
 
 activitySelect.addEventListener('change', () => {
@@ -172,8 +172,8 @@ window.openActivityModal = function() {
 activityForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const activityName = document.getElementById('activity-name').value;
-    const activityDate = document.getElementById('activity-date').value;  
-    
+    const activityDate = document.getElementById('activity-date').value;
+
     if (activityName && activityDate && currentClub) {
         try {
             await fetch('/api/activities', {
@@ -197,13 +197,11 @@ activityForm.addEventListener('submit', async (e) => {
     }
 });
 
-// === Auth & Security (using auth.js loaded in attendance.html) ===
 const adminName = sessionStorage.getItem('adminName');
 checkSession('admin.html');
 if (adminName) document.getElementById('admin-name-display').innerText = 'ผู้ใช้งาน: ' + adminName;
 startSessionTimer('admin.html');
 
-// Auto-inject token in all /api/ requests
 const _origFetch = window.fetch;
 window.fetch = async function(resource, config) {
     const tok = sessionStorage.getItem('token');

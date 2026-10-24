@@ -1,7 +1,7 @@
 # ⏱️ AdGuard Time Portal — Internet Access & Quota Control
 
 > **หมวดหมู่:** Network Administration & API Automation  
-> **ผู้พัฒนา:** ภคพล (ฟาง) / Phakaphon  
+> **ผู้พัฒนา:** Phakhaphon Sukmee  
 
 ---
 

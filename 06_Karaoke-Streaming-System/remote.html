@@ -6,8 +6,7 @@
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Discovery Remote</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;800&display=swap');
+    <style>@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;800&display=swap');
 
         :root {
             --theme-rgb: 0, 113, 227;
@@ -66,8 +65,6 @@
             border: 1px solid rgba(255, 255, 255, 0.14);
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.15);
         }
-
-
 
         .album-art {
             width: 170px;
@@ -206,7 +203,6 @@
             box-shadow: 0 0 40px rgba(var(--theme-rgb), 1);
         }
 
-        /* 🔥 เปลี่ยนจากปุ่มเป็น ดีไซน์หลอดเสียงสุดหรู */
         .vol-slider-container {
             display: flex;
             align-items: center;
@@ -246,7 +242,7 @@
             cursor: pointer;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
         }
-    </style>
+</style>
 </head>
 
 <body>
@@ -293,8 +289,7 @@
         </div>
     </div>
 
-    <script>
-        let visualVolume = 1;
+    <script>let visualVolume = 1;
         let targetVolume = 1;
         let currentRGB = [0, 113, 227]; let targetRGB = [0, 113, 227];
         function smoothColorLoop() {
@@ -316,7 +311,6 @@
             }
         }
 
-        // 🔥 ฟังก์ชันรับค่าจากหลอดเสียง
         let isDraggingVol = false;
         function slideVolume(val) {
             fetch(`/remote/send?cmd=setvol:${val}`);
@@ -338,7 +332,7 @@
 
                 const albumArt = document.getElementById('albumArt');
                 if (data.thumbnail && data.thumbnail !== "") {
-                    // if (albumArt.src !== data.thumbnail) albumArt.src = data.thumbnail;
+
                 } else {
                     if (albumArt.src !== "https://cdn-icons-png.freepik.com/512/1194/1194495.png") {
                         albumArt.src = "https://cdn-icons-png.freepik.com/512/1194/1194495.png";
@@ -371,21 +365,19 @@
                     albumArt.classList.remove('is-playing');
                 }
 
-                // 🔥 ซิงค์หลอดเสียงจาก Mac ลงมาที่มือถือ
                 if (data.volume !== undefined && !isDraggingVol) {
                     targetVolume = parseFloat(data.volume);
                 }
             } catch (e) { }
         }, 1000);
 
-        // เอาไปใส่ใน remote.html (ฝั่งมือถือ)
         setInterval(async () => {
             try {
-                const res = await fetch('/state/get'); // ถามสถานะล่าสุดจาก Server
+                const res = await fetch('/state/get');
                 const data = await res.json();
 
                 const slider = document.getElementById('volumeSlider');
-                // ถ้าสถานะมีค่า volume และเราไม่ได้กำลังเอานิ้วแตะหลอดสไลด์อยู่ ให้มันเลื่อนตาม
+
                 if (data.volume !== undefined && document.activeElement !== slider) {
                     slider.value = data.volume;
                 }
@@ -401,7 +393,7 @@
             requestAnimationFrame(smoothVolumeLoop);
         }
         requestAnimationFrame(smoothVolumeLoop);
-    </script>
+</script>
 </body>
 
 </html>

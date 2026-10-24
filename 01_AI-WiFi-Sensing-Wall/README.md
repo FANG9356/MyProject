@@ -1,7 +1,7 @@
 # 📡 AI Wi-Fi Sensing & Activity Recognition (Wall Penetration)
 
 > **หมวดหมู่:** Artificial Intelligence / IoT & RF Hardware Sensing  
-> **ผู้พัฒนา:** ภคพล (ฟาง) / Phakaphon  
+> **ผู้พัฒนา:** Phakhaphon Sukmee  
 
 ---
 

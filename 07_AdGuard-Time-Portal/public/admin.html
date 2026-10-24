@@ -47,15 +47,14 @@
                         </tr>
                     </thead>
                     <tbody id="pins-table-body">
-                        <!-- Rows will be populated here -->
+                        
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 
-    <script>
-        const durationSelect = document.getElementById('duration-select');
+    <script>const durationSelect = document.getElementById('duration-select');
         const generateBtn = document.getElementById('generate-btn');
         const statusMsg = document.getElementById('status-msg');
         const tableBody = document.getElementById('pins-table-body');
@@ -79,11 +78,11 @@
             try {
                 const res = await fetch('/api/pins');
                 const data = await res.json();
-                
+
                 tableBody.innerHTML = '';
                 data.pins.forEach(p => {
                     const tr = document.createElement('tr');
-                    
+
                     let actionBtn = '-';
                     let statusBadge = '';
 
@@ -115,7 +114,7 @@
 
         async function revokePin(pin) {
             if (!confirm(`คุณแน่ใจหรือไม่ที่จะยกเลิกรหัส ${pin} ? การทำเช่นนี้จะตัดเน็ตเครื่องเป้าหมายทันที`)) return;
-            
+
             try {
                 const res = await fetch('/api/revoke', {
                     method: 'POST',
@@ -188,11 +187,9 @@
             }
         });
 
-        // Initial fetch
         fetchPins();
-        
-        // Auto refresh every 5 seconds
+
         setInterval(fetchPins, 5000);
-    </script>
+</script>
 </body>
 </html>

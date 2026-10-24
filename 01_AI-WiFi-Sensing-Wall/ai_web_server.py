@@ -7,7 +7,6 @@ import pandas as pd
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from collections import Counter
 
-# 1. โหลดสมองกล AI ที่เทรนไว้แล้ว
 try:
     print("🧠 กำลังปลุกสมองกล AI...")
     ai_model = joblib.load('ai_model.pkl')
@@ -22,7 +21,6 @@ ESP32_PING_PORT = 8081
 UDP_IP = "0.0.0.0"
 UDP_PORT = 8080
 
-# เก็บประวัติคำทำนาย 15 ครั้งล่าสุด เพื่อให้ผลลัพธ์นิ่งขึ้น (Smooth Filter)
 prediction_history = []
 current_status = "Waiting for data..."
 
@@ -51,16 +49,13 @@ def udp_listener():
                 amp_values = [float(x) for x in amp_part.split(',') if x.strip()]
                 
                 if len(amp_values) == 64:
-                    # นำคลื่น 64 เส้น ส่งให้ AI ทายผลทันที
                     df = pd.DataFrame([amp_values], columns=[f"sub_{i}" for i in range(64)])
                     pred = ai_model.predict(df)[0]
                     
-                    # เก็บประวัติเพื่อโหวตหาค่าที่เสถียรที่สุด
                     prediction_history.append(pred)
                     if len(prediction_history) > 15:
                         prediction_history.pop(0)
                     
-                    # นับโหวต
                     most_common = Counter(prediction_history).most_common(1)[0][0]
                     current_status = most_common
         except Exception:

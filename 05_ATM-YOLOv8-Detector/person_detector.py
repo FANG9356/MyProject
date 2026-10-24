@@ -6,9 +6,6 @@ import os
 from datetime import datetime
 import numpy as np
 
-# =================================================================
-# การตั้งค่า (Settings)
-# =================================================================
 CAMERA_SOURCES = [0] 
 LOG_FILE = "detection_log.json"
 SNAPSHOT_DIR = "snapshots"
@@ -16,20 +13,15 @@ SNAPSHOT_DIR = "snapshots"
 if not os.path.exists(SNAPSHOT_DIR):
     os.makedirs(SNAPSHOT_DIR)
 
-# =================================================================
-# ตัวแปรสำหรับระบบเมาส์ (Globals)
-# =================================================================
-# สำหรับวาดห้องใหม่
 drawing = False
 current_cam_drawing = None
 temp_rect = None 
 
-# สำหรับย้ายห้องเดิม
 moving_zone = None
 drag_offset_x = 0
 drag_offset_y = 0
 
-zones = {} # { '0': { 'Room_1': (x1,y1,x2,y2), ... } }
+zones = {}
 
 def mouse_callback(event, x, y, flags, param):
     global drawing, temp_rect, current_cam_drawing, zones
@@ -38,7 +30,6 @@ def mouse_callback(event, x, y, flags, param):
     cam_name = param['cam_name']
     
     if event == cv2.EVENT_LBUTTONDOWN:
-        # 1. เช็คก่อนว่าคลิก "โดน" ห้องไหนที่วาดไว้แล้วหรือเปล่า
         clicked_zone = None
         for z_name, (zx1, zy1, zx2, zy2) in zones.get(cam_name, {}).items():
             if zx1 <= x <= zx2 and zy1 <= y <= zy2:
@@ -46,22 +37,18 @@ def mouse_callback(event, x, y, flags, param):
                 break
                 
         if clicked_zone:
-            # 1.1 ถ้าคลิกโดนห้องเก่า -> เริ่มเข้าโหมด "ย้ายห้อง"
             moving_zone = clicked_zone
             current_cam_drawing = cam_name
             zx1, zy1, zx2, zy2 = zones[cam_name][clicked_zone]
-            # จดจำระยะห่างระหว่างจุดที่คลิก กับ มุมซ้ายบนของกล่อง
             drag_offset_x = x - zx1
             drag_offset_y = y - zy1
         else:
-            # 1.2 ถ้าคลิกพื้นที่ว่าง -> เริ่มเข้าโหมด "วาดห้องใหม่"
             drawing = True
             temp_rect = [x, y, x, y]
             current_cam_drawing = cam_name
             
     elif event == cv2.EVENT_MOUSEMOVE:
         if moving_zone and current_cam_drawing == cam_name:
-            # อัปเดตพิกัดห้องให้วิ่งตามเมาส์
             zx1, zy1, zx2, zy2 = zones[cam_name][moving_zone]
             w = zx2 - zx1
             h = zy2 - zy1
@@ -71,18 +58,15 @@ def mouse_callback(event, x, y, flags, param):
             zones[cam_name][moving_zone] = (new_x1, new_y1, new_x1 + w, new_y1 + h)
             
         elif drawing and current_cam_drawing == cam_name:
-            # อัปเดตเส้นกรอบชั่วคราวตอนลากวาดห้องใหม่
             temp_rect[2] = x
             temp_rect[3] = y
             
     elif event == cv2.EVENT_LBUTTONUP:
         if moving_zone and current_cam_drawing == cam_name:
-            # จบการย้ายห้อง
             moving_zone = None
             current_cam_drawing = None
             
         elif drawing and current_cam_drawing == cam_name:
-            # จบการวาดห้องใหม่ บันทึกเป็นโซน
             drawing = False
             current_cam_drawing = None
             temp_rect[2] = x
@@ -101,9 +85,6 @@ def mouse_callback(event, x, y, flags, param):
                 
             temp_rect = None
 
-# =================================================================
-# ฟังก์ชันสำหรับจัดการไฟล์ JSON
-# =================================================================
 def load_log():
     if os.path.exists(LOG_FILE):
         try:
@@ -120,9 +101,6 @@ def save_log(data):
 def get_current_time():
     return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-# =================================================================
-# โปรแกรมหลัก
-# =================================================================
 def main():
     print("=" * 50)
     print("ระบบตรวจจับบุคคล (Multi-Zone + Snapshots + Drag/Drop)")
@@ -186,35 +164,28 @@ def main():
             current_ids_in_zones = {z: set() for z in cam_zones.keys()}
             annotated_frame = r.plot()
             
-            # --- วาดโซนทั้งหมดบนจอ ---
             for z_name, (zx1, zy1, zx2, zy2) in cam_zones.items():
-                # เปลี่ยนสีเส้นเป็นสีชมพู จะได้เห็นชัดๆ เวลาลากย้าย
                 cv2.rectangle(annotated_frame, (zx1, zy1), (zx2, zy2), (255, 105, 180), 2)
                 cv2.putText(annotated_frame, z_name, (zx1, zy1 - 10), 
                             cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 105, 180), 2)
                 if z_name not in active_persons[cam_name]:
                     active_persons[cam_name][z_name] = {}
                     
-            # --- วาดโซนชั่วคราว (ตอนกำลังสร้างห้องใหม่) ---
             if drawing and current_cam_drawing == cam_name and temp_rect is not None:
                 cv2.rectangle(annotated_frame, (temp_rect[0], temp_rect[1]), (temp_rect[2], temp_rect[3]), (0, 255, 255), 2)
             
-            # --- ตรวจจับคนเข้าโซน ---
             if r.boxes.id is not None:
                 track_ids = r.boxes.id.int().cpu().tolist()
                 boxes = r.boxes.xyxy.cpu().numpy()
                 
                 for i, track_id in enumerate(track_ids):
                     x1, y1, x2, y2 = boxes[i]
-                    # เปลี่ยนจุด Tracking จาก "กลางอก" เป็น "ปลายเท้า" (Bottom-Center)
-                    # สำคัญมากสำหรับกล้องทางเดินยาวๆ เพื่อแก้ปัญหาคนเดินผ่านบังเอิญทับโซน
                     cx = int((x1 + x2) / 2)
-                    cy = int(y2) # ใช้พิกัด y ด้านล่างสุดของกรอบ (ปลายเท้า)
+                    cy = int(y2)
                     
                     cv2.circle(annotated_frame, (cx, cy), 6, (0, 0, 255), -1)
                     
                     for z_name, (zx1, zy1, zx2, zy2) in cam_zones.items():
-                        # เช็คว่า "ปลายเท้า" เหยียบเข้าไปในโซนหรือไม่
                         in_zone = (zx1 <= cx <= zx2) and (zy1 <= cy <= zy2)
                         
                         if in_zone:
@@ -238,7 +209,6 @@ def main():
                                     "snapshot": snapshot_filename
                                 }
 
-            # --- หาคนที่เดินออกจากโซน ---
             for z_name in cam_zones.keys():
                 known_ids = set(active_persons[cam_name][z_name].keys())
                 disappeared_ids = known_ids - current_ids_in_zones[z_name]

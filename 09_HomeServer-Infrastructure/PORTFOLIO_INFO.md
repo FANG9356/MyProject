@@ -16,4 +16,4 @@ docker compose up -d (เข้า Dashboard ที่ http://localhost:8001)
 ```
 
 ---
-*จัดเตรียมข้อมูลสำหรับ Portfolio — Phakaphon*
+*จัดเตรียมข้อมูลสำหรับ Portfolio — Phakhaphon Sukmee*

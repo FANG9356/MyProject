@@ -1,7 +1,7 @@
 # 💻 System Monitor Station — Standalone Desktop System Monitor
 
 > **หมวดหมู่:** Desktop Application & System Utilities  
-> **ผู้พัฒนา:** ภคพล / Phakaphon  
+> **ผู้พัฒนา:** Phakhaphon Sukmee  
 
 ---
 

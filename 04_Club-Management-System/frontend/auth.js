@@ -1,16 +1,5 @@
-/**
- * auth.js - Shared auth utilities for admin pages
- * ใช้ร่วมกันทุกหน้าที่ต้องล็อกอิน
- */
+const SESSION_DURATION = 30 * 60 * 1000;
 
-const SESSION_DURATION = 30 * 60 * 1000; // 30 minutes
-
-/**
- * ตรวจสอบ Session และ Token
- * ถ้าหมดอายุหรือไม่มีให้กลับไปหน้า login
- * @param {string} loginPath - path ของหน้า login (default: 'admin.html')
- * @returns {string|null} token หรือ null
- */
 function checkSession(loginPath = 'admin.html') {
     const adminName = sessionStorage.getItem('adminName');
     const loginTimestamp = sessionStorage.getItem('loginTimestamp');
@@ -30,9 +19,6 @@ function checkSession(loginPath = 'admin.html') {
     return token;
 }
 
-/**
- * ล้าง Session แล้ว redirect ไปหน้า login
- */
 function clearSession(loginPath = 'admin.html') {
     sessionStorage.removeItem('adminName');
     sessionStorage.removeItem('loginTimestamp');
@@ -41,9 +27,6 @@ function clearSession(loginPath = 'admin.html') {
     window.location.href = loginPath;
 }
 
-/**
- * สร้าง Headers สำหรับ API request พร้อม JWT Token
- */
 function authHeaders() {
     const token = sessionStorage.getItem('token');
     return {
@@ -52,10 +35,6 @@ function authHeaders() {
     };
 }
 
-/**
- * fetch พร้อม auth token อัตโนมัติ
- * ถ้าได้ 401/403 กลับ login ทันที
- */
 async function authFetch(url, options = {}, loginPath = 'admin.html') {
     const token = sessionStorage.getItem('token');
     const mergedOptions = {
@@ -77,10 +56,6 @@ async function authFetch(url, options = {}, loginPath = 'admin.html') {
     return res;
 }
 
-/**
- * เริ่ม Session Timer (auto-logout เมื่อครบเวลา)
- * @param {string} loginPath
- */
 function startSessionTimer(loginPath = 'admin.html') {
     const loginTimestamp = sessionStorage.getItem('loginTimestamp');
     if (!loginTimestamp) return;
@@ -96,19 +71,15 @@ function startSessionTimer(loginPath = 'admin.html') {
     setTimeout(() => clearSession(loginPath), timeRemaining);
 }
 
-/**
- * บล็อค F12, Ctrl+Shift+I, คลิกขวา
- */
 function blockDevTools() {
     document.addEventListener('contextmenu', e => e.preventDefault());
     document.addEventListener('keydown', e => {
         if (e.key === 'F12') { e.preventDefault(); return false; }
         if (e.ctrlKey && e.shiftKey && ['I', 'J', 'C', 'i', 'j', 'c'].includes(e.key)) { e.preventDefault(); return false; }
         if (e.ctrlKey && ['u', 'U'].includes(e.key)) { e.preventDefault(); return false; }
-        if (e.ctrlKey && e.shiftKey && e.key === 'K') { e.preventDefault(); return false; } // Firefox
+        if (e.ctrlKey && e.shiftKey && e.key === 'K') { e.preventDefault(); return false; }
     });
 
-    // ตรวจจับการเปิด DevTools จากการเปลี่ยน window size
     let devtoolsOpen = false;
     const threshold = 160;
     setInterval(() => {

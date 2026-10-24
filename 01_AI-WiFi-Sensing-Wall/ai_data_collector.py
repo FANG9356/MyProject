@@ -4,7 +4,6 @@ import threading
 import sys
 import time
 
-# IP ของบอร์ด ESP32 ที่ทำหน้าที่เป็นเสา Wi-Fi (AP)
 ESP32_IP = "192.168.4.1" 
 ESP32_PING_PORT = 8081
 
@@ -26,7 +25,7 @@ def radar_pinger():
     while True:
         try:
             sock.sendto(b"PING", (ESP32_IP, ESP32_PING_PORT))
-            time.sleep(0.02) # 50Hz
+            time.sleep(0.02)
         except Exception:
             time.sleep(1)
 
@@ -53,7 +52,6 @@ def udp_listener():
 def main():
     global recording, current_label, dataset
     
-    # เริ่มการทำงานของ 2 เส้นประสาท (ยิงคลื่น และ รับคลื่น)
     threading.Thread(target=radar_pinger, daemon=True).start()
     threading.Thread(target=udp_listener, daemon=True).start()
     

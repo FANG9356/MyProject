@@ -1,7 +1,7 @@
 # 👁️ ATM Security & Person Detection System (Computer Vision)
 
 > **หมวดหมู่:** Computer Vision & Smart Surveillance  
-> **ผู้พัฒนา:** ภคพล (ฟาง) / Phakaphon  
+> **ผู้พัฒนา:** Phakhaphon Sukmee  
 
 ---
 

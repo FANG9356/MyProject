@@ -1,7 +1,7 @@
 # 🎤 Smart Karaoke Studio — Self-Hosted Streaming & Mobile Remote Control
 
 > **หมวดหมู่:** Multimedia Server & Distributed Web App  
-> **ผู้พัฒนา:** ภคพล / Phakaphon  
+> **ผู้พัฒนา:** Phakhaphon Sukmee  
 
 ---
 

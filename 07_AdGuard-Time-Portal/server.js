@@ -13,27 +13,24 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Generate a random 6-digit PIN
 function generateRandomPin() {
     return Math.floor(100000 + Math.random() * 900000).toString();
 }
 
-// Ensure PIN is unique
 function generateUniquePin(callback) {
     const pin = generateRandomPin();
     db.get('SELECT id FROM pins WHERE pin = ?', [pin], (err, row) => {
         if (err) return callback(err);
-        if (row) return generateUniquePin(callback); // collision, try again
+        if (row) return generateUniquePin(callback);
         callback(null, pin);
     });
 }
 
-// API: Generate PINs
 app.post('/api/generate', (req, res) => {
     const { count = 1, duration_hours = 1 } = req.body;
     let generated = 0;
     let pins = [];
-    
+
     const generateNext = () => {
         if (generated >= count) {
             return res.json({ success: true, pins });
@@ -51,7 +48,6 @@ app.post('/api/generate', (req, res) => {
     generateNext();
 });
 
-// API: Unlock Internet
 app.post('/api/unlock', (req, res) => {
     const { pin } = req.body;
     if (!pin) return res.status(400).json({ error: 'PIN is required' });
@@ -64,11 +60,11 @@ app.post('/api/unlock', (req, res) => {
         const now = Date.now();
         const expires_at = now + (row.duration_hours * 60 * 60 * 1000);
 
-        db.run('UPDATE pins SET is_used = 1, used_at = ?, expires_at = ? WHERE id = ?', 
-            [now, expires_at, row.id], 
+        db.run('UPDATE pins SET is_used = 1, used_at = ?, expires_at = ? WHERE id = ?',
+            [now, expires_at, row.id],
             async (err) => {
                 if (err) return res.status(500).json({ error: 'Database error' });
-                
+
                 await unblockInternet();
                 res.json({ success: true, message: 'ปลดล็อกอินเทอร์เน็ตสำเร็จ!', expires_at });
             }
@@ -76,7 +72,6 @@ app.post('/api/unlock', (req, res) => {
 });
 });
 
-// API: Revoke active session
 app.post('/api/revoke', (req, res) => {
     const { pin } = req.body;
     if (!pin) return res.status(400).json({ error: 'PIN is required' });
@@ -85,17 +80,15 @@ app.post('/api/revoke', (req, res) => {
         if (err) return res.status(500).json({ error: 'Database error' });
         if (!row) return res.status(404).json({ error: 'ไม่พบรหัสที่กำลังใช้งานอยู่' });
 
-        // Set expires_at to now to invalidate it
         db.run('UPDATE pins SET expires_at = ? WHERE id = ?', [Date.now(), row.id], async (err) => {
             if (err) return res.status(500).json({ error: 'Database error' });
-            
+
             await blockInternet();
             res.json({ success: true, message: 'ยกเลิกรหัสสำเร็จและตัดเน็ตแล้ว!' });
         });
     });
 });
 
-// API: Check active session
 app.get('/api/status', (req, res) => {
     const now = Date.now();
     db.get('SELECT pin, expires_at FROM pins WHERE is_used = 1 AND expires_at > ? ORDER BY expires_at DESC LIMIT 1', [now], (err, row) => {
@@ -108,7 +101,6 @@ app.get('/api/status', (req, res) => {
     });
 });
 
-// API: Get all pins (for admin)
 app.get('/api/pins', (req, res) => {
     db.all('SELECT * FROM pins ORDER BY id DESC LIMIT 100', (err, rows) => {
         if (err) return res.status(500).json({ error: 'Database error' });
@@ -116,7 +108,6 @@ app.get('/api/pins', (req, res) => {
     });
 });
 
-// API: Delete a pin
 app.delete('/api/pins/:id', (req, res) => {
     const id = req.params.id;
     db.run('DELETE FROM pins WHERE id = ?', [id], (err) => {
@@ -125,11 +116,9 @@ app.delete('/api/pins/:id', (req, res) => {
     });
 });
 
-// Cron job to check for expiration every 1 minute
 schedule.scheduleJob('* * * * *', () => {
     const now = Date.now();
-    
-    // Auto-delete pins that expired more than 5 minutes ago
+
     const fiveMinsAgo = now - (5 * 60 * 1000);
     db.run('DELETE FROM pins WHERE is_used = 1 AND expires_at <= ?', [fiveMinsAgo], (err) => {
         if (err) console.error('Error auto-deleting pins:', err);
@@ -138,12 +127,11 @@ schedule.scheduleJob('* * * * *', () => {
     db.get('SELECT id FROM pins WHERE is_used = 1 AND expires_at > ?', [now], async (err, row) => {
         if (err) return console.error('Cron DB error:', err);
         if (!row) {
-            // No active session. Ensure blocked.
+
             await blockInternet();
         }
     });
 
-    // Auto-maintain 3 unused pins at all times
     db.get('SELECT count(*) as count FROM pins WHERE is_used = 0', [], (err, unRow) => {
         if (!err && unRow) {
             const needed = 3 - unRow.count;
@@ -164,8 +152,6 @@ schedule.scheduleJob('* * * * *', () => {
     });
 });
 
-
-// Initialize block on startup if no active session
 setTimeout(() => {
     const now = Date.now();
     db.get('SELECT id FROM pins WHERE is_used = 1 AND expires_at > ?', [now], async (err, row) => {

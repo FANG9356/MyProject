@@ -17,13 +17,11 @@ async function blockInternet() {
         const res = await axios.get(`${ADGUARD_URL}/control/filtering/status`, getAxiosConfig());
         let rules = res.data.user_rules || [];
         const blockRule = getBlockRule();
-        
-        // Remove any old/orphaned captive portal rules for this server IP
+
         const cleanRules = rules.filter(r => !r.includes(`dnsrewrite=NOERROR;A;${SERVER_IP}`));
-        
-        // Add the current target rule
+
         cleanRules.push(blockRule);
-        
+
         await axios.post(`${ADGUARD_URL}/control/filtering/set_rules`, { rules: cleanRules }, getAxiosConfig());
         console.log(`[AdGuard] Block rule applied for ${TARGET_IP}`);
     } catch (err) {
@@ -36,11 +34,11 @@ async function unblockInternet() {
     try {
         const res = await axios.get(`${ADGUARD_URL}/control/filtering/status`, getAxiosConfig());
         let rules = res.data.user_rules || [];
-        
+
         const initialLength = rules.length;
-        // Remove ANY rule that redirects to our captive portal
+
         rules = rules.filter(r => !r.includes(`dnsrewrite=NOERROR;A;${SERVER_IP}`));
-        
+
         if (rules.length !== initialLength) {
             await axios.post(`${ADGUARD_URL}/control/filtering/set_rules`, { rules }, getAxiosConfig());
             console.log(`[AdGuard] Block rules removed for all targets`);

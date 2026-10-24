@@ -16,4 +16,4 @@ cd backend && node server.js (เข้าใช้งานผ่าน http://
 ```
 
 ---
-*จัดเตรียมข้อมูลสำหรับ Portfolio — Phakaphon*
+*จัดเตรียมข้อมูลสำหรับ Portfolio — Phakhaphon Sukmee*

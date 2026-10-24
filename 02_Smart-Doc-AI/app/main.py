@@ -129,7 +129,6 @@ async def scout_to_word(topic: str = Form(...), page_count: int = Form(...)):
         attempts = 0
         while len(selected) < count and attempts < len(image_pool):
             img = image_pool[img_idx % len(image_pool)]
-            # ถ้ายังไม่มีรูปนี้ในหัวข้อนี้ ให้เพิ่มเข้าไป
             if img not in selected: 
                 selected.append(img)
             img_idx += 1

@@ -17,4 +17,4 @@ Frontend: npm run dev (เข้า http://localhost:5173)
 ```
 
 ---
-*จัดเตรียมข้อมูลสำหรับ Portfolio — Phakaphon*
+*จัดเตรียมข้อมูลสำหรับ Portfolio — Phakhaphon Sukmee*

@@ -12,7 +12,7 @@
         href: http://FANGA.local:8002 
         description: storage for all kinds of files 
     - Memos & Notes:
-        icon: memos.png # ถ้าไม่มีไอคอน memos ลองใช้ตัวอักษรหรือ note.png แทนได้ครับ
+        icon: memos.png
         href: http://FANGA.local:5230
         description: note and social platform for sharing thoughts and ideas 
     - Whiteboard:
@@ -30,6 +30,6 @@
 - Games & Fun:
     - Minecraft Server:
         icon: minecraft.png
-        href: FANGA.local:25565 # อันนี้ไม่ต้องมี http:// นำหน้านะครับ เอาไว้พิมพ์เข้าในเกม
+        href: FANGA.local:25565
         description: minecraft server for you and your friends to play together
     

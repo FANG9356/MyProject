@@ -16,4 +16,4 @@ python3 main.py (เข้าหน้าเล่นเพลงที่ http:
 ```
 
 ---
-*จัดเตรียมข้อมูลสำหรับ Portfolio — Phakaphon*
+*จัดเตรียมข้อมูลสำหรับ Portfolio — Phakhaphon Sukmee*
