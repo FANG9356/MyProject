@@ -1,35 +1,35 @@
 - Core Cloud Services:
     - Pictures & Videos:
         icon: immich.png
-        href: http://FANGA.local:2283
+        href: http://homeserver.local:2283
         description: cloud storage for pictures and videos
     - Music & Karaoke:
         icon: youtube-music.png
-        href: http://FANGA.local:8000
+        href: http://homeserver.local:8000
         description: cloud karaoke for everyone
     - Files:
         icon: filebrowser.png
-        href: http://FANGA.local:8002 
+        href: http://homeserver.local:8002 
         description: storage for all kinds of files 
     - Memos & Notes:
         icon: memos.png
-        href: http://FANGA.local:5230
+        href: http://homeserver.local:5230
         description: note and social platform for sharing thoughts and ideas 
     - Whiteboard:
-        icon: http://FANGA.local:8081/frontpage-illustration.svg
-        href: http://FANGA.local:8081
+        icon: http://homeserver.local:8081/frontpage-illustration.svg
+        href: http://homeserver.local:8081
         description: whiteboard for drawing and brainstorming ideas
     - Passwords: 
         icon: bitwarden.png
-        href: https://response-species-meetings-tulsa.trycloudflare.com/#/vault   
+        href: https://vault.homeserver.local   
         description: password manager to keep all your passwords safe
     - Media Center:
         icon: jellyfin.png
-        href: http://FANGA.local:8096 
+        href: http://homeserver.local:8096 
         description: Television for your movies and TV shows
 - Games & Fun:
     - Minecraft Server:
         icon: minecraft.png
-        href: FANGA.local:25565
+        href: homeserver.local:25565
         description: minecraft server for you and your friends to play together
     
