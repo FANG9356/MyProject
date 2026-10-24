@@ -25,6 +25,8 @@ venv/
 .venv/
 env/
 ENV/
+fangB/
+ai_models/
 __pycache__/
 *.py[cod]
 *$py.class

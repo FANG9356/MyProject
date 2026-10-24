@@ -20,12 +20,13 @@
 | **07** | [`07_AdGuard-Time-Portal`](./07_AdGuard-Time-Portal) | Network & Admin | `node server.js` | `http://localhost:8080` (แอดมิน: `/admin.html`) | `node test_simulation.js` |
 | **08** | [`08_System-Monitor-Desktop-App`](./08_System-Monitor-Desktop-App) | Desktop Utility | `.exe` (Win) หรือ `node server.js` | `http://localhost:3000` | `node test_simulation.js` |
 | **09** | [`09_HomeServer-Infrastructure`](./09_HomeServer-Infrastructure) | Go, SQLite & React | `cd backend && go run .` | `http://localhost:8001` | `python3 test_simulation.py` |
+| **10** | [`10_Music-Shuffle-AI`](./10_Music-Shuffle-AI) | AI Desktop Player | `python3 main.py` | หน้าต่างโปรแกรม Desktop | `python3 test_simulation.py` |
 
 ---
 
 ## การรันชุดทดสอบ
 
-ในโฟลเดอร์หลักมีสคริปต์ [`run_all_tests.sh`](./run_all_tests.sh) สำหรับรัน Simulation Test ของทั้ง 9 โปรเจกต์ สามารถทดสอบได้ด้วยคำสั่ง:
+ในโฟลเดอร์หลักมีสคริปต์ [`run_all_tests.sh`](./run_all_tests.sh) สำหรับรัน Simulation Test ของทั้ง 10 โปรเจกต์ สามารถทดสอบได้ด้วยคำสั่ง:
 ```bash
 ./run_all_tests.sh
 ```
@@ -394,6 +395,38 @@ flowchart TD
   ```
   *(หรือรันผ่าน Docker: `docker compose up -d --build`)*
   เปิดเบราว์เซอร์ที่: `http://localhost:8001`
+
+---
+
+### 10. [10_Music-Shuffle-AI](./10_Music-Shuffle-AI) — โปรแกรมเล่นเพลงเดสก์ท็อปพร้อมระบบค้นหาด้วยเสียงผ่าน AI (Whisper)
+
+* **หมวดหมู่:** Desktop Application & AI Audio
+* **เทคโนโลยี:** Python, PyQt6, faster-whisper, mutagen, yt-dlp
+
+#### สรุปโปรเจกต์
+โปรแกรมเล่นเพลงบนระบบปฏิบัติการเดสก์ท็อปที่พัฒนาด้วย PyQt6 เชื่อมต่อโมเดล faster-whisper เพื่อให้สามารถรับคำสั่งเสียงพูด (Speech-to-Text) ภาษาไทยและภาษาอังกฤษเพื่อค้นหาเพลงในคลังได้โดยตรงบนเครื่อง ตัวโปรแกรมรองรับการสร้างเพลย์ลิสต์ รายการโปรด การแสดงเนื้อเพลงแบบคาราโอเกะ (LRC Sync) และมีเครื่องมือค้นหาและฝังภาพปกเพลงอัตโนมัติผ่าน iTunes API และ YouTube
+
+#### สถาปัตยกรรมระบบ
+```mermaid
+graph TD
+  User([User / Microphone]) -->|Voice Command| Whisper[faster-whisper Engine]
+  Whisper -->|Transcribed Text| SearchEngine[Music Search Thread]
+  SearchEngine -->|Matched Audio| Player[QMediaPlayer & QAudioOutput]
+  Player -->|Playback Timing| LyricSync[LRC Lyric Sync]
+  MetadataScraper[fetch_covers Pipeline] -->|ID3 APIC / covr| Player
+```
+
+#### วิธีรันระบบ (How to Run)
+```bash
+cd 10_Music-Shuffle-AI
+pip install -r requirements.txt
+python3 main.py
+```
+
+โหมดทดสอบด่วน (Quick Test):
+```bash
+python3 test_simulation.py
+```
 
 ---
 

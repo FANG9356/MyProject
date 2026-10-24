@@ -3,7 +3,7 @@ set -e
 
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 echo "================================================================================"
-echo "EXECUTING AUTOMATED TEST SUITE FOR ALL 9 PROJECTS"
+echo "EXECUTING AUTOMATED TEST SUITE FOR ALL 10 PROJECTS"
 echo "================================================================================"
 
 pass_count=0
@@ -46,7 +46,7 @@ run_test "05" "ATM Security & YOLOv8 Person Detector" \
     "$DIR/05_ATM-YOLOv8-Detector"
 
 run_test "06" "Smart Karaoke Streaming & Mobile Remote" \
-    ""/Volumes/FangB/tip/.venv/bin/python3" test_simulation.py" \
+    "\"/Volumes/FangB/tip/.venv/bin/python3\" test_simulation.py" \
     "$DIR/06_Karaoke-Streaming-System"
 
 run_test "07" "AdGuard Time Portal & Quota Control" \
@@ -61,7 +61,11 @@ run_test "09" "Home Server Infrastructure & Docker Stack" \
     "\"/Volumes/FangB/atm/venv/bin/python3\" test_simulation.py" \
     "$DIR/09_HomeServer-Infrastructure"
 
+run_test "10" "Music Shuffle AI Voice Desktop Player" \
+    "\"/Volumes/FangB/tip/.venv/bin/python3\" test_simulation.py" \
+    "$DIR/10_Music-Shuffle-AI"
+
 echo ""
 echo "================================================================================"
-echo "FINAL TEST REPORT: $pass_count / 9 PROJECTS PASSED ALL TESTS SUCCESSFULLY"
+echo "FINAL TEST REPORT: $pass_count / 10 PROJECTS PASSED ALL TESTS SUCCESSFULLY"
 echo "================================================================================"

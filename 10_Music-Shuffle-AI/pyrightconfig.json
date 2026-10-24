@@ -1,0 +1,9 @@
+{
+  "venvPath": ".",
+  "venv": "fangB",
+  "pythonVersion": "3.14",
+  "reportMissingModuleSource": "none",
+  "reportMissingImports": "none",
+  "reportMissingTypeStubs": "none",
+  "typeCheckingMode": "off"
+}
