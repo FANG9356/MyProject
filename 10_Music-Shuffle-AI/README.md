@@ -8,6 +8,10 @@
 
 ![Music Shuffle Desktop GUI](../assets/real_app_10_music_shuffle.png)
 
+#### ภาพเคลื่อนไหวจำลองการทำงาน (Live Simulation Demo)
+![Live Simulation Demo](../assets/demo_10_music_shuffle.gif)
+
+
 ## ภาพรวมของระบบ
 
 Music Shuffle AI เป็นโปรแกรมเล่นเพลงบนเดสก์ท็อปที่พัฒนาด้วยภาษา Python และ PyQt6 ออกแบบมาเพื่อจัดการคลังเพลงในเครื่องและการสตรีมเสียง มีระบบค้นหาและสั่งการด้วยเสียงผ่านโมเดล faster-whisper (รองรับภาษาไทยและอังกฤษ) รวมถึงการดึงปกอัลบั้มและแสดงเนื้อเพลงคาราโอเกะแบบซิงค์เวลาจริง

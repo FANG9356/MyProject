@@ -5,7 +5,11 @@
 
 ---
 
-| ![Club Registration](../assets/real_web_04_club_register.png) | ![Club Attendance](../assets/real_web_04_club_attendance.png) |
+| ![Club Registration](../assets/real_web_04_club_register.png) | ![Club Attendance](../assets/real_web_04_club_attendance.png)
+
+#### ภาพเคลื่อนไหวจำลองการทำงาน (Live Simulation Demo)
+![Live Simulation Demo](../assets/demo_04_club_management.gif)
+ |
 | :---: | :---: |
 
 ## วิธีติดตั้งและเริ่มใช้งาน (Quick Start)

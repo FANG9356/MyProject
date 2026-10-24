@@ -7,6 +7,10 @@
 
 ![Tip Desk Dashboard](../assets/real_web_03_tipdesk.png)
 
+#### ภาพเคลื่อนไหวจำลองการทำงาน (Live Simulation Demo)
+![Live Simulation Demo](../assets/demo_03_tip_desk.gif)
+
+
 ## วิธีติดตั้งและเริ่มใช้งาน (Quick Start)
 
 ### 1. สิ่งที่ต้องมีในเครื่อง (Prerequisites)

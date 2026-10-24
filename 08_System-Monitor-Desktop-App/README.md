@@ -7,6 +7,10 @@
 
 ![System Monitor Dashboard](../assets/real_web_08_sysmonitor.png)
 
+#### ภาพเคลื่อนไหวจำลองการทำงาน (Live Simulation Demo)
+![Live Simulation Demo](../assets/demo_08_sys_monitor.gif)
+
+
 ## วิธีติดตั้งและเริ่มใช้งาน (Quick Start)
 
 ### 1. วิธีใช้งานบน Windows (ไม่ต้องติดตั้งโปรแกรมเสริม)

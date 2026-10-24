@@ -49,6 +49,9 @@
 
 ![AI WiFi Sensing Simulation](./assets/wifi_sensing_simulation.jpg)
 
+
+![Live Simulation Demo](./assets/demo_01_wifi_sensing.gif)
+
 #### แผนภาพการทำงาน (Architecture)
 ```mermaid
 flowchart TD
@@ -94,6 +97,9 @@ flowchart TD
 
 ![Smart Doc Simulation](./assets/smart_doc_simulation.jpg)
 
+
+![Live Simulation Demo](./assets/demo_02_smart_doc.gif)
+
 #### แผนภาพการทำงาน (Architecture)
 ```mermaid
 flowchart LR
@@ -133,6 +139,9 @@ flowchart LR
 ![Tip Desk](./assets/real_web_03_tipdesk.png)
 
 ![Tip Desk Simulation](./assets/tip_desk_simulation.jpg)
+
+
+![Live Simulation Demo](./assets/demo_03_tip_desk.gif)
 
 #### แผนภาพการทำงาน (Architecture)
 ```mermaid
@@ -177,6 +186,9 @@ flowchart TD
 | :---: | :---: |
 | ![Club Register UI](./assets/real_web_04_club_register.png) | ![Club Attendance UI](./assets/real_web_04_club_attendance.png) |
 
+
+![Live Simulation Demo](./assets/demo_04_club_management.gif)
+
 #### แผนภาพการทำงาน (Architecture)
 ```mermaid
 flowchart TD
@@ -212,6 +224,9 @@ node server.js
 
 #### ตัวอย่างหน้าจอ (Screenshots)
 ![ATM Detector Simulation](./assets/atm_detector_simulation.jpg)
+
+
+![Live Simulation Demo](./assets/demo_05_atm_detector.gif)
 
 #### แผนภาพการทำงาน (Architecture)
 ```mermaid
@@ -258,6 +273,9 @@ flowchart LR
   <img src="./assets/real_web_06_karaoke_remote.png" width="380" alt="Karaoke Remote UI" />
 </p>
 
+
+![Live Simulation Demo](./assets/demo_06_karaoke_streaming.gif)
+
 #### แผนภาพการทำงาน (Architecture)
 ```mermaid
 flowchart TD
@@ -294,6 +312,9 @@ flowchart TD
 | :---: | :---: |
 | ![AdGuard Portal Web UI](./assets/real_web_07_adguard_portal.png) | ![AdGuard Admin Web UI](./assets/real_web_07_adguard_admin.png) |
 
+
+![Live Simulation Demo](./assets/demo_07_adguard_portal.gif)
+
 #### แผนภาพการทำงาน (Architecture)
 ```mermaid
 flowchart LR
@@ -328,6 +349,9 @@ node server.js
 
 #### ตัวอย่างหน้าจอ (Screenshots)
 ![System Monitor Web UI](./assets/real_web_08_sysmonitor.png)
+
+
+![Live Simulation Demo](./assets/demo_08_sys_monitor.gif)
 
 #### แผนภาพการทำงาน (Architecture)
 ```mermaid
@@ -364,6 +388,9 @@ flowchart LR
 | Services Hub | Network Scanner |
 | :---: | :---: |
 | ![HomeServer Services Hub](./assets/real_web_09_homeserver.png) | ![Cross-VLAN Network Scanner](./assets/real_web_09_scanner.png) |
+
+
+![Live Simulation Demo](./assets/demo_09_homeserver_scanner.gif)
 
 #### แผนภาพการทำงาน (Architecture)
 ```mermaid
@@ -407,6 +434,9 @@ flowchart TD
 โปรแกรมเล่นเพลงบนระบบปฏิบัติการเดสก์ท็อปที่พัฒนาด้วย PyQt6 เชื่อมต่อโมเดล faster-whisper เพื่อให้สามารถรับคำสั่งเสียงพูด (Speech-to-Text) ภาษาไทยและภาษาอังกฤษเพื่อค้นหาเพลงในคลังได้โดยตรงบนเครื่อง ตัวโปรแกรมรองรับการสร้างเพลย์ลิสต์ รายการโปรด การแสดงเนื้อเพลงแบบคาราโอเกะ (LRC Sync) และมีเครื่องมือค้นหาและฝังภาพปกเพลงอัตโนมัติผ่าน iTunes API และ YouTube
 
 ![Music Shuffle Desktop GUI](./assets/real_app_10_music_shuffle.png)
+
+
+![Live Simulation Demo](./assets/demo_10_music_shuffle.gif)
 
 #### สถาปัตยกรรมระบบ
 ```mermaid

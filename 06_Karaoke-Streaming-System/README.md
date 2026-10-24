@@ -5,7 +5,11 @@
 
 ---
 
-| ![Karaoke Player](../assets/real_web_06_karaoke_player.png) | <img src="../assets/real_web_06_karaoke_remote.png" width="320" alt="Karaoke Remote" /> |
+| ![Karaoke Player](../assets/real_web_06_karaoke_player.png) | <img src="../assets/real_web_06_karaoke_remote.png" width="320" alt="Karaoke Remote" />
+
+#### ภาพเคลื่อนไหวจำลองการทำงาน (Live Simulation Demo)
+![Live Simulation Demo](../assets/demo_06_karaoke_streaming.gif)
+ |
 | :---: | :---: |
 
 ## วิธีติดตั้งและเริ่มใช้งาน (Quick Start)

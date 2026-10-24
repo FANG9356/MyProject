@@ -7,6 +7,10 @@
 
 ![Smart Doc AI Dashboard](../assets/real_web_02_smartdoc.png)
 
+#### ภาพเคลื่อนไหวจำลองการทำงาน (Live Simulation Demo)
+![Live Simulation Demo](../assets/demo_02_smart_doc.gif)
+
+
 ## วิธีติดตั้งและเริ่มใช้งาน (Quick Start)
 
 ### 1. สิ่งที่ต้องมีในเครื่อง (Prerequisites)
