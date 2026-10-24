@@ -285,13 +285,14 @@ flowchart LR
 
 #### ภาพถ่ายหน้าจอเว็บจริง (Actual Live Web UI Screenshots)
 
+**1. หน้าจอหลักสำหรับเปิดเล่นเพลงบน Smart TV / คอมพิวเตอร์ (`/index.html`):**
+![Karaoke Player Web UI](./assets/real_web_06_karaoke_player.png)
+
+**2. หน้ารีโมตควบคุมและแทรกคิวเพลงบนสมาร์ทโฟน (`/remote.html`):**
 <p align="center">
- <img src="./assets/real_web_06_karaoke_player.png" width="63%" alt="Karaoke Player Web UI" style="border-radius: 8px; vertical-align: middle;" />
- &nbsp;&nbsp;
- <img src="./assets/real_web_06_karaoke_remote.png" width="31%" alt="Karaoke Mobile Remote Web UI" style="border-radius: 8px; vertical-align: middle;" />
-</p>
-<p align="center">
- <sub><b> ซ้าย:</b> หน้าจอหลักสำหรับเปิดเล่นเพลงบนคอมพิวเตอร์ / สมาร์ททีวี (<code>/index.html</code>) &nbsp;&nbsp;|&nbsp;&nbsp; <b> ขวา:</b> หน้ารีโมตควบคุมและแทรกคิวเพลงบนสมาร์ทโฟน (<code>/remote.html</code>)</sub>
+ <img src="./assets/real_web_06_karaoke_remote.png" width="380" alt="Karaoke Mobile Remote Web UI" />
+ <br />
+ <sub>หน้ารีโมตมือถือสำหรับให้ผู้ร่วมงานสแกน QR Code เข้ามาค้นหาเพลงและกดแทรกคิวเพลงได้พร้อมกันแบบเรียลไทม์</sub>
 </p>
 
 #### Infographic แผนภาพขั้นตอนการทำงาน (Workflow Architecture)
