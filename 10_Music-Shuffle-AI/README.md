@@ -8,10 +8,7 @@
 
 ![Music Shuffle Desktop GUI](../assets/real_app_10_music_shuffle.png)
 
-#### ภาพเคลื่อนไหวจำลองการทำงาน (Live Simulation Demo)
 ![Live Simulation Demo](../assets/demo_10_music_shuffle.gif)
-
-[ดูวิดีโอสาธิตการทำงานแบบเต็ม (Full HD MP4)](../assets/demo_10_music_shuffle.mp4)
 
 
 ## ภาพรวมของระบบ

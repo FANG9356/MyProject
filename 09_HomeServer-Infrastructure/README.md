@@ -5,14 +5,9 @@
 
 ---
 
-| ![HomeServer Services Hub](../assets/real_web_09_homeserver.png) | ![Cross-VLAN Network Scanner](../assets/real_web_09_scanner.png)
+![HomeServer Services Hub](../assets/real_web_09_homeserver.png)
 
-#### ภาพเคลื่อนไหวจำลองการทำงาน (Live Simulation Demo)
 ![Live Simulation Demo](../assets/demo_09_homeserver_scanner.gif)
-
-[ดูวิดีโอสาธิตการทำงานแบบเต็ม (Full HD MP4)](../assets/demo_09_homeserver_scanner.mp4)
- |
-| :---: | :---: |
 
 ## โครงสร้างระบบ (System Overview)
 

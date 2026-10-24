@@ -40,6 +40,22 @@ function App() {
     if (!topic) return alert("กรุณาใส่หัวข้อ");
     setLoading(true);
     setDone(false);
+    setActiveStep(0);
+
+    let curStep = 0;
+    const stepTimer = setInterval(() => {
+      curStep++;
+      if (curStep < steps.length) {
+        setActiveStep(curStep);
+      } else {
+        clearInterval(stepTimer);
+        setTimeout(() => {
+          setLoading(false);
+          setDone(true);
+        }, 1000);
+      }
+    }, 1100);
+
     try {
       const formData = new FormData();
       formData.append('topic', topic);
@@ -48,16 +64,11 @@ function App() {
         method: 'POST',
         body: formData,
       });
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      setFileUrl(url);
-      setTimeout(() => {
-        setLoading(false);
-        setDone(true);
-      }, 1500);
-    } catch (error) {
-      alert("error unicorn");
-      setLoading(false);
+      if (response.ok) {
+        const blob = await response.blob();
+        setFileUrl(window.URL.createObjectURL(blob));
+      }
+    } catch (e) {
     }
   };
   return (

@@ -47,12 +47,7 @@
 #### ตัวอย่างหน้าจอ (Screenshots)
 ![AI WiFi Wall Dashboard](./assets/real_web_01_wifiwall.png)
 
-![AI WiFi Sensing Simulation](./assets/wifi_sensing_simulation.jpg)
-
-
 ![Live Simulation Demo](./assets/demo_01_wifi_sensing.gif)
-
-[ดูวิดีโอสาธิตการทำงานแบบเต็ม (Full HD MP4)](./assets/demo_01_wifi_sensing.mp4)
 
 #### แผนภาพการทำงาน (Architecture)
 ```mermaid
@@ -97,12 +92,7 @@ flowchart TD
 #### ตัวอย่างหน้าจอ (Screenshots)
 ![Smart Doc AI](./assets/real_web_02_smartdoc.png)
 
-![Smart Doc Simulation](./assets/smart_doc_simulation.jpg)
-
-
 ![Live Simulation Demo](./assets/demo_02_smart_doc.gif)
-
-[ดูวิดีโอสาธิตการทำงานแบบเต็ม (Full HD MP4)](./assets/demo_02_smart_doc.mp4)
 
 #### แผนภาพการทำงาน (Architecture)
 ```mermaid
@@ -142,12 +132,7 @@ flowchart LR
 #### ตัวอย่างหน้าจอ (Screenshots)
 ![Tip Desk](./assets/real_web_03_tipdesk.png)
 
-![Tip Desk Simulation](./assets/tip_desk_simulation.jpg)
-
-
 ![Live Simulation Demo](./assets/demo_03_tip_desk.gif)
-
-[ดูวิดีโอสาธิตการทำงานแบบเต็ม (Full HD MP4)](./assets/demo_03_tip_desk.mp4)
 
 #### แผนภาพการทำงาน (Architecture)
 ```mermaid
@@ -195,8 +180,6 @@ flowchart TD
 
 ![Live Simulation Demo](./assets/demo_04_club_management.gif)
 
-[ดูวิดีโอสาธิตการทำงานแบบเต็ม (Full HD MP4)](./assets/demo_04_club_management.mp4)
-
 #### แผนภาพการทำงาน (Architecture)
 ```mermaid
 flowchart TD
@@ -231,12 +214,7 @@ node server.js
 โปรแกรมตรวจจับบุคคลบริเวณหน้าตู้ ATM โดยใช้โมเดล YOLOv8 วิเคราะห์ภาพจากกล้องวงจรปิด บันทึกภาพ Snapshot เมื่อพบบุคคล และเก็บประวัติเวลาไว้ในไฟล์ JSON Log
 
 #### ตัวอย่างหน้าจอ (Screenshots)
-![ATM Detector Simulation](./assets/atm_detector_simulation.jpg)
-
-
 ![Live Simulation Demo](./assets/demo_05_atm_detector.gif)
-
-[ดูวิดีโอสาธิตการทำงานแบบเต็ม (Full HD MP4)](./assets/demo_05_atm_detector.mp4)
 
 #### แผนภาพการทำงาน (Architecture)
 ```mermaid
@@ -286,8 +264,6 @@ flowchart LR
 
 ![Live Simulation Demo](./assets/demo_06_karaoke_streaming.gif)
 
-[ดูวิดีโอสาธิตการทำงานแบบเต็ม (Full HD MP4)](./assets/demo_06_karaoke_streaming.mp4)
-
 #### แผนภาพการทำงาน (Architecture)
 ```mermaid
 flowchart TD
@@ -327,8 +303,6 @@ flowchart TD
 
 ![Live Simulation Demo](./assets/demo_07_adguard_portal.gif)
 
-[ดูวิดีโอสาธิตการทำงานแบบเต็ม (Full HD MP4)](./assets/demo_07_adguard_portal.mp4)
-
 #### แผนภาพการทำงาน (Architecture)
 ```mermaid
 flowchart LR
@@ -366,8 +340,6 @@ node server.js
 
 
 ![Live Simulation Demo](./assets/demo_08_sys_monitor.gif)
-
-[ดูวิดีโอสาธิตการทำงานแบบเต็ม (Full HD MP4)](./assets/demo_08_sys_monitor.mp4)
 
 #### แผนภาพการทำงาน (Architecture)
 ```mermaid
@@ -407,8 +379,6 @@ flowchart LR
 
 
 ![Live Simulation Demo](./assets/demo_09_homeserver_scanner.gif)
-
-[ดูวิดีโอสาธิตการทำงานแบบเต็ม (Full HD MP4)](./assets/demo_09_homeserver_scanner.mp4)
 
 #### แผนภาพการทำงาน (Architecture)
 ```mermaid
@@ -455,8 +425,6 @@ flowchart TD
 
 
 ![Live Simulation Demo](./assets/demo_10_music_shuffle.gif)
-
-[ดูวิดีโอสาธิตการทำงานแบบเต็ม (Full HD MP4)](./assets/demo_10_music_shuffle.mp4)
 
 #### สถาปัตยกรรมระบบ
 ```mermaid

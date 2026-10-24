@@ -134,42 +134,51 @@
         Based on Wi-Fi Channel State Information (CSI)
     </div>
 
-    <script>const statusEl = document.getElementById('status');
+    <div class="sim-panel" style="position:absolute;bottom:75px;z-index:90;display:flex;gap:12px;">
+        <button id="btn-empty" onclick="setSimState('Empty')" style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);color:white;padding:8px 18px;border-radius:24px;cursor:pointer;font-weight:600;font-size:13px;backdrop-filter:blur(8px);transition:all 0.2s;">จำลอง: ห้องว่าง (Empty)</button>
+        <button id="btn-walking" onclick="setSimState('Walking')" style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);color:white;padding:8px 18px;border-radius:24px;cursor:pointer;font-weight:600;font-size:13px;backdrop-filter:blur(8px);transition:all 0.2s;">จำลอง: มีคนเดิน (Walking)</button>
+        <button id="btn-falling" onclick="setSimState('Falling')" style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);color:white;padding:8px 18px;border-radius:24px;cursor:pointer;font-weight:600;font-size:13px;backdrop-filter:blur(8px);transition:all 0.2s;">จำลอง: หกล้ม (Falling Alert)</button>
+    </div>
+
+    <script>
+        const statusEl = document.getElementById('status');
         const iconEl = document.getElementById('icon');
         const bodyEl = document.getElementById('bg');
+        let overrideStatus = null;
 
-        async function fetchStatus() {
-            try {
-                const response = await fetch('/api/status');
-                const data = await response.json();
-
-                const status = data.status;
+        function applyStatus(status) {
+            if (status === 'Empty') {
+                statusEl.innerText = 'EMPTY (ห้องว่าง)';
+                bodyEl.style.backgroundColor = 'var(--bg-empty)';
+                bodyEl.classList.remove('alert-mode');
+            } else if (status === 'Walking') {
+                statusEl.innerText = 'WALKING (มีคนเดิน)';
+                bodyEl.style.backgroundColor = 'var(--bg-walking)';
+                bodyEl.classList.remove('alert-mode');
+            } else if (status === 'Falling') {
+                statusEl.innerText = 'FALLING ALERT! (หกล้ม)';
+                bodyEl.classList.add('alert-mode');
+            } else {
                 statusEl.innerText = status;
-
-                if (status === 'Empty') {
-                    bodyEl.style.backgroundColor = 'var(--bg-empty)';
-                    bodyEl.classList.remove('alert-mode');
-                    iconEl.innerText = '';
-                }
-                else if (status === 'Walking') {
-                    bodyEl.style.backgroundColor = 'var(--bg-walking)';
-                    bodyEl.classList.remove('alert-mode');
-                    iconEl.innerText = '';
-                }
-                else if (status === 'Falling') {
-                    bodyEl.classList.add('alert-mode');
-                    iconEl.innerText = '';
-                }
-                else {
-                    bodyEl.style.backgroundColor = '#0f172a';
-                    iconEl.innerText = '';
-                }
-            } catch (err) {
-                console.error(err);
+                bodyEl.style.backgroundColor = '#0f172a';
             }
         }
 
+        function setSimState(state) {
+            overrideStatus = state;
+            applyStatus(state);
+        }
+
+        async function fetchStatus() {
+            if (overrideStatus) return;
+            try {
+                const response = await fetch('/api/status');
+                const data = await response.json();
+                applyStatus(data.status);
+            } catch (err) {}
+        }
+
         setInterval(fetchStatus, 300);
-</script>
+    </script>
 </body>
 </html>

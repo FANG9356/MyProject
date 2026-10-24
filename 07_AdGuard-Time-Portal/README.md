@@ -5,14 +5,9 @@
 
 ---
 
-| ![AdGuard User Portal](../assets/real_web_07_adguard_portal.png) | ![AdGuard Admin Console](../assets/real_web_07_adguard_admin.png)
+![AdGuard User Portal](../assets/real_web_07_adguard_portal.png)
 
-#### ภาพเคลื่อนไหวจำลองการทำงาน (Live Simulation Demo)
 ![Live Simulation Demo](../assets/demo_07_adguard_portal.gif)
-
-[ดูวิดีโอสาธิตการทำงานแบบเต็ม (Full HD MP4)](../assets/demo_07_adguard_portal.mp4)
- |
-| :---: | :---: |
 
 ## วิธีติดตั้งและเริ่มใช้งาน (Quick Start)
 
