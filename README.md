@@ -22,16 +22,16 @@
 
 ---
 
-## รันชุดทดสอบทุกโปรเจกต์ในคำสั่งเดียว (Master Test Runner)
-ในโฟลเดอร์หลักมีสคริปต์ [`run_all_tests.sh`](./run_all_tests.sh) สำหรับสั่งรัน Automated Test Simulation ของทั้ง 9 โปรเจกต์พร้อมกัน สามารถทดสอบได้ด้วยคำสั่ง:
+## การรันชุดทดสอบ (Test Runner)
+ในโฟลเดอร์หลักมีสคริปต์ [`run_all_tests.sh`](./run_all_tests.sh) สำหรับรัน Simulation Test ของทั้ง 9 โปรเจกต์ สามารถทดสอบได้ด้วยคำสั่ง:
 ```bash
 ./run_all_tests.sh
 ```
-*ผลลัพธ์: ตรวจสอบและผ่านการทดสอบทั้งหมด **9/9 โครงการ** (100% Operational)*
+*ผลลัพธ์: ผ่านการทดสอบทั้งหมด 9/9 โครงการ*
 
 ---
 
-## เจาะลึกรายละเอียด การทำงาน หน้าตาเว็บจริง และคู่มือติดตั้ง
+## รายละเอียดโปรเจกต์และวิธีใช้งาน
 
 ---
 
@@ -396,19 +396,19 @@ flowchart LR
 
 ---
 
-### 9. [09_HomeServer-Infrastructure](./09_HomeServer-Infrastructure) — สถาปัตยกรรม Private Cloud & Cross-VLAN Network Scanner
+### 9. [09_HomeServer-Infrastructure](./09_HomeServer-Infrastructure) — HomeServer Services & Network Scanner
 
 > **โฟลเดอร์โค้ด:** [คลิกเปิดโฟลเดอร์ `09_HomeServer-Infrastructure`](./09_HomeServer-Infrastructure)
 > **คู่มือย่อยในโฟลเดอร์:** [อ่านคู่มือ `09_HomeServer-Infrastructure/README.md`](./09_HomeServer-Infrastructure/README.md)
-> **เทคโนโลยี:** Go (Goroutines, Net/TCP Prober), SQLite3, React 18, Tailwind CSS, Docker
+> **เทคโนโลยี:** Go, SQLite, React, Tailwind CSS, Docker
 
-#### แนวคิดและสถานการณ์การใช้งานจริง (Problem & Real-World Use Case)
-ระบบศูนย์กลางบริหารจัดการ Private Cloud Services และระบบค้นหาอุปกรณ์เครือข่ายข้าม VLAN (Cross-VLAN Network Scanner) ที่เขียนขึ้นเองทั้งหมด 100%:
-1. **Cloud Services Hub:** หน้าเว็บแดชบอร์ดตรวจสอบสถานะและวัดค่า Latency ของบริการภายในบ้านแบบเรียลไทม์ (Immich, Jellyfin, FileBrowser, Bitwarden, Memos)
-2. **Cross-VLAN Network Scanner:** เอนจินสแกนหาไอพีและอุปกรณ์ในวงเน็ตเวิร์กที่เชื่อมต่ออยู่ และสามารถสแกนข้ามวงเน็ตเวิร์ก/ข้าม VLAN ได้พร้อมกันหลาย Subnets แบบความเร็วสูงด้วย Go Goroutines ตรวจจับพอร์ตบริการที่เปิดอยู่ (เช่น HTTP, HTTPS, SSH, DNS, SMB) พร้อมคำนวณ Round-trip Latency และบันทึกประวัติลงฐานข้อมูล SQLite
+#### ภาพรวมโครงการ (Project Overview)
+แดชบอร์ดรวบรวมทางเข้าบริการต่างๆ ในบ้าน และมีเครื่องมือสแกนหา IP อุปกรณ์ในเครือข่าย:
+1. **Services Hub:** หน้ารวมทางเข้าและเช็กสถานะการทำงานของบริการภายในบ้าน เช่น Immich, Jellyfin, FileBrowser, Bitwarden, Memos
+2. **Network Scanner:** ค้นหา IP และอุปกรณ์ที่เชื่อมต่ออยู่ในวง LAN เดียวกัน หรือระบุ Subnet เพื่อค้นหาข้ามวง VLAN พร้อมเช็กพอร์ตพื้นฐานที่เปิดอยู่ และบันทึกผลลง SQLite
 
 #### ตัวอย่างหน้าจอการทำงานจริงของเว็บ (Real Web Application Previews)
-| Private Cloud Services Hub | Cross-VLAN Network Scanner (Concurrent Prober) |
+| Private Cloud Services Hub | Cross-VLAN Network Scanner |
 | :---: | :---: |
 | ![HomeServer Services Hub](./assets/real_web_09_homeserver.png) | ![Cross-VLAN Network Scanner](./assets/real_web_09_scanner.png) |
 
@@ -418,13 +418,13 @@ flowchart TD
   User[ผู้ใช้งานผ่านหน้าเว็บ React + Tailwind] -->|REST API Request / HTTP| GoServer[Go Backend Server: พอร์ต 8001]
   GoServer -->|Query / Update Status| DB[(SQLite Database: infrastructure.db)]
   
-  subgraph Engine_Features [Go Backend High-Concurrency Engine]
-    GoServer -->|Parallel Goroutines| Scanner[Cross-VLAN Network Scanner]
-    GoServer -->|Health Check Probe| ServiceHub[Cloud Services Monitor]
+  subgraph Engine_Features [Go Backend Engine]
+    GoServer -->|Goroutines| Scanner[Cross-VLAN Network Scanner]
+    GoServer -->|Health Check| ServiceHub[Cloud Services Monitor]
   end
 
-  Scanner -->|TCP Ping & Port Scan| Subnets[Local & Cross-VLAN Subnets\n192.168.1.x / 192.168.10.x / 10.0.0.x]
-  Subnets -->|Discovered Devices & Ports| Scanner
+  Scanner -->|TCP Probe| Subnets[Local & Cross-VLAN Subnets\n192.168.1.x / 192.168.10.x / 10.0.0.x]
+  Subnets -->|Discovered Nodes| Scanner
   Scanner -->|Save Discovered Nodes| DB
 ```
 
@@ -442,12 +442,11 @@ flowchart TD
   ```
   *(หรือรันระบบทั้งหมดผ่าน Docker: `docker compose up -d --build`)*
 3. เปิดเบราว์เซอร์ที่: `http://localhost:8001`
-4. **ผลลัพธ์การทำงาน:** แดชบอร์ดตรวจสอบสถานะ Cloud Services และหน้าจอสั่งสแกน IP อุปกรณ์เครือข่ายข้าม VLAN แบบเรียลไทม์
+4. **ผลลัพธ์การทำงาน:** หน้าแสดงสถานะบริการภายในเครื่อง และหน้าสั่งสแกน IP อุปกรณ์ในเครือข่าย
 
 ---
 
 ## ข้อมูลผู้พัฒนา (Author)
 * **ชื่อ-นามสกุล:** Phakhaphon Sukmee
-* **GitHub Profile:** [@FANG9356](https://github.com/FANG9356)
-* **Repository หลัก:** [https://github.com/FANG9356/MyProject](https://github.com/FANG9356/MyProject)
-* **ทักษะความเชี่ยวชาญ:** Artificial Intelligence, Computer Vision, IoT & RF Hardware Sensing, Full-Stack Development (React, FastAPI, Node.js), DevOps & Linux Server Infrastructure
+* **GitHub:** [@FANG9356](https://github.com/FANG9356)
+* **Repository:** [https://github.com/FANG9356/MyProject](https://github.com/FANG9356/MyProject)

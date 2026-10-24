@@ -1,23 +1,22 @@
-# HomeServer Infrastructure & Cross-VLAN Network Scanner
+# HomeServer Infrastructure & Network Scanner
 
-> **หมวดหมู่:** Network Engineering, Infrastructure Management & Full-Stack Cloud
 > **ผู้พัฒนา:** Phakhaphon Sukmee
-> **เทคโนโลยี:** Go (Goroutines, Net/TCP Probe), SQLite3, React 18, Tailwind CSS, Docker
+> **เทคโนโลยี:** Go, SQLite, React, Tailwind CSS, Docker
 
 ---
 
-## สถาปัตยกรรมระบบ (System Architecture)
+## โครงสร้างระบบ (System Overview)
 
-ระบบศูนย์กลางบริหารจัดการ Home Cloud Infrastructure และเครื่องมือสำรวจเครือข่ายข้าม VLAN (Cross-VLAN Network Scanner) ที่เขียนขึ้นเองทั้งหมด 100%:
-* **Frontend:** React 18 + Tailwind CSS ออกแบบในรูปแบบ Glassmorphism Dark Theme รองรับการดูสถานะ Cloud Services และควบคุมการสแกน IP แบบเรียลไทม์
-* **Backend:** Go (Golang) พัฒนา REST API และ Network Probing Engine ใช้ Goroutine ทำงานแบบขนาน (Concurrent Workers) สแกน IP และตรวจจับพอร์ต TCP ข้าม Subnet ได้อย่างรวดเร็ว
-* **Database:** SQLite3 จัดเก็บรายชื่อ Cloud Services และประวัติอุปกรณ์เครือข่ายที่ค้นพบ
+แดชบอร์ดรวมศูนย์สำหรับเปิดดูสถานะบริการภายในบ้าน และเครื่องมือสแกนหา IP อุปกรณ์ในเครือข่าย:
+* **Frontend:** React + Tailwind CSS สำหรับแสดงผลรายการบริการ และหน้าตารางผลการสแกน IP
+* **Backend:** Go ให้บริการ REST API และใช้ Goroutine ช่วยตรวจเช็กพอร์ต TCP ตาม Subnet ที่กำหนด
+* **Database:** SQLite สำหรับบันทึกรายชื่อบริการและประวัติอุปกรณ์ที่ตรวจพบ
 
 ---
 
 ## การเริ่มต้นใช้งาน (Quick Start)
 
-### 1. รันระบบผ่าน Go และ React โดยตรง
+### 1. รันผ่าน Go และ React
 
 **Backend (Go):**
 ```bash
@@ -32,7 +31,7 @@ npm install
 npm run dev
 ```
 
-เปิดเบราว์เซอร์ไปที่: `http://localhost:8001` (หรือพอร์ต Vite `http://localhost:5173`)
+เปิดเบราว์เซอร์ไปที่: `http://localhost:8001` (หรือ `http://localhost:5173`)
 
 ### 2. รันผ่าน Docker
 
@@ -42,11 +41,11 @@ docker compose up -d --build
 
 ---
 
-## คุณสมบัติหลัก (Key Features)
+## การทำงานของระบบ (Features)
 
-1. **Private Cloud Services Hub:** ศูนย์รวมและตรวจเช็กสถานะการทำงาน (Latency & Health Check) ของบริการภายในบ้าน เช่น Immich, Jellyfin, FileBrowser, Bitwarden, Memos
-2. **Cross-VLAN Network Scanner:** ระบบสแกนหาไอพีและอุปกรณ์ในวงเน็ตเวิร์กที่เชื่อมต่ออยู่ และสแกนข้ามวง VLAN / Subnets ได้แบบ Multi-threaded ผ่าน Go Goroutines พร้อมตรวจจับ Open Ports และ Latency
-3. **Persistent SQLite Store:** ข้อมูลบริการและอุปกรณ์ที่ค้นพบจะถูกบันทึกลงฐานข้อมูล SQLite โดยอัตโนมัติ
+1. **Services Hub:** รวมทางเข้าและเช็กสถานะการทำงาน (Latency) ของบริการภายในเครื่อง เช่น Immich, Jellyfin, FileBrowser, Bitwarden, Memos
+2. **Network Scanner:** ค้นหา IP และอุปกรณ์ที่เชื่อมต่ออยู่ในวง LAN หรือระบุ Subnet อื่นเพื่อค้นหาข้ามวง VLAN พร้อมเช็กพอร์ตพื้นฐานที่เปิดอยู่
+3. **SQLite Storage:** เก็บข้อมูลบริการและอุปกรณ์ที่สแกนเจอบันทึกไว้ในฐานข้อมูล SQLite
 
 ---
 

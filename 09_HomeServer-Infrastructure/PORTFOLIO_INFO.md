@@ -1,16 +1,16 @@
-# HomeServer Infrastructure & Cross-VLAN Network Scanner
+# HomeServer Infrastructure & Network Scanner
 
-**หมวดหมู่:** Network Engineering, Infrastructure Management & Full-Stack Cloud
-**เทคโนโลยีหลัก (Tech Stack):** Go (Goroutines), SQLite3, React 18, Tailwind CSS, Docker
+**หมวดหมู่:** Network & Full-Stack
+**เทคโนโลยีหลัก:** Go, SQLite, React, Tailwind CSS, Docker
 
 ---
 
 ## ภาพรวมโครงการ (Project Overview)
-ระบบศูนย์กลางบริหารจัดการ Private Cloud Services และเครื่องมือค้นหาอุปกรณ์เครือข่ายข้าม VLAN (Cross-VLAN Network Scanner) ที่เขียนขึ้นเองทั้งหมดโดยใช้ Go Goroutines ในการยิงโพรบพอร์ตแบบขนาน จัดเก็บข้อมูลใน SQLite3 และแสดงผลผ่านหน้าเว็บ React + Tailwind CSS แบบเรียลไทม์
+แดชบอร์ดรวบรวมทางเข้าและเช็กสถานะบริการในเครื่อง พร้อมฟังก์ชันค้นหาไอพีและอุปกรณ์ในเครือข่ายข้ามวง VLAN ใช้งานส่วนติดต่อผู้ใช้ด้วย React + Tailwind CSS และหลังบ้านด้วย Go จัดเก็บข้อมูลใน SQLite
 
 ---
 
-## วิธีการรันและทดสอบระบบ (How to Run)
+## วิธีการรันระบบ (How to Run)
 ```bash
 # รัน Backend (Go)
 cd backend && go run .
