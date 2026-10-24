@@ -21,7 +21,7 @@ def radar_pinger():
     เพื่อให้เกิดคลื่นวิทยุเด้งไปมาในห้อง ถ้าไม่มี Ping นี้ จะไม่มีคลื่นให้วัด
     """
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    print("🌊 Started Radar Wave Generator (Pinging ESP32)...")
+    print(" Started Radar Wave Generator (Pinging ESP32)...")
     while True:
         try:
             sock.sendto(b"PING", (ESP32_IP, ESP32_PING_PORT))
@@ -56,7 +56,7 @@ def main():
     threading.Thread(target=udp_listener, daemon=True).start()
     
     print("="*50)
-    print("🧠 Phase 1: AI Data Collection (Standalone AP)")
+    print(" Phase 1: AI Data Collection (Standalone AP)")
     print("="*50)
     print(f"กำลังเชื่อมต่อกับเสา Wi-Fi 'AI_Radar_Scanner'...")
     time.sleep(2) 
@@ -68,20 +68,20 @@ def main():
     print("="*50)
 
     while True:
-        choice = input("\n👉 กดเลือกคำสั่ง (1, 2, 3 หรือ q): ").strip().lower()
+        choice = input("\n กดเลือกคำสั่ง (1, 2, 3 หรือ q): ").strip().lower()
         
         if choice == 'q':
             print("ปิดโปรแกรมครับ")
             sys.exit(0)
             
         if choice not in ['1', '2', '3']:
-            print("❌ กดผิดครับ กรุณากด 1, 2 หรือ 3")
+            print(" กดผิดครับ กรุณากด 1, 2 หรือ 3")
             continue
             
         labels = {'1': 'Empty', '2': 'Walking', '3': 'Falling'}
         current_label = labels[choice]
         
-        print(f"\n🔴 กำลังบันทึกข้อมูลท่าทาง: [{current_label}]")
+        print(f"\n กำลังบันทึกข้อมูลท่าทาง: [{current_label}]")
         print("กรุณาทำท่าทางไปเรื่อยๆ (ระบบจะบันทึกเป็นเวลา 15 วินาที)...")
         
         dataset = []
@@ -93,7 +93,7 @@ def main():
             time.sleep(1)
             
         recording = False
-        print(f"\n✅ บันทึกเสร็จสิ้น! ได้ข้อมูลมาทั้งหมด {len(dataset)} ชุด")
+        print(f"\n บันทึกเสร็จสิ้น! ได้ข้อมูลมาทั้งหมด {len(dataset)} ชุด")
         
         filename = f"dataset_{current_label.lower()}.csv"
         with open(filename, 'w', newline='') as f:
@@ -102,7 +102,7 @@ def main():
             writer.writerow(header)
             writer.writerows(dataset)
             
-        print(f"💾 เซฟข้อมูลลงไฟล์ '{filename}' เรียบร้อยแล้ว!\n")
+        print(f" เซฟข้อมูลลงไฟล์ '{filename}' เรียบร้อยแล้ว!\n")
 
 if __name__ == "__main__":
     main()

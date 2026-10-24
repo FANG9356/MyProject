@@ -90,7 +90,7 @@ function blockDevTools() {
                 devtoolsOpen = true;
                 document.body.innerHTML = `
                     <div style="display:flex;align-items:center;justify-content:center;height:100vh;flex-direction:column;background:#f8fafc;font-family:sans-serif;">
-                        <div style="font-size:64px;">🔒</div>
+                        <div style="font-size:64px;"></div>
                         <h1 style="color:#ef4444;font-size:28px;margin:16px 0 8px">การเข้าถึงถูกปิดกั้น</h1>
                         <p style="color:#64748b;font-size:16px">ปิด Developer Tools แล้วรีเฟรชหน้าเว็บ</p>
                     </div>`;

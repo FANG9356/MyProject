@@ -8,11 +8,11 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 from collections import Counter
 
 try:
-    print("🧠 กำลังปลุกสมองกล AI...")
+    print(" กำลังปลุกสมองกล AI...")
     ai_model = joblib.load('ai_model.pkl')
-    print("✅ ปลุกสำเร็จ พร้อมทำงาน!")
+    print(" ปลุกสำเร็จ พร้อมทำงาน!")
 except Exception as e:
-    print("❌ ไม่พบไฟล์ ai_model.pkl กรุณากลับไปรัน ai_trainer.py ก่อนครับ")
+    print(" ไม่พบไฟล์ ai_model.pkl กรุณากลับไปรัน ai_trainer.py ก่อนครับ")
     exit()
 
 ESP32_IP = "192.168.4.1"
@@ -26,7 +26,7 @@ current_status = "Waiting for data..."
 
 def radar_pinger():
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    print("🌊 Started Radar Wave Generator...")
+    print(" Started Radar Wave Generator...")
     while True:
         try:
             sock.sendto(b"PING", (ESP32_IP, ESP32_PING_PORT))
@@ -96,10 +96,10 @@ def main():
     threading.Thread(target=udp_listener, daemon=True).start()
     
     print("="*50)
-    print("🚀 Phase 3: Live AI Dashboard (Standalone)")
+    print(" Phase 3: Live AI Dashboard (Standalone)")
     print("="*50)
-    print("🌐 Starting Web Server at http://localhost:8000")
-    print("👉 Open your browser and go to: http://localhost:8000")
+    print(" Starting Web Server at http://localhost:8000")
+    print(" Open your browser and go to: http://localhost:8000")
     
     server = HTTPServer(('0.0.0.0', 8000), RequestHandler)
     try:

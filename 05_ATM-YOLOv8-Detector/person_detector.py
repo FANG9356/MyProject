@@ -81,7 +81,7 @@ def mouse_callback(event, x, y, flags, param):
                 if cam_name not in zones:
                     zones[cam_name] = {}
                 zones[cam_name][room_name] = (x1, y1, x2, y2)
-                print(f"✅ สร้างพื้นที่: {room_name} บนกล้อง {cam_name}")
+                print(f"สร้างพื้นที่: {room_name} บนกล้อง {cam_name}")
                 
             temp_rect = None
 
@@ -247,7 +247,7 @@ def main():
                     del zones[name][last_zone]
                     if last_zone in active_persons[name]:
                         del active_persons[name][last_zone]
-                    print(f"🗑️ ลบพื้นที่ {last_zone} ของกล้อง {name} แล้ว")
+                    print(f"ลบพื้นที่ {last_zone} ของกล้อง {name} แล้ว")
 
     for cam_name, cam_zones_data in active_persons.items():
         for z_name, persons in cam_zones_data.items():

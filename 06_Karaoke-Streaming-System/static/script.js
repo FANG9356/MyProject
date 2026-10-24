@@ -317,7 +317,7 @@ async function addSong(url, title, element) {
 
     if (currentIndex === -1) {
         currentIndex = bookingQueue.length - 1;
-        document.getElementById('currentSongTitle').innerText = "⏳ รอโหลดไฟล์แป๊บนึงน้า...";
+        document.getElementById('currentSongTitle').innerText = " รอโหลดไฟล์แป๊บนึงน้า...";
         renderQueue();
     }
 
@@ -386,10 +386,10 @@ function renderQueue() {
                  ondragstart="dragStart(event, ${index})" ondragend="dragEnd(event)"
                  ondragover="dragOver(event, this)" ondragleave="dragLeave(event, this)"
                  ondrop="drop(event, ${index})" onclick="playAtIndex(${index})">
-                <div class="drag-handle">☰</div>
+                <div class="drag-handle"></div>
                 <div style="color:#ffffff; font-weight:600; min-width:20px; display:flex; justify-content:center;">${indexDisplay}</div>
                 <div class="queue-name">${formatTitle(displayTitle)}</div>
-                <button class="btn-remove" onclick="removeSong(event, ${index})" title="ลบออกจากคิว">✕</button>
+                <button class="btn-remove" onclick="removeSong(event, ${index})" title="ลบออกจากคิว"></button>
             </div>`;
     });
     document.getElementById('readyQueue').innerHTML = html || '<p style="color:#86868b; text-align:center; font-weight:400; font-size:13px;">ยังไม่มีเพลงในคิวจ้า</p>';
@@ -515,7 +515,7 @@ function executePlay(index) {
     } else {
         player.pause(); player.removeAttribute('src'); player.load();
         player.style.aspectRatio = '';
-        document.getElementById('currentSongTitle').innerText = "⏳ รอโหลดไฟล์แป๊บนึงน้า...";
+        document.getElementById('currentSongTitle').innerText = " รอโหลดไฟล์แป๊บนึงน้า...";
     }
     renderQueue();
 }
@@ -598,7 +598,7 @@ function executePlay(index) {
     } else {
         player.pause(); player.removeAttribute('src'); player.load();
         player.style.aspectRatio = '';
-        document.getElementById('currentSongTitle').innerText = "⏳ รอโหลดไฟล์แป๊บนึงน้า...";
+        document.getElementById('currentSongTitle').innerText = " รอโหลดไฟล์แป๊บนึงน้า...";
     }
     renderQueue();
 }
@@ -643,7 +643,7 @@ function setupMediaSession(title) {
 setInterval(() => {
     const currentTitle = document.getElementById('currentSongTitle').innerText;
 
-    if (currentTitle !== "เพลย์ลิสต์ที่ดีที่สุด" && currentTitle !== "⏳ รอโหลดไฟล์แป๊บนึงน้า...") {
+    if (currentTitle !== "เพลย์ลิสต์ที่ดีที่สุด" && currentTitle !== " รอโหลดไฟล์แป๊บนึงน้า...") {
         document.title = currentTitle;
         setupMediaSession(currentTitle);
     } else {
@@ -879,7 +879,7 @@ function toggleLyrics() {
 async function fetchLyricsForCurrentSong() {
     const titleEl = document.getElementById('currentSongTitle').innerText;
     const lyricsContent = document.getElementById('lyricsContent');
-    if (titleEl === "เพลย์ลิสต์ที่ดีที่สุด" || titleEl.includes("⏳")) return;
+    if (titleEl === "เพลย์ลิสต์ที่ดีที่สุด" || titleEl.includes("")) return;
 
     lyricsContent.innerHTML = `<div class="lyric-line active">กำลังค้นหาเนื้อเพลง...</div>`;
     currentLyrics = [];

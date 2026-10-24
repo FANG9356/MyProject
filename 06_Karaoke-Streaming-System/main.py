@@ -16,7 +16,7 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 class SharedState:
     command = ""
     theme_rgb = "0, 113, 227"
-    current_song = "🎵 Smart Karaoke Studio"
+    current_song = " Smart Karaoke Studio"
     next_song = "-"
     is_playing = False
     thumbnail = "" 
@@ -106,7 +106,7 @@ async def add_song(url: str, title: str):
         filepath = f"downloads/{safe_title}.mp4"
         
         if not os.path.exists(filepath):
-            print(f"\n[Backend] ⏳ กำลังโหลด MV: {title}")
+            print(f"\n[Backend]  กำลังโหลด MV: {title}")
             command = [
                 "yt-dlp", 
                 "--cookies", "cookies.txt", 

@@ -3,7 +3,7 @@ set -e
 
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 echo "================================================================================"
-echo "🚀 EXECUTING COMPREHENSIVE AUTOMATED TEST SUITE FOR ALL 9 PROJECTS"
+echo "EXECUTING AUTOMATED TEST SUITE FOR ALL 9 PROJECTS"
 echo "================================================================================"
 
 pass_count=0
@@ -15,13 +15,13 @@ run_test() {
     local cwd="$4"
     
     echo ""
-    echo "▶️ [Running Test $num] $title..."
+    echo "[Running Test $num] $title..."
     cd "$cwd"
     if eval "$cmd"; then
-        echo "   -> Result: PASS ✅"
+        echo "   -> Result: PASS"
         pass_count=$((pass_count + 1))
     else
-        echo "   -> Result: FAIL ❌"
+        echo "   -> Result: FAIL"
     fi
 }
 
@@ -63,5 +63,5 @@ run_test "09" "Home Server Infrastructure & Docker Stack" \
 
 echo ""
 echo "================================================================================"
-echo "🎯 FINAL TEST REPORT: $pass_count / 9 PROJECTS PASSED ALL TESTS SUCCESSFULLY!"
+echo "FINAL TEST REPORT: $pass_count / 9 PROJECTS PASSED ALL TESTS SUCCESSFULLY"
 echo "================================================================================"

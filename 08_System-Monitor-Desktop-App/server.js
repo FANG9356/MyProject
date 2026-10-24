@@ -69,7 +69,7 @@ io.on('connection', (socket) => {
 
 const PORT = 3000;
 server.listen(PORT, () => {
-    console.log(`🚀 System Monitor Station Started on Port ${PORT}`);
+    console.log(` System Monitor Station Started on Port ${PORT}`);
 
     if (!process.env.HEADLESS) {
         openBrowser(`http://localhost:${PORT}`);

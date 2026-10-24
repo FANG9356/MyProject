@@ -1,11 +1,11 @@
-# 💳 Tip Desk — Real-time PromptPay Donation & Voice Alert System
+# Tip Desk — Real-time PromptPay Donation & Voice Alert System
 
-> **หมวดหมู่:** FinTech / Modern Full-Stack Application  
-> **ผู้พัฒนา:** Phakhaphon Sukmee  
+> **หมวดหมู่:** FinTech / Modern Full-Stack Application
+> **ผู้พัฒนา:** Phakhaphon Sukmee
 
 ---
 
-## 📖 วิธีติดตั้งและเริ่มใช้งาน (Quick Start)
+## วิธีติดตั้งและเริ่มใช้งาน (Quick Start)
 
 ### 1. สิ่งที่ต้องมีในเครื่อง (Prerequisites)
 * Python 3.10+ และ Node.js 18+

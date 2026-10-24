@@ -65,7 +65,7 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(
       <div>จำนวนที่ทดสอบแล้ว: <span id="txtAttempts">0</span> ครั้ง</div>
       <div id="boxSuccess" class="success-badge" style="display:none;"></div>
     </div>
-    <a href="/upload" class="link-upload">👉 จัดการไฟล์รหัสผ่าน (Wordlist)</a>
+    <a href="/upload" class="link-upload">จัดการไฟล์รหัสผ่าน (Wordlist)</a>
   </div>
 
   <script>

@@ -1,15 +1,15 @@
 import docx, os, wikipedia
 
 print("="*60)
-print("🧪 [TEST SIMULATION] 02_Smart-Doc-AI")
+print("[TEST SIMULATION] 02_Smart-Doc-AI")
 print("="*60)
 
 print("1. Testing Wikipedia Synthesis Engine...")
 try:
     summary = wikipedia.summary("Artificial Intelligence", sentences=2)
-    print("   ✅ Synthesis Query Successful:", summary[:65], "...")
+    print("    Synthesis Query Successful:", summary[:65], "...")
 except Exception as e:
-    print("   ⚠️ Wiki query bypassed (network):", e)
+    print("    Wiki query bypassed (network):", e)
 
 print("2. Testing Document Generator...")
 doc = docx.Document()
@@ -23,5 +23,5 @@ table.cell(1, 1).text = "ONLINE"
 out_file = "/tmp/smart_doc_test_verified.docx"
 doc.save(out_file)
 assert os.path.exists(out_file) and os.path.getsize(out_file) > 0, "Document generation failed!"
-print(f"   ✅ Word Document Generated Successfully ({os.path.getsize(out_file)} bytes)")
-print("🎉 Status: TEST PASSED (100% Operational)")
+print(f"    Word Document Generated Successfully ({os.path.getsize(out_file)} bytes)")
+print("Status: TEST PASSED (100% Operational)")

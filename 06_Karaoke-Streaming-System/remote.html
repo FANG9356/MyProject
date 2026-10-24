@@ -252,7 +252,7 @@
         <img id="albumArt" class="album-art" src="https://cdn-icons-png.freepik.com/512/1194/1194495.png"
             alt="Vinyl Record">
 
-        <h2 id="remoteTitle">🎵 รอเปิดเพลง...</h2>
+        <h2 id="remoteTitle"> รอเปิดเพลง...</h2>
         <p id="remoteSubtitle">ไม่มีคิวถัดไป</p>
 
         <div class="progress-wrapper">
@@ -340,7 +340,7 @@
                 }
 
                 if (data.current_song) {
-                    const cleanTitle = data.current_song === "เลือกเพลง" || data.current_song === "เพลย์ลิสต์ที่ดีที่สุด" ? "🎵 เลือกเพลงจากหน้าจอ" : data.current_song;
+                    const cleanTitle = data.current_song === "เลือกเพลง" || data.current_song === "เพลย์ลิสต์ที่ดีที่สุด" ? " เลือกเพลงจากหน้าจอ" : data.current_song;
                     document.getElementById('remoteTitle').innerText = cleanTitle;
                 }
                 if (data.next_song) {

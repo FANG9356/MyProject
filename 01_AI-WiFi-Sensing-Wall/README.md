@@ -1,11 +1,11 @@
-# 📡 AI Wi-Fi Sensing & Activity Recognition (Wall Penetration)
+# AI Wi-Fi Sensing & Activity Recognition (Wall Penetration)
 
-> **หมวดหมู่:** Artificial Intelligence / IoT & RF Hardware Sensing  
-> **ผู้พัฒนา:** Phakhaphon Sukmee  
+> **หมวดหมู่:** Artificial Intelligence / IoT & RF Hardware Sensing
+> **ผู้พัฒนา:** Phakhaphon Sukmee
 
 ---
 
-## 📖 วิธีติดตั้งและเริ่มใช้งาน (Quick Start)
+## วิธีติดตั้งและเริ่มใช้งาน (Quick Start)
 
 ### 1. สิ่งที่ต้องมีในเครื่อง (Prerequisites)
 * Python 3.9 หรือใหม่กว่า
@@ -33,8 +33,8 @@ python3 ai_web_server.py
 ```
 จากนั้นเปิดเบราว์เซอร์ไปที่: `http://localhost:8080/ai_index.html`
 * **การแสดงผลของระบบ:** หน้าจอแดชบอร์ดเปลี่ยนสีตามสถานะการตรวจจับคลื่นวิทยุ:
-  * 🟢 **สีเขียว (Empty):** ห้องว่าง ไม่มีมนุษย์
-  * 🔵 **สีน้ำเงิน (Walking):** ตรวจพบคนกำลังเดินทะลุกำแพง
-  * 🔴 **สีแดง (Falling Alert):** ตรวจพบลักษณะคลื่นสัญญาณของการหกล้มฉับพลัน
+ * **สีเขียว (Empty):** ห้องว่าง ไม่มีมนุษย์
+ * **สีน้ำเงิน (Walking):** ตรวจพบคนกำลังเดินทะลุกำแพง
+ * **สีแดง (Falling Alert):** ตรวจพบลักษณะคลื่นสัญญาณของการหกล้มฉับพลัน
 
 ---

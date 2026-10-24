@@ -1,11 +1,11 @@
-# 💻 System Monitor Station — Standalone Desktop System Monitor
+# System Monitor Station — Standalone Desktop System Monitor
 
-> **หมวดหมู่:** Desktop Application & System Utilities  
-> **ผู้พัฒนา:** Phakhaphon Sukmee  
+> **หมวดหมู่:** Desktop Application & System Utilities
+> **ผู้พัฒนา:** Phakhaphon Sukmee
 
 ---
 
-## 📖 วิธีติดตั้งและเริ่มใช้งาน (Quick Start)
+## วิธีติดตั้งและเริ่มใช้งาน (Quick Start)
 
 ### 1. วิธีใช้งานบน Windows (ไม่ต้องติดตั้งโปรแกรมเสริม)
 * ดับเบิลคลิกไฟล์ **`sys-monitor-app-win-x64.exe`** ได้ทันที

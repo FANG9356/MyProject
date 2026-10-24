@@ -1,13 +1,13 @@
 import joblib, pandas as pd, numpy as np, os
 
 print("="*60)
-print("🧪 [TEST SIMULATION] 01_AI-WiFi-Sensing-Wall")
+print("[TEST SIMULATION] 01_AI-WiFi-Sensing-Wall")
 print("="*60)
 
 model_path = os.path.join(os.path.dirname(__file__), "ai_model.pkl")
 assert os.path.exists(model_path), "Model file not found!"
 model = joblib.load(model_path)
-print("✅ Loaded Model: Random Forest Classifier (ai_model.pkl)")
+print("Loaded Model: Random Forest Classifier (ai_model.pkl)")
 
 datasets = {
     "Empty": os.path.join(os.path.dirname(__file__), "dataset_empty.csv"),
@@ -29,5 +29,5 @@ for label, path in datasets.items():
         total += len(sample)
 
 accuracy = (correct / total) * 100 if total > 0 else 0
-print(f"📊 Sample Test Accuracy: {accuracy:.2f}%")
-print("🎉 Status: TEST PASSED (100% Operational)")
+print(f"Sample Test Accuracy: {accuracy:.2f}%")
+print("Status: TEST PASSED (100% Operational)")

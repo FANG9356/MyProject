@@ -126,7 +126,7 @@
     </div>
 
     <div class="status-container">
-        <div id="icon" class="icon">📡</div>
+        <div id="icon" class="icon"></div>
         <div id="status" class="status-text">INITIALIZING...</div>
     </div>
 
@@ -149,20 +149,20 @@
                 if (status === 'Empty') {
                     bodyEl.style.backgroundColor = 'var(--bg-empty)';
                     bodyEl.classList.remove('alert-mode');
-                    iconEl.innerText = '🛡️';
+                    iconEl.innerText = '';
                 }
                 else if (status === 'Walking') {
                     bodyEl.style.backgroundColor = 'var(--bg-walking)';
                     bodyEl.classList.remove('alert-mode');
-                    iconEl.innerText = '🚶‍♂️';
+                    iconEl.innerText = '';
                 }
                 else if (status === 'Falling') {
                     bodyEl.classList.add('alert-mode');
-                    iconEl.innerText = '🚨';
+                    iconEl.innerText = '';
                 }
                 else {
                     bodyEl.style.backgroundColor = '#0f172a';
-                    iconEl.innerText = '📡';
+                    iconEl.innerText = '';
                 }
             } catch (err) {
                 console.error(err);

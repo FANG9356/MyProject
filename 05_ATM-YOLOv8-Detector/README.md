@@ -1,11 +1,11 @@
-# 👁️ ATM Security & Person Detection System (Computer Vision)
+# ATM Security & Person Detection System (Computer Vision)
 
-> **หมวดหมู่:** Computer Vision & Smart Surveillance  
-> **ผู้พัฒนา:** Phakhaphon Sukmee  
+> **หมวดหมู่:** Computer Vision & Smart Surveillance
+> **ผู้พัฒนา:** Phakhaphon Sukmee
 
 ---
 
-## 📖 วิธีติดตั้งและเริ่มใช้งาน (Quick Start)
+## วิธีติดตั้งและเริ่มใช้งาน (Quick Start)
 
 ### 1. สิ่งที่ต้องมีในเครื่อง (Prerequisites)
 * Python 3.9+ พร้อมกล้องเว็บแคม (หรือรันโหมดจำลองภาพได้โดยไม่ต้องมีกล้อง)
@@ -22,8 +22,8 @@ pip install ultralytics opencv-python numpy
 python3 person_detector.py
 ```
 * **การแสดงผลของระบบ:**
-  * หน้าต่างกล้องจะเปิดขึ้นพร้อมตีกรอบสีเขียว (Bounding Box) รอบตัวบุคคลพร้อมแสดงค่าความมั่นใจ (Confidence Score เช่น 95%)
-  * เมื่อมีบุคคลเดินเข้ามาในระยะตู้ ATM ระบบจะบันทึกภาพ Snapshot ลงโฟลเดอร์ `snapshots/` และบันทึกเวลาลง `detection_log.json` อัตโนมัติ
+ * หน้าต่างกล้องจะเปิดขึ้นพร้อมตีกรอบสีเขียว (Bounding Box) รอบตัวบุคคลพร้อมแสดงค่าความมั่นใจ (Confidence Score เช่น 95%)
+ * เมื่อมีบุคคลเดินเข้ามาในระยะตู้ ATM ระบบจะบันทึกภาพ Snapshot ลงโฟลเดอร์ `snapshots/` และบันทึกเวลาลง `detection_log.json` อัตโนมัติ
 
 #### วิธีที่ 2: โหมดทดสอบจำลองความเร็วของโมเดล (Quick Simulation Test)
 ```bash

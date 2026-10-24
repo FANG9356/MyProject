@@ -1,11 +1,11 @@
-# 🌐 Home Server & DevOps Infrastructure
+# Home Server & DevOps Infrastructure
 
-> **หมวดหมู่:** DevOps, Infrastructure as Code & Private Cloud  
-> **ผู้พัฒนา:** Phakhaphon Sukmee  
+> **หมวดหมู่:** DevOps, Infrastructure as Code & Private Cloud
+> **ผู้พัฒนา:** Phakhaphon Sukmee
 
 ---
 
-## 📖 วิธีติดตั้งและเริ่มใช้งาน (Quick Start)
+## วิธีติดตั้งและเริ่มใช้งาน (Quick Start)
 
 ### 1. สิ่งที่ต้องมีในเครื่อง (Prerequisites)
 * Docker และ Docker Compose

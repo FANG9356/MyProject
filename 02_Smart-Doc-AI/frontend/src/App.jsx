@@ -63,15 +63,10 @@ function App() {
   return (
     <div className="min-h-screen bg-[#FBFBFD] flex items-center justify-center p-6 font-sans overflow-hidden text-[#1D1D1F]">
       <div className="relative flex items-center justify-center w-full max-w-5xl h-[650px]">
-        {/* กล่องหลัก: Harvester Card (Minimal) */}
         <div className={`z-20 w-full max-w-md bg-white/90 backdrop-blur-3xl rounded-[2rem] shadow-[0_30px_60px_rgba(0,0,0,0.05)] border border-white/50 p-12 transition-all duration-1000 ease-[cubic-bezier(0.4,0,0.2,1)] ${loading || done ? '-translate-x-56 rotate-[-2deg] scale-95' : 'translate-x-0'}`}>
           <header className="text-center mb-12">
-            {/* โลโก้ Premium Finder ✨🔍 (เรียบหรู) */}
             <div className="relative w-20 h-20 rounded-3xl flex items-center justify-center mx-auto mb-5 transition-all duration-500 bg-[#0071E3] text-white shadow-lg shadow-blue-100">
-              <span className="text-2xl opacity-80">✨</span>
-              <div className="absolute inset-0 flex items-center justify-center transform translate-x-1 translate-y-1">
-                <IconSearch />
-              </div>
+              <IconSearch />
             </div>
             <h1 className="text-3xl font-bold tracking-tight">Harvester</h1>
             <p className="text-[12px] text-[#86868B] font-semibold mt-1 uppercase tracking-[0.2em]">Experimental</p>
@@ -89,7 +84,6 @@ function App() {
             </div>
           ) : done ? (
             <div className="text-center space-y-6 animate-in fade-in duration-700">
-              {/* Premium Checkmark ✅ (วงกลมสีเขียวนุ่มนวล) */}
               <div className="w-16 h-16 bg-[#E3F9F1] text-[#00A67E] rounded-full flex items-center justify-center mx-auto mb-4 animate-checkmark">
                 <svg width="32" h="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
               </div>
@@ -100,7 +94,6 @@ function App() {
             </div>
           ) : null}
         </div>
-        {/* แผงแอนิเมชั่นโหลด (Premium Loading Panel) */}
         <div className={`absolute z-15 w-80 h-[480px] bg-white rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.06)] border border-gray-100 p-10 flex flex-col transition-all duration-1000 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] ${loading ? 'translate-x-56 opacity-100 rotate-[4deg] scale-100' : 'translate-x-0 opacity-0 scale-75 pointer-events-none'}`}>
           <div className="flex-1 overflow-hidden space-y-8">
             <div className="flex items-center space-x-3.5 mb-8">
@@ -117,7 +110,6 @@ function App() {
               <h3 className="text-lg font-bold tracking-tight text-[#1D1D1F]">{steps[activeStep].label}</h3>
               <p className="text-xs text-[#86868B] mt-2 italic font-medium">"{steps[activeStep].desc}"</p>
             </div>
-            {/* Premium Data Flow Progress */}
             <div className="flex justify-center items-center relative h-10 px-2 mt-4">
               <div className="absolute top-1/2 left-0 w-full h-1 bg-[#F5F5F7] -translate-y-1/2 z-0 rounded-full"></div>
               <div className="absolute top-1/2 left-0 h-1 bg-[#0071E3] -translate-y-1/2 z-0 rounded-full transition-all duration-1000" style={{ width: `${(activeStep / (steps.length - 1)) * 100}%` }}></div>
@@ -137,7 +129,6 @@ function App() {
             </div>
           </div>
         </div>
-        {/* เอกสารเด้ง (Premium DOCX Card) */}
         <div className={`absolute z-10 w-80 h-[550px] bg-white rounded-[2.5rem] shadow-[0_30px_70px_rgba(0,0,0,0.1)] border border-gray-100 p-10 flex flex-col transition-all duration-1000 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] ${done ? 'translate-x-60 opacity-100 rotate-[5deg] scale-100' : 'translate-x-0 opacity-0 scale-75 pointer-events-none'}`}>
           <div className="flex-1">
             <div className="w-16 h-16 bg-[#F5F5F7] text-[#1D1D1F] rounded-2xl flex items-center justify-center mb-6 shadow-inner border border-gray-100">
