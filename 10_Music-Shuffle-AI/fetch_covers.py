@@ -16,7 +16,7 @@ import mutagen
 from mutagen.id3 import ID3, APIC, ID3NoHeaderError
 from mutagen.mp4 import MP4, MP4Cover
 
-MUSIC_DIR = "fangB/music"
+MUSIC_DIR = "music"
 DELAY_BETWEEN_SONGS = 1.2
 
 def has_cover(filepath):
@@ -125,7 +125,7 @@ def embed_cover(filepath, data):
 def main():
     print("=" * 60)
     print("    Musicverse Cover Art Fetcher")
-    print("  ไล่โหลดและฝังปกเพลงให้ครบทุกไฟล์ใน fangB/music/")
+    print("  ไล่โหลดและฝังปกเพลงให้ครบทุกไฟล์ใน music/")
     print("=" * 60)
 
     valid_exts = {'.mp3', '.m4a', '.mp4', '.flac', '.ogg', '.wav'}

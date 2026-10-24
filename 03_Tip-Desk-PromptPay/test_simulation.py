@@ -7,7 +7,7 @@ print("[TEST SIMULATION] 03_Tip-Desk-PromptPay")
 print("="*60)
 
 print("1. Testing EMVCo PromptPay Generator...")
-payload = promptpay_payload("0961950943", 100.0)
+payload = promptpay_payload("0812345678", 100.0)
 assert payload.startswith("000201"), "Invalid EMVCo prefix!"
 print("    Valid PromptPay Payload Generated:", payload)
 

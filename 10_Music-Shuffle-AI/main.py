@@ -344,10 +344,10 @@ class DownloadThread(QThread):
         try:
             import re
             safe_title = re.sub(r'[\\/*?:"<>|]', "", self.title).strip().replace(' ', '_')
-            if not os.path.exists("fangB/music"):
-                os.makedirs("fangB/music")
+            if not os.path.exists("music"):
+                os.makedirs("music")
 
-            filepath = f"fangB/music/{safe_title}.m4a"
+            filepath = f"music/{safe_title}.m4a"
 
             if not os.path.exists(filepath):
                 import subprocess
@@ -1459,7 +1459,7 @@ class MusicPlayerApp(QMainWindow):
         self.current_lyric_idx = -1
 
 
-        self.load_music_folder("fangB/music")
+        self.load_music_folder("music")
 
         self.refresh_pl_list()
         self.refresh_favorites_btn()

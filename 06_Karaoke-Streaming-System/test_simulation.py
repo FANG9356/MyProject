@@ -1,5 +1,4 @@
 import sys, os
-sys.path.insert(0, "/Volumes/FangB/tip/.venv/lib/python3.14/site-packages")
 sys.path.insert(0, os.path.dirname(__file__))
 from main import app
 
