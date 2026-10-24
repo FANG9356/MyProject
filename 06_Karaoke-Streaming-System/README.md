@@ -1,7 +1,7 @@
-# 🎤 Fang Karaoke — Self-Hosted Streaming & Mobile Remote Control
+# 🎤 Smart Karaoke Studio — Self-Hosted Streaming & Mobile Remote Control
 
 > **หมวดหมู่:** Multimedia Server & Distributed Web App  
-> **ผู้พัฒนา:** ภคพล (ฟาง) / Phakaphon  
+> **ผู้พัฒนา:** ภคพล / Phakaphon  
 
 ---
 

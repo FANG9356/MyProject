@@ -1,7 +1,7 @@
 ---
 # For configuration options and examples, please see:
 # https://gethomepage.dev/configs/settings/
-title: "Fang's Station"
+title: "Home Cloud Station"
 providers:
   openweathermap: openweathermapapikey
   weatherapi: weatherapiapikey

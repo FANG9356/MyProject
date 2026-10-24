@@ -48,18 +48,25 @@ io.on('connection', (socket) => {
     if (clientIp.startsWith("::ffff:")) clientIp = clientIp.substr(7);
     socket.emit('your-ip', clientIp);
 
-    const interval = setInterval(async () => {
-        const cpu = await si.currentLoad();
-        const mem = await si.mem();
-        const osInfo = await si.osInfo();
-        
-        socket.emit('dashboard-update', {
-            os: `${osInfo.distro} ${osInfo.release}`,
-            cpu: cpu.currentLoad.toFixed(1),
-            ram: (mem.active / mem.total * 100).toFixed(1),
-            ramTotal: (mem.total / 1024 / 1024 / 1024).toFixed(1)
-        });
-    }, 3000);
+    const sendUpdate = async () => {
+        try {
+            const cpu = await si.currentLoad();
+            const mem = await si.mem();
+            const osInfo = await si.osInfo();
+            
+            socket.emit('dashboard-update', {
+                os: `${osInfo.distro} ${osInfo.release}`,
+                cpu: cpu.currentLoad.toFixed(1),
+                ram: (mem.active / mem.total * 100).toFixed(1),
+                ramTotal: (mem.total / 1024 / 1024 / 1024).toFixed(1)
+            });
+        } catch (e) {
+            console.error('System info fetch error:', e);
+        }
+    };
+
+    sendUpdate(); // Send immediate initial stats
+    const interval = setInterval(sendUpdate, 3000);
 
     socket.on('disconnect', () => { clearInterval(interval); });
 });
@@ -67,7 +74,9 @@ io.on('connection', (socket) => {
 // --- เริ่มรัน Server ---
 const PORT = 3000;
 server.listen(PORT, () => {
-    console.log(`🚀 Fang Monitor App Started on Port ${PORT}`);
+    console.log(`🚀 System Monitor Station Started on Port ${PORT}`);
     // เรียกใช้ฟังก์ชันเปิด Browser ของเราเอง
-    openBrowser(`http://localhost:${PORT}`);
+    if (!process.env.HEADLESS) {
+        openBrowser(`http://localhost:${PORT}`);
+    }
 });

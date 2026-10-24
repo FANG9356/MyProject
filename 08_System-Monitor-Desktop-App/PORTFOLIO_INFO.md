@@ -1,7 +1,7 @@
-# Fang Monitor App — Lightweight Windows System Monitor
+# System Monitor Station — Lightweight Standalone System Monitor
 
 **หมวดหมู่:** Desktop Application & System Utilities  
-**เทคโนโลยีหลัก (Tech Stack):** Node.js, Express, pkg (Packaged into Standalone .exe for Windows)  
+**เทคโนโลยีหลัก (Tech Stack):** Node.js, Express, Socket.io, pkg (Packaged into Standalone .exe for Windows)  
 
 ---
 
@@ -12,8 +12,8 @@
 
 ## 🚀 วิธีการรันและทดสอบระบบ (How to Run)
 ```bash
-ดับเบิลคลิก fang-monitor-app-win-x64.exe บน Windows หรือรัน node server.js
+ดับเบิลคลิก sys-monitor-app-win-x64.exe บน Windows หรือรัน node server.js
 ```
 
 ---
-*จัดเตรียมข้อมูลสำหรับ Portfolio — Phakaphon (Fang)*
+*จัดเตรียมข้อมูลสำหรับ Portfolio — Phakaphon*

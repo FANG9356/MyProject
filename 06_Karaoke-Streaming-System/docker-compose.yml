@@ -2,14 +2,14 @@
 services:
   music-studio:
     build: .
-    container_name: fang_music_studio
+    container_name: music_streaming_studio
     ports:
       - "8000:8000"
     volumes:
       # เปลี่ยนจาก ./downloads เป็นชื่อ Volume แทน
-      - fang-music-data:/app/downloads
+      - music-stream-data:/app/downloads
     restart: unless-stopped
 
 # ต้องมาประกาศชื่อ Volume ตรงนี้ด้วย เพื่อให้ Docker สร้างพื้นที่เตรียมไว้ให้
 volumes:
-  fang-music-data:
+  music-stream-data:

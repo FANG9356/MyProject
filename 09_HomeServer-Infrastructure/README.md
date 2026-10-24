@@ -1,7 +1,7 @@
-# 🌐 Fang Home Server & DevOps Infrastructure
+# 🌐 Home Server & DevOps Infrastructure
 
 > **หมวดหมู่:** DevOps, Infrastructure as Code & Private Cloud  
-> **ผู้พัฒนา:** ภคพล (ฟาง) / Phakaphon  
+> **ผู้พัฒนา:** ภคพล / Phakaphon  
 
 ---
 

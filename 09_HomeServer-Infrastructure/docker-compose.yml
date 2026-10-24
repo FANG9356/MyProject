@@ -1,7 +1,7 @@
 services:
   homepage:
     image: ghcr.io/gethomepage/homepage:latest
-    container_name: fang_dashboard
+    container_name: home_dashboard
     ports:
       - 8001:3000 # เราจะใช้พอร์ต 8001 สำหรับหน้านี้นะ
     environment:

@@ -373,7 +373,7 @@ function togglePlay() { player.paused ? player.play() : player.pause(); }
 
 // โหลดระดับเสียงที่จำไว้ตอนเปิดเว็บ
 window.addEventListener('DOMContentLoaded', () => {
-    const savedVol = localStorage.getItem('fang_volume');
+    const savedVol = localStorage.getItem('karaoke_volume');
     if (savedVol !== null) {
         player.volume = parseFloat(savedVol);
         document.getElementById('volumeSlider').value = savedVol;
@@ -384,7 +384,7 @@ window.addEventListener('DOMContentLoaded', () => {
 // เปลี่ยนระดับเสียงพร้อมบันทึกค่าลงเครื่อง
 function changeVolume() {
     player.volume = document.getElementById('volumeSlider').value;
-    localStorage.setItem('fang_volume', player.volume); // บันทึกค่า
+    localStorage.setItem('karaoke_volume', player.volume); // บันทึกค่า
     updateVolIcon();
 }
 
@@ -399,7 +399,7 @@ function toggleMute() {
         player.volume = lastVol > 0 ? lastVol : 0.5; // คืนค่าเสียงเดิม
         document.getElementById('volumeSlider').value = player.volume;
     }
-    localStorage.setItem('fang_volume', player.volume);
+    localStorage.setItem('karaoke_volume', player.volume);
     updateVolIcon();
 }
 
@@ -849,7 +849,7 @@ function setupMediaSession(title) {
     if ('mediaSession' in navigator) {
         navigator.mediaSession.metadata = new MediaMetadata({
             title: title,
-            artist: 'Fang Studio Space',
+            artist: 'Karaoke Studio Space',
             artwork: [
                 { src: 'https://cdn-icons-png.flaticon.com/512/3048/3048122.png', sizes: '512x512', type: 'image/png' }
             ]

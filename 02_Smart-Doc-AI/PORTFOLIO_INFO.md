@@ -18,4 +18,4 @@ Frontend: cd frontend && npm run dev (เข้า http://localhost:5173)
 ```
 
 ---
-*จัดเตรียมข้อมูลสำหรับ Portfolio — Phakaphon (Fang)*
+*จัดเตรียมข้อมูลสำหรับ Portfolio — Phakaphon*

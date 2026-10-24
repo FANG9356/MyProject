@@ -45,7 +45,7 @@ run_test "05" "ATM Security & YOLOv8 Person Detector" \
     "\"/Volumes/FangB/atm/venv/bin/python3\" test_simulation.py" \
     "$DIR/05_ATM-YOLOv8-Detector"
 
-run_test "06" "Fang Karaoke Streaming & Mobile Remote" \
+run_test "06" "Smart Karaoke Streaming & Mobile Remote" \
     ""/Volumes/FangB/tip/.venv/bin/python3" test_simulation.py" \
     "$DIR/06_Karaoke-Streaming-System"
 

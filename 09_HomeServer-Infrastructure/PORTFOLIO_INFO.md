@@ -1,4 +1,4 @@
-# Fang Home Server & DevOps Infrastructure
+# Home Server & DevOps Infrastructure
 
 **หมวดหมู่:** DevOps & Infrastructure as Code  
 **เทคโนโลยีหลัก (Tech Stack):** Docker, Docker Compose, Homepage Dashboard, Proxmox Integration, Cloudflare Tunnels  
@@ -16,4 +16,4 @@ docker compose up -d (เข้า Dashboard ที่ http://localhost:8001)
 ```
 
 ---
-*จัดเตรียมข้อมูลสำหรับ Portfolio — Phakaphon (Fang)*
+*จัดเตรียมข้อมูลสำหรับ Portfolio — Phakaphon*

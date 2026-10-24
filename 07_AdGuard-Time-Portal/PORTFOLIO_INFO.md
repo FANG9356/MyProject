@@ -16,4 +16,4 @@ node server.js (เข้าหน้าแอดมินที่ http://local
 ```
 
 ---
-*จัดเตรียมข้อมูลสำหรับ Portfolio — Phakaphon (Fang)*
+*จัดเตรียมข้อมูลสำหรับ Portfolio — Phakaphon*

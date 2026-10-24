@@ -1,4 +1,4 @@
-# Fang Karaoke — Self-Hosted Streaming & Mobile Remote Control
+# Smart Karaoke Studio — Self-Hosted Streaming & Mobile Remote Control
 
 **หมวดหมู่:** Multimedia Server & Web Application  
 **เทคโนโลยีหลัก (Tech Stack):** FastAPI (Python), yt-dlp, HTML5 Audio/Video, WebSocket/REST API, Docker  
@@ -16,4 +16,4 @@ python3 main.py (เข้าหน้าเล่นเพลงที่ http:
 ```
 
 ---
-*จัดเตรียมข้อมูลสำหรับ Portfolio — Phakaphon (Fang)*
+*จัดเตรียมข้อมูลสำหรับ Portfolio — Phakaphon*

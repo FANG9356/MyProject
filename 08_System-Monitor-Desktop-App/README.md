@@ -1,14 +1,14 @@
-# 💻 Fang Monitor App — Windows Standalone System Monitor
+# 💻 System Monitor Station — Standalone Desktop System Monitor
 
 > **หมวดหมู่:** Desktop Application & System Utilities  
-> **ผู้พัฒนา:** ภคพล (ฟาง) / Phakaphon  
+> **ผู้พัฒนา:** ภคพล / Phakaphon  
 
 ---
 
 ## 📖 คู่มือการติดตั้งและทดลองใช้งานสำหรับกรรมการ (Examiner's Guide)
 
 ### 1. วิธีใช้งานบน Windows (ไม่ต้องติดตั้งโปรแกรมเสริม)
-* ดับเบิลคลิกไฟล์ **`fang-monitor-app-win-x64.exe`** ได้ทันที
+* ดับเบิลคลิกไฟล์ **`sys-monitor-app-win-x64.exe`** ได้ทันที
 * โปรแกรมถูกคอมไพล์เป็น Standalone Executable รวม Runtime ในตัวแล้ว
 
 ### 2. วิธีใช้งานบน macOS / Linux

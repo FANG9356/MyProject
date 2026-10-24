@@ -1,5 +1,5 @@
 # 🚀 คลังผลงานด้านวิศวกรรมคอมพิวเตอร์และซอฟต์แวร์ (Comprehensive Engineering Portfolio)
-> **เจ้าของผลงาน:** ภคพล (ฟาง) / Phakaphon (Fang)  
+> **เจ้าของผลงาน:** ภคพล / Phakaphon  
 > **GitHub Repository:** [FANG9356/MyProject](https://github.com/FANG9356/MyProject)  
 > **สถานะชุดทดสอบระบบ:** `9/9 Projects Passed (100% Operational)` ✅  
 > **อัปเดตล่าสุด:** 24 ตุลาคม 2569  
@@ -288,9 +288,15 @@ flowchart LR
 งานสังสรรค์ในบ้านมักมีปัญหาแย่งคีย์บอร์ดหรือหน้าจอกันเพื่อพิมพ์เลือกเพลงคาราโอเกะ ระบบนี้ทำหน้าที่เป็นเซิร์ฟเวอร์สตรีมมิ่งส่วนตัว โดยหน้าจอทีวีจะเปิดหน้าเล่นเพลงไว้ ส่วนเพื่อน ๆ ในงานสามารถใช้สมาร์ทโฟนของตัวเองสแกน QR Code เข้าหน้ารีโมตมือถือ (`/remote`) เพื่อค้นหาเพลงจาก YouTube และกดแทรกคิวเพลงได้พร้อมกันแบบเรียลไทม์
 
 #### 🖥️ ภาพถ่ายหน้าจอเว็บจริง (Actual Live Web UI Screenshots)
-| หน้าจอหลักเครื่องเล่นทีวี (`/index.html`) | หน้ารีโมตเลือกเพลงบนมือถือ (`/remote.html`) |
-| :---: | :---: |
-| ![Karaoke Player Web UI](./assets/real_web_06_karaoke_player.png) | ![Karaoke Mobile Remote Web UI](./assets/real_web_06_karaoke_remote.png) |
+
+<p align="center">
+  <img src="./assets/real_web_06_karaoke_player.png" width="63%" alt="Karaoke Player Web UI" style="border-radius: 8px; vertical-align: middle;" />
+  &nbsp;&nbsp;
+  <img src="./assets/real_web_06_karaoke_remote.png" width="31%" alt="Karaoke Mobile Remote Web UI" style="border-radius: 8px; vertical-align: middle;" />
+</p>
+<p align="center">
+  <sub><b>🖥️ ซ้าย:</b> หน้าจอหลักสำหรับเปิดเล่นเพลงบนคอมพิวเตอร์ / สมาร์ททีวี (<code>/index.html</code>) &nbsp;&nbsp;|&nbsp;&nbsp; <b>📱 ขวา:</b> หน้ารีโมตควบคุมและแทรกคิวเพลงบนสมาร์ทโฟน (<code>/remote.html</code>)</sub>
+</p>
 
 #### 📊 Infographic แผนภาพขั้นตอนการทำงาน (Workflow Architecture)
 ```mermaid
@@ -365,7 +371,7 @@ flowchart LR
 > **เทคโนโลยี:** Node.js, Express, pkg (คอมไพล์เป็นไฟล์เดี่ยว `.exe` สำหรับ Windows)  
 
 #### 💡 แนวคิดและสถานการณ์การใช้งานจริง (Problem & Real-World Use Case)
-โปรแกรมสำหรับใช้ตรวจสอบทรัพยากรเครื่องคอมพิวเตอร์ (CPU, RAM, Uptime, แพลตฟอร์ม) แบบรวดเร็วโดยไม่ต้องติดตั้งโปรแกรมหนัก ๆ ตัวแอปถูกแพ็กเกจเป็นไฟล์ `.exe` แบบ Standalone (`fang-monitor-app-win-x64.exe`) สามารถก๊อปลง Flash Drive ไปเปิดดูสเปกและสถานะเครื่องผ่านหน้าเว็บเบราว์เซอร์ได้ทันที
+โปรแกรมสำหรับใช้ตรวจสอบทรัพยากรเครื่องคอมพิวเตอร์ (CPU, RAM, Uptime, แพลตฟอร์ม) แบบรวดเร็วโดยไม่ต้องติดตั้งโปรแกรมหนัก ๆ ตัวแอปถูกแพ็กเกจเป็นไฟล์ `.exe` แบบ Standalone (`sys-monitor-app-win-x64.exe`) สามารถก๊อปลง Flash Drive ไปเปิดดูสเปกและสถานะเครื่องผ่านหน้าเว็บเบราว์เซอร์ได้ทันที
 
 #### 🖥️ ภาพถ่ายหน้าจอเว็บมอนิเตอร์จริง (Actual Live Web UI Screenshot)
 ![System Monitor Web UI](./assets/real_web_08_sysmonitor.png)
@@ -381,7 +387,7 @@ flowchart LR
 
 #### 📖 คู่มือการติดตั้งและทดลองใช้งานจริงสำหรับกรรมการ (Examiner's Quick-Start)
 * **บน Windows (ไม่ต้องติดตั้งโปรแกรมเสริม):**  
-  ดับเบิลคลิกเปิดไฟล์ `fang-monitor-app-win-x64.exe` ได้ทันที
+  ดับเบิลคลิกเปิดไฟล์ `sys-monitor-app-win-x64.exe` ได้ทันที
 * **บน macOS / Linux:**  
   ```bash
   cd 08_System-Monitor-Desktop-App
@@ -406,7 +412,7 @@ flowchart LR
 ```mermaid
 flowchart TD
     A[🌍 ผู้ใช้งานภายนอก] -->|เชื่อมต่อผ่าน Domain ปลอดภัย| B[☁️ Cloudflare Zero Trust Tunnel]
-    B --> C[🏠 Fang Home Server Docker Network]
+    B --> C[🏠 Home Server Docker Network]
     subgraph Container_Stack [Docker Services & Infrastructure]
         C --> D[📊 Homepage Dashboard: พอร์ต 8001]
         D --> E[🛡️ Proxmox VE API - สถานะ CPU/RAM โฮสต์]

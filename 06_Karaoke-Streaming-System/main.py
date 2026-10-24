@@ -16,7 +16,7 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 class SharedState:
     command = ""
     theme_rgb = "0, 113, 227"
-    current_song = "🎵 Fang Studio"
+    current_song = "🎵 Smart Karaoke Studio"
     next_song = "-"
     is_playing = False # 👈 สถานะ Play สำหรับรีโมท iPhone
     thumbnail = "" 

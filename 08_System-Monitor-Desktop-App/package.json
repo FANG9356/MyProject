@@ -1,5 +1,5 @@
 {
-  "name": "fang-monitor-app",
+  "name": "sys-monitor-app",
   "version": "1.0.0",
   "main": "server.js",
   "bin": "server.js",
