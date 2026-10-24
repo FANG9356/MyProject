@@ -1,6 +1,6 @@
 # Tip Desk — Real-time PromptPay Donation & Voice Alert System
 
-> **หมวดหมู่:** FinTech / Modern Full-Stack Application
+> **หมวดหมู่:** FinTech / Full-Stack Web Application
 > **ผู้พัฒนา:** Phakhaphon Sukmee
 
 ---
