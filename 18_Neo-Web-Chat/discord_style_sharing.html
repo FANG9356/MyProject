@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Discord-Style Web Screen Sharing</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 0; background-color: #36393f; color: #dcddde; display: flex; height: 100vh; overflow: hidden; padding: 8px; box-sizing: border-box; }
+body { font-family: Arial, sans-serif; margin: 0; background-color: #36393f; color: #dcddde; display: flex; height: 100vh; overflow: hidden; padding: 8px; box-sizing: border-box; }
         .sidebar { flex-shrink: 0; width: 240px; background-color: #2f3136; padding: 10px; box-sizing: border-box; border-radius: 8px; margin-right: 8px; height: 100%; }
         .main-content { flex-grow: 1; display: flex; flex-direction: column; background-color: #36393f; }
         .user-list { flex-shrink: 0; width: 200px; background-color: #202225; padding: 10px; box-sizing: border-box; border-radius: 8px; margin-left: 8px; height: 100%; }
@@ -35,7 +35,8 @@
         .profile-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; margin-bottom: 20px; }
         .profile-option { width: 50px; height: 50px; line-height: 50px; font-size: 1.5em; font-weight: bold; background-color: #40444b; color: #dcddde; border-radius: 50%; cursor: pointer; transition: background-color 0.2s, transform 0.1s; }
         .profile-option:hover { background-color: #5865f2; transform: scale(1.05); }
-    </style>
+
+</style>
 </head>
 <body>
     <div id="profile-screen">
@@ -50,7 +51,7 @@
             <div class="header"><h2>Control Preview</h2></div>
             <div class="channel-list">
                 <h3>Text Channels</h3>
-                <div class="channel-item active" data-channel="general">Monitor Control</div> 
+                <div class="channel-item active" data-channel="general">Monitor Control</div>
             </div>
             <div class="settings-panel">
                 <h4>Screen Share Settings</h4>
@@ -88,7 +89,7 @@
         </div>
     </div>
     <script>
-        const SIGNALING_SERVER_URL = "ws://192.168.1.26:8080"; 
+const SIGNALING_SERVER_URL = "ws://192.168.1.26:8080";
         const localVideo = document.getElementById('localVideo');
         const startButton = document.getElementById('startButton');
         const statusDiv = document.getElementById('status');
@@ -98,16 +99,16 @@
         const mainApp = document.getElementById('main-app');
         let localStream = null;
         let socket = null;
-        let isSharing = false; 
-        let CURRENT_USER = localStorage.getItem('currentUser') || null; 
-        let users = []; 
-        const peerConnections = new Map(); 
-        let sharerId = null; 
+        let isSharing = false;
+        let CURRENT_USER = localStorage.getItem('currentUser') || null;
+        let users = [];
+        const peerConnections = new Map();
+        let sharerId = null;
         const ICE_CONFIG = {
             iceServers: [
-                { urls: 'stun:stun.l.google.com:19302' }, 
-                { 
-                    urls: 'turn:openrelay.metered.ca:80', 
+                { urls: 'stun:stun.l.google.com:19302' },
+                {
+                    urls: 'turn:openrelay.metered.ca:80',
                     username: 'openrelay@metered.ca',
                     credential: 'openrelay'
                 }
@@ -166,7 +167,7 @@
             };
             socket.onmessage = handleSignalingMessage;
             socket.onclose = () => { console.log('WebSocket disconnected.'); };
-            socket.onerror = (e) => { 
+            socket.onerror = (e) => {
                 console.error('WebSocket Error:', e);
                 statusDiv.textContent = `ERROR: Cannot connect to server at ${SIGNALING_SERVER_URL}`;
             };
@@ -178,7 +179,7 @@
             }
             if (sharerId && sharerId !== CURRENT_USER) {
                 statusDiv.textContent = `Error: ${sharerId} is currently sharing. Joining as viewer.`;
-                setupSocket(); 
+                setupSocket();
                 return;
             }
             statusDiv.textContent = 'Requesting screen access...';
@@ -196,9 +197,9 @@
                 videoConstraints.height = { max: resolutions[selectedResolution].height };
             }
             try {
-                localStream = await navigator.mediaDevices.getDisplayMedia({ 
-                    video: videoConstraints, 
-                    audio: true 
+                localStream = await navigator.mediaDevices.getDisplayMedia({
+                    video: videoConstraints,
+                    audio: true
                 });
                 let audioStatus = '';
                 if (localStream.getAudioTracks().length > 0) {
@@ -207,13 +208,13 @@
                     audioStatus = " (ไม่มีเสียง)";
                 }
                 localStream.getVideoTracks()[0].onended = () => { stopScreenShare(); };
-                localVideo.srcObject = localStream; 
-                sharerId = CURRENT_USER; 
+                localVideo.srcObject = localStream;
+                sharerId = CURRENT_USER;
                 isSharing = true;
                 statusDiv.textContent = `Sharing: ${selectedResolution} @ ${targetFps} FPS${audioStatus}`;
-                startButton.textContent = 'Stop Share'; 
-                startButton.classList.add('sharing-active'); 
-                setupSocket(); 
+                startButton.textContent = 'Stop Share';
+                startButton.classList.add('sharing-active');
+                setupSocket();
             } catch (err) {
                 console.error("Error accessing screen:", err);
                 statusDiv.textContent = `Error: ${err.name} - Sharing failed.`;
@@ -230,8 +231,8 @@
             sharerId = null;
             isSharing = false;
             statusDiv.textContent = 'Screen sharing stopped.';
-            startButton.textContent = 'Start Share'; 
-            startButton.classList.remove('sharing-active'); 
+            startButton.textContent = 'Start Share';
+            startButton.classList.remove('sharing-active');
         }
         function startSharingToAllPeers() {
             users.filter(id => id !== CURRENT_USER)
@@ -241,7 +242,7 @@
             if (peerConnections.has(peerId)) {
                 peerConnections.get(peerId).close();
             }
-            const pc = new RTCPeerConnection(ICE_CONFIG); 
+            const pc = new RTCPeerConnection(ICE_CONFIG);
             peerConnections.set(peerId, pc);
             if (localStream && isInitiator) {
                 localStream.getTracks().forEach(track => {
@@ -249,11 +250,11 @@
                 });
             }
             pc.ontrack = (event) => {
-                if (CURRENT_USER !== sharerId) { 
+                if (CURRENT_USER !== sharerId) {
                     console.log(`Received remote stream from ${sharerId}.`);
-                    localVideo.srcObject = event.streams[0]; 
+                    localVideo.srcObject = event.streams[0];
                     statusDiv.textContent = `Viewing shared screen from ${sharerId}.`;
-                    localVideo.muted = false; 
+                    localVideo.muted = false;
                 }
             };
             pc.onicecandidate = ({ candidate }) => {
@@ -262,7 +263,7 @@
                         type: 'candidate',
                         candidate: candidate,
                         sender: CURRENT_USER,
-                        target: peerId 
+                        target: peerId
                     }));
                 }
             };
@@ -305,19 +306,19 @@
                 return;
             }
             if (message.type === 'offer' && !isSharing) {
-                sharerId = senderId; 
+                sharerId = senderId;
                 let pc = peerConnections.get(senderId);
                 if (!pc) {
                     pc = createPeerConnection(senderId, false);
                 }
                 await createAnswer(pc, message, senderId);
-            } 
+            }
             else if (message.type === 'answer' && isSharing) {
                 const pc = peerConnections.get(senderId);
                 if (pc) {
                     await pc.setRemoteDescription(new RTCSessionDescription(message.sdp));
                 }
-            } 
+            }
             else if (message.type === 'candidate') {
                 const targetId = isSharing ? senderId : sharerId;
                 const pc = peerConnections.get(targetId);
@@ -329,7 +330,7 @@
         function initializeApp() {
             startButton.addEventListener('click', startScreenShare);
             initializeHeader();
-            setupSocket(); // เริ่มเชื่อมต่อ WebSocket ทันทีที่เข้าหน้าหลัก
+            setupSocket();
         }
         if (CURRENT_USER) {
             profileScreen.style.display = 'none';
@@ -339,6 +340,7 @@
             setupProfileScreen();
             mainApp.style.display = 'none';
         }
-    </script>
+
+</script>
 </body>
 </html>

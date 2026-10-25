@@ -83,13 +83,13 @@ const authStore = useAuthStore();
 
 const username = ref("");
 const password = ref("");
-const isLoading = ref(false); // ทำปุ่มหมุนติ้วๆ ตอนรอ API
-const errorMessage = ref(""); // ไว้แสดงข้อความเตือนถ้ากรอกผิด
+const isLoading = ref(false);
+const errorMessage = ref("");
 
 const handleLogin = async () => {
   if (!username.value.trim() || !password.value.trim()) {
     errorMessage.value = "กรอก: ชื่อผู้ใช้งาน, รหัสผ่าน ให้เรียบร้อย";
-    return; // สั่ง return เพื่อ "เบรก" ไม่ให้โค้ดทำงานต่อ (ไม่ส่งไปหลังบ้าน)
+    return;
   }
   errorMessage.value = "";
   isLoading.value = true;
@@ -103,7 +103,8 @@ const handleLogin = async () => {
   } catch (error) {
     errorMessage.value = error.message;
   } finally {
-    isLoading.value = false; // ปิดสถานะโหลด
+    isLoading.value = false;
   }
 };
+
 </script>

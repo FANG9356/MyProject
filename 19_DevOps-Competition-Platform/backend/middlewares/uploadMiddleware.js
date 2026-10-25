@@ -34,7 +34,7 @@ const fileFilter = (req, file, cb) => {
 
 const upload = multer({
   storage: storage,
-  limits: { fileSize: 2 * 1024 * 1024 }, // จำกัดขนาด 2MB ตามที่หน้าเว็บระบุไว้
+  limits: { fileSize: 2 * 1024 * 1024 },
   fileFilter: fileFilter,
 });
 

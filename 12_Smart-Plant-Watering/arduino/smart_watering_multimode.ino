@@ -15,7 +15,7 @@ int servoPosition = 0;
 void setup() {
   Blynk.begin(auth, ssid, pass);
   servo.attach(D5);
-  servo.write(servoPosition);  // ไม่จำเป็นต้องใช้ myservo.write(servoPosition);
+  servo.write(servoPosition);
 }
 
 void loop() {
@@ -33,7 +33,7 @@ BLYNK_WRITE(V2) {
     servoPosition = 90;
     servo.write(servoPosition);
     delay(1000);
-    
+
   }
   else{servoPosition = 0;
     servo.write(servoPosition);}

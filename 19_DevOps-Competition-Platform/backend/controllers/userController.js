@@ -1,5 +1,5 @@
 const bcrypt = require("bcryptjs");
-const db = require("../config/db"); //  อย่าลืมเช็ค path ของ db ว่าชี้ไปถูกไฟล์นะครับ
+const db = require("../config/db");
 const fs = require("fs");
 const path = require("path");
 
@@ -103,7 +103,7 @@ exports.deleteUser = async (req, res) => {
       const imagePath = path.join(__dirname, "../", userImage);
 
       if (fs.existsSync(imagePath)) {
-        fs.unlinkSync(imagePath); // สั่งลบทิ้งทันที
+        fs.unlinkSync(imagePath);
         console.log(" ลบไฟล์รูปภาพขยะเรียบร้อย:", userImage);
       }
     }

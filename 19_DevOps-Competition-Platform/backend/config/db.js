@@ -15,7 +15,7 @@ pool
   .getConnection()
   .then((connection) => {
     console.log(" เชื่อมต่อฐานข้อมูลสำเร็จ!");
-    connection.release(); // คืนการเชื่อมต่อกลับสู่ Pool
+    connection.release();
   })
   .catch((error) => {
     console.error(" เกิดข้อผิดพลาดในการเชื่อมต่อฐานข้อมูล:", error.message);

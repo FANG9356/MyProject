@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>โปรแกรมคำนวณเกรด GPA & GPAX</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       background: #121212;
@@ -128,7 +128,8 @@
       color: #4da6ff;
       padding: 6px;
     }
-  </style>
+
+</style>
 </head>
 <body>
   <div class="window">
@@ -141,7 +142,7 @@
       <div class="title">โปรแกรมคำนวณเกรด GPA & GPAX</div>
     </div>
     <div class="app-body">
-      <!-- GPA Section -->
+
       <div class="card">
         <div class="card-title">คำนวณเกรด GPA รายเทอม</div>
         <div class="form-grid">
@@ -165,7 +166,7 @@
         <div class="result-badge" id="gpa-result">GPA เทอมนี้: -</div>
       </div>
 
-      <!-- GPAX Section -->
+
       <div class="card">
         <div class="card-title">คำนวณเกรด GPAX สะสม</div>
         <div class="form-grid">
@@ -181,7 +182,7 @@
   </div>
 
   <script>
-    let subjects = [
+let subjects = [
       { name: "แคลคูลัส 1", credit: 3.0, score: 85, grade: "A", gp: 4.0 }
     ];
 
@@ -189,7 +190,7 @@
       const name = document.getElementById('sub_name').value;
       const credit = parseFloat(document.getElementById('sub_credit').value) || 3.0;
       const score = parseFloat(document.getElementById('sub_score').value) || 75;
-      
+
       let grade = "B+";
       let gp = 3.5;
       if (score >= 80) { grade = "A"; gp = 4.0; }
@@ -197,7 +198,7 @@
       else if (score >= 70) { grade = "B"; gp = 3.0; }
 
       subjects.push({ name, credit, score, grade, gp });
-      
+
       const box = document.getElementById('sub-box');
       const item = document.createElement('div');
       item.className = 'subject-item';
@@ -223,6 +224,7 @@
       const gpax = den > 0 ? (num / den) : 0;
       document.getElementById('gpax-result').innerText = `GPAX สะสม: ${gpax.toFixed(2)}`;
     }
-  </script>
+
+</script>
 </body>
 </html>

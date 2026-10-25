@@ -1,8 +1,8 @@
 const db = require("../config/db");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const fs = require("fs"); //  นำเข้า File System (ใช้จัดการไฟล์)
-const path = require("path"); //  นำเข้า Path (ใช้จัดการเส้นทางไฟล์)
+const fs = require("fs");
+const path = require("path");
 const { validationResult } = require("express-validator");
 
 exports.login = async (req, res) => {
@@ -47,7 +47,7 @@ exports.login = async (req, res) => {
 
     const payload = {
       id: user.id,
-      role: user.role, // เช่น 'admin' หรือ 'user'
+      role: user.role,
     };
 
     const token = jwt.sign(payload, process.env.JWT_SECRET, {
@@ -146,7 +146,7 @@ exports.getProfile = async (req, res) => {
 
 exports.updateProfile = async (req, res) => {
   try {
-    const userId = req.user.id; // ได้มาจาก authMiddleware
+    const userId = req.user.id;
     const { name, password } = req.body;
     const [users] = await db.query(
       "SELECT profile_image FROM users WHERE id = ?",
@@ -177,7 +177,7 @@ exports.updateProfile = async (req, res) => {
         const oldImagePath = path.join(__dirname, "../", oldImage);
 
         if (fs.existsSync(oldImagePath)) {
-          fs.unlinkSync(oldImagePath); //  สั่งลบไฟล์ทิ้งทันที!
+          fs.unlinkSync(oldImagePath);
           console.log(" ลบรูปโปรไฟล์เก่าทิ้งเรียบร้อย:", oldImage);
         }
       }

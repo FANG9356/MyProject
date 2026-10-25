@@ -193,7 +193,7 @@ const handleSaveUser = async (userData, isEdit) => {
   const result = await saveUserAPI(userData, isEdit);
   if (result.success) {
     alert(isEdit ? "แก้ไขข้อมูลเรียบร้อย!" : "เพิ่มผู้ใช้งานเรียบร้อย!");
-    dialogForm.value = false; // ปิดหน้าต่างฟอร์ม
+    dialogForm.value = false;
   } else {
     alert(`ผิดพลาด: ${result.message}`);
   }
@@ -203,7 +203,7 @@ const handleDeleteUser = async (userId) => {
   const result = await deleteUserAPI(userId);
   if (result.success) {
     alert("ลบข้อมูลสำเร็จ");
-    dialogDelete.value = false; // ปิดหน้าต่างยืนยัน
+    dialogDelete.value = false;
   } else {
     alert(`ลบล้มเหลว: ${result.message}`);
   }
@@ -218,4 +218,5 @@ const getRoleColor = (role) => {
 onMounted(() => {
   fetchUsers();
 });
+
 </script>

@@ -17,7 +17,7 @@ def get_dominant_color(image_bgr: np.ndarray, k: int = 3) -> tuple:
 
     counts = np.bincount(labels.flatten())
     dominant = centers[np.argmax(counts)]
-    return tuple(int(c) for c in dominant)  # (B, G, R)
+    return tuple(int(c) for c in dominant)
 
 
 def bgr_to_color_name(bgr: tuple) -> str:
@@ -63,7 +63,7 @@ def detect_object_color(image_path: str, bbox: tuple) -> str:
 
 if __name__ == "__main__":
     image_path = "example.jpg"
-    bbox = (100, 150, 300, 400)  # (x1, y1, x2, y2)
+    bbox = (100, 150, 300, 400)
 
     try:
         color = detect_object_color(image_path, bbox)

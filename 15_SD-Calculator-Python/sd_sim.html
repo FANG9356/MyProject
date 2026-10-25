@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>โปรแกรมคำนวณ แบบประเมินการใช้งาน</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       background: #ececec;
@@ -165,7 +165,8 @@
       color: #333;
     }
     .treeview tr:nth-child(even) { background: #fafafa; }
-  </style>
+
+</style>
 </head>
 <body>
   <div class="window">
@@ -192,7 +193,7 @@
       <button class="btn" id="btn-generate" onclick="generateFields()">สร้างช่องกรอกคะแนน</button>
 
       <div class="inputs-container" id="inputs-box">
-        <!-- Generated dynamic inputs -->
+
       </div>
 
       <button class="btn" id="btn-calc" style="background:#28a745;" onclick="calculate()">คำนวณผลลัพธ์</button>
@@ -216,7 +217,7 @@
   </div>
 
   <script>
-    function generateFields() {
+function generateFields() {
       const uCount = parseInt(document.getElementById('num_users').value) || 3;
       const qCount = parseInt(document.getElementById('num_questions').value) || 4;
       const box = document.getElementById('inputs-box');
@@ -277,6 +278,7 @@
     }
 
     generateFields();
-  </script>
+
+</script>
 </body>
 </html>

@@ -6,12 +6,12 @@
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        body { 
-            background-color: #0d1117; 
-            color: #c9d1d9; 
-            font-family: 'JetBrains Mono', monospace; 
-            padding: 20px; 
-            max-width: 1200px; 
+body {
+            background-color: #0d1117;
+            color: #c9d1d9;
+            font-family: 'JetBrains Mono', monospace;
+            padding: 20px;
+            max-width: 1200px;
             margin: 0 auto;
         }
 
@@ -41,11 +41,11 @@
         .card h2 { margin: 0; font-size: 0.75rem; color: #8b949e; letter-spacing: 1px; text-transform: uppercase; }
         .value-large { font-size: 2rem; font-weight: bold; margin: 5px 0; }
         .unit { font-size: 0.7rem; color: #8b949e; }
-        
+
         .color-dl { color: #58a6ff; }
         .color-ul { color: #ff7b72; }
-        .color-wan { color: #2ea043; text-shadow: 0 0 10px rgba(46, 160, 67, 0.4); } /* เขียว */
-        
+        .color-wan { color: #2ea043; text-shadow: 0 0 10px rgba(46, 160, 67, 0.4); }
+
         .color-cpu { color: #d29922; }
         .color-ram { color: #a371f7; }
         .color-disk { color: #f2cc60; }
@@ -61,15 +61,16 @@
         tr:hover { background-color: #161b22; }
 
         .latency-badge { padding: 4px 8px; border-radius: 4px; font-weight: bold; color: #0d1117; font-size: 0.75rem; }
-        .ping-good { background-color: #3fb950; } 
-        .ping-ok { background-color: #d29922; }   
-        .ping-bad { background-color: #ff7b72; }  
+        .ping-good { background-color: #3fb950; }
+        .ping-ok { background-color: #d29922; }
+        .ping-bad { background-color: #ff7b72; }
 
-        /* สไตล์สำหรับผู้บุกรุก (Intruder) */
+
         .intruder-row { background-color: rgba(255, 123, 114, 0.1) !important; border-left: 3px solid #ff7b72; }
         .intruder-tag { background-color: #ff7b72; color: #000; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; margin-left: 10px; }
         .trusted-tag { color: #3fb950; font-size: 0.7rem; border: 1px solid #3fb950; padding: 1px 5px; border-radius: 4px; margin-left: 10px; opacity: 0.7;}
-    </style>
+
+</style>
 </head>
 <body>
 
@@ -79,11 +80,11 @@
             <div class="value-large color-dl" id="dl-speed">0.00</div>
             <span class="unit">Mbps</span>
         </div>
-        
+
         <div class="card" style="border: 1px solid #3fb950;">
             <h2>Connectivity</h2>
             <div class="value-large color-ip" id="host-ip" style="font-size: 1.8rem;">...</div>
-            
+
             <div style="margin-top: 5px; font-size: 0.8rem; color: #8b949e; border-top: 1px solid #30363d; padding-top: 5px;">
                 WAN: <span id="wan-status" style="font-weight: bold;">Checking...</span>
                 <span id="wan-ping" style="margin-left: 5px;">(- ms)</span>
@@ -139,8 +140,8 @@
 
     <script src="/socket.io/socket.io.js"></script>
     <script>
-        const socket = io();
-        
+const socket = io();
+
         const ctx = document.getElementById('trafficChart').getContext('2d');
         const trafficChart = new Chart(ctx, {
             type: 'line',
@@ -171,11 +172,11 @@ socket.on('dashboard-update', (data) => {
             const wanEl = document.getElementById('wan-status');
             wanEl.innerText = data.internet.status;
             document.getElementById('wan-ping').innerText = 'Ping to Google: ' + data.internet.latency + ' ms';
-            
+
             if(data.internet.status === 'Online') {
-                wanEl.style.color = '#2ea043'; // เขียว
+                wanEl.style.color = '#2ea043';
             } else {
-                wanEl.style.color = '#ff7b72'; // แดง
+                wanEl.style.color = '#ff7b72';
             }
 
 
@@ -198,7 +199,7 @@ socket.on('dashboard-update', (data) => {
 
             document.getElementById('count').innerText = data.devices.length;
             const tbody = document.getElementById('device-list');
-            tbody.innerHTML = ''; 
+            tbody.innerHTML = '';
             data.devices.forEach(dev => {
                 const ms = parseFloat(dev.latency);
                 let badgeClass = 'ping-good';
@@ -207,12 +208,12 @@ socket.on('dashboard-update', (data) => {
 
                 let rowClass = '';
                 let trustTag = `<span class="intruder-tag"> UNKNOWN</span>`;
-                
+
                 if (dev.isTrusted) {
                     rowClass = '';
                     trustTag = `<span class="trusted-tag"> Trusted</span>`;
                 } else {
-                    rowClass = 'intruder-row'; // ใส่สีแดงถ้าไม่รู้จัก
+                    rowClass = 'intruder-row';
                 }
 
                 const row = `
@@ -228,6 +229,7 @@ socket.on('dashboard-update', (data) => {
                 tbody.innerHTML += row;
             });
         });
-    </script>
+
+</script>
 </body>
 </html>

@@ -13,7 +13,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 
       if (response.data.status === "success") {
         authStore.user = response.data.user;
-        authStore.token = token; // อัปเดต token ใน Store ให้ตรงกัน
+        authStore.token = token;
       }
     } catch (error) {
       useCookie("auth_token").value = null;
@@ -29,7 +29,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   const publicRoutes = ["/"];
 
   if (!publicRoutes.includes(to.path) && !token) {
-    return navigateTo("/"); // เตะกลับไปหน้า / ทันที
+    return navigateTo("/");
   }
 
   if (to.path === "/users") {
@@ -40,7 +40,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
       if (import.meta.client) {
         alert("ระบบจำกัดสิทธิ์: คุณไม่สามารถเข้าถึงหน้าจัดการผู้ใช้งานได้");
       }
-      return navigateTo("/home"); // ถ้าสิทธิ์ไม่ถึง ให้เตะกลับไป /home
+      return navigateTo("/home");
     }
   }
 });

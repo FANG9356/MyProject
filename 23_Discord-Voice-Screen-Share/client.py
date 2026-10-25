@@ -57,21 +57,21 @@ class DiscordApp:
         })
         style.theme_use("discord_dark")
 
-        self.root.grid_columnconfigure(0, weight=0, minsize=220)  # Channel List (ซ้าย)
-        self.root.grid_columnconfigure(1, weight=1)               # Main Chat Area (กลาง)
-        self.root.grid_columnconfigure(2, weight=0, minsize=220)  # User List (ขวา)
+        self.root.grid_columnconfigure(0, weight=0, minsize=220)
+        self.root.grid_columnconfigure(1, weight=1)
+        self.root.grid_columnconfigure(2, weight=0, minsize=220)
         self.root.grid_rowconfigure(0, weight=1)
 
         self.channel_frame = ttk.Frame(self.root, style="TFrame")
         self.channel_frame.grid(row=0, column=0, sticky="nsew", padx=(0, 1))
         self.channel_frame.configure(style="TFrame", relief="solid", borderwidth=0)
-        
+
         ttk.Label(self.channel_frame, text="BUDDAHAWAY", font=('Arial', 12, 'bold'), background=DISCORD_HEADER_BG, foreground=DISCORD_LIGHT_TEXT).pack(fill=tk.X, pady=(0, 1), ipady=10)
 
         self.channel_list_frame = ttk.Frame(self.channel_frame, style="TFrame")
         self.channel_list_frame.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
         self.channel_list_frame.configure(style="TFrame", background=DISCORD_CHANNEL_BG)
-        
+
         self.channels = ["#ทั่วไป", "#Game Project", "#โหวต", "#file", "#ประชุม"]
         self.channel_labels = {}
         for channel in self.channels:
@@ -79,7 +79,7 @@ class DiscordApp:
             label.pack(fill=tk.X, pady=1)
             label.bind("<Button-1>", self.on_channel_click)
             self.channel_labels[channel] = label
-        
+
         self.current_channel = self.channels[0]
         self.channel_labels[self.current_channel].configure(background=DISCORD_SELECTED_CHANNEL)
 
@@ -116,10 +116,10 @@ class DiscordApp:
 
         control_frame = ttk.Frame(self.user_frame, padding="10", style="TFrame")
         control_frame.pack(fill=tk.X, side=tk.BOTTOM, pady=(10, 0))
-        
+
         self.screen_btn = ttk.Button(control_frame, text="Start Sharing Screen", command=self.toggle_screen_share)
         self.screen_btn.pack(fill=tk.X, pady=3)
-        
+
         self.voice_btn = ttk.Button(control_frame, text="Start Voice Chat", command=self.toggle_voice_chat)
         self.voice_btn.pack(fill=tk.X, pady=3)
 
@@ -159,7 +159,7 @@ class DiscordApp:
         self.chat_display.tag_add("color_tag", "end-2c linestart", "end-2c lineend")
         self.chat_display.see(tk.END)
         self.chat_display.config(state='disabled')
-        
+
     def toggle_screen_share(self):
         if not self.screen_running:
             self.screen_running = True
@@ -178,12 +178,12 @@ class DiscordApp:
             self.screen_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.screen_socket.connect((SERVER_HOST, SERVER_PORT_SCREEN))
             self.status_label.config(text="Connected", foreground=DISCORD_GREEN)
-            
+
             with mss.mss() as sct:
                 monitor = sct.monitors[1]
                 new_width = int(monitor['width'] * DOWNSCALE_FACTOR)
                 new_height = int(monitor['height'] * DOWNSCALE_FACTOR)
-                
+
                 print(f"Sharing Resolution: {new_width}x{new_height} @ {TARGET_FPS} FPS")
 
                 while self.screen_running:
@@ -191,21 +191,21 @@ class DiscordApp:
                     screenshot_mss = sct.grab(monitor)
                     screenshot_np = np.array(screenshot_mss)
                     screenshot_np = cv2.cvtColor(screenshot_np, cv2.COLOR_BGRA2BGR)
-                    
+
                     resized_screenshot = cv2.resize(
                         screenshot_np,
                         (new_width, new_height),
                         interpolation=cv2.INTER_LINEAR
                     )
-                    
+
                     final_frame = resized_screenshot
                     _, buffer = cv2.imencode('.jpg', final_frame, [int(cv2.IMWRITE_JPEG_QUALITY), JPEG_QUALITY])
                     data = buffer.tobytes()
                     self.screen_socket.sendall(len(data).to_bytes(4, 'big') + data)
-                    
+
                     elapsed_time = time.time() - start_time
                     sleep_time = WAIT_TIME - elapsed_time
-                    
+
                     if sleep_time > 0:
                         time.sleep(sleep_time)
         except Exception as e:
@@ -261,7 +261,7 @@ if __name__ == '__main__':
     except ImportError:
         print("Please install required libraries: pip install mss opencv-python pillow pyaudio pyautogui")
         exit()
-        
+
     root = tk.Tk()
     app = DiscordApp(root)
     root.mainloop()

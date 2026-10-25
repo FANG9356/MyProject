@@ -8,7 +8,7 @@ export function useUsers() {
   const users = ref([]);
   const search = ref("");
   const page = ref(1);
-  const itemsPerPage = ref(2); // ปรับเป็น 5 หรือตามที่ต้องการ
+  const itemsPerPage = ref(2);
 
   const fetchUsers = async () => {
     try {
@@ -57,7 +57,7 @@ export function useUsers() {
           headers: { Authorization: `Bearer ${authStore.token}` },
         });
       }
-      await fetchUsers(); // โหลดข้อมูลใหม่
+      await fetchUsers();
       return { success: true };
     } catch (error) {
       const errorMsg =
@@ -71,7 +71,7 @@ export function useUsers() {
       await api.delete(`/users/${userId}`, {
         headers: { Authorization: `Bearer ${authStore.token}` },
       });
-      await fetchUsers(); // โหลดข้อมูลใหม่
+      await fetchUsers();
       return { success: true };
     } catch (error) {
       const errorMsg = error.message || "เกิดข้อผิดพลาดในการลบข้อมูล";

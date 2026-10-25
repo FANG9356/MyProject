@@ -2,12 +2,12 @@ const express = require("express");
 const router = express.Router();
 const userController = require("../controllers/userController");
 
-const verifyToken = require("../middlewares/authMiddleware"); // เช็ค path ให้ตรงกับโปรเจกต์ของคุณครูนะครับ
+const verifyToken = require("../middlewares/authMiddleware");
 
-router.get("/", verifyToken, userController.getAllUsers); // โหลดข้อมูลทั้งหมด
-router.post("/", verifyToken, userController.createUser); // เพิ่มข้อมูลใหม่
-router.put("/:id", verifyToken, userController.updateUser); // แก้ไขข้อมูล (ต้องระบุ ID)
-router.delete("/:id", verifyToken, userController.deleteUser); // ลบข้อมูล (ต้องระบุ ID)
+router.get("/", verifyToken, userController.getAllUsers);
+router.post("/", verifyToken, userController.createUser);
+router.put("/:id", verifyToken, userController.updateUser);
+router.delete("/:id", verifyToken, userController.deleteUser);
 
 const fs = require("fs");
 const path = require("path");

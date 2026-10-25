@@ -6,7 +6,7 @@
     <title>Smart Plant Watering - Blynk IoT Simulation</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
     <style>
-        :root {
+:root {
             --bg: #0A0F1D;
             --surface: #111A2E;
             --card: #18243E;
@@ -223,7 +223,8 @@
             font-size: 16px;
             font-weight: 700;
         }
-    </style>
+
+</style>
 </head>
 <body>
     <div class="header">
@@ -232,7 +233,7 @@
     </div>
 
     <div class="main-container">
-        <!-- Phone Frame -->
+
         <div class="phone-frame">
             <div class="phone-header">
                 <span class="blynk-logo">BLYNK.IOT</span>
@@ -265,10 +266,10 @@
             </button>
         </div>
 
-        <!-- Greenhouse Hardware Stage -->
+
         <div class="greenhouse-view">
             <div style="font-size: 16px; font-weight: 700;">Real-Time Plant Bed Physical Simulation</div>
-            
+
             <div class="garden-stage">
                 <div class="nozzles">
                     <div class="nozzle"><div class="spray-effect" id="spray1"></div></div>
@@ -301,7 +302,7 @@
     </div>
 
     <script>
-        let currentMode = 'off';
+let currentMode = 'off';
         let pumpActive = false;
 
         function updateUI() {
@@ -368,6 +369,7 @@
             }
             updateUI();
         }
-    </script>
+
+</script>
 </body>
 </html>

@@ -3,15 +3,15 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: false },
   ssr: false,
-  pages: true, // Enable screen switching system. (Router)
+  pages: true,
 
   build: {
     transpile: ['vuetify'],
   },
 
   modules: [
-    '@pinia/nuxt', // Enable Pinia
-    '@nuxtjs/tailwindcss',  // Enable tailwind
+    '@pinia/nuxt',
+    '@nuxtjs/tailwindcss',
     (_options, nuxt) => {
       nuxt.hooks.hook('vite:extendConfig', (config) => {
         config.plugins.push(vuetify({ autoImport: true }))

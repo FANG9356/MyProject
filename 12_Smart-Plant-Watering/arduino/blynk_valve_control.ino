@@ -7,24 +7,24 @@
 #define BLYNK_AUTH_TOKEN "YKPxUV6NXGpx_gIBb_uJFr3lsZiaqzF-"
 Servo servo;
 
-char auth[] = "YKPxUV6NXGpx_gIBb_uJFr3lsZiaqzF-"; //  your auth code 
-char ssid[] = "H";  // ssid name 
-char pass[] = "123456789"; // ssid password 
+char auth[] = "YKPxUV6NXGpx_gIBb_uJFr3lsZiaqzF-";
+char ssid[] = "H";
+char pass[] = "123456789";
 
 void setup()
 {
   Serial.begin(9600);
   Blynk.begin(auth, ssid, pass);
 
-  servo.attach(2); // NodeMCU D4 pin
-  
+  servo.attach(2);
+
  }
-  
+
 void loop()
 {
-  
+
   Blynk.run();
-  
+
 }
 BLYNK_WRITE(V1)
 {

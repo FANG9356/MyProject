@@ -6,7 +6,7 @@ import '@mdi/font/css/materialdesignicons.css'
 export default defineNuxtPlugin((nuxtApp) => {
   const vuetify = createVuetify({
     icons: {
-      defaultSet: 'mdi', // config to use Icon of Material Design
+      defaultSet: 'mdi',
     },
   })
   nuxtApp.vueApp.use(vuetify)

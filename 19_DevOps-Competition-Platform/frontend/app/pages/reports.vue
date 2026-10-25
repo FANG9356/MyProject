@@ -102,22 +102,22 @@ const getGrafanaUrl = (panelId) => {
   console.log(`${baseUrl}?${params.toString()}`);
   return `${baseUrl}?${params.toString()}`;
 };
+
 </script>
 
 <style scoped>
-/* การตั้งค่า Iframe เพื่อให้ฟิตพอดีกับช่องว่างที่เหลืออยู่ 100% โดยไม่เกิด Scrollbar */
 .iframe-container {
-  position: relative; /* ล็อกกรอบเอาไว้ */
+  position: relative;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   border: 1px solid #e0e0e0;
   background-color: #f9f9f9;
   width: 100%;
-  min-height: 200px; /* กันกราฟพังในจอมือถือเล็กๆ */
+  min-height: 200px;
 }
 
-/* บังคับ iframe ให้กางเต็มกรอบที่ครอบมันอยู่เสมอ */
+
 .iframe-container iframe {
   position: absolute;
   top: 0;
@@ -127,4 +127,5 @@ const getGrafanaUrl = (panelId) => {
   border: none;
   display: block;
 }
+
 </style>
