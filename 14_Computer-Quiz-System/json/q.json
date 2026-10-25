@@ -1,0 +1,2004 @@
+[
+    {
+        "question": "คำถาม 1: อุปกรณ์ใดที่ใช้ในการแสดงผลภาพในคอมพิวเตอร์?",
+        "options": ["คีย์บอร์ด", "เมาส์", "จอภาพ", "ลำโพง"],
+        "correctAnswer": "จอภาพ"
+    },
+    {
+        "question": "คำถาม 2: ฮาร์ดดิสก์ทำหน้าที่อะไรในคอมพิวเตอร์?",
+        "options": ["จัดเก็บข้อมูล", "ประมวลผลข้อมูล", "แสดงผลข้อมูล", "ควบคุมการทำงานของคอมพิวเตอร์"],
+        "correctAnswer": "จัดเก็บข้อมูล"
+    },
+    {
+        "question": "คำถาม 3: อุปกรณ์ใดที่ใช้ในการป้อนข้อมูลเข้าไปในคอมพิวเตอร์?",
+        "options": ["คีย์บอร์ด", "เครื่องพิมพ์", "จอภาพ", "ลำโพง"],
+        "correctAnswer": "คีย์บอร์ด"
+    },
+    {
+        "question": "คำถาม 4: การประมวลผลข้อมูลในคอมพิวเตอร์ทำโดยส่วนใด?",
+        "options": ["หน่วยประมวลผลกลาง (CPU)", "หน่วยความจำ (RAM)", "ฮาร์ดดิสก์", "การ์ดจอ"],
+        "correctAnswer": "หน่วยประมวลผลกลาง (CPU)"
+    },
+    {
+        "question": "คำถาม 5: ระบบปฏิบัติการที่เป็นที่นิยมในคอมพิวเตอร์ส่วนบุคคลคืออะไร?",
+        "options": ["Linux", "macOS", "Windows", "Android"],
+        "correctAnswer": "Windows"
+    },
+    {
+        "question": "คำถาม 6: คำว่า 'RAM' ย่อมาจากอะไร?",
+        "options": ["Read Access Memory", "Random Access Memory", "Random Average Memory", "Read Average Memory"],
+        "correctAnswer": "Random Access Memory"
+    },
+    {
+        "question": "คำถาม 7: อุปกรณ์ใดที่ใช้เชื่อมต่อคอมพิวเตอร์กับเครือข่ายอินเทอร์เน็ต?",
+        "options": ["การ์ดจอ", "การ์ดเสียง", "การ์ดเครือข่าย", "จอภาพ"],
+        "correctAnswer": "การ์ดเครือข่าย"
+    },
+    {
+        "question": "คำถาม 8: โปรแกรมที่ใช้ในการจัดการไฟล์ในคอมพิวเตอร์เรียกว่าอะไร?",
+        "options": ["โปรแกรมแก้ไขข้อความ", "โปรแกรมกราฟิก", "โปรแกรมบริหารจัดการไฟล์", "โปรแกรมเล่นเพลง"],
+        "correctAnswer": "โปรแกรมบริหารจัดการไฟล์"
+    },
+    {
+        "question": "คำถาม 9: คำว่า 'USB' ย่อมาจากอะไร?",
+        "options": ["Universal Serial Bus", "Universal System Bus", "Universal Secure Bus", "United Serial Bus"],
+        "correctAnswer": "Universal Serial Bus"
+    },
+    {
+        "question": "คำถาม 10: อุปกรณ์ใดที่สามารถบันทึกและอ่านข้อมูลบนแผ่นดิสก์ได้?",
+        "options": ["CD Drive", "DVD Drive", "Blu-ray Drive", "ทั้งหมดข้างต้น"],
+        "correctAnswer": "ทั้งหมดข้างต้น"
+    },
+    {
+        "question": "คำถาม 11: ไมโครโปรเซสเซอร์คืออะไร?",
+        "options": ["แหล่งเก็บข้อมูล", "หน่วยประมวลผลข้อมูล", "อุปกรณ์แสดงผล", "โปรแกรมที่ใช้จัดการระบบ"],
+        "correctAnswer": "หน่วยประมวลผลข้อมูล"
+    },
+    {
+        "question": "คำถาม 12: คอมพิวเตอร์ส่วนบุคคล (PC) ปกติจะมีหน่วยความจำหลักแบบใด?",
+        "options": ["RAM", "ROM", "SSD", "HDD"],
+        "correctAnswer": "RAM"
+    },
+    {
+        "question": "คำถาม 13: คำว่า 'URL' ย่อมาจากอะไร?",
+        "options": ["Universal Resource Locator", "Uniform Resource Locator", "Universal Regular Locator", "Uniform Regular Locator"],
+        "correctAnswer": "Uniform Resource Locator"
+    },
+    {
+        "question": "คำถาม 14: อุปกรณ์ใดใช้ในการสแกนเอกสารเข้าเป็นไฟล์ดิจิทัล?",
+        "options": ["เครื่องพิมพ์", "สแกนเนอร์", "คีย์บอร์ด", "จอภาพ"],
+        "correctAnswer": "สแกนเนอร์"
+    },
+    {
+        "question": "คำถาม 15: ฟังก์ชันของการ์ดกราฟิก (GPU) ในคอมพิวเตอร์คืออะไร?",
+        "options": ["การประมวลผลภาพ", "การประมวลผลเสียง", "การจัดเก็บข้อมูล", "การประมวลผลเครือข่าย"],
+        "correctAnswer": "การประมวลผลภาพ"
+    },
+    {
+        "question": "คำถาม 16: หน่วยความจำที่ไม่สามารถเขียนทับหรือเปลี่ยนแปลงข้อมูลได้เรียกว่าอะไร?",
+        "options": ["ROM", "RAM", "SSD", "HDD"],
+        "correctAnswer": "ROM"
+    },
+    {
+        "question": "คำถาม 17: คำว่า 'HTTP' ย่อมาจากอะไร?",
+        "options": ["Hyper Transfer Text Protocol", "Hyper Text Transfer Protocol", "Hyper Technical Transfer Protocol", "Hyper Transfer Task Protocol"],
+        "correctAnswer": "Hyper Text Transfer Protocol"
+    },
+    {
+        "question": "คำถาม 18: อุปกรณ์ใดใช้ในการเชื่อมต่อคอมพิวเตอร์กับอุปกรณ์อื่นๆ ผ่านสายไฟ?",
+        "options": ["USB", "Bluetooth", "Wi-Fi", "Ethernet"],
+        "correctAnswer": "Ethernet"
+    },
+    {
+        "question": "คำถาม 19: การใช้งานคอมพิวเตอร์ผ่านอินเทอร์เน็ตเรียกว่าอะไร?",
+        "options": ["การประมวลผล", "การเชื่อมต่อ", "การท่องเว็บ", "การพัฒนาโปรแกรม"],
+        "correctAnswer": "การท่องเว็บ"
+    },
+    {
+        "question": "คำถาม 20: อุปกรณ์ใดที่ใช้ในการทำให้คอมพิวเตอร์มีเสียง?",
+        "options": ["ลำโพง", "ไมโครโฟน", "การ์ดเสียง", "ทั้งหมดข้างต้น"],
+        "correctAnswer": "ทั้งหมดข้างต้น"
+    },
+    {
+        "question": "คำถาม 21: แผ่นดิสก์แบบไหนที่ใช้ในการเก็บข้อมูลในปริมาณมาก?",
+        "options": ["HDD", "SSD", "CD", "Blu-ray"],
+        "correctAnswer": "HDD"
+    },
+    {
+        "question": "คำถาม 22: เครื่องมือในการตรวจสอบสุขภาพของคอมพิวเตอร์ที่ใช้ฮาร์ดแวร์และซอฟต์แวร์ร่วมกันคืออะไร?",
+        "options": ["Diagnostic Tools", "Utility Software", "System Monitor", "System Tools"],
+        "correctAnswer": "Diagnostic Tools"
+    },
+    {
+        "question": "คำถาม 23: พื้นที่ในคอมพิวเตอร์ที่ใช้สำหรับจัดเก็บข้อมูลแบบถาวรเรียกว่าอะไร?",
+        "options": ["RAM", "Cache", "Hard Drive", "CD-ROM"],
+        "correctAnswer": "Hard Drive"
+    },
+    {
+        "question": "คำถาม 24: การ์ดจอ (GPU) ทำหน้าที่อะไร?",
+        "options": ["ประมวลผลข้อมูล", "จัดเก็บข้อมูล", "ประมวลผลภาพ", "เชื่อมต่อเครือข่าย"],
+        "correctAnswer": "ประมวลผลภาพ"
+    },
+    {
+        "question": "คำถาม 25: คำว่า 'Cloud Computing' หมายถึงอะไร?",
+        "options": ["การประมวลผลข้อมูลในเครื่องคอมพิวเตอร์", "การเก็บข้อมูลบนเซิร์ฟเวอร์ผ่านอินเทอร์เน็ต", "การใช้ซอฟต์แวร์แบบออนไลน์", "การเชื่อมต่อกับฐานข้อมูล"],
+        "correctAnswer": "การเก็บข้อมูลบนเซิร์ฟเวอร์ผ่านอินเทอร์เน็ต"
+    },
+    {
+        "question": "คำถาม 26: หน่วยที่ใช้ในการวัดความเร็วในการประมวลผลของโปรเซสเซอร์คืออะไร?",
+        "options": ["GHz", "MB", "GB", "KB"],
+        "correctAnswer": "GHz"
+    },
+    {
+        "question": "คำถาม 27: อุปกรณ์ใดที่ใช้ในการรับข้อมูลเสียงเข้าคอมพิวเตอร์?",
+        "options": ["ไมโครโฟน", "ลำโพง", "การ์ดเสียง", "เครื่องพิมพ์"],
+        "correctAnswer": "ไมโครโฟน"
+    },
+    {
+        "question": "คำถาม 28: หน่วยความจำที่สามารถอ่านข้อมูลได้เร็วกว่าและมีความจุมากขึ้นคืออะไร?",
+        "options": ["ROM", "RAM", "SSD", "HDD"],
+        "correctAnswer": "SSD"
+    },
+    {
+        "question": "คำถาม 29: คำว่า 'Firewall' หมายถึงอะไร?",
+        "options": ["การป้องกันไวรัส", "การป้องกันภัยคุกคามจากภายนอก", "การเชื่อมต่อกับอินเทอร์เน็ต", "การจัดการทราฟฟิกเครือข่าย"],
+        "correctAnswer": "การป้องกันภัยคุกคามจากภายนอก"
+    },
+    {
+        "question": "คำถาม 30: การ์ดเสียง (Sound Card) ทำหน้าที่อะไร?",
+        "options": ["แสดงผลภาพ", "จัดเก็บข้อมูล", "แปลงข้อมูลเสียงเป็นสัญญาณดิจิทัล", "เชื่อมต่อกับเครือข่าย"],
+        "correctAnswer": "แปลงข้อมูลเสียงเป็นสัญญาณดิจิทัล"
+    },
+    {
+        "question": "คำถาม 31: ระบบปฏิบัติการที่ใช้ในมือถือที่ได้รับความนิยมสูงสุดคืออะไร?",
+        "options": ["Android", "iOS", "Windows", "Linux"],
+        "correctAnswer": "Android"
+    },
+    {
+        "question": "คำถาม 32: คำว่า 'BIOS' ย่อมาจากอะไร?",
+        "options": ["Basic Integrated Operating System", "Basic Input Output System", "Binary Input Output System", "Basic Input Operating System"],
+        "correctAnswer": "Basic Input Output System"
+    },
+    {
+        "question": "คำถาม 33: หน่วยความจำประเภทใดที่ใช้สำหรับการเก็บข้อมูลชั่วคราวในคอมพิวเตอร์?",
+        "options": ["ROM", "RAM", "HDD", "CD"],
+        "correctAnswer": "RAM"
+    },
+    {
+        "question": "คำถาม 34: โปรแกรมที่ช่วยให้ผู้ใช้สามารถใช้งานคอมพิวเตอร์ได้ง่ายขึ้นเรียกว่าอะไร?",
+        "options": ["ซอฟต์แวร์", "ฮาร์ดแวร์", "ระบบปฏิบัติการ", "โปรแกรมประยุกต์"],
+        "correctAnswer": "ระบบปฏิบัติการ"
+    },
+    {
+        "question": "คำถาม 35: คำว่า 'IP Address' หมายถึงอะไร?",
+        "options": ["หมายเลขประจำเครื่องคอมพิวเตอร์ในเครือข่าย", "หมายเลขโทรศัพท์ของผู้ใช้", "ที่อยู่ของอุปกรณ์ภายในคอมพิวเตอร์", "หมายเลขประจำเซิร์ฟเวอร์"],
+        "correctAnswer": "หมายเลขประจำเครื่องคอมพิวเตอร์ในเครือข่าย"
+    },
+    {
+        "question": "คำถาม 36: อุปกรณ์ที่ใช้ในการเชื่อมต่อระหว่างคอมพิวเตอร์และเครื่องพิมพ์เรียกว่าอะไร?",
+        "options": ["USB", "Printer Cable", "Network Cable", "HDMI"],
+        "correctAnswer": "Printer Cable"
+    },
+    {
+        "question": "คำถาม 37: การเชื่อมต่อระหว่างคอมพิวเตอร์กับอุปกรณ์อื่นๆ ผ่านไร้สาย เช่น Wi-Fi หรือ Bluetooth เรียกว่าอะไร?",
+        "options": ["เชื่อมต่อด้วยสาย", "การสื่อสารไร้สาย", "เชื่อมต่อโดยใช้เซิร์ฟเวอร์", "การเชื่อมต่อผ่านอินเทอร์เน็ต"],
+        "correctAnswer": "การสื่อสารไร้สาย"
+    },
+    {
+        "question": "คำถาม 38: หน่วยประมวลผลกลาง (CPU) มีหน้าที่อะไร?",
+        "options": ["เก็บข้อมูล", "แสดงผลภาพ", "ประมวลผลข้อมูล", "เชื่อมต่อกับเครือข่าย"],
+        "correctAnswer": "ประมวลผลข้อมูล"
+    },
+    {
+        "question": "คำถาม 39: โปรแกรมประเภทใดที่ใช้ในการแก้ไขข้อความในคอมพิวเตอร์?",
+        "options": ["โปรแกรมประมวลผลคำ", "โปรแกรมกราฟิก", "โปรแกรมคำนวณ", "โปรแกรมเพลง"],
+        "correctAnswer": "โปรแกรมประมวลผลคำ"
+    },
+    {
+        "question": "คำถาม 40: การทำงานของคอมพิวเตอร์ประกอบด้วยขั้นตอนใดบ้าง?",
+        "options": ["Input, Processing, Output", "Input, Output, Storage", "Processing, Storage, Input", "Output, Storage, Processing"],
+        "correctAnswer": "Input, Processing, Output"
+    },
+    {
+        "question": "คำถาม 41: ไฟล์ประเภทใดที่ใช้ในการเก็บข้อมูลที่สามารถแก้ไขได้?",
+        "options": [".exe", ".txt", ".jpg", ".pdf"],
+        "correctAnswer": ".txt"
+    },
+    {
+        "question": "คำถาม 42: คำว่า 'HTTP' ย่อมาจากอะไร?",
+        "options": ["Hyper Transfer Text Protocol", "Hyper Text Transfer Protocol", "Hyper Text Technical Protocol", "Hyper Transfer Task Protocol"],
+        "correctAnswer": "Hyper Text Transfer Protocol"
+    },
+    {
+        "question": "คำถาม 43: อุปกรณ์ใดที่ใช้ในการจัดเก็บข้อมูลระยะยาวในคอมพิวเตอร์?",
+        "options": ["RAM", "HDD", "CPU", "GPU"],
+        "correctAnswer": "HDD"
+    },
+    {
+        "question": "คำถาม 44: คำว่า 'Browser' หมายถึงอะไร?",
+        "options": ["โปรแกรมสำหรับท่องเว็บ", "โปรแกรมจัดการไฟล์", "โปรแกรมสำหรับการแก้ไขข้อความ", "โปรแกรมสำหรับการเล่นเกม"],
+        "correctAnswer": "โปรแกรมสำหรับท่องเว็บ"
+    },
+    {
+        "question": "คำถาม 45: คำว่า 'Cloud Storage' หมายถึงอะไร?",
+        "options": ["การเก็บข้อมูลในเครื่องคอมพิวเตอร์", "การเก็บข้อมูลบนเซิร์ฟเวอร์อินเทอร์เน็ต", "การเก็บข้อมูลบนแผ่นดิสก์", "การเก็บข้อมูลใน RAM"],
+        "correctAnswer": "การเก็บข้อมูลบนเซิร์ฟเวอร์อินเทอร์เน็ต"
+    },
+    {
+        "question": "คำถาม 46: หน่วยความจำแบบไหนที่สามารถอ่านข้อมูลได้เร็วกว่าและมีความจุสูงกว่า?",
+        "options": ["RAM", "ROM", "SSD", "HDD"],
+        "correctAnswer": "SSD"
+    },
+    {
+        "question": "คำถาม 47: คำว่า 'URL' หมายถึงอะไร?",
+        "options": ["Uniform Resource Locator", "Universal Resource Locator", "Uniform Regular Locator", "Unified Resource Locator"],
+        "correctAnswer": "Uniform Resource Locator"
+    },
+    {
+        "question": "คำถาม 48: คำว่า 'LAN' ย่อมาจากอะไร?",
+        "options": ["Local Area Network", "Long Area Network", "Large Area Network", "Local Access Network"],
+        "correctAnswer": "Local Area Network"
+    },
+    {
+        "question": "คำถาม 49: โปรแกรมประเภทใดที่ใช้ในการคำนวณในคอมพิวเตอร์?",
+        "options": ["โปรแกรมประมวลผลคำ", "โปรแกรมกราฟิก", "โปรแกรมคำนวณ", "โปรแกรมเล่นเกม"],
+        "correctAnswer": "โปรแกรมคำนวณ"
+    },
+    {
+        "question": "คำถาม 50: โปรแกรมประเภทใดที่ใช้ในการแก้ไขรูปภาพ?",
+        "options": ["โปรแกรมประมวลผลคำ", "โปรแกรมกราฟิก", "โปรแกรมคำนวณ", "โปรแกรมเพลง"],
+        "correctAnswer": "โปรแกรมกราฟิก"
+    },
+    {
+        "question": "คำถาม 51: ระบบเครือข่ายที่เชื่อมต่อในพื้นที่กว้าง เช่น ทั่วทั้งเมือง หรือทั่วประเทศ เรียกว่าอะไร?",
+        "options": ["WAN", "LAN", "MAN", "PAN"],
+        "correctAnswer": "WAN"
+    },
+    {
+        "question": "คำถาม 52: อุปกรณ์ใดที่ใช้ในการเชื่อมต่อเครือข่ายแบบไร้สาย?",
+        "options": ["Wi-Fi Router", "Ethernet Cable", "Modem", "Switch"],
+        "correctAnswer": "Wi-Fi Router"
+    },
+    {
+        "question": "คำถาม 53: เครือข่ายที่ใช้ในการเชื่อมต่อระหว่างอุปกรณ์ต่างๆ ภายในบ้าน หรือสำนักงานในระยะใกล้เรียกว่าอะไร?",
+        "options": ["LAN", "PAN", "MAN", "WAN"],
+        "correctAnswer": "LAN"
+    },
+    {
+        "question": "คำถาม 54: โปรโตคอลที่ใช้ในการส่งข้อมูลระหว่างเครื่องคอมพิวเตอร์ผ่านอินเทอร์เน็ตเรียกว่าอะไร?",
+        "options": ["TCP/IP", "FTP", "HTTP", "HTTPS"],
+        "correctAnswer": "TCP/IP"
+    },
+    {
+        "question": "คำถาม 55: อุปกรณ์ใดที่ทำหน้าที่เชื่อมต่อและกระจายสัญญาณเครือข่ายในภายในบ้านหรือสำนักงาน?",
+        "options": ["Router", "Hub", "Modem", "Switch"],
+        "correctAnswer": "Router"
+    },
+    {
+        "question": "คำถาม 56: ฟังก์ชันของ DNS (Domain Name System) คืออะไร?",
+        "options": ["แปลงชื่อโดเมนเป็น IP Address", "จัดการการเชื่อมต่ออินเทอร์เน็ต", "ควบคุมการรับส่งข้อมูล", "เป็นฐานข้อมูลของไฟล์เว็บไซต์"],
+        "correctAnswer": "แปลงชื่อโดเมนเป็น IP Address"
+    },
+    {
+        "question": "คำถาม 57: การเชื่อมต่ออินเทอร์เน็ตแบบใช้สายเรียกว่าอะไร?",
+        "options": ["Wi-Fi", "Bluetooth", "Ethernet", "Fiber Optic"],
+        "correctAnswer": "Ethernet"
+    },
+    {
+        "question": "คำถาม 58: ระบบเครือข่ายที่มีการเชื่อมต่อแบบพีซีไปยังพีซีโดยตรงเรียกว่าอะไร?",
+        "options": ["Peer-to-Peer Network", "Client-Server Network", "Wireless Network", "Virtual Network"],
+        "correctAnswer": "Peer-to-Peer Network"
+    },
+    {
+        "question": "คำถาม 59: อุปกรณ์ที่ใช้ในการเพิ่มความแรงของสัญญาณเครือข่ายในพื้นที่กว้างเรียกว่าอะไร?",
+        "options": ["Wi-Fi Extender", "Modem", "Router", "Hub"],
+        "correctAnswer": "Wi-Fi Extender"
+    },
+    {
+        "question": "คำถาม 60: คำว่า 'VPN' ย่อมาจากอะไร?",
+        "options": ["Virtual Private Network", "Very Private Network", "Virtual Protected Network", "Virtual Public Network"],
+        "correctAnswer": "Virtual Private Network"
+    },
+    {
+        "question": "คำถาม 61: อุปกรณ์ที่ใช้ในการเชื่อมต่อระหว่างหลายๆ เครือข่าย LAN เรียกว่าอะไร?",
+        "options": ["Router", "Switch", "Hub", "Modem"],
+        "correctAnswer": "Router"
+    },
+    {
+        "question": "คำถาม 62: คำว่า 'HTTP' ย่อมาจากอะไร?",
+        "options": ["Hyper Text Transfer Protocol", "Hyper Technical Transfer Protocol", "Hyper Transfer Text Protocol", "Hyper Text Technical Protocol"],
+        "correctAnswer": "Hyper Text Transfer Protocol"
+    },
+    {
+        "question": "คำถาม 63: อุปกรณ์ที่ใช้ในการแปลงสัญญาณไฟฟ้าเป็นข้อมูลดิจิทัลในเครือข่ายไร้สายคืออะไร?",
+        "options": ["Router", "Modem", "Wi-Fi Extender", "Switch"],
+        "correctAnswer": "Router"
+    },
+    {
+        "question": "คำถาม 64: คำว่า 'MAC Address' หมายถึงอะไร?",
+        "options": ["ที่อยู่ของคอมพิวเตอร์ในเครือข่าย", "หมายเลขประจำตัวของผู้ใช้งาน", "ที่อยู่ของอุปกรณ์ในเครือข่าย", "ที่อยู่ของเซิร์ฟเวอร์"],
+        "correctAnswer": "ที่อยู่ของอุปกรณ์ในเครือข่าย"
+    },
+    {
+        "question": "คำถาม 65: การเชื่อมต่อแบบไร้สายที่ใช้คลื่นวิทยุในการส่งข้อมูลเรียกว่าอะไร?",
+        "options": ["Wi-Fi", "Bluetooth", "NFC", "Ethernet"],
+        "correctAnswer": "Wi-Fi"
+    },
+    {
+        "question": "คำถาม 66: ในเครือข่ายคอมพิวเตอร์, ซอฟต์แวร์ที่ช่วยในการแบ่งปันไฟล์เรียกว่าอะไร?",
+        "options": ["Firewall", "File Sharing Software", "Operating System", "Router"],
+        "correctAnswer": "File Sharing Software"
+    },
+    {
+        "question": "คำถาม 67: อุปกรณ์ที่เชื่อมต่อคอมพิวเตอร์กับอินเทอร์เน็ตผ่านสายโทรศัพท์หรือสายเคเบิลเรียกว่าอะไร?",
+        "options": ["Modem", "Router", "Switch", "Hub"],
+        "correctAnswer": "Modem"
+    },
+    {
+        "question": "คำถาม 68: IP Address หมายถึงหมายเลขที่ใช้ในการระบุตำแหน่งของคอมพิวเตอร์ในเครือข่ายอินเทอร์เน็ต เป็นตัวเลขในรูปแบบใด?",
+        "options": ["ตัวเลขฐานสอง", "ตัวเลขฐานสิบหก", "ตัวเลขฐานสิบ", "ตัวเลขฐานแปด"],
+        "correctAnswer": "ตัวเลขฐานสิบ"
+    },
+    {
+        "question": "คำถาม 69: ในระบบเครือข่าย Wi-Fi, รหัสที่ใช้ในการเข้ารหัสข้อมูลที่ส่งผ่านเรียกว่าอะไร?",
+        "options": ["WEP", "WPA", "WPA2", "ทั้งหมดข้างต้น"],
+        "correctAnswer": "ทั้งหมดข้างต้น"
+    },
+    {
+        "question": "คำถาม 70: การเชื่อมต่อที่ใช้ในระบบเครือข่ายที่มีการควบคุมความปลอดภัยสูง เช่น การใช้ VPN เรียกว่าอะไร?",
+        "options": ["Private Network", "Public Network", "Virtual Network", "Secure Network"],
+        "correctAnswer": "Private Network"
+    },
+    {
+        "question": "คำถาม 71: อุปกรณ์ที่ใช้ในการรับส่งข้อมูลในเครือข่ายคอมพิวเตอร์โดยไม่จำเป็นต้องใช้สายเรียกว่าอะไร?",
+        "options": ["Wi-Fi", "Bluetooth", "NFC", "ทั้งหมดข้างต้น"],
+        "correctAnswer": "ทั้งหมดข้างต้น"
+    },
+    {
+        "question": "คำถาม 72: พื้นที่ที่ใช้ในการเชื่อมต่อเครือข่ายคอมพิวเตอร์ภายในสำนักงานเรียกว่าอะไร?",
+        "options": ["LAN", "WAN", "MAN", "VPN"],
+        "correctAnswer": "LAN"
+    },
+    {
+        "question": "คำถาม 73: โปรโตคอลที่ใช้ในการส่งข้อมูลบนเครือข่ายอินเทอร์เน็ตซึ่งมีการเข้ารหัสข้อมูลคืออะไร?",
+        "options": ["HTTP", "FTP", "HTTPS", "TCP/IP"],
+        "correctAnswer": "HTTPS"
+    },
+    {
+        "question": "คำถาม 74: การเชื่อมต่อเครือข่ายระหว่างคอมพิวเตอร์สองเครื่องที่อยู่ในระยะใกล้ เช่น ภายในบ้าน เรียกว่าอะไร?",
+        "options": ["LAN", "PAN", "WAN", "MAN"],
+        "correctAnswer": "PAN"
+    },
+    {
+        "question": "คำถาม 75: คำว่า 'Ping' ในการทดสอบเครือข่ายหมายถึงอะไร?",
+        "options": ["การส่งข้อมูลไปยังอุปกรณ์ในเครือข่ายเพื่อทดสอบการเชื่อมต่อ", "การตรวจสอบความเร็วของอินเทอร์เน็ต", "การส่งไฟล์ระหว่างคอมพิวเตอร์", "การเชื่อมต่อเครือข่ายไร้สาย"],
+        "correctAnswer": "การส่งข้อมูลไปยังอุปกรณ์ในเครือข่ายเพื่อทดสอบการเชื่อมต่อ"
+    },
+    {
+        "question": "คำถาม 76: เลข 1011 ในฐานสอง (Binary) มีค่าเท่ากับเลขใดในฐานสิบ (Decimal)?",
+        "options": ["11", "12", "9", "13"],
+        "correctAnswer": "11"
+    },
+    {
+        "question": "คำถาม 77: เลข 255 ในฐานสิบ (Decimal) มีค่าเท่ากับเลขใดในฐานสิบหก (Hexadecimal)?",
+        "options": ["FF", "FE", "F0", "F1"],
+        "correctAnswer": "FF"
+    },
+    {
+        "question": "คำถาม 78: เลข 1001 ในฐานสอง (Binary) มีค่าเท่ากับเลขใดในฐานสิบ (Decimal)?",
+        "options": ["9", "10", "11", "8"],
+        "correctAnswer": "9"
+    },
+    {
+        "question": "คำถาม 79: เลข 56 ในฐานสิบ (Decimal) มีค่าเท่ากับเลขใดในฐานแปด (Octal)?",
+        "options": ["70", "66", "54", "60"],
+        "correctAnswer": "70"
+    },
+    {
+        "question": "คำถาม 80: เลข 100 ในฐานสิบ (Decimal) มีค่าเท่ากับเลขใดในฐานสอง (Binary)?",
+        "options": ["1100100", "1000100", "1010100", "1101000"],
+        "correctAnswer": "1100100"
+    },
+    {
+        "question": "คำถาม 81: เลข 7F ในฐานสิบหก (Hexadecimal) มีค่าเท่ากับเลขใดในฐานสิบ (Decimal)?",
+        "options": ["127", "112", "130", "150"],
+        "correctAnswer": "127"
+    },
+    {
+        "question": "คำถาม 82: เลข 1101 ในฐานสอง (Binary) มีค่าเท่ากับเลขใดในฐานสิบ (Decimal)?",
+        "options": ["13", "15", "12", "10"],
+        "correctAnswer": "13"
+    },
+    {
+        "question": "คำถาม 83: เลข 10101 ในฐานสอง (Binary) มีค่าเท่ากับเลขใดในฐานสิบ (Decimal)?",
+        "options": ["21", "22", "23", "25"],
+        "correctAnswer": "21"
+    },
+    {
+        "question": "คำถาม 84: เลข A2 ในฐานสิบหก (Hexadecimal) มีค่าเท่ากับเลขใดในฐานสิบ (Decimal)?",
+        "options": ["162", "154", "180", "132"],
+        "correctAnswer": "162"
+    },
+    {
+        "question": "คำถาม 85: เลข 11110 ในฐานสอง (Binary) มีค่าเท่ากับเลขใดในฐานสิบ (Decimal)?",
+        "options": ["30", "31", "28", "29"],
+        "correctAnswer": "30"
+    },
+    {
+        "question": "คำถาม 86: เลข 63 ในฐานสิบ (Decimal) มีค่าเท่ากับเลขใดในฐานแปด (Octal)?",
+        "options": ["77", "75", "76", "73"],
+        "correctAnswer": "77"
+    },
+    {
+        "question": "คำถาม 87: เลข C3 ในฐานสิบหก (Hexadecimal) มีค่าเท่ากับเลขใดในฐานสิบ (Decimal)?",
+        "options": ["195", "180", "200", "160"],
+        "correctAnswer": "195"
+    },
+    {
+        "question": "คำถาม 88: เลข 101010 ในฐานสอง (Binary) มีค่าเท่ากับเลขใดในฐานสิบ (Decimal)?",
+        "options": ["42", "50", "52", "48"],
+        "correctAnswer": "42"
+    },
+    {
+        "question": "คำถาม 89: เลข 1111111 ในฐานสอง (Binary) มีค่าเท่ากับเลขใดในฐานสิบ (Decimal)?",
+        "options": ["127", "126", "130", "120"],
+        "correctAnswer": "127"
+    },
+    {
+        "question": "คำถาม 90: เลข 10000 ในฐานสอง (Binary) มีค่าเท่ากับเลขใดในฐานสิบ (Decimal)?",
+        "options": ["16", "14", "12", "10"],
+        "correctAnswer": "16"
+    },
+    {
+        "question": "คำถาม 91: เลข 255 ในฐานสิบ (Decimal) มีค่าเท่ากับเลขใดในฐานสอง (Binary)?",
+        "options": ["11111111", "11011111", "10111111", "10011111"],
+        "correctAnswer": "11111111"
+    },
+    {
+        "question": "คำถาม 92: เลข 512 ในฐานสิบ (Decimal) มีค่าเท่ากับเลขใดในฐานสอง (Binary)?",
+        "options": ["1000000000", "1010000000", "1001100000", "1010100000"],
+        "correctAnswer": "1000000000"
+    },
+    {
+        "question": "คำถาม 93: เลข 18 ในฐานสิบ (Decimal) มีค่าเท่ากับเลขใดในฐานแปด (Octal)?",
+        "options": ["22", "24", "28", "20"],
+        "correctAnswer": "22"
+    },
+    {
+        "question": "คำถาม 94: เลข B7 ในฐานสิบหก (Hexadecimal) มีค่าเท่ากับเลขใดในฐานสิบ (Decimal)?",
+        "options": ["183", "190", "172", "156"],
+        "correctAnswer": "183"
+    },
+    {
+        "question": "คำถาม 95: เลข 99 ในฐานสิบ (Decimal) มีค่าเท่ากับเลขใดในฐานสอง (Binary)?",
+        "options": ["1100011", "1100010", "1100100", "1100111"],
+        "correctAnswer": "1100011"
+    },
+    {
+        "question": "คำถาม 96: เลข 6A ในฐานสิบหก (Hexadecimal) มีค่าเท่ากับเลขใดในฐานสิบ (Decimal)?",
+        "options": ["106", "112", "120", "130"],
+        "correctAnswer": "106"
+    },
+    {
+        "question": "คำถาม 97: เลข 41 ในฐานสิบ (Decimal) มีค่าเท่ากับเลขใดในฐานสอง (Binary)?",
+        "options": ["101001", "101110", "100100", "110001"],
+        "correctAnswer": "101001"
+    },
+    {
+        "question": "คำถาม 98: เลข 7D ในฐานสิบหก (Hexadecimal) มีค่าเท่ากับเลขใดในฐานสิบ (Decimal)?",
+        "options": ["125", "122", "130", "135"],
+        "correctAnswer": "125"
+    },
+    {
+        "question": "คำถาม 99: เลข 11 ในฐานสิบ (Decimal) มีค่าเท่ากับเลขใดในฐานสอง (Binary)?",
+        "options": ["1011", "1100", "1001", "1110"],
+        "correctAnswer": "1011"
+    },
+    {
+        "question": "คำถาม 100: เลข 44 ในฐานสิบ (Decimal) มีค่าเท่ากับเลขใดในฐานแปด (Octal)?",
+        "options": ["54", "50", "52", "56"],
+        "correctAnswer": "54"
+    },
+    {
+        "question": "คำถาม 101: อุปกรณ์ใดที่ทำหน้าที่เป็นหน่วยความจำหลักในคอมพิวเตอร์?",
+        "options": ["RAM", "ROM", "CPU", "Hard Drive"],
+        "correctAnswer": "RAM"
+    },
+    {
+        "question": "คำถาม 102: อุปกรณ์ใดในคอมพิวเตอร์ที่ใช้สำหรับเก็บข้อมูลระยะยาว?",
+        "options": ["RAM", "ROM", "Hard Disk", "CPU"],
+        "correctAnswer": "Hard Disk"
+    },
+    {
+        "question": "คำถาม 103: หน่วยประมวลผลกลาง (CPU) ทำหน้าที่อะไรในคอมพิวเตอร์?",
+        "options": ["จัดการการเชื่อมต่ออินเทอร์เน็ต", "ประมวลผลข้อมูล", "จัดการหน่วยความจำ", "เชื่อมต่อกับฮาร์ดแวร์อื่น ๆ"],
+        "correctAnswer": "ประมวลผลข้อมูล"
+    },
+    {
+        "question": "คำถาม 104: อุปกรณ์ใดที่ทำหน้าที่แสดงผลข้อมูลจากคอมพิวเตอร์?",
+        "options": ["Monitor", "Keyboard", "Mouse", "Printer"],
+        "correctAnswer": "Monitor"
+    },
+    {
+        "question": "คำถาม 105: ระบบปฏิบัติการคืออะไร?",
+        "options": ["ซอฟต์แวร์ที่ช่วยในการเชื่อมต่อเครือข่าย", "ซอฟต์แวร์ที่ใช้ในการประมวลผลข้อมูล", "ซอฟต์แวร์ที่ช่วยให้คอมพิวเตอร์ทำงานได้", "ซอฟต์แวร์ที่ใช้ในการจัดการฐานข้อมูล"],
+        "correctAnswer": "ซอฟต์แวร์ที่ช่วยให้คอมพิวเตอร์ทำงานได้"
+    },
+    {
+        "question": "คำถาม 106: โปรแกรมที่ใช้ในการพิมพ์เอกสารเรียกว่าอะไร?",
+        "options": ["Microsoft Word", "Photoshop", "Excel", "Notepad"],
+        "correctAnswer": "Microsoft Word"
+    },
+    {
+        "question": "คำถาม 107: โปรแกรมประเภทใดที่ช่วยในการจัดการฐานข้อมูล?",
+        "options": ["Word Processor", "Database Management System", "Spreadsheet", "Presentation Software"],
+        "correctAnswer": "Database Management System"
+    },
+    {
+        "question": "คำถาม 108: ระบบปฏิบัติการที่ใช้กันมากที่สุดในคอมพิวเตอร์ส่วนบุคคลคืออะไร?",
+        "options": ["Linux", "Windows", "macOS", "Android"],
+        "correctAnswer": "Windows"
+    },
+    {
+        "question": "คำถาม 109: ระบบปฏิบัติการที่เป็นโอเพนซอร์ส (Open Source) คืออะไร?",
+        "options": ["Windows", "Linux", "macOS", "iOS"],
+        "correctAnswer": "Linux"
+    },
+    {
+        "question": "คำถาม 110: ระบบปฏิบัติการ macOS ถูกพัฒนาโดยบริษัทใด?",
+        "options": ["Google", "Microsoft", "Apple", "Linux Foundation"],
+        "correctAnswer": "Apple"
+    },
+    {
+        "question": "คำถาม 111: อินเทอร์เน็ตหมายถึงอะไร?",
+        "options": ["ระบบเครือข่ายที่เชื่อมต่ออุปกรณ์ต่าง ๆ ทั่วโลก", "ระบบปฏิบัติการที่ใช้ในคอมพิวเตอร์", "ซอฟต์แวร์ที่ช่วยในการประมวลผลข้อมูล", "ระบบการจัดการฐานข้อมูล"],
+        "correctAnswer": "ระบบเครือข่ายที่เชื่อมต่ออุปกรณ์ต่าง ๆ ทั่วโลก"
+    },
+    {
+        "question": "คำถาม 112: DNS (Domain Name System) ใช้ทำอะไร?",
+        "options": ["แปลง IP Address เป็นชื่อโดเมน", "ส่งข้อมูลระหว่างคอมพิวเตอร์", "ควบคุมการเชื่อมต่ออินเทอร์เน็ต", "จัดการเครือข่ายภายในองค์กร"],
+        "correctAnswer": "แปลง IP Address เป็นชื่อโดเมน"
+    },
+    {
+        "question": "คำถาม 113: HTTP คืออะไร?",
+        "options": ["โปรโตคอลสำหรับการส่งข้อมูลบนอินเทอร์เน็ต", "ระบบปฏิบัติการ", "โปรแกรมสำหรับการสร้างเว็บไซต์", "ซอฟต์แวร์สำหรับการจัดการฐานข้อมูล"],
+        "correctAnswer": "โปรโตคอลสำหรับการส่งข้อมูลบนอินเทอร์เน็ต"
+    },
+    {
+        "question": "คำถาม 114: โปรแกรมป้องกันไวรัสที่ใช้ในการป้องกันคอมพิวเตอร์จากภัยคุกคามเรียกว่าอะไร?",
+        "options": ["Firewall", "Antivirus", "Malware", "Spyware"],
+        "correctAnswer": "Antivirus"
+    },
+    {
+        "question": "คำถาม 115: การเข้ารหัสข้อมูล (Encryption) ช่วยในการป้องกันอะไร?",
+        "options": ["ป้องกันการโจมตีจากไวรัส", "ป้องกันการเข้าถึงข้อมูลโดยไม่ได้รับอนุญาต", "ป้องกันการโจรกรรมข้อมูล", "ทั้งหมดข้างต้น"],
+        "correctAnswer": "ป้องกันการเข้าถึงข้อมูลโดยไม่ได้รับอนุญาต"
+    },
+    {
+        "question": "คำถาม 116: อุปกรณ์ใดที่ใช้ในการเชื่อมต่อคอมพิวเตอร์ในระบบเครือข่าย?",
+        "options": ["Router", "Switch", "Hub", "ทั้งหมดข้างต้น"],
+        "correctAnswer": "ทั้งหมดข้างต้น"
+    },
+    {
+        "question": "คำถาม 117: คำว่า LAN ย่อมาจากอะไร?",
+        "options": ["Local Area Network", "Large Area Network", "Long Area Network", "Local Access Network"],
+        "correctAnswer": "Local Area Network"
+    },
+    {
+        "question": "คำถาม 118: หน่วยความจำชนิดใดที่มีความเร็วสูงที่สุดในการประมวลผลข้อมูล?",
+        "options": ["RAM", "Cache", "ROM", "Hard Drive"],
+        "correctAnswer": "Cache"
+    },
+    {
+        "question": "คำถาม 119: คำว่า 'GHz' ใน CPU หมายถึงอะไร?",
+        "options": ["หน่วยที่ใช้วัดความเร็วในการประมวลผล", "หน่วยที่ใช้วัดขนาดของ RAM", "หน่วยที่ใช้วัดขนาดของฮาร์ดดิสก์", "หน่วยที่ใช้วัดความเร็วในการเชื่อมต่อเครือข่าย"],
+        "correctAnswer": "หน่วยที่ใช้วัดความเร็วในการประมวลผล"
+    },
+    {
+        "question": "คำถาม 120: เลข 1011 ในฐานสอง (Binary) มีค่าเท่ากับเลขใดในฐานสิบ (Decimal)?",
+        "options": ["11", "12", "9", "13"],
+        "correctAnswer": "11"
+    },
+    {
+        "question": "คำถาม 121: เลข 255 ในฐานสิบ (Decimal) มีค่าเท่ากับเลขใดในฐานสิบหก (Hexadecimal)?",
+        "options": ["FF", "FE", "F0", "F1"],
+        "correctAnswer": "FF"
+    },
+    {
+        "question": "คำถาม 122: เลข 1001 ในฐานสอง (Binary) มีค่าเท่ากับเลขใดในฐานสิบ (Decimal)?",
+        "options": ["9", "10", "11", "8"],
+        "correctAnswer": "9"
+    },
+    {
+        "question": "คำถาม 123: เลข 56 ในฐานสิบ (Decimal) มีค่าเท่ากับเลขใดในฐานแปด (Octal)?",
+        "options": ["70", "66", "54", "60"],
+        "correctAnswer": "70"
+    },
+    {
+        "question": "คำถาม 124: เลข 100 ในฐานสิบ (Decimal) มีค่าเท่ากับเลขใดในฐานสอง (Binary)?",
+        "options": ["1100100", "1000100", "1010100", "1101000"],
+        "correctAnswer": "1100100"
+    },
+    {
+        "question": "คำถาม 125: เลข 7F ในฐานสิบหก (Hexadecimal) มีค่าเท่ากับเลขใดในฐานสิบ (Decimal)?",
+        "options": ["127", "112", "130", "150"],
+        "correctAnswer": "127"
+    },
+    {
+        "question": "คำถาม 126: เลข 1101 ในฐานสอง (Binary) มีค่าเท่ากับเลขใดในฐานสิบ (Decimal)?",
+        "options": ["13", "15", "12", "10"],
+        "correctAnswer": "13"
+    },
+    {
+        "question": "คำถาม 127: เลข 10101 ในฐานสอง (Binary) มีค่าเท่ากับเลขใดในฐานสิบ (Decimal)?",
+        "options": ["21", "22", "23", "25"],
+        "correctAnswer": "21"
+    },
+    {
+        "question": "คำถาม 128: เลข A2 ในฐานสิบหก (Hexadecimal) มีค่าเท่ากับเลขใดในฐานสิบ (Decimal)?",
+        "options": ["162", "154", "180", "132"],
+        "correctAnswer": "162"
+    },
+    {
+        "question": "คำถาม 129: เลข 11110 ในฐานสอง (Binary) มีค่าเท่ากับเลขใดในฐานสิบ (Decimal)?",
+        "options": ["30", "31", "28", "29"],
+        "correctAnswer": "30"
+    },
+    {
+        "question": "คำถาม 130: เลข 63 ในฐานสิบ (Decimal) มีค่าเท่ากับเลขใดในฐานแปด (Octal)?",
+        "options": ["77", "75", "76", "73"],
+        "correctAnswer": "77"
+    },
+    {
+        "question": "คำถาม 131: เลข C3 ในฐานสิบหก (Hexadecimal) มีค่าเท่ากับเลขใดในฐานสิบ (Decimal)?",
+        "options": ["195", "180", "200", "160"],
+        "correctAnswer": "195"
+    },
+    {
+        "question": "คำถาม 132: เลข 101010 ในฐานสอง (Binary) มีค่าเท่ากับเลขใดในฐานสิบ (Decimal)?",
+        "options": ["42", "50", "52", "48"],
+        "correctAnswer": "42"
+    },
+    {
+        "question": "คำถาม 133: เลข 1111111 ในฐานสอง (Binary) มีค่าเท่ากับเลขใดในฐานสิบ (Decimal)?",
+        "options": ["127", "126", "130", "120"],
+        "correctAnswer": "127"
+    },
+    {
+        "question": "คำถาม 134: เลข 10000 ในฐานสอง (Binary) มีค่าเท่ากับเลขใดในฐานสิบ (Decimal)?",
+        "options": ["16", "14", "12", "10"],
+        "correctAnswer": "16"
+    },
+    {
+        "question": "คำถาม 135: เลข 255 ในฐานสิบ (Decimal) มีค่าเท่ากับเลขใดในฐานสอง (Binary)?",
+        "options": ["11111111", "11011111", "10111111", "10011111"],
+        "correctAnswer": "11111111"
+    },
+    {
+        "question": "คำถาม 136: เลข 512 ในฐานสิบ (Decimal) มีค่าเท่ากับเลขใดในฐานสอง (Binary)?",
+        "options": ["1000000000", "1010000000", "1001100000", "1010100000"],
+        "correctAnswer": "1000000000"
+    },
+    {
+        "question": "คำถาม 137: เลข 18 ในฐานสิบ (Decimal) มีค่าเท่ากับเลขใดในฐานแปด (Octal)?",
+        "options": ["22", "24", "28", "20"],
+        "correctAnswer": "22"
+    },
+    {
+        "question": "คำถาม 138: เลข B7 ในฐานสิบหก (Hexadecimal) มีค่าเท่ากับเลขใดในฐานสิบ (Decimal)?",
+        "options": ["183", "190", "172", "156"],
+        "correctAnswer": "183"
+    },
+    {
+        "question": "คำถาม 139: เลข 99 ในฐานสิบ (Decimal) มีค่าเท่ากับเลขใดในฐานสิบหก (Hexadecimal)?",
+        "options": ["63", "67", "66", "68"],
+        "correctAnswer": "63"
+    },
+    {
+        "question": "คำถาม 140: เลข 55 ในฐานสิบ (Decimal) มีค่าเท่ากับเลขใดในฐานสอง (Binary)?",
+        "options": ["110111", "111111", "100111", "101111"],
+        "correctAnswer": "110111"
+    },
+    {
+        "question": "คำถาม 141: คำว่า 'URL' หมายถึงอะไร?",
+        "options": ["Uniform Resource Locator", "Universal Resource Locator", "Universal Readable Locator", "Uniform Readable Locator"],
+        "correctAnswer": "Uniform Resource Locator"
+    },
+    {
+        "question": "คำถาม 142: หน่วยความจำประเภทใดที่ใช้ในการเก็บข้อมูลระยะยาวในคอมพิวเตอร์?",
+        "options": ["ROM", "RAM", "Hard Drive", "Cache"],
+        "correctAnswer": "Hard Drive"
+    },
+    {
+        "question": "คำถาม 143: คำว่า 'IP Address' หมายถึงอะไร?",
+        "options": ["หมายเลขที่ใช้ในการเชื่อมต่ออินเทอร์เน็ต", "หมายเลขที่ใช้ในการกำหนดตำแหน่งของอุปกรณ์ในเครือข่าย", "หมายเลขที่ใช้ในการเชื่อมต่อกับเซิร์ฟเวอร์", "ทั้งหมดข้างต้น"],
+        "correctAnswer": "หมายเลขที่ใช้ในการกำหนดตำแหน่งของอุปกรณ์ในเครือข่าย"
+    },
+    {
+        "question": "คำถาม 144: การ์ดแสดงผล (Graphics Card) มีหน้าที่อะไรในคอมพิวเตอร์?",
+        "options": ["แสดงผลกราฟิก", "จัดการหน่วยความจำ", "เชื่อมต่อกับอินเทอร์เน็ต", "ประมวลผลข้อมูล"],
+        "correctAnswer": "แสดงผลกราฟิก"
+    },
+    {
+        "question": "คำถาม 145: คำว่า 'Byte' หมายถึงอะไร?",
+        "options": ["หน่วยที่ใช้วัดความจุของหน่วยความจำ", "หน่วยที่ใช้วัดความเร็วของคอมพิวเตอร์", "หน่วยที่ใช้วัดความเร็วของอินเทอร์เน็ต", "หน่วยที่ใช้วัดความจุของฮาร์ดดิสก์"],
+        "correctAnswer": "หน่วยที่ใช้วัดความจุของหน่วยความจำ"
+    },
+    {
+        "question": "คำถาม 146: RAM ประเภทไหนที่ไม่มีการสูญหายของข้อมูลเมื่อปิดเครื่อง?",
+        "options": ["Dynamic RAM", "Static RAM", "Flash RAM", "None of the above"],
+        "correctAnswer": "None of the above"
+    },
+    {
+        "question": "คำถาม 147: อุปกรณ์ใดในคอมพิวเตอร์ที่ทำหน้าที่อ่านข้อมูลจากแผ่นดิสก์?",
+        "options": ["Hard Disk Drive", "Monitor", "Keyboard", "DVD Drive"],
+        "correctAnswer": "DVD Drive"
+    },
+    {
+        "question": "คำถาม 148: ชื่อโปรโตคอลที่ใช้ในการส่งข้อมูลในเครือข่ายอินเทอร์เน็ตคืออะไร?",
+        "options": ["TCP/IP", "FTP", "HTTP", "SMTP"],
+        "correctAnswer": "TCP/IP"
+    },
+    {
+        "question": "คำถาม 149: คำว่า 'Wi-Fi' ย่อมาจากอะไร?",
+        "options": ["Wireless Fidelity", "Wireless Fiber", "Wide Fidelity", "Wide Frequency"],
+        "correctAnswer": "Wireless Fidelity"
+    },
+    {
+        "question": "คำถาม 150: หน่วยความจำที่ใช้ในการเก็บข้อมูลของคอมพิวเตอร์ที่ไม่สามารถแก้ไขได้เรียกว่าอะไร?",
+        "options": ["ROM", "RAM", "Hard Drive", "Cache"],
+        "correctAnswer": "ROM"
+    },
+    {
+        "question": "คำถาม 151: ระบบเครือข่ายประเภทใดที่ใช้ในการเชื่อมต่อคอมพิวเตอร์ในพื้นที่เล็ก ๆ เช่น ภายในบ้าน?",
+        "options": ["LAN", "WAN", "MAN", "PAN"],
+        "correctAnswer": "LAN"
+    },
+    {
+        "question": "คำถาม 152: โปรแกรมประเภทใดที่ช่วยในการคำนวณและจัดการข้อมูลตัวเลข?",
+        "options": ["Spreadsheet", "Word Processor", "Database Management", "Presentation Software"],
+        "correctAnswer": "Spreadsheet"
+    },
+    {
+        "question": "คำถาม 153: โปรแกรมใดที่ใช้ในการแก้ไขภาพ?",
+        "options": ["Photoshop", "Word", "Excel", "PowerPoint"],
+        "correctAnswer": "Photoshop"
+    },
+    {
+        "question": "คำถาม 154: กระบวนการที่ใช้ในการแปลงข้อมูลจากรูปแบบหนึ่งไปยังอีกแบบหนึ่งในคอมพิวเตอร์คืออะไร?",
+        "options": ["Encoding", "Decoding", "Compression", "Encryption"],
+        "correctAnswer": "Encoding"
+    },
+    {
+        "question": "คำถาม 155: คำว่า 'Cloud Computing' หมายถึงอะไร?",
+        "options": ["การใช้งานคอมพิวเตอร์ผ่านอินเทอร์เน็ต", "การใช้งานคอมพิวเตอร์ในเครื่องส่วนตัว", "การใช้งานคอมพิวเตอร์ในศูนย์ข้อมูล", "การใช้งานคอมพิวเตอร์ผ่านโทรศัพท์มือถือ"],
+        "correctAnswer": "การใช้งานคอมพิวเตอร์ผ่านอินเทอร์เน็ต"
+    },
+    {
+        "question": "คำถาม 156: อุปกรณ์ที่ใช้ในการเชื่อมต่ออินเทอร์เน็ตแบบไร้สายคืออะไร?",
+        "options": ["Router", "Modem", "Access Point", "Switch"],
+        "correctAnswer": "Access Point"
+    },
+    {
+        "question": "คำถาม 157: IP Address หมายถึงอะไร?",
+        "options": ["หมายเลขที่ใช้ในการเชื่อมต่ออินเทอร์เน็ต", "หมายเลขที่ใช้ในการกำหนดตำแหน่งของอุปกรณ์ในเครือข่าย", "หมายเลขที่ใช้ในการเชื่อมต่อกับเซิร์ฟเวอร์", "ทั้งหมดข้างต้น"],
+        "correctAnswer": "หมายเลขที่ใช้ในการกำหนดตำแหน่งของอุปกรณ์ในเครือข่าย"
+    },
+    {
+        "question": "คำถาม 158: อุปกรณ์ใดที่ทำหน้าที่ในการเพิ่มความสามารถของคอมพิวเตอร์?",
+        "options": ["Peripheral", "CPU", "Motherboard", "RAM"],
+        "correctAnswer": "Peripheral"
+    },
+    {
+        "question": "คำถาม 159: คำว่า 'HTTP' ย่อมาจากอะไร?",
+        "options": ["HyperText Transfer Protocol", "HyperText Transaction Protocol", "HyperText Transport Protocol", "HyperThreading Transfer Protocol"],
+        "correctAnswer": "HyperText Transfer Protocol"
+    },
+    {
+        "question": "คำถาม 160: โพรโตคอลที่ใช้ในการส่งข้อมูลผ่านเครือข่ายอินเทอร์เน็ตในรูปแบบเว็บเพจคืออะไร?",
+        "options": ["HTTP", "FTP", "TCP/IP", "SMTP"],
+        "correctAnswer": "HTTP"
+    },
+    {
+        "question": "คำถาม 161: คำว่า 'Firewall' หมายถึงอะไร?",
+        "options": ["โปรแกรมป้องกันไวรัส", "โปรแกรมที่ป้องกันการเข้าถึงข้อมูลจากผู้ไม่ได้รับอนุญาต", "ระบบรักษาความปลอดภัยจากแฮกเกอร์", "โปรแกรมที่ป้องกันการโจมตีจากอินเทอร์เน็ต"],
+        "correctAnswer": "โปรแกรมที่ป้องกันการเข้าถึงข้อมูลจากผู้ไม่ได้รับอนุญาต"
+    },
+    {
+        "question": "คำถาม 162: อุปกรณ์ใดในคอมพิวเตอร์ที่ทำหน้าที่แปลงสัญญาณดิจิตอลเป็นอนาล็อก?",
+        "options": ["Modem", "Router", "Switch", "Hub"],
+        "correctAnswer": "Modem"
+    },
+    {
+        "question": "คำถาม 163: โปรแกรมที่ใช้ในการทำงานกับตารางข้อมูลที่ประกอบด้วยแถวและคอลัมน์เรียกว่าอะไร?",
+        "options": ["Spreadsheet", "Word Processor", "Presentation Software", "Database Management System"],
+        "correctAnswer": "Spreadsheet"
+    },
+    {
+        "question": "คำถาม 164: คำว่า 'USB' ย่อมาจากอะไร?",
+        "options": ["Universal Serial Bus", "Universal System Bus", "User Serial Bus", "Universal Standard Bus"],
+        "correctAnswer": "Universal Serial Bus"
+    },
+    {
+        "question": "คำถาม 165: หน่วยความจำที่เก็บข้อมูลเพียงชั่วขณะระหว่างการทำงานของคอมพิวเตอร์คืออะไร?",
+        "options": ["RAM", "ROM", "Cache", "Hard Drive"],
+        "correctAnswer": "RAM"
+    },
+    {
+        "question": "คำถาม 166: คำว่า 'Cache' หมายถึงอะไร?",
+        "options": ["หน่วยความจำที่ช่วยเพิ่มความเร็วในการเข้าถึงข้อมูล", "หน่วยความจำที่เก็บข้อมูลชั่วคราว", "ฮาร์ดดิสก์ที่ใช้เก็บข้อมูลสำคัญ", "โปรแกรมที่ช่วยในการจัดการข้อมูล"],
+        "correctAnswer": "หน่วยความจำที่ช่วยเพิ่มความเร็วในการเข้าถึงข้อมูล"
+    },
+    {
+        "question": "คำถาม 167: ในระบบเครือข่าย LAN อุปกรณ์ที่ทำหน้าที่เป็นศูนย์กลางในการเชื่อมต่อเรียกว่าอะไร?",
+        "options": ["Switch", "Router", "Hub", "Access Point"],
+        "correctAnswer": "Switch"
+    },
+    {
+        "question": "คำถาม 168: อุปกรณ์ใดในคอมพิวเตอร์ที่ใช้ในการเก็บข้อมูลถาวร?",
+        "options": ["Hard Drive", "RAM", "Cache", "ROM"],
+        "correctAnswer": "Hard Drive"
+    },
+    {
+        "question": "คำถาม 169: คำว่า 'CPU' ย่อมาจากอะไร?",
+        "options": ["Central Processing Unit", "Central Processor Unit", "Control Processing Unit", "Central Program Unit"],
+        "correctAnswer": "Central Processing Unit"
+    },
+    {
+        "question": "คำถาม 170: โปรแกรมใดที่ใช้ในการแก้ไขข้อความธรรมดา?",
+        "options": ["Notepad", "Word", "Excel", "PowerPoint"],
+        "correctAnswer": "Notepad"
+    },
+    {
+        "question": "คำถาม 171: การเข้ารหัสข้อมูลที่ไม่สามารถถอดรหัสได้เรียกว่าอะไร?",
+        "options": ["Encryption", "Decryption", "Encoding", "Decoding"],
+        "correctAnswer": "Encryption"
+    },
+    {
+        "question": "คำถาม 172: คำว่า 'Bluetooth' หมายถึงอะไร?",
+        "options": ["เทคโนโลยีสำหรับการเชื่อมต่อไร้สาย", "เทคโนโลยีสำหรับการเชื่อมต่อผ่านสาย", "เทคโนโลยีสำหรับการส่งสัญญาณเสียง", "เทคโนโลยีสำหรับการเชื่อมต่ออินเทอร์เน็ต"],
+        "correctAnswer": "เทคโนโลยีสำหรับการเชื่อมต่อไร้สาย"
+    },
+    {
+        "question": "คำถาม 173: ฮาร์ดดิสก์ประเภทใดที่มีความเร็วในการอ่านเขียนข้อมูลสูงสุด?",
+        "options": ["HDD", "SSD", "Floppy Disk", "Optical Disk"],
+        "correctAnswer": "SSD"
+    },
+    {
+        "question": "คำถาม 174: คำว่า 'Linux' หมายถึงอะไร?",
+        "options": ["ระบบปฏิบัติการ", "โปรแกรมประมวลผลคำ", "โปรแกรมจัดการฐานข้อมูล", "โปรแกรมวิเคราะห์ข้อมูล"],
+        "correctAnswer": "ระบบปฏิบัติการ"
+    },
+    {
+        "question": "คำถาม 175: โปรแกรมที่ใช้ในการแสดงผลและจัดการเอกสารในรูปแบบภาพรวมและข้อความคืออะไร?",
+        "options": ["PowerPoint", "Excel", "Word", "Notepad"],
+        "correctAnswer": "PowerPoint"
+    },
+    {
+        "question": "คำถาม 176: คำว่า 'Web Browser' หมายถึงอะไร?",
+        "options": ["โปรแกรมสำหรับเข้าชมเว็บไซต์", "โปรแกรมสำหรับสร้างเว็บไซต์", "โปรแกรมสำหรับจัดการไฟล์", "โปรแกรมสำหรับแก้ไขข้อความ"],
+        "correctAnswer": "โปรแกรมสำหรับเข้าชมเว็บไซต์"
+    },
+    {
+        "question": "คำถาม 177: คำว่า 'Database' หมายถึงอะไร?",
+        "options": ["ระบบเก็บข้อมูลที่สามารถค้นหาได้", "ระบบประมวลผลข้อมูล", "ระบบจัดการคำสั่ง", "ระบบปฏิบัติการ"],
+        "correctAnswer": "ระบบเก็บข้อมูลที่สามารถค้นหาได้"
+    },
+    {
+        "question": "คำถาม 178: คำว่า 'Spyware' หมายถึงอะไร?",
+        "options": ["ซอฟต์แวร์ที่ช่วยในการรักษาความปลอดภัย", "ซอฟต์แวร์ที่ติดตามและเก็บข้อมูลของผู้ใช้โดยไม่รู้ตัว", "ซอฟต์แวร์ที่ใช้ในการป้องกันไวรัส", "ซอฟต์แวร์ที่ใช้ในการจัดการข้อมูล"],
+        "correctAnswer": "ซอฟต์แวร์ที่ติดตามและเก็บข้อมูลของผู้ใช้โดยไม่รู้ตัว"
+    },
+    {
+        "question": "คำถาม 179: เลข 45 ในฐานสิบ (Decimal) มีค่าเท่ากับเลขใดในฐานแปด (Octal)?",
+        "options": ["55", "53", "56", "51"],
+        "correctAnswer": "55"
+    },
+    {
+        "question": "คำถาม 180: โปรแกรมใดในคอมพิวเตอร์ที่ใช้ในการคำนวณทางวิทยาศาสตร์?",
+        "options": ["Calculator", "Excel", "Math", "Word"],
+        "correctAnswer": "Calculator"
+    },
+    {
+        "question": "คำถาม 181: อุปกรณ์ใดที่ใช้ในการบันทึกข้อมูลแบบไร้สาย?",
+        "options": ["Wireless Mouse", "Wireless Keyboard", "Wi-Fi Router", "All of the above"],
+        "correctAnswer": "All of the above"
+    },
+    {
+        "question": "คำถาม 182: โปรแกรมใดที่ใช้ในการทำงานเกี่ยวกับตารางข้อมูลและคำนวณ?",
+        "options": ["Excel", "Word", "PowerPoint", "Notepad"],
+        "correctAnswer": "Excel"
+    },
+    {
+        "question": "คำถาม 183: คำว่า 'VPN' หมายถึงอะไร?",
+        "options": ["Virtual Private Network", "Visual Processing Network", "Virtual Public Network", "Virtual Private Node"],
+        "correctAnswer": "Virtual Private Network"
+    },
+    {
+        "question": "คำถาม 184: โปรแกรมใดที่ใช้ในการจัดการข้อมูลในฐานข้อมูล?",
+        "options": ["Database Management System", "Word Processor", "Spreadsheet", "Presentation Software"],
+        "correctAnswer": "Database Management System"
+    },
+    {
+        "question": "คำถาม 185: การเก็บข้อมูลแบบใดที่ใช้เทคโนโลยีแม่เหล็กในการบันทึกข้อมูล?",
+        "options": ["HDD", "SSD", "RAM", "CD"],
+        "correctAnswer": "HDD"
+    },
+    {
+        "question": "คำถาม 186: คำว่า 'HTTP' คือการส่งข้อมูลแบบใด?",
+        "options": ["แบบไม่เข้ารหัส", "แบบเข้ารหัส", "แบบแปลผล", "แบบรองรับสื่อ"],
+        "correctAnswer": "แบบไม่เข้ารหัส"
+    },
+    {
+        "question": "คำถาม 187: คำว่า 'BIOS' หมายถึงอะไร?",
+        "options": ["Basic Input Output System", "Binary Input Output System", "Binary Operating System", "Basic Operating System"],
+        "correctAnswer": "Basic Input Output System"
+    },
+    {
+        "question": "คำถาม 188: คำว่า 'HTML' หมายถึงอะไร?",
+        "options": ["HyperText Markup Language", "HyperLink Markup Language", "HyperText Module Language", "HyperThreading Markup Language"],
+        "correctAnswer": "HyperText Markup Language"
+    },
+    {
+        "question": "คำถาม 189: โปรแกรมที่ใช้ในการบันทึกเสียงเรียกว่าอะไร?",
+        "options": ["Audio Recorder", "Voice Assistant", "Audio Editor", "Sound Editor"],
+        "correctAnswer": "Audio Recorder"
+    },
+    {
+        "question": "คำถาม 190: ระบบปฏิบัติการที่ใช้ในคอมพิวเตอร์ของ Apple เรียกว่าอะไร?",
+        "options": ["macOS", "Windows", "Linux", "Ubuntu"],
+        "correctAnswer": "macOS"
+    },
+    {
+        "question": "คำถาม 191: คำว่า 'CSS' หมายถึงอะไร?",
+        "options": ["Cascading Style Sheets", "Cascading Script Sheets", "Cascading Server Sheets", "Cascading Software Sheets"],
+        "correctAnswer": "Cascading Style Sheets"
+    },
+    {
+        "question": "คำถาม 192: อุปกรณ์ใดที่ทำหน้าที่ในการเก็บข้อมูลที่ไม่สามารถอ่านได้ในทันที?",
+        "options": ["ROM", "RAM", "Hard Disk", "Cache"],
+        "correctAnswer": "ROM"
+    },
+    {
+        "question": "คำถาม 193: คำว่า 'URL' หมายถึงอะไร?",
+        "options": ["Uniform Resource Locator", "Uniform Resource Link", "Uniform Readable Locator", "Uniform Register Locator"],
+        "correctAnswer": "Uniform Resource Locator"
+    },
+    {
+        "question": "คำถาม 194: คำว่า 'JPEG' ใช้สำหรับรูปภาพประเภทไหน?",
+        "options": ["รูปภาพที่มีความละเอียดสูง", "รูปภาพที่มีขนาดไฟล์เล็ก", "รูปภาพที่มีสีสดใส", "รูปภาพที่รองรับการเคลื่อนไหว"],
+        "correctAnswer": "รูปภาพที่มีขนาดไฟล์เล็ก"
+    },
+    {
+        "question": "คำถาม 195: คำว่า 'BIOS' ทำหน้าที่อะไร?",
+        "options": ["ตรวจสอบฮาร์ดแวร์ในคอมพิวเตอร์", "ติดตั้งซอฟต์แวร์ใหม่", "กำหนดค่าอินเตอร์เฟซผู้ใช้", "ให้บริการทางอินเทอร์เน็ต"],
+        "correctAnswer": "ตรวจสอบฮาร์ดแวร์ในคอมพิวเตอร์"
+    },
+    {
+        "question": "คำถาม 196: คำว่า 'Wi-Fi' หมายถึงอะไร?",
+        "options": ["การเชื่อมต่อไร้สาย", "การเชื่อมต่ออินเทอร์เน็ตผ่านสาย", "การเชื่อมต่อโทรศัพท์มือถือ", "การเชื่อมต่อ Bluetooth"],
+        "correctAnswer": "การเชื่อมต่อไร้สาย"
+    },
+    {
+        "question": "คำถาม 197: คำว่า 'Firewall' คืออะไร?",
+        "options": ["โปรแกรมป้องกันการเข้าถึงเครือข่าย", "โปรแกรมสำหรับแปลงรหัสผ่าน", "โปรแกรมแก้ไขข้อความ", "โปรแกรมสำหรับเชื่อมต่ออินเทอร์เน็ต"],
+        "correctAnswer": "โปรแกรมป้องกันการเข้าถึงเครือข่าย"
+    },
+    {
+        "question": "คำถาม 198: คำว่า 'RAM' หมายถึงอะไร?",
+        "options": ["Random Access Memory", "Read Access Memory", "Read-Aligned Memory", "Readable Access Memory"],
+        "correctAnswer": "Random Access Memory"
+    },
+    {
+        "question": "คำถาม 199: การ์ดที่ใช้ในการแสดงผลภาพในคอมพิวเตอร์เรียกว่าอะไร?",
+        "options": ["Graphics Card", "Processor Card", "Memory Card", "Storage Card"],
+        "correctAnswer": "Graphics Card"
+    },
+    {
+        "question": "คำถาม 200: การ์ดที่ใช้ในการอ่านข้อมูลจากแผ่นดิสก์ CD หรือ DVD เรียกว่าอะไร?",
+        "options": ["Optical Disk Drive", "Hard Disk Drive", "USB Drive", "Floppy Disk Drive"],
+        "correctAnswer": "Optical Disk Drive"
+    },
+    {
+        "question": "คำถาม 201: คำว่า 'Arduino' คืออะไร?",
+        "options": ["บอร์ดไมโครคอนโทรลเลอร์", "โปรแกรมเขียนโค้ด", "ภาษาโปรแกรม", "อุปกรณ์เซ็นเซอร์"],
+        "correctAnswer": "บอร์ดไมโครคอนโทรลเลอร์"
+    },
+    {
+        "question": "คำถาม 202: การประกาศตัวแปรในภาษา Arduino ต้องใช้คำสั่งอะไร?",
+        "options": ["int", "var", "declare", "create"],
+        "correctAnswer": "int"
+    },
+    {
+        "question": "คำถาม 203: ในการเขียนโปรแกรม Arduino คำสั่ง 'void setup()' หมายถึงอะไร?",
+        "options": ["ฟังก์ชันที่ทำงานเมื่อเริ่มต้นโปรแกรม", "ฟังก์ชันที่ทำงานหลังจากโปรแกรมเสร็จสิ้น", "ฟังก์ชันที่ใช้เชื่อมต่อเซ็นเซอร์", "ฟังก์ชันที่ใช้เปิดปิดการทำงานของบอร์ด"],
+        "correctAnswer": "ฟังก์ชันที่ทำงานเมื่อเริ่มต้นโปรแกรม"
+    },
+    {
+        "question": "คำถาม 204: คำสั่ง 'digitalWrite()' ใน Arduino ใช้ทำอะไร?",
+        "options": ["ตั้งค่าผลลัพธ์ของขาออก", "อ่านค่าผลลัพธ์จากขาเข้า", "สร้างการเชื่อมต่ออินเทอร์เน็ต", "เก็บข้อมูลในหน่วยความจำ"],
+        "correctAnswer": "ตั้งค่าผลลัพธ์ของขาออก"
+    },
+    {
+        "question": "คำถาม 205: คำสั่ง 'analogRead()' ใช้ในการทำอะไร?",
+        "options": ["อ่านค่าจากเซ็นเซอร์อนาล็อก", "เขียนข้อมูลลงในหน่วยความจำ", "ส่งข้อมูลออกจากบอร์ด", "ตั้งค่าผลลัพธ์ของขาออก"],
+        "correctAnswer": "อ่านค่าจากเซ็นเซอร์อนาล็อก"
+    },
+    {
+        "question": "คำถาม 206: บอร์ด Arduino Uno ใช้ไมโครคอนโทรลเลอร์ประเภทใด?",
+        "options": ["ATmega328P", "ATmega2560", "ESP8266", "STM32"],
+        "correctAnswer": "ATmega328P"
+    },
+    {
+        "question": "คำถาม 207: ในการเขียนโปรแกรม Arduino ฟังก์ชัน 'loop()' ใช้ทำอะไร?",
+        "options": ["ทำงานอย่างต่อเนื่องหลังจาก setup()", "เริ่มต้นการทำงานของโปรแกรม", "หยุดการทำงานของโปรแกรม", "อ่านค่าจากเซ็นเซอร์"],
+        "correctAnswer": "ทำงานอย่างต่อเนื่องหลังจาก setup()"
+    },
+    {
+        "question": "คำถาม 208: ตัวแปรชนิดไหนใน Arduino ใช้เก็บค่าตัวเลขที่มีทศนิยม?",
+        "options": ["float", "int", "char", "long"],
+        "correctAnswer": "float"
+    },
+    {
+        "question": "คำถาม 209: การใช้คำสั่ง 'delay()' ใน Arduino จะทำอะไร?",
+        "options": ["หยุดการทำงานชั่วคราว", "กำหนดค่าพอร์ตขาเข้า", "ตั้งค่าผลลัพธ์ขาออก", "อ่านค่าจากเซ็นเซอร์"],
+        "correctAnswer": "หยุดการทำงานชั่วคราว"
+    },
+    {
+        "question": "คำถาม 210: ตัวแปรชนิดไหนใน Arduino ใช้เก็บค่าที่มีค่าเป็นตัวอักษร?",
+        "options": ["char", "int", "float", "boolean"],
+        "correctAnswer": "char"
+    },
+    {
+        "question": "คำถาม 211: ใน Arduino ตัวแปร 'bool' ใช้เก็บข้อมูลชนิดใด?",
+        "options": ["ข้อมูลจริงหรือเท็จ", "ตัวเลขทศนิยม", "ข้อความ", "ตัวอักษร"],
+        "correctAnswer": "ข้อมูลจริงหรือเท็จ"
+    },
+    {
+        "question": "คำถาม 212: คำสั่ง 'pinMode()' ใช้สำหรับอะไร?",
+        "options": ["กำหนดโหมดของขาเข้า/ขาออก", "อ่านค่าจากเซ็นเซอร์", "เขียนค่าลงในหน่วยความจำ", "เชื่อมต่อกับอินเทอร์เน็ต"],
+        "correctAnswer": "กำหนดโหมดของขาเข้า/ขาออก"
+    },
+    {
+        "question": "คำถาม 213: บอร์ด Arduino ใช้พอร์ตเชื่อมต่ออะไรในการโปรแกรม?",
+        "options": ["USB", "HDMI", "Ethernet", "Serial Port"],
+        "correctAnswer": "USB"
+    },
+    {
+        "question": "คำถาม 214: เซ็นเซอร์ที่ใช้วัดอุณหภูมิในโปรเจกต์ Arduino มักใช้เซ็นเซอร์ชนิดใด?",
+        "options": ["LM35", "IR Sensor", "Ultrasonic", "Light Sensor"],
+        "correctAnswer": "LM35"
+    },
+    {
+        "question": "คำถาม 215: คำสั่ง 'Serial.begin()' ใช้สำหรับอะไรในโปรเจกต์ Arduino?",
+        "options": ["เปิดการใช้งานการสื่อสารทางอนุกรม", "อ่านค่าจากเซ็นเซอร์", "ส่งข้อมูลออกจากบอร์ด", "กำหนดพอร์ตการเชื่อมต่อ"],
+        "correctAnswer": "เปิดการใช้งานการสื่อสารทางอนุกรม"
+    },
+    {
+        "question": "คำถาม 216: คำสั่ง 'digitalRead()' ใช้ในการทำอะไร?",
+        "options": ["อ่านค่าจากขาเข้าแบบดิจิตอล", "เขียนข้อมูลลงในหน่วยความจำ", "อ่านค่าจากเซ็นเซอร์อนาล็อก", "ตั้งค่าผลลัพธ์ขาออก"],
+        "correctAnswer": "อ่านค่าจากขาเข้าแบบดิจิตอล"
+    },
+    {
+        "question": "คำถาม 217: คำสั่ง 'tone()' ใน Arduino ใช้ในการทำอะไร?",
+        "options": ["สร้างเสียงที่ขาออก", "อ่านค่าจากเซ็นเซอร์เสียง", "เปิดหรือปิดไฟ LED", "ตั้งค่าผลลัพธ์ของเซ็นเซอร์"],
+        "correctAnswer": "สร้างเสียงที่ขาออก"
+    },
+    {
+        "question": "คำถาม 218: ในการเชื่อมต่อเซ็นเซอร์กับ Arduino เซ็นเซอร์ที่ใช้วัดระยะห่างมักใช้ประเภทใด?",
+        "options": ["Ultrasonic Sensor", "Temperature Sensor", "Light Sensor", "Humidity Sensor"],
+        "correctAnswer": "Ultrasonic Sensor"
+    },
+    {
+        "question": "คำถาม 219: คำสั่ง 'analogWrite()' ใช้ทำอะไรใน Arduino?",
+        "options": ["ส่งค่าระดับอนาล็อกไปยังขาออก", "ตั้งค่าผลลัพธ์ของขาเข้า", "อ่านค่าจากเซ็นเซอร์", "เปิดปิดการทำงานของบอร์ด"],
+        "correctAnswer": "ส่งค่าระดับอนาล็อกไปยังขาออก"
+    },
+    {
+        "question": "คำถาม 220: ในการใช้ Arduino, 'GND' ย่อมาจากอะไร?",
+        "options": ["Ground", "General", "Group", "Generator"],
+        "correctAnswer": "Ground"
+    },
+    {
+        "question": "คำถาม 221: การใช้คำสั่ง 'while()' ในโปรแกรม Arduino ใช้ทำอะไร?",
+        "options": ["ทำงานจนกว่าจะเป็นจริง", "ทำงานในช่วงเวลาที่กำหนด", "หยุดการทำงาน", "เริ่มต้นโปรแกรม"],
+        "correctAnswer": "ทำงานจนกว่าจะเป็นจริง"
+    },
+    {
+        "question": "คำถาม 222: ฟังก์ชัน 'attachInterrupt()' ใน Arduino ใช้ทำอะไร?",
+        "options": ["ติดตั้งการหยุดการทำงานจากภายนอก", "อ่านค่าจากเซ็นเซอร์", "เชื่อมต่อกับอินเทอร์เน็ต", "ตั้งค่าการทำงานของพอร์ตอนุกรม"],
+        "correctAnswer": "ติดตั้งการหยุดการทำงานจากภายนอก"
+    },
+    {
+        "question": "คำถาม 223: คำสั่ง 'attachInterrupt()' ใช้สำหรับอะไร?",
+        "options": ["ตั้งค่าการหยุดการทำงานจากภายนอก", "เชื่อมต่อกับเซ็นเซอร์", "กำหนดโหมดขาเข้า", "ตั้งค่าการสื่อสารทางอนุกรม"],
+        "correctAnswer": "ตั้งค่าการหยุดการทำงานจากภายนอก"
+    },
+    {
+        "question": "คำถาม 224: ฟังก์ชัน 'millis()' ใน Arduino ใช้ทำอะไร?",
+        "options": ["วัดเวลาที่ผ่านไปจากการเริ่มโปรแกรม", "อ่านค่าจากเซ็นเซอร์", "หยุดการทำงานของโปรแกรม", "เริ่มต้นโปรแกรมใหม่"],
+        "correctAnswer": "วัดเวลาที่ผ่านไปจากการเริ่มโปรแกรม"
+    },
+    {
+        "question": "คำถาม 225: คำสั่ง 'shiftOut()' ใช้สำหรับอะไร?",
+        "options": ["ส่งข้อมูลบิตไปยังอุปกรณ์ต่างๆ", "อ่านค่าจากเซ็นเซอร์", "ส่งข้อมูลผ่านการสื่อสารอนุกรม", "เปลี่ยนค่าของตัวแปร"],
+        "correctAnswer": "ส่งข้อมูลบิตไปยังอุปกรณ์ต่างๆ"
+    },
+    {
+        "question": "คำถาม 226: ใน Arduino บอร์ดที่มีพอร์ตขาอนาล็อกสามารถรองรับการอ่านค่าที่เท่าไหร่?",
+        "options": ["0-1023", "0-255", "0-100", "0-512"],
+        "correctAnswer": "0-1023"
+    },
+    {
+        "question": "คำถาม 227: คำสั่ง 'tone()' ใช้สำหรับอะไร?",
+        "options": ["สร้างเสียงในช่วงความถี่ที่กำหนด", "อ่านเสียงจากเซ็นเซอร์", "ตั้งค่าผลลัพธ์ขาออก", "ส่งข้อมูลไปยังการ์ดเสียง"],
+        "correctAnswer": "สร้างเสียงในช่วงความถี่ที่กำหนด"
+    },
+    {
+        "question": "คำถาม 228: คำสั่ง 'noTone()' ใช้สำหรับอะไร?",
+        "options": ["หยุดเสียงที่สร้างโดย tone()", "ตั้งค่าผลลัพธ์ขาออก", "อ่านค่าจากเซ็นเซอร์", "เริ่มต้นการทำงานของบอร์ดใหม่"],
+        "correctAnswer": "หยุดเสียงที่สร้างโดย tone()"
+    },
+    {
+        "question": "คำถาม 229: คำสั่ง 'pulseIn()' ใช้สำหรับอะไร?",
+        "options": ["อ่านความยาวของสัญญาณพัลส์", "ตั้งค่าผลลัพธ์ขาเข้า", "เชื่อมต่อกับเซ็นเซอร์อนาล็อก", "ส่งข้อมูลออกจากบอร์ด"],
+        "correctAnswer": "อ่านความยาวของสัญญาณพัลส์"
+    },
+    {
+        "question": "คำถาม 230: คำสั่ง 'Serial.print()' ใช้สำหรับอะไร?",
+        "options": ["ส่งข้อมูลออกทางพอร์ตอนุกรม", "อ่านค่าจากเซ็นเซอร์", "ตั้งค่าผลลัพธ์ขาออก", "ส่งข้อมูลผ่านอินเทอร์เน็ต"],
+        "correctAnswer": "ส่งข้อมูลออกทางพอร์ตอนุกรม"
+    },
+    {
+        "question": "คำถาม 231: คำว่า 'PWM' ใน Arduino หมายถึงอะไร?",
+        "options": ["Pulse Width Modulation", "Programmed Width Modulation", "Pulse Wave Modulation", "Parallel Width Modulation"],
+        "correctAnswer": "Pulse Width Modulation"
+    },
+    {
+        "question": "คำถาม 232: การใช้งานเซ็นเซอร์ IR ใน Arduino มักใช้ในการทำอะไร?",
+        "options": ["วัดระยะห่าง", "อ่านข้อมูลจากเครื่องส่งสัญญาณ", "ตรวจจับแสง", "วัดอุณหภูมิ"],
+        "correctAnswer": "อ่านข้อมูลจากเครื่องส่งสัญญาณ"
+    },
+    {
+        "question": "คำถาม 233: การใช้ฟังก์ชัน 'millis()' ให้เหมาะสมจะต้องระวังอะไร?",
+        "options": ["ความผิดพลาดเมื่อค่าของเวลาเกิน 49.7 วัน", "การตั้งค่าการสื่อสารผิดพลาด", "การใช้หน่วยความจำไม่เพียงพอ", "ข้อผิดพลาดในการทำงานของเซ็นเซอร์"],
+        "correctAnswer": "ความผิดพลาดเมื่อค่าของเวลาเกิน 49.7 วัน"
+    },
+    {
+        "question": "คำถาม 234: คำสั่ง 'map()' ใน Arduino ใช้ทำอะไร?",
+        "options": ["เปลี่ยนค่าจากช่วงหนึ่งไปยังอีกช่วงหนึ่ง", "อ่านค่าจากเซ็นเซอร์", "ตั้งค่าผลลัพธ์ขาเข้า", "ส่งข้อมูลผ่านพอร์ตอนุกรม"],
+        "correctAnswer": "เปลี่ยนค่าจากช่วงหนึ่งไปยังอีกช่วงหนึ่ง"
+    },
+    {
+        "question": "คำถาม 235: ในการใช้ Arduino, คำว่า 'VCC' หมายถึงอะไร?",
+        "options": ["แหล่งจ่ายไฟที่เป็นบวก", "พอร์ตขาออก", "พอร์ตขาเข้า", "แหล่งจ่ายไฟที่เป็นลบ"],
+        "correctAnswer": "แหล่งจ่ายไฟที่เป็นบวก"
+    },
+    {
+        "question": "คำถาม 236: ฟังก์ชัน 'digitalWrite()' ใช้สำหรับอะไร?",
+        "options": ["ตั้งค่าผลลัพธ์ของขาออกดิจิตอล", "อ่านค่าจากขาเข้าแบบดิจิตอล", "สร้างเสียง", "เชื่อมต่อกับเซ็นเซอร์"],
+        "correctAnswer": "ตั้งค่าผลลัพธ์ของขาออกดิจิตอล"
+    },
+    {
+        "question": "คำถาม 237: ฟังก์ชัน 'digitalRead()' ใช้สำหรับอะไร?",
+        "options": ["อ่านค่าจากขาเข้าแบบดิจิตอล", "ส่งข้อมูลผ่านพอร์ตอนุกรม", "ตั้งค่าผลลัพธ์ขาออก", "เก็บข้อมูลในหน่วยความจำ"],
+        "correctAnswer": "อ่านค่าจากขาเข้าแบบดิจิตอล"
+    },
+    {
+        "question": "คำถาม 238: คำสั่ง 'Serial.begin()' ใช้เพื่ออะไร?",
+        "options": ["เริ่มต้นการสื่อสารทางพอร์ตอนุกรม", "อ่านค่าจากเซ็นเซอร์", "ตั้งค่าผลลัพธ์ขาออก", "เชื่อมต่อกับอินเทอร์เน็ต"],
+        "correctAnswer": "เริ่มต้นการสื่อสารทางพอร์ตอนุกรม"
+    },
+    {
+        "question": "คำถาม 239: คำสั่ง 'pinMode()' ใช้เพื่ออะไร?",
+        "options": ["กำหนดโหมดของขาเข้า/ขาออก", "อ่านค่าจากเซ็นเซอร์", "ส่งข้อมูลออกจากบอร์ด", "เชื่อมต่อกับอินเทอร์เน็ต"],
+        "correctAnswer": "กำหนดโหมดของขาเข้า/ขาออก"
+    },
+    {
+        "question": "คำถาม 240: คำว่า 'I2C' หมายถึงอะไรใน Arduino?",
+        "options": ["โปรโตคอลการสื่อสารแบบอนุกรม", "พอร์ตการเชื่อมต่อ USB", "การเชื่อมต่อแบบไร้สาย", "โปรโตคอลการส่งข้อมูลแบบอนุกรม"],
+        "correctAnswer": "โปรโตคอลการสื่อสารแบบอนุกรม"
+    },
+    {
+        "question": "คำถาม 241: ฟังก์ชัน 'Serial.read()' ใช้ทำอะไร?",
+        "options": ["อ่านข้อมูลที่มาจากพอร์ตอนุกรม", "ส่งข้อมูลผ่านพอร์ตอนุกรม", "อ่านค่าจากเซ็นเซอร์", "เชื่อมต่อกับเซ็นเซอร์"],
+        "correctAnswer": "อ่านข้อมูลที่มาจากพอร์ตอนุกรม"
+    },
+    {
+        "question": "คำถาม 242: การใช้คำสั่ง 'analogWrite()' ส่งผลให้เกิดการทำงานอย่างไร?",
+        "options": ["ส่งสัญญาณ PWM ไปยังขาออก", "อ่านข้อมูลจากเซ็นเซอร์", "ส่งสัญญาณดิจิตอลไปยังขาออก", "สร้างเสียงในช่วงความถี่ที่กำหนด"],
+        "correctAnswer": "ส่งสัญญาณ PWM ไปยังขาออก"
+    },
+    {
+        "question": "คำถาม 243: คำว่า 'SPI' หมายถึงอะไร?",
+        "options": ["Serial Peripheral Interface", "Serial Processing Interface", "Serial Parallel Interface", "Serial Peripheral Instruction"],
+        "correctAnswer": "Serial Peripheral Interface"
+    },
+    {
+        "question": "คำถาม 244: คำสั่ง 'noInterrupts()' ใน Arduino ใช้ทำอะไร?",
+        "options": ["ปิดการหยุดการทำงานจากภายนอก", "เปิดการหยุดการทำงานจากภายนอก", "อ่านข้อมูลจากเซ็นเซอร์", "ส่งข้อมูลผ่านพอร์ตอนุกรม"],
+        "correctAnswer": "ปิดการหยุดการทำงานจากภายนอก"
+    },
+    {
+        "question": "คำถาม 245: การใช้คำสั่ง 'attachInterrupt()' ต้องใช้พอร์ตไหนในการทำงาน?",
+        "options": ["พอร์ตที่รองรับ Interrupt", "พอร์ตขาอนาล็อก", "พอร์ตขา PWM", "พอร์ตขา USB"],
+        "correctAnswer": "พอร์ตที่รองรับ Interrupt"
+    },
+    {
+        "question": "คำถาม 246: การใช้คำสั่ง 'Serial.flush()' ทำอะไร?",
+        "options": ["ล้างข้อมูลที่ค้างอยู่ในพอร์ตอนุกรม", "อ่านค่าจากเซ็นเซอร์", "เปิดใช้งานการสื่อสารพอร์ตอนุกรม", "ส่งข้อมูลผ่านอินเทอร์เน็ต"],
+        "correctAnswer": "ล้างข้อมูลที่ค้างอยู่ในพอร์ตอนุกรม"
+    },
+    {
+        "question": "คำถาม 247: คำสั่ง 'Wire.requestFrom()' ใช้สำหรับอะไรในโปรแกรม Arduino?",
+        "options": ["ขอข้อมูลจากอุปกรณ์ I2C", "ส่งข้อมูลผ่านพอร์ตอนุกรม", "เชื่อมต่อกับเซ็นเซอร์", "กำหนดค่าผลลัพธ์ขาออก"],
+        "correctAnswer": "ขอข้อมูลจากอุปกรณ์ I2C"
+    },
+    {
+        "question": "คำถาม 248: คำสั่ง 'Wire.begin()' ใช้ทำอะไรใน Arduino?",
+        "options": ["เริ่มต้นการสื่อสารแบบ I2C", "เชื่อมต่อกับเซ็นเซอร์", "ตั้งค่าผลลัพธ์ขาออก", "อ่านค่าจากพอร์ตอนุกรม"],
+        "correctAnswer": "เริ่มต้นการสื่อสารแบบ I2C"
+    },
+    {
+        "question": "คำถาม 249: คำสั่ง 'digitalWrite()' ใช้ในการตั้งค่าผลลัพธ์ของขาออกเป็นค่าใด?",
+        "options": ["HIGH หรือ LOW", "0 หรือ 1", "TRUE หรือ FALSE", "ON หรือ OFF"],
+        "correctAnswer": "HIGH หรือ LOW"
+    },
+    {
+        "question": "คำถาม 250: คำสั่ง 'pulseIn()' ใช้สำหรับอะไร?",
+        "options": ["อ่านค่าความยาวของสัญญาณพัลส์", "ตั้งค่าผลลัพธ์ขาออก", "เชื่อมต่อกับเซ็นเซอร์", "อ่านค่าจากพอร์ตอนุกรม"],
+        "correctAnswer": "อ่านค่าความยาวของสัญญาณพัลส์"
+    },
+    {
+        "question": "คำถาม 251: ฟังก์ชัน 'analogRead()' ใน Arduino ใช้เพื่ออะไร?",
+        "options": ["อ่านค่าจากพอร์ตอนาล็อก", "อ่านค่าจากพอร์ตดิจิตอล", "ส่งข้อมูลผ่านพอร์ตอนุกรม", "ตั้งค่าผลลัพธ์ขาออก"],
+        "correctAnswer": "อ่านค่าจากพอร์ตอนาล็อก"
+    },
+    {
+        "question": "คำถาม 252: คำสั่ง 'tone()' ใช้ในการทำอะไรใน Arduino?",
+        "options": ["สร้างเสียงจากพอร์ตขาออก", "อ่านค่าจากเซ็นเซอร์", "ตั้งค่าผลลัพธ์ขาเข้า", "ส่งข้อมูลไปยังพอร์ตอนุกรม"],
+        "correctAnswer": "สร้างเสียงจากพอร์ตขาออก"
+    },
+    {
+        "question": "คำถาม 253: คำสั่ง 'digitalWrite()' ใน Arduino ใช้ในการทำอะไร?",
+        "options": ["ตั้งค่าผลลัพธ์ขาออกดิจิตอล", "อ่านค่าจากพอร์ตดิจิตอล", "อ่านค่าจากพอร์ตอนาล็อก", "สร้างเสียงจากพอร์ตขาออก"],
+        "correctAnswer": "ตั้งค่าผลลัพธ์ขาออกดิจิตอล"
+    },
+    {
+        "question": "คำถาม 254: ใน Arduino คำว่า 'GND' หมายถึงอะไร?",
+        "options": ["ขั้วลบของแหล่งจ่ายไฟ", "ขั้วบวกของแหล่งจ่ายไฟ", "ขาเข้าแบบอนาล็อก", "พอร์ตการสื่อสาร"],
+        "correctAnswer": "ขั้วลบของแหล่งจ่ายไฟ"
+    },
+    {
+        "question": "คำถาม 255: ฟังก์ชัน 'analogWrite()' ใช้ในการทำอะไร?",
+        "options": ["ส่งสัญญาณ PWM ไปยังขาออก", "อ่านค่าจากพอร์ตอนาล็อก", "ส่งข้อมูลผ่านพอร์ตอนุกรม", "กำหนดค่าผลลัพธ์ขาออก"],
+        "correctAnswer": "ส่งสัญญาณ PWM ไปยังขาออก"
+    },
+    {
+        "question": "คำถาม 256: คำสั่ง 'pulseIn()' ใช้ในการทำอะไร?",
+        "options": ["วัดความยาวของพัลส์ที่เข้ามา", "สร้างเสียงจากพอร์ตขาออก", "อ่านค่าจากเซ็นเซอร์", "ส่งข้อมูลผ่านพอร์ตอนุกรม"],
+        "correctAnswer": "วัดความยาวของพัลส์ที่เข้ามา"
+    },
+    {
+        "question": "คำถาม 257: การใช้คำสั่ง 'attachInterrupt()' ใน Arduino สามารถใช้กับพอร์ตไหน?",
+        "options": ["พอร์ตที่รองรับการหยุดทำงานจากภายนอก", "พอร์ตขาอนาล็อก", "พอร์ตขา PWM", "พอร์ตขา USB"],
+        "correctAnswer": "พอร์ตที่รองรับการหยุดทำงานจากภายนอก"
+    },
+    {
+        "question": "คำถาม 258: ใน Arduino การใช้คำสั่ง 'Serial.begin()' ใช้เพื่ออะไร?",
+        "options": ["เริ่มต้นการสื่อสารผ่านพอร์ตอนุกรม", "อ่านค่าจากพอร์ตดิจิตอล", "ส่งข้อมูลผ่านพอร์ตอนุกรม", "สร้างเสียงจากพอร์ตขาออก"],
+        "correctAnswer": "เริ่มต้นการสื่อสารผ่านพอร์ตอนุกรม"
+    },
+    {
+        "question": "คำถาม 259: คำสั่ง 'Wire.begin()' ใช้เพื่ออะไรใน Arduino?",
+        "options": ["เริ่มต้นการสื่อสาร I2C", "อ่านค่าจากเซ็นเซอร์", "ตั้งค่าผลลัพธ์ขาออก", "ส่งข้อมูลไปยังพอร์ตอนุกรม"],
+        "correctAnswer": "เริ่มต้นการสื่อสาร I2C"
+    },
+    {
+        "question": "คำถาม 260: คำสั่ง 'delay()' ใน Arduino ใช้เพื่อทำอะไร?",
+        "options": ["หยุดการทำงานของโปรแกรมชั่วขณะ", "ตั้งค่าผลลัพธ์ขาออก", "เชื่อมต่อกับเซ็นเซอร์", "อ่านค่าจากพอร์ตอนุกรม"],
+        "correctAnswer": "หยุดการทำงานของโปรแกรมชั่วขณะ"
+    },
+    {
+        "question": "คำถาม 261: ฟังก์ชัน 'attachInterrupt()' สามารถใช้งานได้กับบอร์ดใด?",
+        "options": ["บอร์ดที่รองรับการหยุดทำงานจากภายนอก", "บอร์ดที่ใช้กับการสื่อสารอนุกรม", "บอร์ดที่ใช้กับการสื่อสาร I2C", "บอร์ดที่รองรับ PWM"],
+        "correctAnswer": "บอร์ดที่รองรับการหยุดทำงานจากภายนอก"
+    },
+    {
+        "question": "คำถาม 262: คำสั่ง 'analogRead()' สามารถใช้กับพอร์ตใดใน Arduino?",
+        "options": ["พอร์ตอนาล็อก", "พอร์ตดิจิตอล", "พอร์ตขา PWM", "พอร์ตขาอนุกรม"],
+        "correctAnswer": "พอร์ตอนาล็อก"
+    },
+    {
+        "question": "คำถาม 263: ฟังก์ชัน 'noInterrupts()' ใน Arduino ใช้ทำอะไร?",
+        "options": ["ปิดการทำงานจากภายนอก", "เริ่มต้นโปรแกรมใหม่", "เชื่อมต่อกับเซ็นเซอร์", "ส่งข้อมูลไปยังพอร์ตอนุกรม"],
+        "correctAnswer": "ปิดการทำงานจากภายนอก"
+    },
+    {
+        "question": "คำถาม 264: ใน Arduino คำว่า 'PWM' หมายถึงอะไร?",
+        "options": ["Pulse Width Modulation", "Power Width Modulation", "Parallel Wave Modulation", "Pulse Wave Modulation"],
+        "correctAnswer": "Pulse Width Modulation"
+    },
+    {
+        "question": "คำถาม 265: ฟังก์ชัน 'Serial.println()' ใช้ทำอะไร?",
+        "options": ["ส่งข้อมูลและขึ้นบรรทัดใหม่ในพอร์ตอนุกรม", "สร้างเสียงจากพอร์ตขาออก", "อ่านค่าจากเซ็นเซอร์", "ส่งข้อมูลไปยังพอร์ตอนุกรม"],
+        "correctAnswer": "ส่งข้อมูลและขึ้นบรรทัดใหม่ในพอร์ตอนุกรม"
+    },
+    {
+        "question": "คำถาม 266: คำสั่ง 'Wire.requestFrom()' ใน Arduino ใช้สำหรับการทำอะไร?",
+        "options": ["ขอข้อมูลจากอุปกรณ์ I2C", "ส่งข้อมูลไปยังพอร์ตอนุกรม", "ตั้งค่าผลลัพธ์ขาออก", "เชื่อมต่อกับเซ็นเซอร์"],
+        "correctAnswer": "ขอข้อมูลจากอุปกรณ์ I2C"
+    },
+    {
+        "question": "คำถาม 267: คำสั่ง 'digitalRead()' ใช้เพื่อทำอะไรใน Arduino?",
+        "options": ["อ่านค่าจากพอร์ตดิจิตอล", "ตั้งค่าผลลัพธ์ขาออกดิจิตอล", "อ่านค่าจากพอร์ตอนาล็อก", "ส่งข้อมูลไปยังพอร์ตอนุกรม"],
+        "correctAnswer": "อ่านค่าจากพอร์ตดิจิตอล"
+    },
+    {
+        "question": "คำถาม 268: คำสั่ง 'Serial.flush()' ใช้ทำอะไร?",
+        "options": ["ล้างข้อมูลที่ค้างอยู่ในพอร์ตอนุกรม", "อ่านค่าจากเซ็นเซอร์", "ตั้งค่าผลลัพธ์ขาออก", "ส่งข้อมูลไปยังพอร์ตอนุกรม"],
+        "correctAnswer": "ล้างข้อมูลที่ค้างอยู่ในพอร์ตอนุกรม"
+    },
+    {
+        "question": "คำถาม 269: ฟังก์ชัน 'millis()' ใช้ทำอะไรใน Arduino?",
+        "options": ["วัดเวลาที่ผ่านไปจากการเริ่มต้นโปรแกรม", "ส่งข้อมูลผ่านพอร์ตอนุกรม", "สร้างเสียงจากพอร์ตขาออก", "อ่านค่าจากเซ็นเซอร์"],
+        "correctAnswer": "วัดเวลาที่ผ่านไปจากการเริ่มต้นโปรแกรม"
+    },
+    {
+        "question": "คำถาม 270: คำสั่ง 'analogWrite()' สามารถใช้ได้กับพอร์ตใดใน Arduino?",
+        "options": ["พอร์ตขา PWM", "พอร์ตอนาล็อก", "พอร์ตขา I2C", "พอร์ตดิจิตอล"],
+        "correctAnswer": "พอร์ตขา PWM"
+    },
+    {
+        "question": "คำถาม 271: ฟังก์ชัน 'attachInterrupt()' ใช้เพื่ออะไร?",
+        "options": ["หยุดการทำงานจากภายนอกในระหว่างการทำงาน", "เริ่มต้นโปรแกรมใหม่", "อ่านค่าจากเซ็นเซอร์", "ส่งข้อมูลผ่านพอร์ตอนุกรม"],
+        "correctAnswer": "หยุดการทำงานจากภายนอกในระหว่างการทำงาน"
+    },
+    {
+        "question": "คำถาม 272: คำสั่ง 'digitalWrite()' ใช้ในการทำอะไรใน Arduino?",
+        "options": ["ตั้งค่าผลลัพธ์ขาออกดิจิตอล", "อ่านค่าจากพอร์ตดิจิตอล", "อ่านค่าจากเซ็นเซอร์", "ส่งข้อมูลผ่านพอร์ตอนุกรม"],
+        "correctAnswer": "ตั้งค่าผลลัพธ์ขาออกดิจิตอล"
+    },
+    {
+        "question": "คำถาม 273: HTML ย่อมาจากอะไร?",
+        "options": ["HyperText Markup Language", "HighText Markup Language", "HyperText Model Language", "HighText Model Language"],
+        "correctAnswer": "HyperText Markup Language"
+    },
+    {
+        "question": "คำถาม 274: แท็ก HTML ที่ใช้ในการสร้างลิงค์คือแท็กใด?",
+        "options": ["<a>", "<link>", "<div>", "<span>"],
+        "correctAnswer": "<a>"
+    },
+    {
+        "question": "คำถาม 275: แท็ก HTML ที่ใช้ในการสร้างหัวข้อคือแท็กใด?",
+        "options": ["<h1> ถึง <h6>", "<header>", "<p>", "<title>"],
+        "correctAnswer": "<h1> ถึง <h6>"
+    },
+    {
+        "question": "คำถาม 276: แท็ก HTML ที่ใช้ในการสร้างย่อหน้าคือแท็กใด?",
+        "options": ["<p>", "<div>", "<section>", "<footer>"],
+        "correctAnswer": "<p>"
+    },
+    {
+        "question": "คำถาม 277: แท็ก HTML ที่ใช้ในการแทรกรูปภาพคือแท็กใด?",
+        "options": ["<img>", "<image>", "<src>", "<picture>"],
+        "correctAnswer": "<img>"
+    },
+    {
+        "question": "คำถาม 278: คำสั่ง CSS ที่ใช้ในการเปลี่ยนสีพื้นหลังของเว็บเพจคืออะไร?",
+        "options": ["background-color", "background-image", "color", "font-size"],
+        "correctAnswer": "background-color"
+    },
+    {
+        "question": "คำถาม 279: คำสั่ง CSS ที่ใช้ในการตั้งค่าขนาดตัวอักษรคืออะไร?",
+        "options": ["font-size", "font-family", "color", "text-align"],
+        "correctAnswer": "font-size"
+    },
+    {
+        "question": "คำถาม 280: คำสั่ง CSS ที่ใช้ในการจัดเรียงข้อความให้อยู่ตรงกลางคืออะไร?",
+        "options": ["text-align: center;", "text-center;", "align-text: middle;", "center-align: true;"],
+        "correctAnswer": "text-align: center;"
+    },
+    {
+        "question": "คำถาม 281: ใน CSS การใช้คำสั่ง 'padding' ใช้เพื่อทำอะไร?",
+        "options": ["เพิ่มระยะห่างภายในองค์ประกอบ", "เพิ่มระยะห่างภายนอกองค์ประกอบ", "เปลี่ยนขนาดของตัวอักษร", "เปลี่ยนสีของพื้นหลัง"],
+        "correctAnswer": "เพิ่มระยะห่างภายในองค์ประกอบ"
+    },
+    {
+        "question": "คำถาม 282: คำสั่ง CSS ที่ใช้ในการเพิ่มขอบรอบองค์ประกอบคืออะไร?",
+        "options": ["border", "outline", "margin", "padding"],
+        "correctAnswer": "border"
+    },
+    {
+        "question": "คำถาม 283: คำสั่ง JavaScript ที่ใช้ในการแสดงผลข้อมูลใน Console คืออะไร?",
+        "options": ["console.log()", "alert()", "document.write()", "print()"],
+        "correctAnswer": "console.log()"
+    },
+    {
+        "question": "คำถาม 284: ใน JavaScript คำสั่ง 'document.getElementById()' ใช้เพื่ออะไร?",
+        "options": ["ค้นหาธาตุที่มี ID ที่กำหนด", "เปลี่ยนสีพื้นหลัง", "เปลี่ยนข้อความในหน้าเว็บ", "สร้างองค์ประกอบใหม่"],
+        "correctAnswer": "ค้นหาธาตุที่มี ID ที่กำหนด"
+    },
+    {
+        "question": "คำถาม 285: ใน HTML แท็ก '<form>' ใช้สำหรับอะไร?",
+        "options": ["สร้างฟอร์มสำหรับรับข้อมูลจากผู้ใช้", "สร้างลิงค์", "เพิ่มรูปภาพ", "แสดงเนื้อหาในหน้าเว็บ"],
+        "correctAnswer": "สร้างฟอร์มสำหรับรับข้อมูลจากผู้ใช้"
+    },
+    {
+        "question": "คำถาม 286: คำสั่ง CSS ที่ใช้ในการเปลี่ยนสีตัวอักษรคืออะไร?",
+        "options": ["color", "font-color", "text-color", "letter-color"],
+        "correctAnswer": "color"
+    },
+    {
+        "question": "คำถาม 287: คำสั่ง JavaScript 'function' ใช้เพื่ออะไร?",
+        "options": ["ประกาศฟังก์ชัน", "แสดงข้อมูล", "เปลี่ยนค่าของตัวแปร", "ทำการคำนวณ"],
+        "correctAnswer": "ประกาศฟังก์ชัน"
+    },
+    {
+        "question": "คำถาม 288: การใช้ CSS คำสั่ง 'display: block;' ใช้เพื่ออะไร?",
+        "options": ["ทำให้องค์ประกอบเป็นบล็อก", "ทำให้องค์ประกอบเป็นอินไลน์", "เพิ่มขนาดให้กับองค์ประกอบ", "เพิ่มสีให้กับองค์ประกอบ"],
+        "correctAnswer": "ทำให้องค์ประกอบเป็นบล็อก"
+    },
+    {
+        "question": "คำถาม 289: ใน HTML แท็ก '<table>' ใช้ทำอะไร?",
+        "options": ["สร้างตาราง", "สร้างลิงค์", "เพิ่มหัวข้อ", "สร้างฟอร์ม"],
+        "correctAnswer": "สร้างตาราง"
+    },
+    {
+        "question": "คำถาม 290: คำสั่ง CSS ที่ใช้ในการกำหนดขนาดของขอบตารางคืออะไร?",
+        "options": ["border-width", "table-size", "frame-border", "outline-width"],
+        "correctAnswer": "border-width"
+    },
+    {
+        "question": "คำถาม 291: คำสั่ง JavaScript 'addEventListener()' ใช้เพื่ออะไร?",
+        "options": ["เพิ่มฟังก์ชันที่ต้องการให้ทำเมื่อเกิดเหตุการณ์", "แสดงข้อความในหน้าเว็บ", "ทำการคำนวณ", "ค้นหาธาตุในหน้าเว็บ"],
+        "correctAnswer": "เพิ่มฟังก์ชันที่ต้องการให้ทำเมื่อเกิดเหตุการณ์"
+    },
+    {
+        "question": "คำถาม 292: คำสั่ง CSS 'margin' ใช้เพื่อทำอะไร?",
+        "options": ["เพิ่มระยะห่างภายนอกองค์ประกอบ", "เพิ่มระยะห่างภายในองค์ประกอบ", "ตั้งค่าขนาดของตัวอักษร", "เปลี่ยนสีของพื้นหลัง"],
+        "correctAnswer": "เพิ่มระยะห่างภายนอกองค์ประกอบ"
+    },
+    {
+        "question": "คำถาม 293: คำสั่ง JavaScript ที่ใช้ในการเปลี่ยนแปลงข้อความในองค์ประกอบ HTML คืออะไร?",
+        "options": ["document.getElementById().innerHTML", "document.getElementById().innerText", "element.innerText", "document.write()"],
+        "correctAnswer": "document.getElementById().innerHTML"
+    },
+    {
+        "question": "คำถาม 294: ใน HTML แท็ก '<input>' ใช้สำหรับอะไร?",
+        "options": ["รับข้อมูลจากผู้ใช้", "แสดงข้อความ", "แสดงลิงค์", "สร้างฟอร์ม"],
+        "correctAnswer": "รับข้อมูลจากผู้ใช้"
+    },
+    {
+        "question": "คำถาม 295: แท็ก HTML ที่ใช้ในการสร้างลิสต์แบบไม่เรียงลำดับคืออะไร?",
+        "options": ["<ul>", "<ol>", "<li>", "<dl>"],
+        "correctAnswer": "<ul>"
+    },
+    {
+        "question": "คำถาม 296: คำสั่ง CSS 'font-family' ใช้เพื่อทำอะไร?",
+        "options": ["ตั้งค่าแบบอักษร", "กำหนดขนาดตัวอักษร", "กำหนดสีตัวอักษร", "ตั้งค่าระยะห่างตัวอักษร"],
+        "correctAnswer": "ตั้งค่าแบบอักษร"
+    },
+    {
+        "question": "คำถาม 297: ใน JavaScript คำสั่ง 'alert()' ใช้เพื่อทำอะไร?",
+        "options": ["แสดงข้อความในหน้าต่างป๊อปอัพ", "แสดงข้อมูลใน Console", "เปลี่ยนสีพื้นหลัง", "เพิ่มข้อความใน HTML"],
+        "correctAnswer": "แสดงข้อความในหน้าต่างป๊อปอัพ"
+    },
+    {
+        "question": "คำถาม 298: คำสั่ง CSS ที่ใช้ในการจัดเรียงไอเท็มภายในคอนเทนเนอร์แบบ flexbox คืออะไร?",
+        "options": ["display: flex;", "flex-wrap: wrap;", "align-items: center;", "justify-content: space-between;"],
+        "correctAnswer": "display: flex;"
+    },
+    {
+        "question": "คำถาม 299: คำสั่ง JavaScript ที่ใช้ในการตรวจสอบประเภทข้อมูลของตัวแปรคืออะไร?",
+        "options": ["typeof", "instanceof", "type()", "check()"],
+        "correctAnswer": "typeof"
+    },
+    {
+        "question": "คำถาม 300: การใช้ CSS คำสั่ง 'overflow' ใช้เพื่ออะไร?",
+        "options": ["จัดการการแสดงผลของเนื้อหาที่เกินขอบเขต", "เพิ่มสีพื้นหลัง", "เปลี่ยนขนาดของตัวอักษร", "เพิ่มระยะห่างภายในองค์ประกอบ"],
+        "correctAnswer": "จัดการการแสดงผลของเนื้อหาที่เกินขอบเขต"
+    },
+    {
+        "question": "คำถาม 301: คำสั่ง HTML ที่ใช้ในการสร้างลิสต์แบบเรียงลำดับคืออะไร?",
+        "options": ["<ol>", "<ul>", "<li>", "<dl>"],
+        "correctAnswer": "<ol>"
+    },
+    {
+        "question": "คำถาม 302: คำสั่ง CSS ที่ใช้ในการตั้งค่าระยะห่างระหว่างตัวอักษรคืออะไร?",
+        "options": ["letter-spacing", "text-spacing", "word-spacing", "line-height"],
+        "correctAnswer": "letter-spacing"
+    },
+    {
+        "question": "คำถาม 303: แท็ก HTML ที่ใช้ในการสร้างกรอบข้อความที่สามารถเลื่อนขึ้นลงได้คือแท็กใด?",
+        "options": ["<marquee>", "<div>", "<iframe>", "<section>"],
+        "correctAnswer": "<marquee>"
+    },
+    {
+        "question": "คำถาม 304: คำสั่ง CSS ที่ใช้ในการเปลี่ยนสีตัวอักษรของลิงค์เมื่อคลิกคืออะไร?",
+        "options": [":visited", ":hover", ":active", ":focus"],
+        "correctAnswer": ":visited"
+    },
+    {
+        "question": "คำถาม 305: คำสั่ง JavaScript ที่ใช้ในการเข้าถึงค่าของฟอร์มที่กรอกโดยผู้ใช้คืออะไร?",
+        "options": ["document.getElementById().value", "document.getElementById().innerHTML", "document.getElementById().innerText", "document.querySelector().value"],
+        "correctAnswer": "document.getElementById().value"
+    },
+    {
+        "question": "คำถาม 306: คำสั่ง CSS ที่ใช้ในการจัดการระยะห่างระหว่างแถวในกรณีของ text หรือ block-level elements คืออะไร?",
+        "options": ["line-height", "word-spacing", "text-align", "letter-spacing"],
+        "correctAnswer": "line-height"
+    },
+    {
+        "question": "คำถาม 307: คำสั่ง CSS ที่ใช้ในการตั้งค่าพื้นหลังของลิงค์เมื่อเคอร์เซอร์อยู่เหนือคืออะไร?",
+        "options": ["background-color", "background-image", "background-repeat", "background-position"],
+        "correctAnswer": "background-color"
+    },
+    {
+        "question": "คำถาม 308: ใน JavaScript คำสั่ง 'prompt()' ใช้เพื่ออะไร?",
+        "options": ["ขอข้อมูลจากผู้ใช้ผ่านหน้าต่างป๊อปอัพ", "แสดงข้อความใน Console", "เปลี่ยนสีพื้นหลัง", "เพิ่มข้อความใน HTML"],
+        "correctAnswer": "ขอข้อมูลจากผู้ใช้ผ่านหน้าต่างป๊อปอัพ"
+    },
+    {
+        "question": "คำถาม 309: ใน CSS คำสั่ง 'position: absolute;' ใช้เพื่อทำอะไร?",
+        "options": ["จัดตำแหน่งให้กับองค์ประกอบตามตำแหน่งที่กำหนด", "ตั้งค่าตำแหน่งขององค์ประกอบแบบ relative", "จัดเรียงองค์ประกอบให้เป็นแนวนอน", "เปลี่ยนสีพื้นหลัง"],
+        "correctAnswer": "จัดตำแหน่งให้กับองค์ประกอบตามตำแหน่งที่กำหนด"
+    },
+    {
+        "question": "คำถาม 310: แท็ก HTML ที่ใช้ในการแทรกรูปภาพเป็นพื้นหลังในเว็บไซต์คือแท็กใด?",
+        "options": ["<img>", "<background>", "<picture>", "<canvas>"],
+        "correctAnswer": "<img>"
+    },
+    {
+        "question": "คำถาม 311: คำสั่ง CSS 'display: flex;' ใช้ในการจัดรูปแบบแบบใด?",
+        "options": ["Flexbox", "Grid", "Block", "Inline"],
+        "correctAnswer": "Flexbox"
+    },
+    {
+        "question": "คำถาม 312: คำสั่ง JavaScript 'setTimeout()' ใช้ทำอะไร?",
+        "options": ["ตั้งเวลาหน่วงการทำงานของฟังก์ชัน", "หยุดการทำงานของฟังก์ชัน", "ทำงานทันที", "เรียกใช้ฟังก์ชันอื่น"],
+        "correctAnswer": "ตั้งเวลาหน่วงการทำงานของฟังก์ชัน"
+    },
+    {
+        "question": "คำถาม 313: แท็ก HTML ที่ใช้ในการสร้างลิงค์ที่เปิดหน้าเว็บในแท็บใหม่คือแท็กใด?",
+        "options": ["<a target='_blank'>", "<link>", "<form>", "<iframe>"],
+        "correctAnswer": "<a target='_blank'>"
+    },
+    {
+        "question": "คำถาม 314: คำสั่ง CSS ที่ใช้ในการจัดตำแหน่งข้อความให้อยู่กลางทั้งในแนวนอนและแนวตั้งคืออะไร?",
+        "options": ["text-align: center; vertical-align: middle;", "align-items: center; justify-content: center;", "align-content: center; text-align: center;", "center-align: true;"],
+        "correctAnswer": "align-items: center; justify-content: center;"
+    },
+    {
+        "question": "คำถาม 315: คำสั่ง JavaScript 'addEventListener()' ใช้เพื่ออะไร?",
+        "options": ["เพิ่มฟังก์ชันที่ต้องการให้ทำเมื่อเกิดเหตุการณ์", "เปลี่ยนข้อความในหน้าเว็บ", "ทำการคำนวณ", "ค้นหาธาตุในหน้าเว็บ"],
+        "correctAnswer": "เพิ่มฟังก์ชันที่ต้องการให้ทำเมื่อเกิดเหตุการณ์"
+    },
+    {
+        "question": "คำถาม 316: คำสั่ง CSS ที่ใช้ในการตั้งค่าให้ลิงค์มีเส้นใต้เมื่อผู้ใช้ชี้เคอร์เซอร์ไปที่ลิงค์คืออะไร?",
+        "options": ["text-decoration: underline;", "text-decoration: none;", "border-bottom: 1px solid;", "link-decoration: underline;"],
+        "correctAnswer": "text-decoration: underline;"
+    },
+    {
+        "question": "คำถาม 317: คำสั่ง JavaScript 'return' ใช้เพื่ออะไร?",
+        "options": ["ส่งค่ากลับจากฟังก์ชัน", "หยุดการทำงานของฟังก์ชัน", "เริ่มต้นฟังก์ชันใหม่", "แสดงค่าผลลัพธ์ใน Console"],
+        "correctAnswer": "ส่งค่ากลับจากฟังก์ชัน"
+    },
+    {
+        "question": "คำถาม 318: คำสั่ง CSS 'float' ใช้ในการจัดตำแหน่งองค์ประกอบแบบใด?",
+        "options": ["ลอยไปทางซ้ายหรือขวา", "จัดให้อยู่ในแนวนอน", "จัดให้อยู่ในแนวตั้ง", "กำหนดขนาดขององค์ประกอบ"],
+        "correctAnswer": "ลอยไปทางซ้ายหรือขวา"
+    },
+    {
+        "question": "คำถาม 319: ใน JavaScript คำสั่ง 'window.location' ใช้เพื่ออะไร?",
+        "options": ["เปลี่ยน URL ของหน้าเว็บ", "ตรวจสอบตำแหน่งของหน้าต่าง", "เปิดหน้าต่างใหม่", "โหลดหน้าเว็บใหม่"],
+        "correctAnswer": "เปลี่ยน URL ของหน้าเว็บ"
+    },
+    {
+        "question": "คำถาม 320: แท็ก HTML ที่ใช้ในการแสดงข้อความที่เป็นตารางข้อมูลคือแท็กใด?",
+        "options": ["<table>", "<div>", "<header>", "<section>"],
+        "correctAnswer": "<table>"
+    },
+    {
+        "question": "คำถาม 321: คำสั่ง CSS 'z-index' ใช้เพื่อทำอะไร?",
+        "options": ["กำหนดลำดับซ้อนขององค์ประกอบ", "ตั้งค่าให้กับขนาดของตัวอักษร", "ตั้งค่าพื้นหลัง", "จัดเรียงองค์ประกอบ"],
+        "correctAnswer": "กำหนดลำดับซ้อนขององค์ประกอบ"
+    },
+    {
+        "question": "คำถาม 322: คำสั่ง CSS ที่ใช้ในการกำหนดสีของข้อความคืออะไร?",
+        "options": ["color", "font-color", "text-color", "background-color"],
+        "correctAnswer": "color"
+    },
+    {
+        "question": "คำถาม 323: ใน HTML แท็ก '<div>' ใช้ทำอะไร?",
+        "options": ["สร้างกล่องหรือบล็อกสำหรับการจัดระเบียบเนื้อหาภายใน", "แสดงหัวข้อ", "เพิ่มรูปภาพ", "แสดงลิงค์"],
+        "correctAnswer": "สร้างกล่องหรือบล็อกสำหรับการจัดระเบียบเนื้อหาภายใน"
+    },
+    {
+        "question": "คำถาม 324: คำสั่ง JavaScript 'document.querySelector()' ใช้เพื่ออะไร?",
+        "options": ["เลือกองค์ประกอบจาก DOM โดยใช้ selector", "เปลี่ยนค่าใน DOM", "แสดงข้อความในหน้าเว็บ", "เพิ่มองค์ประกอบใหม่ใน DOM"],
+        "correctAnswer": "เลือกองค์ประกอบจาก DOM โดยใช้ selector"
+    },
+    {
+        "question": "คำถาม 325: แท็ก HTML ที่ใช้ในการสร้างลิสต์แบบคำอธิบายคืออะไร?",
+        "options": ["<dl>", "<ul>", "<ol>", "<li>"],
+        "correctAnswer": "<dl>"
+    },
+    {
+        "question": "คำถาม 326: คำสั่ง CSS 'box-sizing' ใช้เพื่อทำอะไร?",
+        "options": ["ควบคุมการคำนวณขนาดของกล่ององค์ประกอบ", "กำหนดความสูงของกล่อง", "เพิ่มกรอบให้กับกล่อง", "ตั้งค่าระยะห่างภายในกล่อง"],
+        "correctAnswer": "ควบคุมการคำนวณขนาดของกล่ององค์ประกอบ"
+    },
+    {
+        "question": "คำถาม 327: คำสั่ง JavaScript 'document.getElementById()' ใช้เพื่ออะไร?",
+        "options": ["ค้นหาและเข้าถึงองค์ประกอบที่มี id ที่กำหนด", "เปลี่ยนค่าของฟอร์ม", "เพิ่มข้อความในหน้าเว็บ", "ลบองค์ประกอบจากหน้าเว็บ"],
+        "correctAnswer": "ค้นหาและเข้าถึงองค์ประกอบที่มี id ที่กำหนด"
+    },
+    {
+        "question": "คำถาม 328: คำสั่ง CSS 'visibility: hidden;' ใช้เพื่อทำอะไร?",
+        "options": ["ซ่อนองค์ประกอบจากหน้าเว็บ", "ทำให้องค์ประกอบโปร่งใส", "เพิ่มความชัดเจนให้กับองค์ประกอบ", "เปลี่ยนขนาดขององค์ประกอบ"],
+        "correctAnswer": "ซ่อนองค์ประกอบจากหน้าเว็บ"
+    },
+    {
+        "question": "คำถาม 329: คำสั่ง CSS 'transition' ใช้เพื่อทำอะไร?",
+        "options": ["เพิ่มการเปลี่ยนแปลงอย่างค่อยเป็นค่อยไป", "เพิ่มการเลื่อนขององค์ประกอบ", "เปลี่ยนสีพื้นหลัง", "กำหนดความเร็วในการโหลดเว็บ"],
+        "correctAnswer": "เพิ่มการเปลี่ยนแปลงอย่างค่อยเป็นค่อยไป"
+    },
+    {
+        "question": "คำถาม 330: ใน JavaScript คำสั่ง 'console.error()' ใช้เพื่ออะไร?",
+        "options": ["แสดงข้อความข้อผิดพลาดใน Console", "แสดงข้อความปกติ", "เปลี่ยนสีของข้อความใน Console", "แสดงข้อมูลจากฟังก์ชัน"],
+        "correctAnswer": "แสดงข้อความข้อผิดพลาดใน Console"
+    },
+    {
+        "question": "คำถาม 331: คำสั่ง CSS 'text-transform' ใช้เพื่อทำอะไร?",
+        "options": ["เปลี่ยนรูปแบบของตัวอักษร เช่น ขึ้นต้นด้วยตัวพิมพ์ใหญ่", "จัดเรียงข้อความให้ตรงกลาง", "กำหนดขนาดของตัวอักษร", "เพิ่มเส้นใต้ให้กับข้อความ"],
+        "correctAnswer": "เปลี่ยนรูปแบบของตัวอักษร เช่น ขึ้นต้นด้วยตัวพิมพ์ใหญ่"
+    },
+    {
+        "question": "คำถาม 332: คำสั่ง JavaScript 'while' ใช้เพื่ออะไร?",
+        "options": ["ทำงานในลูปจนกว่าจะครบเงื่อนไข", "แสดงข้อความ", "สร้างฟังก์ชันใหม่", "หยุดการทำงานของฟังก์ชัน"],
+        "correctAnswer": "ทำงานในลูปจนกว่าจะครบเงื่อนไข"
+    },
+    {
+        "question": "คำถาม 333: กำลังไฟฟ้าคือการคูณระหว่างแรงดัน (Voltage) กับกระแส (Current) และมีหน่วยวัดเป็นอะไร?",
+        "options": ["วัตต์ (Watt)", "แอมแปร์ (Ampere)", "โวลต์ (Volt)", "โอห์ม (Ohm)"],
+        "correctAnswer": "วัตต์ (Watt)"
+    },
+    {
+        "question": "คำถาม 334: วงจรไฟฟ้าที่มีการเชื่อมต่ออุปกรณ์ไฟฟ้าแบบขนานจะมีคุณสมบัติใด?",
+        "options": ["แรงดันไฟฟ้าจะเท่ากันทุกจุด", "กระแสไฟฟ้าจะเท่ากันทุกจุด", "กระแสไฟฟ้าจะไหลผ่านอุปกรณ์ทุกตัวในเส้นทางเดียว", "ไฟฟ้าจะไม่ไหล"],
+        "correctAnswer": "แรงดันไฟฟ้าจะเท่ากันทุกจุด"
+    },
+    {
+        "question": "คำถาม 335: โอห์มส์ (Ohm's Law) กล่าวถึงความสัมพันธ์ระหว่างอะไร?",
+        "options": ["แรงดัน, กระแส, และความต้านทาน", "กระแส, ความต้านทาน, และกำลังไฟฟ้า", "แรงดัน, กระแส, และความถี่", "กระแส, ความต้านทาน, และความยาว"],
+        "correctAnswer": "แรงดัน, กระแส, และความต้านทาน"
+    },
+    {
+        "question": "คำถาม 336: ไฟฟ้ากระแสสลับ (AC) แตกต่างจากไฟฟ้ากระแสตรง (DC) อย่างไร?",
+        "options": ["ไฟฟ้ากระแสสลับมีทิศทางการไหลเปลี่ยนแปลง, ส่วนไฟฟ้ากระแสตรงมีทิศทางการไหลคงที่", "ไฟฟ้ากระแสสลับมีแรงดันสูงกว่า", "ไฟฟ้ากระแสตรงมีการใช้ในบ้านมากกว่า", "ไฟฟ้ากระแสสลับใช้งานในอุปกรณ์คอมพิวเตอร์"],
+        "correctAnswer": "ไฟฟ้ากระแสสลับมีทิศทางการไหลเปลี่ยนแปลง, ส่วนไฟฟ้ากระแสตรงมีทิศทางการไหลคงที่"
+    },
+    {
+        "question": "คำถาม 337: เครื่องมือที่ใช้ในการวัดกระแสไฟฟ้าคืออะไร?",
+        "options": ["แอมมิเตอร์", "โวลต์มิเตอร์", "โอห์มิเตอร์", "แคลมป์มิเตอร์"],
+        "correctAnswer": "แอมมิเตอร์"
+    },
+    {
+        "question": "คำถาม 338: การต่อวงจรไฟฟ้าในลักษณะไหนที่ทำให้แรงดันไฟฟ้าที่จ่ายไปยังอุปกรณ์แต่ละตัวจะเท่ากัน?",
+        "options": ["การต่อแบบขนาน", "การต่อแบบอนุกรม", "การต่อแบบผสม", "การต่อแบบขนานและอนุกรมร่วมกัน"],
+        "correctAnswer": "การต่อแบบขนาน"
+    },
+    {
+        "question": "คำถาม 339: หน่วยของความต้านทานไฟฟ้าคืออะไร?",
+        "options": ["โอห์ม (Ohm)", "แอมแปร์ (Ampere)", "โวลต์ (Volt)", "วัตต์ (Watt)"],
+        "correctAnswer": "โอห์ม (Ohm)"
+    },
+    {
+        "question": "คำถาม 340: วงจรไฟฟ้าที่ใช้ในการควบคุมเครื่องใช้ไฟฟ้าโดยการเปิด-ปิดจะเป็นวงจรแบบใด?",
+        "options": ["วงจรสวิตช์", "วงจรควบคุม", "วงจรตัวต้านทาน", "วงจรตัดวงจร"],
+        "correctAnswer": "วงจรสวิตช์"
+    },
+    {
+        "question": "คำถาม 341: เมื่อมีการเพิ่มจำนวนหลอดไฟในวงจรแบบอนุกรมจะส่งผลอย่างไร?",
+        "options": ["แรงดันไฟฟ้าจะเพิ่มขึ้น", "กระแสไฟฟ้าจะลดลง", "กระแสไฟฟ้าจะเท่ากันทุกจุด", "กำลังไฟฟ้าจะเพิ่มขึ้น"],
+        "correctAnswer": "กระแสไฟฟ้าจะลดลง"
+    },
+    {
+        "question": "คำถาม 342: เครื่องมือที่ใช้ในการวัดแรงดันไฟฟ้าคืออะไร?",
+        "options": ["โวลต์มิเตอร์", "แอมมิเตอร์", "โอห์มิเตอร์", "มิลลิโวลต์มิเตอร์"],
+        "correctAnswer": "โวลต์มิเตอร์"
+    },
+    {
+        "question": "คำถาม 343: การใช้งานตัวเก็บประจุในวงจรไฟฟ้าทำหน้าที่อะไร?",
+        "options": ["เก็บพลังงานไฟฟ้า", "เพิ่มความเร็วในการไหลของกระแส", "ลดกระแสไฟฟ้า", "เก็บความต้านทาน"],
+        "correctAnswer": "เก็บพลังงานไฟฟ้า"
+    },
+    {
+        "question": "คำถาม 344: ตัวต้านทาน (Resistor) ใช้ในวงจรไฟฟ้าเพื่อทำอะไร?",
+        "options": ["ควบคุมกระแสไฟฟ้า", "เก็บประจุไฟฟ้า", "เพิ่มความเร็วในการไหลของกระแส", "แปลงแรงดันไฟฟ้า"],
+        "correctAnswer": "ควบคุมกระแสไฟฟ้า"
+    },
+    {
+        "question": "คำถาม 345: ฟิวส์ (Fuse) ใช้เพื่อป้องกันอะไรในวงจรไฟฟ้า?",
+        "options": ["ป้องกันกระแสไฟฟ้าเกิน", "ป้องกันการรั่วของไฟฟ้า", "ป้องกันการเก็บประจุไฟฟ้า", "ป้องกันการเพิ่มของแรงดันไฟฟ้า"],
+        "correctAnswer": "ป้องกันกระแสไฟฟ้าเกิน"
+    },
+    {
+        "question": "คำถาม 346: กำลังไฟฟ้าที่ใช้ในบ้านทั่วไปมักจะอยู่ที่ประมาณเท่าไร?",
+        "options": ["220 โวลต์", "110 โวลต์", "330 โวลต์", "380 โวลต์"],
+        "correctAnswer": "220 โวลต์"
+    },
+    {
+        "question": "คำถาม 347: แบตเตอรี่ในวงจรไฟฟ้าจะให้กระแสไฟฟ้าได้หรือไม่เมื่อแรงดันไฟฟ้าของแบตเตอรี่ต่ำกว่าแรงดันที่ต้องการ?",
+        "options": ["จะไม่สามารถให้กระแสได้", "จะยังให้กระแสไฟฟ้าได้", "จะเกิดการชาร์จไฟใหม่", "จะมีการกระตุ้นตัวเก็บประจุ"],
+        "correctAnswer": "จะไม่สามารถให้กระแสได้"
+    },
+    {
+        "question": "คำถาม 348: โอห์มส์ (Ohm) เป็นหน่วยของอะไร?",
+        "options": ["ความต้านทานไฟฟ้า", "กระแสไฟฟ้า", "แรงดันไฟฟ้า", "กำลังไฟฟ้า"],
+        "correctAnswer": "ความต้านทานไฟฟ้า"
+    },
+    {
+        "question": "คำถาม 349: วงจรไฟฟ้าประเภทใดที่ทำให้กระแสไฟฟ้าไหลได้ง่ายที่สุด?",
+        "options": ["วงจรตัวนำ", "วงจรที่มีความต้านทานสูง", "วงจรที่มีแรงดันไฟฟ้าต่ำ", "วงจรที่มีกระแสสูง"],
+        "correctAnswer": "วงจรตัวนำ"
+    },
+    {
+        "question": "คำถาม 350: เมื่อใช้แหล่งจ่ายไฟแบบ DC (Direct Current) จะได้กระแสไฟฟ้าที่มีลักษณะอย่างไร?",
+        "options": ["กระแสไฟฟ้าจะไหลในทิศทางเดียว", "กระแสไฟฟ้าจะไหลสลับทิศทาง", "กระแสไฟฟ้าจะไม่สามารถไหลได้", "กระแสไฟฟ้าจะไหลในทิศทางที่สลับซับซ้อน"],
+        "correctAnswer": "กระแสไฟฟ้าจะไหลในทิศทางเดียว"
+    },
+    {
+        "question": "คำถาม 351: วงจรไฟฟ้าที่ประกอบด้วยหลอดไฟ 2 หลอดในลักษณะขนานจะมีคุณสมบัติอย่างไร?",
+        "options": ["แรงดันไฟฟ้าเท่ากันที่หลอดไฟทุกหลอด", "กระแสไฟฟ้าจะไหลผ่านหลอดไฟทั้งสองเหมือนกัน", "กระแสไฟฟ้าเท่ากันที่ทุกจุด", "หากหลอดไฟหนึ่งหลอดขาด กระแสไฟฟ้าจะไม่ไหลผ่านหลอดไฟอีกหลอด"],
+        "correctAnswer": "แรงดันไฟฟ้าเท่ากันที่หลอดไฟทุกหลอด"
+    },
+    {
+        "question": "คำถาม 352: วงจรไฟฟ้าในบ้านส่วนใหญ่ใช้ระบบไฟฟ้าชนิดใด?",
+        "options": ["ไฟฟ้ากระแสสลับ (AC)", "ไฟฟ้ากระแสตรง (DC)", "ไฟฟ้ากระแสคงที่", "ไฟฟ้ากระแสกระจาย"],
+        "correctAnswer": "ไฟฟ้ากระแสสลับ (AC)"
+    },
+    {
+        "question": "คำถาม 353: วัตต์ (Watt) เป็นหน่วยของอะไร?",
+        "options": ["กำลังไฟฟ้า", "กระแสไฟฟ้า", "แรงดันไฟฟ้า", "ความต้านทานไฟฟ้า"],
+        "correctAnswer": "กำลังไฟฟ้า"
+    },
+    {
+        "question": "คำถาม 354: ในการใช้งานตัวต้านทาน (Resistor) ในวงจรไฟฟ้าเราจะเลือกใช้ค่าความต้านทานอย่างไร?",
+        "options": ["ขึ้นอยู่กับกระแสที่ต้องการให้ไหลผ่าน", "ขึ้นอยู่กับแรงดันไฟฟ้าที่จ่าย", "ขึ้นอยู่กับความสามารถของหลอดไฟที่ใช้", "ขึ้นอยู่กับประเภทของวงจรที่ใช้"],
+        "correctAnswer": "ขึ้นอยู่กับกระแสที่ต้องการให้ไหลผ่าน"
+    },
+    {
+        "question": "คำถาม 355: ตัวเก็บประจุ (Capacitor) ใช้ในวงจรไฟฟ้าเพื่ออะไร?",
+        "options": ["เก็บพลังงานไฟฟ้า", "ควบคุมกระแสไฟฟ้า", "เพิ่มแรงดันไฟฟ้า", "ลดกระแสไฟฟ้า"],
+        "correctAnswer": "เก็บพลังงานไฟฟ้า"
+    },
+    {
+        "question": "คำถาม 356: โวลต์มิเตอร์ (Voltmeter) ใช้เพื่อการวัดอะไร?",
+        "options": ["แรงดันไฟฟ้า", "กระแสไฟฟ้า", "ความต้านทานไฟฟ้า", "กำลังไฟฟ้า"],
+        "correctAnswer": "แรงดันไฟฟ้า"
+    },
+    {
+        "question": "คำถาม 357: การต่อวงจรไฟฟ้าในลักษณะอนุกรมจะส่งผลอย่างไร?",
+        "options": ["กระแสไฟฟ้าจะไหลผ่านทุกอุปกรณ์ในวงจรเท่า ๆ กัน", "แรงดันไฟฟ้าจะลดลงตามจำนวนอุปกรณ์", "กระแสไฟฟ้าจะเพิ่มขึ้นตามจำนวนอุปกรณ์", "หากอุปกรณ์หนึ่งขาด กระแสไฟฟ้าจะไม่ไหลผ่านอุปกรณ์อื่น ๆ"],
+        "correctAnswer": "กระแสไฟฟ้าจะไหลผ่านทุกอุปกรณ์ในวงจรเท่า ๆ กัน"
+    },
+    {
+        "question": "คำถาม 358: กำลังไฟฟ้าสามารถคำนวณได้จากสูตรอะไร?",
+        "options": ["กำลังไฟฟ้า = แรงดัน × กระแส", "กำลังไฟฟ้า = กระแส × ความต้านทาน", "กำลังไฟฟ้า = แรงดัน ÷ กระแส", "กำลังไฟฟ้า = ความต้านทาน × กระแส"],
+        "correctAnswer": "กำลังไฟฟ้า = แรงดัน × กระแส"
+    },
+    {
+        "question": "คำถาม 359: วงจรไฟฟ้าประเภทใดที่เหมาะสมที่สุดสำหรับการใช้งานในบ้าน?",
+        "options": ["วงจรไฟฟ้ากระแสสลับ", "วงจรไฟฟ้ากระแสตรง", "วงจรไฟฟ้ากระแสซ้ำ", "วงจรไฟฟ้ากระแสไม่มีการหมุนเวียน"],
+        "correctAnswer": "วงจรไฟฟ้ากระแสสลับ"
+    },
+    {
+        "question": "คำถาม 360: การใช้เครื่องมือวัดที่เรียกว่า 'แคลมป์มิเตอร์' ใช้เพื่อวัดอะไร?",
+        "options": ["กระแสไฟฟ้า", "แรงดันไฟฟ้า", "ความต้านทานไฟฟ้า", "กำลังไฟฟ้า"],
+        "correctAnswer": "กระแสไฟฟ้า"
+    },
+    {
+        "question": "คำถาม 361: ฟิวส์ (Fuse) ใช้ในการป้องกันอะไรในวงจรไฟฟ้า?",
+        "options": ["ป้องกันกระแสไฟฟ้าเกิน", "ป้องกันแรงดันไฟฟ้าเกิน", "ป้องกันการรั่วของกระแส", "ป้องกันการเกิดไฟไหม้"],
+        "correctAnswer": "ป้องกันกระแสไฟฟ้าเกิน"
+    },
+    {
+        "question": "คำถาม 362: ตัวต้านทาน (Resistor) ถูกออกแบบมาเพื่ออะไรในวงจร?",
+        "options": ["ลดกระแสไฟฟ้า", "เพิ่มกระแสไฟฟ้า", "เพิ่มแรงดันไฟฟ้า", "เก็บพลังงานไฟฟ้า"],
+        "correctAnswer": "ลดกระแสไฟฟ้า"
+    },
+    {
+        "question": "คำถาม 363: การใช้หลอดไฟในวงจรแบบอนุกรมจะส่งผลอย่างไร?",
+        "options": ["หลอดไฟทุกหลอดจะได้รับแรงดันไฟฟ้าเท่ากัน", "หากหลอดไฟหนึ่งขาด กระแสไฟฟ้าจะไม่ไหลผ่านหลอดไฟที่เหลือ", "กระแสไฟฟ้าจะไหลผ่านหลอดไฟทุกหลอดเท่า ๆ กัน", "หลอดไฟทุกหลอดจะสว่างเท่ากัน"],
+        "correctAnswer": "หากหลอดไฟหนึ่งขาด กระแสไฟฟ้าจะไม่ไหลผ่านหลอดไฟที่เหลือ"
+    },
+    {
+        "question": "คำถาม 364: แอมมิเตอร์ (Ammeter) ใช้เพื่อวัดอะไร?",
+        "options": ["กระแสไฟฟ้า", "แรงดันไฟฟ้า", "ความต้านทานไฟฟ้า", "กำลังไฟฟ้า"],
+        "correctAnswer": "กระแสไฟฟ้า"
+    },
+    {
+        "question": "คำถาม 365: แหล่งจ่ายไฟที่มีแรงดันไฟฟ้าคงที่ในวงจรจะเหมาะสมกับการใช้ไฟฟ้าประเภทใด?",
+        "options": ["ไฟฟ้ากระแสตรง (DC)", "ไฟฟ้ากระแสสลับ (AC)", "ไฟฟ้าแรงดันสูง", "ไฟฟ้าแรงดันต่ำ"],
+        "correctAnswer": "ไฟฟ้ากระแสตรง (DC)"
+    },
+    {
+        "question": "คำถาม 366: เมื่อมีการใช้งานตัวเก็บประจุในวงจรไฟฟ้าจะเกิดอะไรขึ้นเมื่อแรงดันไฟฟ้าเปลี่ยนแปลง?",
+        "options": ["ตัวเก็บประจุจะเก็บพลังงานไฟฟ้าและปล่อยออกมาเมื่อแรงดันลดลง", "ตัวเก็บประจุจะสะสมประจุไฟฟ้าอย่างต่อเนื่อง", "ตัวเก็บประจุจะเสื่อมสภาพทันที", "ตัวเก็บประจุจะทำให้กระแสไฟฟ้าไหลเร็วขึ้น"],
+        "correctAnswer": "ตัวเก็บประจุจะเก็บพลังงานไฟฟ้าและปล่อยออกมาเมื่อแรงดันลดลง"
+    },
+    {
+        "question": "คำถาม 367: สัญญาณไฟฟ้าที่มักจะใช้ในการส่งข้อมูลในระบบคอมพิวเตอร์คืออะไร?",
+        "options": ["ไฟฟ้ากระแสตรง", "ไฟฟ้ากระแสสลับ", "ไฟฟ้าแรงดันสูง", "ไฟฟ้ากระแสคงที่"],
+        "correctAnswer": "ไฟฟ้ากระแสตรง"
+    },
+    {
+        "question": "คำถาม 368: ขนาดของสายไฟฟ้าในวงจรไฟฟ้าจะมีผลต่ออะไร?",
+        "options": ["กระแสไฟฟ้าที่ไหลผ่าน", "แรงดันไฟฟ้าที่ใช้งาน", "อุณหภูมิของวงจร", "จำนวนอุปกรณ์ที่ใช้ในวงจร"],
+        "correctAnswer": "กระแสไฟฟ้าที่ไหลผ่าน"
+    },
+    {
+        "question": "คำถาม 369: การใช้หลอดไฟ LED ในวงจรไฟฟ้ามีข้อดีอย่างไร?",
+        "options": ["ประหยัดพลังงาน", "มีความร้อนต่ำ", "อายุการใช้งานยาวนาน", "ทั้งข้อ a, b, และ c ถูกต้อง"],
+        "correctAnswer": "ทั้งข้อ a, b, และ c ถูกต้อง"
+    },
+    {
+        "question": "คำถาม 370: วงจรไฟฟ้าประเภทใดที่มักใช้ในการจ่ายไฟฟ้าให้กับเครื่องใช้ไฟฟ้าในบ้าน?",
+        "options": ["วงจรไฟฟ้ากระแสสลับ", "วงจรไฟฟ้ากระแสตรง", "วงจรไฟฟ้าแหล่งจ่ายไฟสูง", "วงจรไฟฟ้าแรงดันต่ำ"],
+        "correctAnswer": "วงจรไฟฟ้ากระแสสลับ"
+    },
+    {
+        "question": "คำถาม 371: การเชื่อมต่อวงจรไฟฟ้าด้วยตัวต้านทานหลายตัวในลักษณะขนานจะส่งผลให้?",
+        "options": ["เพิ่มความต้านทานรวมของวงจร", "ลดความต้านทานรวมของวงจร", "ไม่มีผลต่อความต้านทาน", "เพิ่มแรงดันไฟฟ้าของวงจร"],
+        "correctAnswer": "ลดความต้านทานรวมของวงจร"
+    },
+    {
+        "question": "คำถาม 372: กำลังไฟฟ้าในวงจรไฟฟ้าคำนวณจากสูตร P = VI ซึ่งตัวแปร V คืออะไร?",
+        "options": ["แรงดันไฟฟ้า", "กระแสไฟฟ้า", "ความต้านทานไฟฟ้า", "กำลังไฟฟ้า"],
+        "correctAnswer": "แรงดันไฟฟ้า"
+    },
+    {
+        "question": "คำถาม 373: ฟิวส์ (Fuse) จะหลอมละลายเมื่อ?",
+        "options": ["กระแสไฟฟ้าเกินค่าที่กำหนด", "แรงดันไฟฟ้าเกินค่าที่กำหนด", "การตัดวงจรไฟฟ้าไม่สมบูรณ์", "ความต้านทานไฟฟ้าสูงเกินไป"],
+        "correctAnswer": "กระแสไฟฟ้าเกินค่าที่กำหนด"
+    },
+    {
+        "question": "คำถาม 374: โวลต์ (Volt) ใช้ในการวัดอะไร?",
+        "options": ["แรงดันไฟฟ้า", "กระแสไฟฟ้า", "ความต้านทานไฟฟ้า", "กำลังไฟฟ้า"],
+        "correctAnswer": "แรงดันไฟฟ้า"
+    },
+    {
+        "question": "คำถาม 375: เครื่องมือที่ใช้ในการตรวจสอบการรั่วของกระแสไฟฟ้าในวงจรคืออะไร?",
+        "options": ["มิลลิโวลต์มิเตอร์", "เครื่องจับไฟรั่ว", "แอมมิเตอร์", "โวลต์มิเตอร์"],
+        "correctAnswer": "เครื่องจับไฟรั่ว"
+    },
+    {
+        "question": "คำถาม 376: อุปกรณ์ใดในวงจรไฟฟ้าที่ทำหน้าที่ควบคุมการไหลของกระแสไฟฟ้า?",
+        "options": ["สวิตช์", "ตัวต้านทาน", "ตัวเก็บประจุ", "แอมมิเตอร์"],
+        "correctAnswer": "สวิตช์"
+    },
+    {
+        "question": "คำถาม 377: ความต้านทานในวงจรไฟฟ้าเกี่ยวข้องกับอะไร?",
+        "options": ["การต่อต้านการไหลของกระแสไฟฟ้า", "การเพิ่มกระแสไฟฟ้า", "การเพิ่มแรงดันไฟฟ้า", "การเก็บพลังงานไฟฟ้า"],
+        "correctAnswer": "การต่อต้านการไหลของกระแสไฟฟ้า"
+    },
+    {
+        "question": "คำถาม 378: เมื่อใส่ตัวเก็บประจุ (Capacitor) ในวงจรไฟฟ้า จะทำให้?",
+        "options": ["สามารถเก็บพลังงานไฟฟ้าได้", "กระแสไฟฟ้าจะไม่ไหลผ่าน", "กระแสไฟฟ้าจะไหลเร็วขึ้น", "แรงดันไฟฟ้าจะเพิ่มขึ้น"],
+        "correctAnswer": "สามารถเก็บพลังงานไฟฟ้าได้"
+    },
+    {
+        "question": "คำถาม 379: พลังงานไฟฟ้าในวงจรไฟฟ้าคำนวณจากสูตร P = V × I แปลว่าอะไร?",
+        "options": ["กำลังไฟฟ้า = แรงดัน × กระแส", "กำลังไฟฟ้า = กระแส ÷ แรงดัน", "กำลังไฟฟ้า = ความต้านทาน × กระแส", "กำลังไฟฟ้า = ความต้านทาน ÷ กระแส"],
+        "correctAnswer": "กำลังไฟฟ้า = แรงดัน × กระแส"
+    },
+    {
+        "question": "คำถาม 380: โวลต์ (Volt) ใช้ในการวัด?",
+        "options": ["แรงดันไฟฟ้า", "กระแสไฟฟ้า", "ความต้านทาน", "กำลังไฟฟ้า"],
+        "correctAnswer": "แรงดันไฟฟ้า"
+    },
+    {
+        "question": "คำถาม 381: ถ้าแรงดันไฟฟ้าในวงจรไฟฟ้าเพิ่มขึ้น กระแสไฟฟ้าในวงจรจะเป็นอย่างไร?",
+        "options": ["เพิ่มขึ้น", "ลดลง", "คงที่", "ไม่สามารถบอกได้"],
+        "correctAnswer": "เพิ่มขึ้น"
+    },
+    {
+        "question": "คำถาม 382: ในวงจรไฟฟ้าแบบอนุกรม หากเพิ่มตัวต้านทานเข้าไปจะทำให้?",
+        "options": ["กระแสไฟฟ้าลดลง", "กระแสไฟฟ้าเพิ่มขึ้น", "แรงดันไฟฟ้าเพิ่มขึ้น", "แรงดันไฟฟ้าลดลง"],
+        "correctAnswer": "กระแสไฟฟ้าลดลง"
+    },
+    {
+        "question": "คำถาม 383: เครื่องมือใดที่ใช้ในการวัดกระแสไฟฟ้า?",
+        "options": ["แอมมิเตอร์", "โวลต์มิเตอร์", "มิลลิโวลต์มิเตอร์", "มิลลิแอมมิเตอร์"],
+        "correctAnswer": "แอมมิเตอร์"
+    },
+    {
+        "question": "คำถาม 384: ตัวต้านทาน (Resistor) ที่ใช้ในวงจรไฟฟ้าจะทำหน้าที่อะไร?",
+        "options": ["ลดกระแสไฟฟ้า", "เพิ่มกระแสไฟฟ้า", "เพิ่มแรงดันไฟฟ้า", "เก็บพลังงานไฟฟ้า"],
+        "correctAnswer": "ลดกระแสไฟฟ้า"
+    },
+    {
+        "question": "คำถาม 385: ฟิวส์ในวงจรไฟฟ้าจะทำหน้าที่อะไร?",
+        "options": ["ป้องกันกระแสไฟฟ้าเกิน", "เพิ่มกระแสไฟฟ้า", "ลดกระแสไฟฟ้า", "ป้องกันไฟฟ้าลัดวงจร"],
+        "correctAnswer": "ป้องกันกระแสไฟฟ้าเกิน"
+    },
+    {
+        "question": "คำถาม 386: การใช้งานหลอดไฟ LED มีข้อดีอะไรบ้าง?",
+        "options": ["ประหยัดพลังงาน", "อายุการใช้งานยาวนาน", "มีความร้อนต่ำ", "ทั้งหมดข้างต้น"],
+        "correctAnswer": "ทั้งหมดข้างต้น"
+    },
+    {
+        "question": "คำถาม 387: การใช้ตัวเก็บประจุในวงจรไฟฟ้าแบบอนุกรมจะมีผลอย่างไร?",
+        "options": ["แรงดันไฟฟ้าที่ตัวเก็บประจุจะถูกแบ่งตามจำนวนตัวเก็บประจุ", "กระแสไฟฟ้าจะไหลผ่านได้อย่างไม่จำกัด", "ตัวเก็บประจุจะไม่เก็บพลังงานไฟฟ้า", "กระแสไฟฟ้าจะไหลได้ช้าลง"],
+        "correctAnswer": "แรงดันไฟฟ้าที่ตัวเก็บประจุจะถูกแบ่งตามจำนวนตัวเก็บประจุ"
+    },
+    {
+        "question": "คำถาม 388: วงจรไฟฟ้าแบบขนานจะมีคุณสมบัติอย่างไร?",
+        "options": ["แรงดันไฟฟ้าจะเท่ากันในทุก ๆ ตัว", "กระแสไฟฟ้าจะไหลผ่านหลอดไฟทุกหลอดเท่า ๆ กัน", "ถ้าหลอดไฟขาดวงจรยังทำงานได้", "ทั้งข้อ a และ c ถูกต้อง"],
+        "correctAnswer": "ทั้งข้อ a และ c ถูกต้อง"
+    },
+    {
+        "question": "คำถาม 389: อุปกรณ์ที่ใช้ในการตรวจจับกระแสไฟฟ้าที่ไหลในวงจรไฟฟ้าคืออะไร?",
+        "options": ["แคลมป์มิเตอร์", "แอมมิเตอร์", "โวลต์มิเตอร์", "มิลลิโวลต์มิเตอร์"],
+        "correctAnswer": "แคลมป์มิเตอร์"
+    },
+    {
+        "question": "คำถาม 390: ในการต่อวงจรไฟฟ้าแบบอนุกรม จำนวนอุปกรณ์ที่เพิ่มขึ้นจะมีผลต่อ?",
+        "options": ["กระแสไฟฟ้า", "แรงดันไฟฟ้า", "ความต้านทาน", "กำลังไฟฟ้า"],
+        "correctAnswer": "ความต้านทาน"
+    },
+    {
+        "question": "คำถาม 391: วงจรไฟฟ้าแบบไหนที่สามารถทำให้กระแสไฟฟ้าผ่านได้โดยไม่ขัดขวาง?",
+        "options": ["วงจรไฟฟ้าแบบขนาน", "วงจรไฟฟ้าแบบอนุกรม", "วงจรไฟฟ้าแบบตัวเก็บประจุ", "วงจรไฟฟ้าแบบความต้านทานสูง"],
+        "correctAnswer": "วงจรไฟฟ้าแบบขนาน"
+    },
+    {
+        "question": "คำถาม 392: วงจรไฟฟ้าที่ประกอบด้วยตัวต้านทานหลายตัวในลักษณะขนานจะมีผลอย่างไร?",
+        "options": ["ความต้านทานรวมจะลดลง", "ความต้านทานรวมจะเพิ่มขึ้น", "กระแสไฟฟ้าจะไหลผ่านอย่างช้า ๆ", "กระแสไฟฟ้าจะไหลเร็วขึ้น"],
+        "correctAnswer": "ความต้านทานรวมจะลดลง"
+    },
+    {
+        "question": "คำถาม 393: วัดความต้านทานของอุปกรณ์ไฟฟ้าโดยใช้เครื่องมืออะไร?",
+        "options": ["มิลลิโวลต์มิเตอร์", "แอมมิเตอร์", "โวลต์มิเตอร์", "โอห์มมิเตอร์"],
+        "correctAnswer": "โอห์มมิเตอร์"
+    },
+    {
+        "question": "คำถาม 394: การใช้ตัวเก็บประจุในวงจรไฟฟ้ามีผลอย่างไร?",
+        "options": ["เก็บพลังงานไฟฟ้า", "เพิ่มกระแสไฟฟ้า", "ลดกระแสไฟฟ้า", "ป้องกันไฟฟ้าลัดวงจร"],
+        "correctAnswer": "เก็บพลังงานไฟฟ้า"
+    },
+    {
+        "question": "คำถาม 395: กระแสไฟฟ้าที่ไหลในวงจรไฟฟ้าเป็นประเภทใด?",
+        "options": ["กระแสไฟฟ้ากระแสตรง", "กระแสไฟฟ้ากระแสสลับ", "กระแสไฟฟ้ากระแสไฟฟ้าไม่จำกัด", "กระแสไฟฟ้าสูง"],
+        "correctAnswer": "กระแสไฟฟ้ากระแสตรง"
+    },
+    {
+        "question": "คำถาม 396: เมื่อเพิ่มตัวต้านทานในวงจรไฟฟ้าแบบอนุกรมจะทำให้?",
+        "options": ["กระแสไฟฟ้าลดลง", "กระแสไฟฟ้าเพิ่มขึ้น", "แรงดันไฟฟ้าเพิ่มขึ้น", "กระแสไฟฟ้าเท่าเดิม"],
+        "correctAnswer": "กระแสไฟฟ้าลดลง"
+    },
+    {
+        "question": "คำถาม 397: วงจรไฟฟ้าประเภทใดที่เหมาะกับการใช้ในบ้านมากที่สุด?",
+        "options": ["วงจรไฟฟ้ากระแสสลับ", "วงจรไฟฟ้ากระแสตรง", "วงจรไฟฟ้ากระแสไฟฟ้าไม่มีการหมุนเวียน", "วงจรไฟฟ้าสามเฟส"],
+        "correctAnswer": "วงจรไฟฟ้ากระแสสลับ"
+    },
+    {
+        "question": "คำถาม 398: ฟิวส์ในวงจรไฟฟ้าออกแบบมาเพื่อป้องกัน?",
+        "options": ["กระแสไฟฟ้าเกิน", "แรงดันไฟฟ้าเกิน", "ไฟฟ้าลัดวงจร", "ทั้งหมด"],
+        "correctAnswer": "ทั้งหมด"
+    },
+    {
+        "question": "คำถาม 399: ในการวัดกระแสไฟฟ้าควรใช้เครื่องมืออะไร?",
+        "options": ["แอมมิเตอร์", "โวลต์มิเตอร์", "มิลลิโวลต์มิเตอร์", "โอห์มมิเตอร์"],
+        "correctAnswer": "แอมมิเตอร์"
+    },
+    {
+        "question": "คำถาม 400: พลังงานไฟฟ้าในวงจรไฟฟ้าได้มาจาก?",
+        "options": ["แหล่งจ่ายไฟฟ้า", "ตัวเก็บประจุ", "ตัวต้านทาน", "ตัวแปลงแรงดันไฟฟ้า"],
+        "correctAnswer": "แหล่งจ่ายไฟฟ้า"
+    }
+    
+    
+]

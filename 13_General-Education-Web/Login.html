@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In/Up Form</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,800" rel="stylesheet">
+    <link rel="icon" type="image/png" href="picture/10766476.png">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #f6f5f7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            display: flex;
+            width: 900px;
+            max-width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+            overflow: hidden;
+        }
+        .sign-in {
+            background-color: #fff;
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+        }
+        .sign-in h1 {
+            margin-bottom: 20px;
+        }
+        .sign-in input {
+            background-color: #eee;
+            border: none;
+            margin: 10px 0;
+            padding: 50px;
+            width: 100%;
+        }
+        .sign-in button {
+            margin-top: 10px;
+            padding: 10px 25px;
+            background-color: #FF4B2B;
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .sign-in a {
+            color: #333;
+            font-size: 12px;
+            margin-top: 10px;
+            text-decoration: none;
+        }
+        .sign-in a:hover {
+            text-decoration: underline;
+        }
+        .overlay {
+            background: linear-gradient(to right, #FF4B2B, #FF416C);
+            color: #fff;
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+        }
+        .overlay h1 {
+            margin-bottom: 10px;
+        }
+        .overlay p {
+            margin: 20px 0;
+            text-align: center;
+            line-height: 1.5;
+        }
+        .overlay button {
+            background-color: transparent;
+            color: #fff;
+            border: 2px solid #fff;
+            padding: 10px 25px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .social-container {
+            margin: 10px 0;
+        }
+        .social-container a {
+            margin: 0 10px;
+            color: #333;
+            font-size: 20px;
+        }
+        .social-container a:hover {
+            color: #FF4B2B;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sign-in">
+            <h1>Sign in</h1>
+            <div class="social-container">
+                <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+                <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+            <input type="email" placeholder="Email" />
+            <input type="password" placeholder="Password" />
+            <a href="#">Forgot your password?</a>
+            <button>Sign In</button>
+        </div>
+        <div class="overlay">
+            <h1>Hello, Friend!</h1>
+            <p>Enter your personal details and start your journey with us</p>
+            <button>Sign Up</button>
+        </div>
+    </div>
+</body>
+</html>

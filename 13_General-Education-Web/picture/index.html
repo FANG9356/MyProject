@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Play Background Audio</title>
+</head>
+<body> 
+    <button id="playButton">Play Sound</button>
+    <button id="stopButton">Stop Sound</button>
+    <audio id="backgroundAudio" src="music/open-arms .mp3" preload="auto"></audio>
+
+    <script>
+        const playButton = document.getElementById('playButton');
+        const stopButton = document.getElementById('stopButton');
+        const backgroundAudio = document.getElementById('backgroundAudio');
+
+        playButton.addEventListener('click', function() {
+            backgroundAudio.play().catch(error => {
+                console.error("ไม่สามารถเล่นเสียงได้:", error);
+            });
+        });
+
+        stopButton.addEventListener('click', function() {
+            backgroundAudio.pause();
+            backgroundAudio.currentTime = 0; // รีเซ็ตเสียงกลับไปจุดเริ่มต้น
+        });
+    </script>
+</body>
+</html>

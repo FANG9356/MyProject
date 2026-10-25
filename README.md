@@ -21,12 +21,20 @@
 | **08** | [`08_System-Monitor-Desktop-App`](./08_System-Monitor-Desktop-App) | Desktop Utility | `.exe` (Win) หรือ `node server.js` | `http://localhost:3000` | `node test_simulation.js` |
 | **09** | [`09_HomeServer-Infrastructure`](./09_HomeServer-Infrastructure) | Go, SQLite & React | `cd backend && go run .` | `http://localhost:8001` | `python3 test_simulation.py` |
 | **10** | [`10_Music-Shuffle-AI`](./10_Music-Shuffle-AI) | AI Desktop Player | `python3 main.py` | หน้าต่างโปรแกรม Desktop | `python3 test_simulation.py` |
+| **11** | [`11_Bottle-Can-Sorter`](./11_Bottle-Can-Sorter) | Embedded & IoT | `arduino/bottle_can_sorter.ino` | ฮาร์ดแวร์ / `sorter_sim.html` | `python3 test_simulation.py` |
+| **12** | [`12_Smart-Plant-Watering`](./12_Smart-Plant-Watering) | Smart Agriculture | `arduino/blynk_valve_control.ino` | ฮาร์ดแวร์ / `watering_sim.html` | `python3 test_simulation.py` |
+| **13** | [`13_General-Education-Web`](./13_General-Education-Web) | EdTech / Web | `open index.html` | `index.html` | `python3 test_simulation.py` |
+| **14** | [`14_Computer-Quiz-System`](./14_Computer-Quiz-System) | Web Assessment | `open index.html` | `index.html` | `python3 test_simulation.py` |
+| **15** | [`15_SD-Calculator-Python`](./15_SD-Calculator-Python) | Data Science GUI | `python3 sd.py` | หน้าต่างโปรแกรม Desktop | `python3 test_simulation.py` |
+| **16** | [`16_Duplicate-File-Cleaner`](./16_Duplicate-File-Cleaner) | Desktop Utility | `python3 clean.py` | หน้าต่างโปรแกรม Desktop | `python3 test_simulation.py` |
+| **17** | [`17_Grade-Calculator-Python`](./17_Grade-Calculator-Python) | Educational Tools | `python3 cal.py` | หน้าต่างโปรแกรม Desktop | `python3 test_simulation.py` |
+| **18** | [`18_Neo-Web-Chat`](./18_Neo-Web-Chat) | Web & Wireless | `open index.html` / `python3 app.py` | `index.html` | `python3 test_simulation.py` |
 
 ---
 
 ## การรันชุดทดสอบ
 
-ในโฟลเดอร์หลักมีสคริปต์ [`run_all_tests.sh`](./run_all_tests.sh) สำหรับรัน Simulation Test ของทั้ง 10 โปรเจกต์ สามารถทดสอบได้ด้วยคำสั่ง:
+ในโฟลเดอร์หลักมีสคริปต์ [`run_all_tests.sh`](./run_all_tests.sh) สำหรับรัน Simulation Test ของทั้ง 18 โปรเจกต์ สามารถทดสอบได้ด้วยคำสั่ง:
 ```bash
 ./run_all_tests.sh
 ```
@@ -450,7 +458,226 @@ python3 test_simulation.py
 
 ---
 
+### 11. [11_Bottle-Can-Sorter](./11_Bottle-Can-Sorter) — เครื่องคัดแยกขวดพลาสติกและกระป๋องโลหะอัตโนมัติ
+
+* **หมวดหมู่:** Embedded Systems & Robotics / Waste Management
+* **เทคโนโลยี:** Arduino Uno, C++, Stepper Motor, Servo Motor, HX711 Load Cell, Inductive Sensor, Ultrasonic Sensor, I2C LCD
+
+#### สรุปโปรเจกต์
+ระบบคัดแยกขยะรีไซเคิลอัตโนมัติสำหรับขวดพลาสติกและกระป๋องเครื่องดื่มอลูมิเนียม ควบคุมด้วยบอร์ด Arduino Uno เซนเซอร์อัลตราโซนิกตรวจจับการเข้าใกล้เพื่อเปิดฝาถังอัตโนมัติ เซนเซอร์ตรวจจับโลหะแบบเหนี่ยวนำ (Inductive Proximity Sensor) จำแนกกระป๋องโลหะ และโหลดเซลล์ HX711 ตรวจสอบน้ำหนัก ขับเคลื่อนถาดคัดแยกสองทิศทางด้วย Stepper Motor และแสดงปริมาณขยะพร้อมแจ้งเตือนสถานะถังเต็มบนจอ LCD I2C 16x2
+
+![Bottle Can Sorter Simulation](./assets/real_hw_11_bottle_sorter.png)
+
+![Live Simulation Demo](./assets/demo_11_bottle_sorter.gif)
+
+#### เอกสารประกอบโครงงาน
+* รายงานโครงงานฉบับสมบูรณ์ (83 หน้า): [11_Bottle-Can-Sorter/docs/project_report_full.pdf](./11_Bottle-Can-Sorter/docs/project_report_full.pdf)
+* แบบประเมินโครงงาน ทค.3 / ทค.5 และใบรับรอง: [11_Bottle-Can-Sorter/docs/](./11_Bottle-Can-Sorter/docs/)
+
+#### วิธีรันระบบ (How to Run)
+1. อัปโหลดเฟิร์มแวร์เข้าสู่ Arduino Uno:
+   ```bash
+   arduino-cli compile --fqbn arduino:avr:uno 11_Bottle-Can-Sorter/arduino/bottle_can_sorter.ino
+   ```
+2. รันโหมดทดสอบจำลอง (Simulation Mode):
+   ```bash
+   python3 11_Bottle-Can-Sorter/test_simulation.py
+   ```
+
+---
+
+### 12. [12_Smart-Plant-Watering](./12_Smart-Plant-Watering) — เครื่องรดน้ำต้นไม้อัตโนมัติควบคุมระยะไกลด้วยมือถือ
+
+* **หมวดหมู่:** IoT & Smart Agriculture
+* **เทคโนโลยี:** ESP8266 NodeMCU, C++, Blynk IoT Platform, Soil Moisture Sensor, 4-Channel Relay, Solenoid Valve
+
+#### สรุปโปรเจกต์
+ระบบรดน้ำต้นไม้อัจฉริยะสำหรับแปลงเกษตรและอาคารที่อยู่อาศัย ควบคุมผ่านไมโครคอนโทรลเลอร์ NodeMCU ESP8266 และแอปพลิเคชัน Blynk บนสมาร์ตโฟน ตรวจวัดระดับความชื้นในดินแบบเรียลไทม์ และสั่งการเปิด-ปิดโซลินอยด์วาล์วน้ำผ่านโมดูลรีเลย์ 4 ช่อง พร้อมระบบตัดน้ำฉุกเฉินเมื่อรดน้ำต่อเนื่องเกินเวลาที่กำหนด
+
+![Smart Plant Watering Simulation](./assets/real_hw_12_smart_plant.png)
+
+![Live Simulation Demo](./assets/demo_12_smart_plant.gif)
+
+#### เอกสารประกอบโครงงาน
+* รายงานโครงงานฉบับสมบูรณ์ (99 หน้า): [12_Smart-Plant-Watering/docs/project_report_full.pdf](./12_Smart-Plant-Watering/docs/project_report_full.pdf)
+
+#### วิธีรันระบบ (How to Run)
+1. อัปโหลดเฟิร์มแวร์เข้าสู่ NodeMCU ESP8266:
+   ```bash
+   arduino-cli compile --fqbn esp8266:esp8266:nodemcuv2 12_Smart-Plant-Watering/arduino/blynk_valve_control.ino
+   ```
+2. รันโหมดทดสอบจำลอง (Simulation Mode):
+   ```bash
+   python3 12_Smart-Plant-Watering/test_simulation.py
+   ```
+
+---
+
+### 13. [13_General-Education-Web](./13_General-Education-Web) — เว็บไซต์แนะนำการศึกษาประเภทวิชาสามัญ (Seniormath)
+
+* **หมวดหมู่:** Web Application & Educational Technology
+* **เทคโนโลยี:** HTML5, CSS3, JavaScript (ES6), Glassmorphism UI, MediaStream
+
+#### สรุปโปรเจกต์
+เว็บพอร์ทัลสื่อการเรียนรู้แบบตอบสนองสำหรับกลุ่มสาระวิชาสามัญ ครอบคลุมวิชาคณิตศาสตร์ ฟิสิกส์ ไฟฟ้าอิเล็กทรอนิกส์ และระบบเลขฐานคอมพิวเตอร์ มาพร้อมระบบแปลงเลขฐาน เครื่องคิดเลขวิทยาศาสตร์แบบกระจกฝ้า (Glassmorphism Calculator) และวิดีโอประกอบการเรียนรู้ในแต่ละหมวดวิชา
+
+![General Education Web Portal](./assets/real_hw_13_education_web.png)
+
+![Live Simulation Demo](./assets/demo_13_education_web.gif)
+
+#### เอกสารหลักสูตรและเนื้อหา
+* เอกสารหลักสูตรวิชาสามัญ: [13_General-Education-Web/docs/](./13_General-Education-Web/docs/)
+
+#### วิธีรันระบบ (How to Run)
+เปิดใช้งานผ่านเว็บเบราว์เซอร์:
+```bash
+open 13_General-Education-Web/index.html
+```
+รันชุดทดสอบความสมบูรณ์ของโครงสร้างเว็บ:
+```bash
+python3 13_General-Education-Web/test_simulation.py
+```
+
+---
+
+### 14. [14_Computer-Quiz-System](./14_Computer-Quiz-System) — เว็บไซต์ทำแบบทดสอบพื้นฐานคอมพิวเตอร์
+
+* **หมวดหมู่:** Web Application & Educational Assessment
+* **เทคโนโลยี:** Vanilla HTML5, CSS3, JavaScript, JSON Database
+
+#### สรุปโปรเจกต์
+ระบบแบบทดสอบออนไลน์วิชาพื้นฐานคอมพิวเตอร์ เชื่อมต่อคลังข้อสอบแบบ JSON จำนวน 400 ข้อ ครอบคลุมทั้งฮาร์ดแวร์ ซอฟต์แวร์ เครือข่าย และความปลอดภัย มีระบบบันทึกและตรวจสอบข้อมูลผู้สอบ ระบบป้องกันการคัดลอกข้อความ และโมดัลประเมินผลคะแนนคำนวณร้อยละและคะแนนตัดเกรดอัตโนมัติ
+
+![Computer Quiz System](./assets/real_hw_14_computer_quiz.png)
+
+![Live Simulation Demo](./assets/demo_14_computer_quiz.gif)
+
+#### เอกสารคลังข้อสอบ
+* เอกสารคลังข้อสอบ 400 ข้อ: [14_Computer-Quiz-System/docs/quiz_question_bank_summary.md](./14_Computer-Quiz-System/docs/quiz_question_bank_summary.md)
+
+#### วิธีรันระบบ (How to Run)
+เปิดใช้งานผ่านเว็บเบราว์เซอร์:
+```bash
+open 14_Computer-Quiz-System/index.html
+```
+รันชุดทดสอบคลังข้อสอบและการคำนวณคะแนน:
+```bash
+python3 14_Computer-Quiz-System/test_simulation.py
+```
+
+---
+
+### 15. [15_SD-Calculator-Python](./15_SD-Calculator-Python) — โปรแกรมคำนวณค่า S.D. ด้วย Python
+
+* **หมวดหมู่:** Desktop Application & Statistics
+* **เทคโนโลยี:** Python 3, Tkinter, ttk, NumPy, PyInstaller
+
+#### สรุปโปรเจกต์
+โปรแกรมประยุกต์บนเดสก์ท็อปสำหรับประมวลผลข้อมูลแบบสอบถามและแบบประเมินความพึงพอใจการใช้งาน ผู้ใช้สามารถกำหนดจำนวนกลุ่มตัวอย่างและจำนวนข้อคำถามเพื่อสร้างตารางกรอกคะแนนแบบไดนามิก โปรแกรมประมวลผลคะแนนรวม ค่าเฉลี่ย ส่วนเบี่ยงเบนมาตรฐาน (S.D.) และสัมประสิทธิ์การแปรผัน (C.V. %) แสดงผลบนตาราง Treeview
+
+![SD Calculator Desktop GUI](./assets/real_hw_15_sd_calculator.png)
+
+![Live Simulation Demo](./assets/demo_15_sd_calculator.gif)
+
+#### เอกสารคู่มือทางสถิติ
+* คู่มือสูตรการคำนวณทางสถิติ: [15_SD-Calculator-Python/docs/statistics_formula_manual.md](./15_SD-Calculator-Python/docs/statistics_formula_manual.md)
+
+#### วิธีรันระบบ (How to Run)
+```bash
+python3 15_SD-Calculator-Python/sd.py
+```
+รันชุดทดสอบการประมวลผลสถิติ:
+```bash
+python3 15_SD-Calculator-Python/test_simulation.py
+```
+
+---
+
+### 16. [16_Duplicate-File-Cleaner](./16_Duplicate-File-Cleaner) — โปรแกรมค้นหาและลบไฟล์ซ้ำ ด้วย Python
+
+* **หมวดหมู่:** Desktop Application & Storage Optimizer
+* **เทคโนโลยี:** Python 3, CustomTkinter, hashlib (SHA-256), Dark Mode
+
+#### สรุปโปรเจกต์
+โปรแกรมยูทิลิตี้สำหรับค้นหาและกำจัดไฟล์ซ้ำซ้อนภายในเครื่องคอมพิวเตอร์ ใช้สถาปัตยกรรมคัดกรอง 2 ชั้น โดยตรวจสอบขนาดไฟล์ก่อน แล้วจึงคำนวณแฮช SHA-256 แบบแบ่งบล็อก 64 KB เพื่อความเร็วสูงสุดและประหยัดแรม ผู้ใช้สามารถเลือกไฟล์ที่ต้องการลบผ่าน Checkbox พร้อมระบบยืนยันความปลอดภัยก่อนลบข้อมูล
+
+![Duplicate File Cleaner GUI](./assets/real_hw_16_duplicate_cleaner.png)
+
+![Live Simulation Demo](./assets/demo_16_duplicate_cleaner.gif)
+
+#### เอกสารสถาปัตยกรรม
+* รายละเอียดขั้นตอนวิธีตรวจจับไฟล์ซ้ำ: [16_Duplicate-File-Cleaner/docs/duplicate_detection_algorithm.md](./16_Duplicate-File-Cleaner/docs/duplicate_detection_algorithm.md)
+
+#### วิธีรันระบบ (How to Run)
+```bash
+python3 16_Duplicate-File-Cleaner/clean.py
+```
+รันชุดทดสอบการจำลองค้นหาและลบไฟล์ซ้ำ:
+```bash
+python3 16_Duplicate-File-Cleaner/test_simulation.py
+```
+
+---
+
+### 17. [17_Grade-Calculator-Python](./17_Grade-Calculator-Python) — โปรแกรมคำนวณเกรด ด้วย Python (GPA & GPAX)
+
+* **หมวดหมู่:** Desktop Application & Educational Utilities
+* **เทคโนโลยี:** Python 3, CustomTkinter, Weighted Average Algorithm
+
+#### สรุปโปรเจกต์
+โปรแกรมคำนวณแต้มคะแนนเฉลี่ยรายภาคเรียน (GPA) และผลการเรียนเฉลี่ยสะสมทุกภาคเรียน (GPAX) พัฒนาด้วย CustomTkinter ในธีมสีมืด แปลงคะแนนดิบ 0-100 เป็นเกรด 8 ระดับตามมาตรฐานการศึกษา พร้อมระบบเพิ่มรายวิชาแบบไดนามิกและการตรวจสอบความถูกต้องของข้อมูล
+
+![Grade Calculator Desktop GUI](./assets/real_hw_17_grade_calculator.png)
+
+![Live Simulation Demo](./assets/demo_17_grade_calculator.gif)
+
+#### เอกสารคู่มือเกณฑ์การตัดเกรด
+* คู่มือเกณฑ์มาตรฐานการคำนวณเกรด: [17_Grade-Calculator-Python/docs/grading_system_manual.md](./17_Grade-Calculator-Python/docs/grading_system_manual.md)
+
+#### วิธีรันระบบ (How to Run)
+```bash
+python3 17_Grade-Calculator-Python/cal.py
+```
+รันชุดทดสอบการตัดเกรดและสูตรคำนวณ:
+```bash
+python3 17_Grade-Calculator-Python/test_simulation.py
+```
+
+---
+
+### 18. [18_Neo-Web-Chat](./18_Neo-Web-Chat) — เว็บไซต์คุยแชทออนไลน์ และระบบแชทออฟไลน์ BLE
+
+* **หมวดหมู่:** Web Application & Wireless Networking
+* **เทคโนโลยี:** HTML5, Tailwind CSS, JavaScript, Firebase Realtime Database, Web Bluetooth API, Python, Bleak, asyncio
+
+#### สรุปโปรเจกต์
+ระบบส่งข้อความสื่อสารสองโหมด ประกอบด้วยเว็บแอปพลิเคชันสไตล์ Neo-Brutalism รองรับการส่งข้อความผ่าน Wi-Fi คลาวด์แบบเรียลไทม์ และการสลับเป็นโหมดออฟไลน์เพื่อสื่อสารผ่านคลื่นสัญญาณ Bluetooth Low Energy (BLE) กับไมโครคอนโทรลเลอร์ ESP32 ในระยะใกล้ พร้อมด้วยไคลเอนต์เดสก์ท็อป Python ควบคุมการเชื่อมต่อแบบอะซิงโครนัส
+
+![Neo Web Chat](./assets/real_hw_18_web_chat.png)
+
+![Live Simulation Demo](./assets/demo_18_web_chat.gif)
+
+#### เอกสารสถาปัตยกรรมและโปรโตคอล
+* รายละเอียดสถาปัตยกรรมและ GATT Profile: [18_Neo-Web-Chat/docs/chat_architecture_and_protocol.md](./18_Neo-Web-Chat/docs/chat_architecture_and_protocol.md)
+
+#### วิธีรันระบบ (How to Run)
+เปิดเว็บแอปพลิเคชัน:
+```bash
+open 18_Neo-Web-Chat/index.html
+```
+รันไคลเอนต์เดสก์ท็อป Bluetooth:
+```bash
+python3 18_Neo-Web-Chat/app.py
+```
+รันชุดทดสอบโครงสร้างระบบแชทและโปรโตคอล BLE:
+```bash
+python3 18_Neo-Web-Chat/test_simulation.py
+```
+
+---
+
 ## ข้อมูลผู้พัฒนา
 * **ชื่อ-นามสกุล:** Phakhaphon Sukmee
 * **GitHub:** [@FANG9356](https://github.com/FANG9356)
 * **Repository:** [https://github.com/FANG9356/MyProject](https://github.com/FANG9356/MyProject)
+

@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Chat</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+New',+monospace&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="https://png.pngtree.com/png-clipart/20191120/original/pngtree-chat-icon-png-image_5065642.jpg">
+    <style>
+        :root {
+            --primary: #000000;
+            --secondary: #FFFFFF;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        body {
+            background-color: var(--secondary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            width: 100%;
+            max-width: 900px;
+            height: 90vh;
+            border: 1px solid var(--primary);
+            background-color: var(--secondary);
+            box-shadow: 8px 8px 0px var(--primary);
+            position: relative;
+            border-radius: 12px;
+            display: flex;
+            overflow: hidden;
+        }
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            right: -6px;
+            bottom: -6px;
+            border: 1px solid var(--primary);
+            z-index: -1;
+            border-radius: 12px;
+        }
+        .chat-container {
+            height: calc(100% - 130px);
+            overflow-y: auto;
+        }
+        .message-bubble {
+            border-radius: 0;
+            padding: 15px 18px;
+            max-width: 100%;
+            border: 1px solid var(--primary);
+            box-shadow: 4px 4px 0px var(--primary);
+            margin-bottom: 15px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        .sent-message {
+            background-color: var(--primary);
+            color: var(--secondary);
+            border-color: var(--primary);
+        }
+        .received-message {
+            background-color: var(--secondary);
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+        .input-area {
+            border-top: 2px solid var(--primary);
+            padding: 20px;
+            background-color: var(--secondary);
+        }
+        #message-input {
+            width: 100%;
+            padding: 15px 18px;
+            border: 2px solid var(--primary);
+            background-color: var(--secondary);
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s;
+        }
+        #message-input:focus {
+            box-shadow: 4px 4px 0px var(--primary);
+        }
+        .chat-header {
+            border-bottom: 2px solid var(--primary);
+            padding: 20px;
+            background-color: var(--secondary);
+        }
+        .chat-list-sidebar {
+            width: 300px;
+            min-width: 200px;
+            border-right: 2px solid var(--primary);
+            padding: 20px;
+            background-color: var(--secondary);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+        .chat-list-sidebar h2 {
+            min-height: 40px;
+        }
+        .chat-list-item {
+            padding: 15px;
+            cursor: pointer;
+            border: 2px solid var(--primary);
+            margin-bottom: 10px;
+            transition: all 0.3s;
+        }
+        .chat-list-item:hover {
+            box-shadow: 4px 4px 0px var(--primary);
+            transform: translate(-2px, -2px);
+        }
+        .search-btn-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .search-btn-group button {
+            background-color: var(--secondary);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .search-btn-group button:hover {
+            box-shadow: 4px 4px 0px var(--primary);
+            transform: translate(-2px, -2px);
+        }
+        #send-btn {
+            background-color: var(--primary);
+            color: var(--secondary);
+            border: 2px solid var(--primary);
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 12px;
+            transition: all 0.3s;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #send-btn:hover {
+            box-shadow: 4px 4px 0px var(--primary);
+            transform: translate(-2px, -2px);
+        }
+        .dropdown-menu {
+            bottom: 100%;
+            margin-bottom: 10px;
+            border: 2px solid var(--primary);
+            box-shadow: 4px 4px 0px var(--primary);
+            min-width: 150px;
+            right: 0;
+        }
+        .dropdown-menu a {
+            font-family: 'Courier New', monospace;
+            padding: 12px;
+            border-bottom: 1px solid var(--primary);
+            color: var(--primary);
+        }
+        .dropdown-menu a:last-child {
+            border-bottom: none;
+        }
+        .dropdown-menu a:hover {
+            background-color: #f0f0f0;
+        }
+        .message-item:hover .actions {
+            visibility: visible;
+        }
+        .actions {
+            visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--secondary);
+            border: 1px solid var(--primary);
+            padding: 5px;
+        }
+        .modal {
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: var(--secondary);
+            border: 2px solid var(--primary);
+            box-shadow: 8px 8px 0px var(--primary);
+            padding: 20px;
+            width: 90%;
+            max-width: 400px;
+            position: relative;
+        }
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        #search-results .add-friend-btn {
+            background-color: var(--primary);
+            color: var(--secondary);
+            border: 2px solid var(--primary);
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        #search-results .add-friend-btn:hover {
+            box-shadow: 4px 4px 0px var(--primary);
+            transform: translate(-1px, -1px);
+        }
+        #search-results {
+            margin-top: 15px;
+            padding: 15px;
+            border: 1px solid var(--primary);
+        }
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+            padding: 40px;
+            border: 2px solid var(--primary);
+            background-color: var(--secondary);
+            box-shadow: 8px 8px 0px var(--primary);
+            position: relative;
+        }
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            right: -6px;
+            bottom: -6px;
+            border: 2px solid var(--primary);
+            z-index: -1;
+        }
+        .input-field {
+            width: 100%;
+            padding: 15px 18px;
+            border: 2px solid var(--primary);
+            background-color: var(--secondary);
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s;
+        }
+        .input-field:focus {
+            box-shadow: 4px 4px 0px var(--primary);
+            transform: translate(-2px, -2px);
+        }
+        .btn {
+            background-color: var(--primary);
+            color: var(--secondary);
+            border: 2px solid var(--primary);
+            padding: 15px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s;
+        }
+        .btn:hover {
+            box-shadow: 4px 4px 0px var(--primary);
+            transform: translate(-2px, -2px);
+        }
+        .error-message {
+            color: red;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 15px;
+        }
+        a {
+            color: var(--primary);
+            font-weight: bold;
+            text-decoration: underline;
+        }
+        a:hover {
+            text-decoration: none;
+        }
+        #logout-btn {
+            background-color: var(--secondary);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            padding: 10px 15px;
+            margin-top: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        #logout-btn:hover {
+            background-color: var(--primary);
+            color: var(--secondary);
+            box-shadow: 4px 4px 0px var(--primary);
+            transform: translate(-2px, -2px);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div id="auth-container" class="login-container flex flex-col items-center">
+        <h1 class="text-2xl font-bold mb-8">LOGIN</h1>
+        <form id="auth-form" class="w-full space-y-4">
+            <input type="text" id="username" name="username" placeholder="Username" class="input-field">
+            <input type="password" id="password" name="password" placeholder="Password" class="input-field">
+            <button type="submit" class="btn" id="auth-btn">SIGN IN</button>
+        </form>
+        <p class="mt-4 text-center text-sm text-red-600" id="error-message"></p>
+        <p class="mt-4 text-center text-sm" id="auth-toggle">
+            Don't have an account? <a href="#" class="underline font-bold" id="toggle-link">Sign up</a>
+        </p>
+    </div>
+    <div id="chat-page" class="container hidden">
+        <div id="chat-list-sidebar" class="chat-list-sidebar hidden sm:block">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-800">CHATS</h2>
+            <div id="current-user" class="chat-list-item"></div>
+            <div class="search-btn-group">
+                <button id="search-friend-btn">ค้นหาเพื่อน</button>
+                <button id="search-bt-device-btn" class="hidden">ค้นหาอุปกรณ์</button>
+            </div>
+            <ul id="chat-list" class="flex-1 overflow-y-auto"></ul>
+            <button id="logout-btn">Logout</button>
+            <button id="toggle-mode-btn" class="bg-white text-black border-2 border-black p-2 mt-4 cursor-pointer hover:bg-black hover:text-white transition-colors duration-300">Switch to Bluetooth Mode</button>
+        </div>
+        <div id="chat-area" class="flex-1 flex flex-col">
+            <div id="chat-header" class="chat-header">
+                <h3 id="chat-header-text" class="text-xl font-bold text-gray-800">Select a contact to start chatting</h3>
+            </div>
+            <div id="messages-container" class="chat-container p-4 space-y-4 flex-1"></div>
+            <div id="message-input-area" class="input-area flex items-center hidden">
+                <input type="text" id="message-input" placeholder="Type your message..." class="flex-1 mr-2">
+                <button id="send-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div id="search-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-btn" onclick="document.getElementById('search-modal').classList.add('hidden')">&times;</span>
+            <h4 class="text-xl font-bold mb-4">ค้นหาเพื่อน</h4>
+            <div class="flex items-center space-x-2">
+                <input type="text" id="search-input" placeholder="พิมพ์ชื่อผู้ใช้..." class="flex-1 px-3 py-2 border-2 border-black">
+                <button id="search-action-btn" class="px-4 py-2 border-2 border-black bg-black text-white">ค้นหา</button>
+            </div>
+            <div id="search-results" class="mt-4"></div>
+        </div>
+    </div>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getDatabase, ref, push, onValue, serverTimestamp, remove, update, get, query, orderByChild, equalTo, limitToLast } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
+        const firebaseConfig = {
+            apiKey: "AIzaSyCT7-suLVlgUus3SbSZJ0WHI2IeCHltHCw",
+            authDomain: "mesh-85686.firebaseapp.com",
+            projectId: "mesh-85686",
+            storageBucket: "mesh-85686.firebasestorage.app",
+            messagingSenderId: "1090342564484",
+            appId: "1:1090342564484:web:a805caa6e21e00f305c8d1",
+            databaseURL: "https://mesh-85686-default-rtdb.asia-southeast1.firebasedatabase.app"
+        };
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const database = getDatabase(app);
+        const authContainer = document.getElementById('auth-container');
+        const authForm = document.getElementById('auth-form');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const authBtn = document.getElementById('auth-btn');
+        const errorMessage = document.getElementById('error-message');
+        const authToggle = document.getElementById('auth-toggle');
+        const chatPage = document.getElementById('chat-page');
+        const messagesContainer = document.getElementById('messages-container');
+        const messageInput = document.getElementById('message-input');
+        const sendBtn = document.getElementById('send-btn');
+        const chatHeader = document.getElementById('chat-header-text');
+        const chatList = document.getElementById('chat-list');
+        const messageInputArea = document.getElementById('message-input-area');
+        const searchFriendBtn = document.getElementById('search-friend-btn');
+        const searchBtDeviceBtn = document.getElementById('search-bt-device-btn');
+        const searchModal = document.getElementById('search-modal');
+        const closeModalBtn = document.querySelector('.close-btn');
+        const searchInput = document.getElementById('search-input');
+        const searchActionBtn = document.getElementById('search-action-btn');
+        const searchResultsDiv = document.getElementById('search-results');
+        const logoutBtn = document.getElementById('logout-btn');
+        const currentUserDisplay = document.getElementById('current-user');
+        const toggleModeBtn = document.getElementById('toggle-mode-btn');
+        let isLogin = true;
+        let userId = null;
+        let username = null;
+        let currentFriendId = null;
+        let currentFriendName = null;
+        let messagesRef = null;
+        let unsubscribeMessages = null;
+        let isBluetoothMode = false;
+        let bluetoothDevice = null;
+        let bluetoothCharacteristic = null;
+        let connectedDevice = null;
+        authToggle.addEventListener('click', (e) => {
+            if (e.target.id === 'toggle-link') {
+                e.preventDefault();
+                isLogin = !isLogin;
+                authBtn.textContent = isLogin ? 'SIGN IN' : 'SIGN UP';
+                document.querySelector('.login-container h1').textContent = isLogin ? 'LOGIN' : 'SIGN UP';
+                authToggle.innerHTML = isLogin ? `Don't have an account? <a href="#" class="underline font-bold" id="toggle-link">Sign up</a>` : `Already have an account? <a href="#" class="underline font-bold" id="toggle-link">Sign in</a>`;
+                errorMessage.textContent = '';
+                usernameInput.value = '';
+                passwordInput.value = '';
+            }
+        });
+        authForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const usernameValue = usernameInput.value.trim();
+            const passwordValue = passwordInput.value.trim();
+            errorMessage.textContent = '';
+            if (!usernameValue || !passwordValue) {
+                errorMessage.textContent = 'กรุณากรอกชื่อผู้ใช้และรหัสผ่าน';
+                return;
+            }
+            try {
+                if (isLogin) {
+                    const usersRef = ref(database, 'users');
+                    const usersQuery = query(usersRef, orderByChild('username'), equalTo(usernameValue.toLowerCase()));
+                    const snapshot = await get(usersQuery);
+                    let userEmail = null;
+                    if (snapshot.exists()) {
+                        const userData = Object.values(snapshot.val())[0];
+                        userEmail = userData.email;
+                    }
+                    if (userEmail) {
+                        await signInWithEmailAndPassword(auth, userEmail, passwordValue);
+                    } else {
+                        errorMessage.textContent = 'ชื่อผู้ใช้ไม่ถูกต้อง';
+                    }
+                } else {
+                    const usersRef = ref(database, 'users');
+                    const usersQuery = query(usersRef, orderByChild('username'), equalTo(usernameValue.toLowerCase()));
+                    const snapshot = await get(usersQuery);
+                    if (snapshot.exists()) {
+                        errorMessage.textContent = 'ชื่อผู้ใช้นี้มีคนใช้แล้ว';
+                        return;
+                    }
+                    const email = `${usernameValue.toLowerCase()}@your-chat-app.com`;
+                    const userCredential = await createUserWithEmailAndPassword(auth, email, passwordValue);
+                    const user = userCredential.user;
+                    await update(ref(database, `users/${user.uid}`), { username: usernameValue.toLowerCase(), email: email });
+                    alert('สมัครสมาชิกเรียบร้อยแล้ว!');
+                }
+            } catch (error) {
+                console.error("Authentication failed:", error);
+                switch (error.code) {
+                    case 'auth/invalid-email':
+                    case 'auth/user-not-found':
+                    case 'auth/wrong-password':
+                        errorMessage.textContent = 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง';
+                        break;
+                    case 'auth/too-many-requests':
+                        errorMessage.textContent = 'คุณพยายามเข้าสู่ระบบหลายครั้งเกินไป โปรดลองอีกครั้งในภายหลัง';
+                        break;
+                    case 'auth/weak-password':
+                        errorMessage.textContent = 'รหัสผ่านต้องมีความยาวอย่างน้อย 6 ตัวอักษร';
+                        break;
+                    default:
+                        errorMessage.textContent = 'เกิดข้อผิดพลาดในการเข้าสู่ระบบ: ' + error.message;
+                        break;
+                }
+            }
+        });
+        logoutBtn.addEventListener('click', () => {
+            signOut(auth).then(() => {
+                console.log("User signed out successfully.");
+            }).catch((error) => {
+                console.error("Error signing out: ", error);
+            });
+        });
+        toggleModeBtn.addEventListener('click', () => {
+            isBluetoothMode = !isBluetoothMode;
+            if (isBluetoothMode) {
+                toggleModeBtn.textContent = 'Switch to Wi-Fi Mode';
+                searchFriendBtn.classList.add('hidden');
+                searchBtDeviceBtn.classList.remove('hidden');
+                loadLocalFriends();
+            } else {
+                toggleModeBtn.textContent = 'Switch to Bluetooth Mode';
+                searchFriendBtn.classList.remove('hidden');
+                searchBtDeviceBtn.classList.add('hidden');
+                loadFriendsFromFirebase();
+            }
+            chatHeader.innerText = 'Select a contact to start chatting';
+            messageInputArea.classList.add('hidden');
+            messagesContainer.innerHTML = '';
+        });
+        function displayMessage(message, messageId) {
+            const isSent = message.senderId === userId;
+            const div = document.createElement('div');
+            div.className = `flex ${isSent ? 'justify-end' : 'justify-start'} message-item relative group`;
+            const bubbleClass = isSent ? 'sent-message' : 'received-message';
+            div.innerHTML = `<div class="message-bubble ${bubbleClass}" data-id="${messageId}">${message.text}</div>`;
+            messagesContainer.appendChild(div);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+        function switchChatFirebase(friendId, friendName) {
+            if (unsubscribeMessages) {
+                unsubscribeMessages();
+            }
+            currentFriendId = friendId;
+            currentFriendName = friendName;
+            chatHeader.innerText = friendName;
+            messageInputArea.classList.remove('hidden');
+            messagesContainer.innerHTML = '';
+            const chatRoomId = userId < friendId ? `${userId}_${friendId}` : `${friendId}_${userId}`;
+            messagesRef = ref(database, `chats/${chatRoomId}/messages`);
+            unsubscribeMessages = onValue(messagesRef, (snapshot) => {
+                messagesContainer.innerHTML = '';
+                if (snapshot.exists()) {
+                    snapshot.forEach((childSnapshot) => {
+                        const message = childSnapshot.val();
+                        const messageId = childSnapshot.key;
+                        displayMessage(message, messageId);
+                    });
+                }
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            });
+        }
+        searchFriendBtn.addEventListener('click', () => {
+            searchModal.classList.remove('hidden');
+            searchInput.focus();
+        });
+        searchActionBtn.addEventListener('click', async () => {
+            if (isBluetoothMode) {
+                searchResultsDiv.innerHTML = `<p class="text-red-500">ฟังก์ชันนี้ยังไม่พร้อมใช้งานในโหมด Bluetooth</p>`;
+                return;
+            }
+            const friendName = searchInput.value.trim().toLowerCase();
+            if (friendName === "") {
+                searchResultsDiv.innerHTML = `<p class="text-red-500">กรุณาพิมพ์ชื่อผู้ใช้ที่ต้องการค้นหา</p>`;
+                return;
+            }
+            if (friendName === username.toLowerCase()) {
+                searchResultsDiv.innerHTML = `<p class="text-red-500">ไม่สามารถเพิ่มตัวเองเป็นเพื่อนได้</p>`;
+                return;
+            }
+            const usersRef = ref(database, 'users');
+            const usersQuery = query(usersRef, orderByChild('username'), equalTo(friendName));
+            const snapshot = await get(usersQuery);
+            if (snapshot.exists()) {
+                const friendId = Object.keys(snapshot.val())[0];
+                const friendData = snapshot.val()[friendId];
+                const friendsRef = ref(database, `friends/${userId}/${friendId}`);
+                const friendsSnapshot = await get(friendsRef);
+                if (friendsSnapshot.exists()) {
+                    searchResultsDiv.innerHTML = `<p class="text-green-500">${friendData.username} เป็นเพื่อนของคุณอยู่แล้ว</p>`;
+                } else {
+                    searchResultsDiv.innerHTML = `<div class="flex items-center justify-between p-2 border-2 border-black">
+                            <span>${friendData.username}</span>
+                            <button class="add-friend-btn" data-id="${friendId}" data-name="${friendData.username}">เพิ่มเพื่อน</button>
+                        </div>`;
+                }
+            } else {
+                searchResultsDiv.innerHTML = `<p class="text-red-500">ไม่พบผู้ใช้ชื่อ "${friendName}"</p>`;
+            }
+        });
+        searchResultsDiv.addEventListener('click', async (e) => {
+            if (e.target.classList.contains('add-friend-btn')) {
+                const friendId = e.target.dataset.id;
+                const friendName = e.target.dataset.name;
+                const myFriendsRef = ref(database, `friends/${userId}/${friendId}`);
+                const theirFriendsRef = ref(database, `friends/${friendId}/${userId}`);
+                await update(myFriendsRef, { username: friendName });
+                await update(theirFriendsRef, { username: username });
+                searchResultsDiv.innerHTML = `<p class="text-green-500">เพิ่ม ${friendName} เป็นเพื่อนเรียบร้อยแล้ว!</p>`;
+                loadFriendsFromFirebase();
+            }
+        });
+        function loadFriendsFromFirebase() {
+            const friendsRef = ref(database, `friends/${userId}`);
+            onValue(friendsRef, async (snapshot) => {
+                chatList.innerHTML = '';
+                if (snapshot.exists()) {
+                    const friends = Object.entries(snapshot.val());
+                    const friendsWithLastMessage = await Promise.all(
+                        friends.map(async ([friendId, friendData]) => {
+                            const chatRoomId = userId < friendId ? `${userId}_${friendId}` : `${friendId}_${userId}`;
+                            const messagesRef = query(ref(database, `chats/${chatRoomId}/messages`), limitToLast(1));
+                            const messageSnapshot = await get(messagesRef);
+                            let lastMessage = 'เริ่มการสนทนา...';
+                            let timestamp = 0;
+                            if (messageSnapshot.exists()) {
+                                const msg = Object.values(messageSnapshot.val())[0];
+                                lastMessage = msg.text;
+                                timestamp = msg.timestamp;
+                            }
+                            return {
+                                id: friendId,
+                                name: friendData.username,
+                                lastMessage: lastMessage,
+                                timestamp: timestamp
+                            };
+                        })
+                    );
+                    friendsWithLastMessage.sort((a, b) => b.timestamp - a.timestamp);
+                    friendsWithLastMessage.forEach(friend => {
+                        const li = document.createElement('li');
+                        li.className = 'chat-list-item';
+                        const truncatedMessage = friend.lastMessage.length > 30 ? friend.lastMessage.substring(0, 30) + '...' : friend.lastMessage;
+                        li.innerHTML = `
+                            <div class="font-bold text-gray-800">${friend.name}</div>
+                            <div class="text-sm text-gray-500">${truncatedMessage}</div>
+                        `;
+                        li.addEventListener('click', () => {
+                            switchChatFirebase(friend.id, friend.name);
+                        });
+                        chatList.appendChild(li);
+                    });
+                } else {
+                    chatList.innerHTML = `<p class="text-sm text-gray-500 p-2">ยังไม่มีเพื่อน ลองค้นหาเพื่อนเพื่อเริ่มแชท</p>`;
+                }
+            });
+        }
+        const UART_SERVICE_UUID = '6e400001-b5a3-f393-e0a9-e50e24dcca9e';
+        const UART_RX_CHARACTERISTIC_UUID = '6e400002-b5a3-f393-e0a9-e50e24dcca9e';
+        const UART_TX_CHARACTERISTIC_UUID = '6e400003-b5a3-f393-e0a9-e50e24dcca9e';
+        async function switchChatBluetooth(friendName) {
+            currentFriendName = friendName;
+            chatHeader.innerText = friendName;
+            messageInputArea.classList.remove('hidden');
+            messagesContainer.innerHTML = '';
+            const localFriends = getLocalData('localFriends') || [];
+            const friendData = localFriends.find(f => f.name === friendName);
+            if (!friendData) {
+                alert('ไม่พบข้อมูลอุปกรณ์นี้');
+                return;
+            }
+            try {
+                const device = await navigator.bluetooth.requestDevice({
+                    filters: [{ name: friendName, services: [UART_SERVICE_UUID] }]
+                });
+                connectedDevice = device;
+                await connectToBluetoothDevice(connectedDevice);
+            } catch (error) {
+                console.error('Failed to connect:', error);
+                alert('ไม่สามารถเชื่อมต่ออุปกรณ์ได้: ' + error.message);
+            }
+        }
+        async function connectToBluetoothDevice(device) {
+            try {
+                const server = await device.gatt.connect();
+                const service = await server.getPrimaryService(UART_SERVICE_UUID);
+                bluetoothCharacteristic = await service.getCharacteristic(UART_RX_CHARACTERISTIC_UUID);
+                const rxCharacteristic = await service.getCharacteristic(UART_TX_CHARACTERISTIC_UUID);
+                rxCharacteristic.addEventListener('characteristicvaluechanged', (event) => {
+                    const value = new TextDecoder().decode(event.target.value);
+                    displayMessage({ senderId: 'friend', text: value }, Date.now());
+                });
+                await rxCharacteristic.startNotifications();
+                console.log('Connected to Bluetooth device and listening for messages.');
+                alert('เชื่อมต่ออุปกรณ์ ' + device.name + ' เรียบร้อยแล้ว!');
+            } catch (error) {
+                console.error('Failed to connect to Bluetooth device:', error);
+                alert('ไม่สามารถเชื่อมต่ออุปกรณ์ได้: ' + error.message);
+            }
+        }
+        searchBtDeviceBtn.addEventListener('click', async () => {
+            try {
+                const device = await navigator.bluetooth.requestDevice({
+                    filters: [{ services: [UART_SERVICE_UUID] }]
+                });
+                const localFriends = getLocalData('localFriends') || [];
+                const isFound = localFriends.some(f => f.name === device.name);
+                if (!isFound) {
+                    localFriends.push({ name: device.name, id: device.id });
+                    saveLocalData('localFriends', localFriends);
+                    const li = document.createElement('li');
+                    li.className = 'chat-list-item';
+                    li.innerHTML = `<div class="font-bold text-gray-800">${device.name}</div><div class="text-xs text-gray-500">โหมด Bluetooth</div>`;
+                    li.addEventListener('click', () => {
+                        switchChatBluetooth(device.name);
+                    });
+                    chatList.appendChild(li);
+                }
+                connectedDevice = device;
+                await connectToBluetoothDevice(connectedDevice);
+            } catch (error) {
+                console.error('Bluetooth search failed:', error);
+                alert('การค้นหาอุปกรณ์ล้มเหลว: ' + error.message);
+            }
+        });
+        function loadLocalFriends() {
+            chatList.innerHTML = '';
+            const localFriends = getLocalData('localFriends') || [];
+            if (localFriends.length > 0) {
+                localFriends.forEach(friend => {
+                    const li = document.createElement('li');
+                    li.className = 'chat-list-item';
+                    li.innerHTML = `
+                        <div class="font-bold text-gray-800">${friend.name}</div>
+                        <div class="text-xs text-gray-500">โหมด Bluetooth</div>
+                    `;
+                    li.addEventListener('click', () => {
+                        switchChatBluetooth(friend.name);
+                    });
+                    chatList.appendChild(li);
+                });
+            } else {
+                chatList.innerHTML = `<p class="text-sm text-gray-500 p-2">ยังไม่มีอุปกรณ์ที่เชื่อมต่อ ลองค้นหาอุปกรณ์</p>`;
+            }
+        }
+        sendBtn.addEventListener('click', () => {
+            const text = messageInput.value.trim();
+            if (text !== "") {
+                if (isBluetoothMode && bluetoothCharacteristic) {
+                    const encoder = new TextEncoder('utf-8');
+                    const data = encoder.encode(text);
+                    bluetoothCharacteristic.writeValue(data)
+                        .then(() => {
+                            displayMessage({ senderId: 'me', text: text }, Date.now());
+                            messageInput.value = '';
+                        })
+                        .catch(error => {
+                            console.error('Failed to send message:', error);
+                            alert('ไม่สามารถส่งข้อความได้: ' + error.message);
+                        });
+                } else if (!isBluetoothMode && currentFriendId) {
+                    push(messagesRef, {
+                        senderId: userId,
+                        text: text,
+                        timestamp: serverTimestamp()
+                    });
+                    messageInput.value = '';
+                }
+            }
+        });
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendBtn.click();
+            }
+        });
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                userId = user.uid;
+                const userRef = ref(database, `users/${userId}`);
+                const snapshot = await get(userRef);
+                if (snapshot.exists()) {
+                    username = snapshot.val().username;
+                    currentUserDisplay.innerHTML = `<div class="font-bold text-gray-800">${username}</div>`;
+                }
+                authContainer.classList.add('hidden');
+                chatPage.classList.remove('hidden');
+                loadFriendsFromFirebase();
+            } else {
+                authContainer.classList.remove('hidden');
+                chatPage.classList.add('hidden');
+            }
+        });
+        function saveLocalData(key, data) {
+            localStorage.setItem(key, JSON.stringify(data));
+        }
+        function getLocalData(key) {
+            const data = localStorage.getItem(key);
+            return data ? JSON.parse(data) : null;
+        }
+    </script>
+</body>
+</html>

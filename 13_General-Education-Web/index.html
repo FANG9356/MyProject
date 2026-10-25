@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Athiti:wght@300;400;600&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seniormath Home</title>
+    <link rel="icon" type="image/png" href="picture/10766476.png">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .header {
+            background-image: url('picture/mainbackground.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: scroll;
+            color: #fff;
+            padding: 100px 20px;
+            text-align: center;
+            animation: fadeIn 2s ease-in-out;
+            transition: background-position 0.5s ease;
+        }
+        .navbar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            background-color: transparent;
+            padding: 10px;
+            width: 100%;
+            z-index: 1000;
+            transition: top 0.3s ease-in-out; 
+        }
+        .navbar.hidden {
+            top: -60px; 
+        }
+        .navbar .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+            margin-right: auto;
+            margin-left: 20px;
+        }
+        .navbar .menu {
+            display: flex; 
+            gap: 20px;
+        }
+        .navbar .dropdown {
+            position: relative;
+        }
+        .navbar .dropdown a {
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            background-color: transparent;
+            transition: background 1s ease-in-out, color 0.3s ease; 
+            border-radius: 20px;
+        }
+        .navbar .dropdown a:hover {
+            background-color: #afa9a9;
+            border-radius: 20px;
+        }
+        .navbar .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #555;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+            display: flex;
+            flex-direction: row;
+            white-space: nowrap;
+        }
+        .navbar .dropdown-content a {
+            padding: 10px;
+            background-color: #444;
+            color: #fff;
+            text-decoration: none;
+            margin: 5px;
+        }
+        .navbar .dropdown-content a:hover {
+            background-color: #666;
+        }
+        .navbar .dropdown:hover .dropdown-content {
+            display: flex;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            animation: slideIn 2s ease-in-out;
+        } 
+        .card {
+            padding: 10px;
+            border: 2px solid #ddd;
+            margin-bottom: 20px;
+            border-radius: 20px;
+            transition: transform 0.3s ease-in-out;
+            font-family: 'Athiti', sans-serif;
+        }
+        .card h1 {
+            font-family: 'Athiti', sans-serif;
+            font-size: 17pt;
+        }
+        .card:hover {
+            transform: scale(1.05);
+        }
+        .menu-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    max-width: 1200px;
+    margin: auto;
+    position: relative; 
+    margin-top: -80px; 
+    z-index: 10; 
+}.menu-card {
+    height: 200px;
+    border-radius: 20px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.5s ease-in-out;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+}
+.menu-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+.menu-card:nth-child(1) {
+  background: 
+    linear-gradient(135deg, rgba(161, 140, 209, 0.6), rgba(251, 194, 235, 0.6)), 
+    url('picture/jz.jpg') 
+    center/cover no-repeat;
+}
+.menu-card:nth-child(2) {
+  background: 
+    linear-gradient(135deg, rgba(161, 140, 209, 0.6), rgba(251, 194, 235, 0.6)), 
+    url('picture/cate_condenser_0.webp') 
+    center/cover no-repeat;
+}
+.menu-card:nth-child(3) {
+  background: 
+    linear-gradient(135deg, rgba(161, 140, 209, 0.6), rgba(251, 194, 235, 0.6)), 
+    url('picture/ball-63527_640.webp') 
+    center/cover no-repeat;
+}
+.menu-card:nth-child(4) {
+  background: 
+    linear-gradient(135deg, rgba(161, 140, 209, 0.6), rgba(251, 194, 235, 0.6)), 
+    url('picture/atom.jpg') 
+    center/cover no-repeat;
+}
+.menu-card:nth-child(5) {
+    position: relative;
+    background: none;
+    overflow: hidden;
+}
+.menu-card:nth-child(5) video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+}
+.menu-card:nth-child(6) {
+    position: relative;
+    background: none;
+    overflow: hidden;
+}
+.menu-card:nth-child(6) video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+}
+.menu-card:nth-child(7) {
+    position: relative;
+    background: none;
+    overflow: hidden;
+}
+.menu-card:nth-child(7) video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+}
+.menu-card:nth-child(8) {
+    position: relative;
+    background: none;
+    overflow: hidden;
+}
+.menu-card:nth-child(8) video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+}
+        @keyframes popUp {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            animation: fadeIn 1.5s ease-in;
+        }
+        .card h2 {
+            background-image: url('math.jpg');
+            background-size: cover; 
+            background-position: center; 
+            color: rgb(22, 22, 22); 
+            padding: 20px;
+            border-radius: 10px;
+            font-size: 18pt;
+            text-align: center;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideIn {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @media (max-width: 768px) {
+    .menu-container {
+        grid-template-columns: repeat(2, 1fr); 
+    }
+}
+@media (max-width: 480px) {
+    .menu-container {
+        grid-template-columns: repeat(1, 1fr); 
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="picture\Screenshot 2025-01-24 162721-Photoroom.png" alt="Senior Math Logo" style="width: 300px; height: auto;">
+    </div>
+    <div class="navbar">
+                <div class="logo"><h2 id="current-time" style="color: white; 
+                margin-top: 10px; font-size: 20px;"></h2></div>
+                <div class="menu">
+            <div class="dropdown"><a href="#">Home</a></div>
+            <div class="dropdown"><a href="About.html">About</a></div>
+            <div class="dropdown"><a href="#">Search</a></div>
+            <div class="dropdown"><a href="#" id="login-link">Login</a></div> 
+        </div>
+    </div>
+    <div class="menu-container">
+        <div class="menu-card" onclick="location.href='Math.html'">Math</div>
+        <div class="menu-card" onclick="location.href='Electronic.html'">Electronic</div>
+        <div class="menu-card" onclick="location.href='Binary.html'">Binary</div>
+        <div class="menu-card" onclick="location.href='Physics.html'">Physics</div>
+        <div class="menu-card" onclick="location.href='Data.html'">
+            <video autoplay loop muted>
+                <source src="video\luminous.mp4" type="video/mp4">
+            </video>
+            <div class="menu-content">Data</div>
+        </div>
+        <div class="menu-card" onclick="location.href='Computer.html'">
+            <video autoplay loop muted>
+                <source src="video\computer.mp4" type="video/mp4">
+            </video>
+            <div class="menu-content">Computer</div>
+        </div>
+        <div class="menu-card" onclick="location.href='Computer.html'">
+            <video autoplay loop muted>
+                <source src="video\chemical.mp4" type="video/mp4">
+            </video>
+            <div class="menu-content"> Chemical </div>
+        </div>
+        <div class="menu-card" onclick="location.href='Computer.html'">
+            <video autoplay loop muted>
+                <source src="video\solar.mp4" type="video/mp4">
+            </video>
+            <div class="menu-content">Solar System</div>
+        </div>
+        </div>       
+    </div>
+    <div class="container">
+           <div class="card" style="background-image: url('picture/math.jpg'); background-size: cover; background-position: center; padding: 20px; border-radius: 10px; color: white;">
+            <h2>Calculator</h2>
+        </div>
+        
+        <div class="card" style="background-image: url('picture/istockphoto-1464562081-612x612 (1).jpg'); background-size: cover; background-position: center; padding: 20px; border-radius: 10px; color: white;">
+                <h1>เนื้อหาเสริม ระบบไมโครโปรเซสเซอร์</h1>
+             <ul>
+                <li>ไมโครคอนโทรลเลอร์</li>
+                <li>Arduino</li>
+                <li>สถาปัตยกรรม</li>
+            </ul>
+            </div>
+            <div class="card" style="background-image: url('picture/BeautyPlus-Image-Enhancer.jpg'); background-size: cover; background-position: center; padding: 20px; border-radius: 10px; color: white;">
+                <h1>แบบฝึกหัด คณิตศาสตร์</h1>
+                <ul>
+                    <li>ระดับมัธยมต้น ถึง ระดับมหาวิทยาลัย </li>
+                    <li>พร้อมเฉลย และ วิธีการทำ</li>
+                    <li>สถาปัตยกรรม</li>
+                </ul>
+            </div>
+            <div class="card" style="background-image: url('picture/el.jpg'); background-size: cover; background-position: center; padding: 20px; border-radius: 10px; color: white;">
+                <h1>แบบฝึกหัด ไฟฟ้าอิเล็คทรอนิกส์</h1>
+                <ul>
+                    <li> </li>
+                    <li> </li>
+                    <li> </li>
+                </ul>
+            </div>
+            <div class="card" style="background-image: url('picture/bi.jpg'); background-size: cover; background-position: center; padding: 20px; border-radius: 10px; color: white;">
+                <h1>แบบฝึกหัด ระบบเลขฐาน</h1>
+                <ul>
+                    <li> </li>
+                    <li> </li>
+                    <li> </li>
+                </ul>
+            </div>
+            <div class="card" style="background-image: url('picture/ph.jpg'); background-size: cover; background-position: center; padding: 20px; border-radius: 10px; color: rgb(255, 255, 255);">
+                <h1>แบบฝึกหัด ฟิสิกส์</h1>
+                <ul>
+                    <li> </li>
+                    <li> </li>
+                    <li> </li>
+                </ul>
+            </div>
+            <div class="card" style="background-image: url('picture/da.jpg'); background-size: cover; background-position: center; padding: 20px; border-radius: 10px; color: rgb(255, 255, 255);">
+                <h1>แบบฝึกหัด ระบบข้อมูล</h1>
+                <ul>
+                    <li> </li>
+                    <li> </li>
+                    <li> </li>
+                </ul>
+            </div>
+        <div class="card" style="background-image: url('picture/istockphoto-2154794622-612x612 (1).jpg'); background-size: cover; background-position: center; padding: 20px; border-radius: 10px; color: white;">
+            <h1>แบบฝึกหัด ระบบคอมพิวเตอร์</h1>
+            <ul>
+                <li>Web Design</li>
+                <li>Development</li>
+                <li>Marketing</li>
+            </ul>
+        </div>
+     <div class="card"><h1>หลักสูตรเพิ่มเติมจะมาในอนาคต!</h></ul></div>
+    </div>
+    </div>
+        <script>
+        let lastScrollTop = 0; 
+window.addEventListener("scroll", function() {
+    const scrollPosition = window.scrollY;
+    const navbar = document.querySelector(".navbar");
+    const dropdowns = document.querySelectorAll(".navbar .dropdown a");
+    const timeElement = document.getElementById("current-time"); 
+    if (scrollPosition > 480) {
+        navbar.classList.add("hidden"); 
+    } else {
+        navbar.classList.remove("hidden"); 
+    }
+    if (scrollPosition < lastScrollTop) {
+        navbar.classList.remove("hidden"); 
+        dropdowns.forEach(link => {
+            link.style.color = "rgba(200, 162, 255, 1)"; 
+        });
+        timeElement.style.color = "rgba(200, 162, 255, 1)";
+    } else {
+            dropdowns.forEach(link => {
+            link.style.color = "#fff";
+        });
+            timeElement.style.color = "#fff";
+    }
+       if (scrollPosition == 0) {
+            dropdowns.forEach(link => {
+            link.style.color = "#fff";
+        });
+            timeElement.style.color = "#fff";
+    }
+    lastScrollTop = scrollPosition <= 0 ? 0 : scrollPosition; 
+});
+    </script>
+    <script>
+        window.addEventListener("scroll", function() {
+            const scrollPosition = window.scrollY;
+            const header = document.querySelector(".header");
+            const offset = scrollPosition * 0.2;
+            header.style.backgroundPosition = `${offset}px center`;
+        });
+    </script>
+    <script>
+        document.querySelector('.dropdown a[href="#"]').addEventListener('click', function(event) {
+            event.preventDefault(); 
+            window.scrollTo({
+                top: 0, 
+                behavior: 'smooth' 
+            });
+        });
+    </script>
+    <script>
+        document.querySelector('#login-link').addEventListener('click', function(event) {
+            event.preventDefault(); 
+            window.scrollTo({
+                top: 0, 
+                behavior: 'smooth' 
+            });          
+            setTimeout(function() {
+                window.location.href = "Login.html"; 
+            }, 800); 
+        });
+            </script>
+    <script>
+        function updateTime() {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            const formattedTime = `${hours}:${minutes}:${seconds}`;
+            document.getElementById('current-time').textContent = formattedTime;
+        }
+             setInterval(updateTime, 1000);
+        updateTime();
+    </script>
+    <script>
+            document.getElementById('current-time').addEventListener('click', function() {
+            window.location.href = "Time.html"; 
+        });
+            function updateTime() {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            const formattedTime = `${hours}:${minutes}:${seconds}`;
+            document.getElementById('current-time').textContent = formattedTime;
+        }
+            setInterval(updateTime, 1000);
+        updateTime(); 
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const calculatorCard = document.querySelector(".card h2");
+                if (calculatorCard && calculatorCard.textContent === "Calculator") {
+                calculatorCard.parentElement.addEventListener("click", function() {
+                    const card = this;                
+                    card.style.position = "fixed";
+                    card.style.top = "0";
+                    card.style.left = "0";
+                    card.style.width = "100vw";
+                    card.style.height = "100vh";
+                    card.style.backgroundColor = "white";
+                    card.style.zIndex = "9999";
+                    card.style.display = "flex";
+                    card.style.justifyContent = "center";
+                    card.style.alignItems = "center";
+                    card.style.transition = "all 0.5s ease-in-out";
+                    card.style.fontSize = "2em";
+                     setTimeout(function() {
+                        window.location.href = "calculator.html";
+                    }, 800);
+                });
+            }
+        });
+    </script>
+</body>
+</html>

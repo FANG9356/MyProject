@@ -1,0 +1,262 @@
+@import url('https://fonts.googleapis.com/css2?family=Athiti:wght@300;400;700&display=swap');
+    body {
+      font-family: 'Athiti', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;  
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(50px);
+      animation: fadeIn 1s ease-out forwards;
+    }
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .fade-in {
+      opacity: 0;
+      transform: translateY(50px);
+      animation: fadeIn 1.3s ease-out forwards;
+    }
+    header {
+      padding: 20px;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex-grow: 1;
+    }
+    .profile-section {
+      display: flex;
+      align-items: center;
+      gap: 50px;
+      flex-direction: row;
+    }
+    .profile-container {
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      background-color: #ddd;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+    .profile-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .info {
+      text-align: left;
+      max-width: 400px;
+    }
+    .buttons {
+      display: flex;
+      gap: 15px;
+    }
+    .button {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      border: 0.5px solid rgb(94, 82, 82);
+      font-size: 14px;
+      cursor: pointer;
+      font-weight: bold;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    .resume {
+      background-color: #f4a600;
+    }
+    .projects {
+      background-color: #e63946;
+    }
+    .contact {
+      background-color: #66c7c7;
+    }
+    .button:hover {
+      background-color: white;
+      color: black;
+    }
+    .footer {
+      margin-top: auto;
+      padding: 30px;
+      background-color: #fff;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 14px;
+      border-top: 1px solid #ccc;
+    }
+    .footer div {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 20px;
+    }
+    .footer div p {
+      margin: 5px 0 0;
+      text-align: center;
+    }
+    .footer div div {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 50px;
+    }
+    .resume-section {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background-color: white;
+      display: flex;
+      align-items: flex-start; /* เปลี่ยนจาก center เป็น flex-start */
+      justify-content: center;
+      clip-path: circle(0% at 100% 100%);
+      transition: clip-path 1s ease-out;
+      z-index: 10;
+      overflow-y: auto; /* เพิ่ม overflow-y เพื่อให้สามารถเลื่อนได้ */
+    }
+    
+    .resume-section.active {
+      clip-path: circle(150% at 100% 100%);
+    }
+    .resume-section.active {
+      clip-path: circle(150% at 100% 100%);
+    }
+    .resume-content {
+      opacity: 0;
+      transition: opacity 0.5s ease 0.8s;
+    }
+    .resume-section.active .resume-content {
+      opacity: 1;
+    }
+    .projects-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .project-item {
+      background-color: #eee;
+      padding: 20px;
+      border-radius: 10px;
+      width: 200px;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .animate-text {
+  display: block; 
+  overflow: hidden;
+  white-space: nowrap;
+  width: 0; 
+  animation: typing 2s steps(30) forwards, blink 0.75s step-end infinite;
+}
+
+
+@keyframes typing {
+  to {
+    width: 100%; 
+  }
+}
+
+
+@keyframes blink {
+  50% {
+    border-color: transparent;
+  }
+}
+
+#contact-section .resume-content {
+  text-align: left;
+  margin: 0;
+  padding-left: 20px;
+}
+
+
+.animate-text {
+  margin-bottom: 10px;
+}
+
+
+.profile-image {
+  position: absolute; 
+  top: 20px; 
+  right: 20px; 
+  width: 100px; 
+  height: 100px; 
+}
+
+.profile-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; 
+  border-radius: 50%; 
+}
+.animate-text {
+  display: block; 
+  overflow: hidden;
+  white-space: nowrap;
+  width: 0;
+  animation: typing 2s steps(30) forwards, blink 0.75s step-end infinite;
+}
+
+
+@keyframes typing {
+  to {
+    width: 100%; 
+  }
+}
+
+
+@keyframes blink {
+  50% {
+    border-color: transparent;
+  }
+}
+
+
+#contact-section .resume-content {
+  text-align: left;
+  margin: 0;
+  padding-left: 20px;
+}
+
+
+.animate-text {
+  margin-bottom: 10px;
+}
+
+
+.profile-image {
+  position: absolute; 
+  top: 20px; 
+  right: 20px; 
+  width: 100px; 
+  height: 100px; 
+}
+
+.profile-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; 
+  border-radius: 50%;
+}

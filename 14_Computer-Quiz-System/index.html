@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>แบบทดสอบพื้นฐานคอมพิวเตอร์</title>
+    <link rel="icon" type="image/png" href="picture/bow.png">
+    <link rel="stylesheet" href="css/c.css">
+</head>
+<body>
+    <div id="student-info-container">
+        <input type="text" id="student-name" class="student-info-input" placeholder="ชื่อ-นามสกุล" required />
+        <input type="text" id="student-id" class="student-info-input" placeholder="เลขที่" required pattern="\d+" title="กรุณากรอกเฉพาะตัวเลข" />
+        <button id="submit-info-button" onclick="submitStudentInfo()">ยืนยัน</button>
+    </div>
+
+    <div class="form-container">
+        <h1>แบบทดสอบพื้นฐานคอมพิวเตอร์</h1>
+        <div id="quiz-container"></div>
+        <button class="submit-button" onclick="submitQuiz()">ส่งคำตอบ</button>
+    </div>
+
+    <div id="error-popup" class="popup">
+        กรุณากรอกข้อมูลให้ครบถ้วน และกรอกเลขที่เป็นตัวเลขเท่านั้น
+        <button onclick="closePopup()">ปิด</button>
+    </div>
+
+    <div id="popup" class="popup">
+        <p id="popup-message"></p>
+        <button onclick="closePopup()">ปิด</button>
+    </div>
+
+    <script src="script/s.js"></script>
+</body>
+</html>

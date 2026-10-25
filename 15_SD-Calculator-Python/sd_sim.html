@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>โปรแกรมคำนวณ แบบประเมินการใช้งาน</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: #ececec;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .window {
+      width: 780px;
+      background: #fbfbfb;
+      border-radius: 10px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.25), 0 0 0 1px rgba(0,0,0,0.1);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .titlebar {
+      height: 38px;
+      background: linear-gradient(180deg, #e8e8e8, #dcdcdc);
+      border-bottom: 1px solid #bcbcbc;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      user-select: none;
+    }
+    .traffic-lights {
+      display: flex;
+      gap: 8px;
+    }
+    .light {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+    .close { background: #ff5f56; border: 1px solid #e0443e; }
+    .minimize { background: #ffbd2e; border: 1px solid #dea123; }
+    .maximize { background: #27c93f; border: 1px solid #1aab29; }
+    .title {
+      flex: 1;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 500;
+      color: #4d4d4d;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin-right: 50px;
+    }
+    .title img { width: 16px; height: 16px; }
+    .app-body {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      background: #fbfbfb;
+    }
+    .control-row {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+    .control-row label {
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .control-row input {
+      width: 260px;
+      padding: 6px 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+      text-align: center;
+      outline: none;
+      background: #fff;
+    }
+    .btn {
+      padding: 7px 18px;
+      background: #007aff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+      transition: all 0.15s;
+      align-self: center;
+    }
+    .btn:hover { background: #0062cc; }
+    .inputs-container {
+      max-height: 220px;
+      overflow-y: auto;
+      border: 1px solid #e0e0e0;
+      background: white;
+      border-radius: 6px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .user-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .user-label {
+      width: 140px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #333;
+    }
+    .q-group {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-right: 8px;
+    }
+    .q-label {
+      font-size: 12px;
+      color: #666;
+    }
+    .q-input {
+      width: 44px;
+      padding: 4px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      text-align: center;
+      font-size: 13px;
+    }
+    .treeview {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1px solid #dcdcdc;
+      border-radius: 6px;
+      overflow: hidden;
+      font-size: 13px;
+      background: white;
+    }
+    .treeview th {
+      background: #f1f1f1;
+      border-bottom: 1px solid #dcdcdc;
+      padding: 8px 10px;
+      font-weight: 600;
+      color: #444;
+      text-align: center;
+    }
+    .treeview td {
+      border-bottom: 1px solid #eee;
+      padding: 7px 10px;
+      text-align: center;
+      color: #333;
+    }
+    .treeview tr:nth-child(even) { background: #fafafa; }
+  </style>
+</head>
+<body>
+  <div class="window">
+    <div class="titlebar">
+      <div class="traffic-lights">
+        <div class="light close"></div>
+        <div class="light minimize"></div>
+        <div class="light maximize"></div>
+      </div>
+      <div class="title">
+        <img src="sun.png" alt="icon">
+        <span>โปรแกรมคำนวณ แบบประเมินการใช้งาน</span>
+      </div>
+    </div>
+    <div class="app-body">
+      <div class="control-row">
+        <label>จำนวนผู้ทำแบบประเมิน:</label>
+        <input type="text" id="num_users" value="3">
+      </div>
+      <div class="control-row">
+        <label>จำนวนคำถาม:</label>
+        <input type="text" id="num_questions" value="4">
+      </div>
+      <button class="btn" id="btn-generate" onclick="generateFields()">สร้างช่องกรอกคะแนน</button>
+
+      <div class="inputs-container" id="inputs-box">
+        <!-- Generated dynamic inputs -->
+      </div>
+
+      <button class="btn" id="btn-calc" style="background:#28a745;" onclick="calculate()">คำนวณผลลัพธ์</button>
+
+      <table class="treeview">
+        <thead>
+          <tr>
+            <th>กลุ่มตัวอย่าง</th>
+            <th>จำนวนข้อที่ตอบ</th>
+            <th>คะแนนรวม</th>
+            <th>ค่าเฉลี่ย</th>
+            <th>S.D.</th>
+            <th>C.V. (%)</th>
+          </tr>
+        </thead>
+        <tbody id="tree-body">
+          <tr><td colspan="6" style="color:#999; padding:20px;">กดปุ่ม 'คำนวณผลลัพธ์' เพื่อแสดงสถิติ</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    function generateFields() {
+      const uCount = parseInt(document.getElementById('num_users').value) || 3;
+      const qCount = parseInt(document.getElementById('num_questions').value) || 4;
+      const box = document.getElementById('inputs-box');
+      box.innerHTML = '';
+
+      const preset = [
+        [5, 4, 5, 5],
+        [4, 4, 3, 4],
+        [5, 5, 5, 5]
+      ];
+
+      for (let i = 0; i < uCount; i++) {
+        const row = document.createElement('div');
+        row.className = 'user-row';
+        row.innerHTML = `<span class="user-label">ผู้ทำแบบประเมิน ${i + 1}:</span>`;
+        for (let j = 0; j < qCount; j++) {
+          const val = (preset[i] && preset[i][j]) !== undefined ? preset[i][j] : 5;
+          row.innerHTML += `
+            <div class="q-group">
+              <span class="q-label">ข้อ ${j + 1}:</span>
+              <input type="text" class="q-input" id="u_${i}_q_${j}" value="${val}">
+            </div>
+          `;
+        }
+        box.appendChild(row);
+      }
+    }
+
+    function calculate() {
+      const uCount = parseInt(document.getElementById('num_users').value) || 3;
+      const qCount = parseInt(document.getElementById('num_questions').value) || 4;
+      const tbody = document.getElementById('tree-body');
+      tbody.innerHTML = '';
+
+      for (let i = 0; i < uCount; i++) {
+        const ratings = [];
+        for (let j = 0; j < qCount; j++) {
+          const el = document.getElementById(`u_${i}_q_${j}`);
+          ratings.push(parseFloat(el ? el.value : 5) || 0);
+        }
+        const sum = ratings.reduce((a, b) => a + b, 0);
+        const mean = sum / qCount;
+        const variance = ratings.reduce((a, b) => a + Math.pow(b - mean, 2), 0) / qCount;
+        const sd = Math.sqrt(variance);
+        const cv = mean > 0 ? (sd / mean) * 100 : 0;
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${i + 1}</td>
+          <td>${qCount}</td>
+          <td>${sum.toFixed(1)}</td>
+          <td>${mean.toFixed(2)}</td>
+          <td>${sd.toFixed(2)}</td>
+          <td>${cv.toFixed(2)}%</td>
+        `;
+        tbody.appendChild(tr);
+      }
+    }
+
+    generateFields();
+  </script>
+</body>
+</html>

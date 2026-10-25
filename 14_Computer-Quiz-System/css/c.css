@@ -1,0 +1,218 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100vh;
+    scroll-behavior: smooth;
+}
+
+body, html {
+    user-select: none; 
+    -webkit-user-select: none; 
+    -moz-user-select: none; 
+    -ms-user-select: none; 
+}
+
+
+* {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+#student-info-container {
+    position: fixed;
+    top: 10px; 
+    left: 10px; 
+    background-color: white;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    gap: 10px;
+    z-index: 1001; 
+    width: auto;
+    transition: all 0.3s ease; 
+    
+}
+
+.student-info-input {
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 120px;
+   
+}
+
+#submit-info-button {
+    padding: 8px 12px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+#submit-info-button:hover {
+    background-color: #45a049;
+}
+
+.form-container {
+    background-color: white;
+    width: 100%;
+    max-width: 600px;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    user-select: none; 
+    -webkit-user-select: none; 
+    -moz-user-select: none; 
+}
+
+h1 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 30px;
+    color: #202124;
+}
+
+.question-container {
+    background-color: #ffffff;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.question {
+    font-size: 18px;
+    margin-bottom: 15px;
+    color: #202124;
+}
+
+.options {
+    list-style-type: none;
+    padding: 0;
+}
+
+.options li {
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin: 8px 0;
+    padding: 12px;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.options li:hover {
+    background-color: #e0e0e0;
+    transform: scale(1.02);
+}
+
+.options li.selected {
+    background-color: #c8e6c9;
+    border-color: #388e3c;
+}
+
+.options li.selected::before {
+    content: "●";
+    color: green;
+    font-size: 20px;
+    margin-right: 10px;
+}
+
+.submit-button {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s;
+}
+
+.submit-button:hover {
+    background-color: #45a049;
+}
+
+
+
+.popup {
+    display: none; 
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #353030; 
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    font-size: 18px;
+    text-align: center;
+}
+
+
+.popup button {
+    background-color: #ffffff;
+    color: #000000;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 15px;
+}
+
+.popup button:hover {
+    background-color: #f1e2e1;
+    color: #353030;
+}
+
+
+#info-box {
+    font-size: 14px;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 1001;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#quiz-container, #question, #options {
+    user-select: none; 
+    -webkit-user-select: none; 
+    -moz-user-select: none; 
+}
+
+input, textarea {
+    user-select: none; 
+    -webkit-user-select: none; 
+    -moz-user-select: none; 
+    -ms-user-select: none; 
+    pointer-events: none; 
+}
+
+
+input[type="text"]:not([readonly]), textarea {
+    pointer-events: auto; 
+}

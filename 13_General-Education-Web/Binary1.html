@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Senior Math</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/png" href="picture/10766476.png">
+    <style>
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .animate-fade-in-up {
+            animation: fadeInUp 1s ease-out;
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-900 flex justify-center items-center min-h-screen">
+    <a href="Binary.html" class="absolute top-4 left-4">
+        <img src="picture\1502574.webp" alt="Logo" class="w-16 h-16">
+    </a>
+    <div class="bg-gray-300 bg-opacity-20 backdrop-blur-lg p-6 rounded-xl shadow-lg w-full max-w-md border border-gray-400 animate-fade-in-up">
+        <h2 class="text-2xl font-bold text-center mb-4 text-gray-700">Converter</h2>
+        <label class="block mb-2 text-gray-700">Enter Number:</label>
+        <input type="text" id="inputNumber" class="w-full p-2 rounded-md bg-gray-200 text-gray-900 mb-4" placeholder="Enter value">
+        <label class="block mb-2 text-gray-700">Select Base:</label>
+        <select id="baseSelection" class="w-full p-2 rounded-md bg-gray-200 text-gray-900 mb-4">
+            <option value="2">Binary (Base 2)</option>
+            <option value="8">Octal (Base 8)</option>
+            <option value="10" selected>Decimal (Base 10)</option>
+            <option value="16">Hexadecimal (Base 16)</option>
+        </select>
+        <button onclick="convertBase()" class="w-full p-2 bg-gray-600 hover:bg-gray-500 rounded-md font-semibold text-white">Convert</button>
+        <h3 class="text-xl font-bold mt-4 text-gray-700">Results:</h3>
+        <p class="mt-2"><strong>Binary:</strong> <span id="binaryResult" class="text-green-500"></span></p>
+        <p><strong>Octal:</strong> <span id="octalResult" class="text-yellow-500"></span></p>
+        <p><strong>Decimal:</strong> <span id="decimalResult" class="text-blue-500"></span></p>
+        <p><strong>Hexadecimal:</strong> <span id="hexResult" class="text-red-500"></span></p>
+    </div>
+    <script>
+        function convertBase() {
+            let input = document.getElementById('inputNumber').value.trim();
+            let base = parseInt(document.getElementById('baseSelection').value);
+            if (!input) {
+                alert("Please enter a number!");
+                return;
+            }
+            let decimalValue;
+            try {
+                decimalValue = parseInt(input, base);
+                if (isNaN(decimalValue)) throw new Error();
+            } catch (e) {
+                alert("Invalid input for the selected base!");
+                return;
+            }
+            document.getElementById('binaryResult').textContent = decimalValue.toString(2);
+            document.getElementById('octalResult').textContent = decimalValue.toString(8);
+            document.getElementById('decimalResult').textContent = decimalValue.toString(10);
+            document.getElementById('hexResult').textContent = decimalValue.toString(16).toUpperCase();
+        }
+    </script>
+</body>
+</html>

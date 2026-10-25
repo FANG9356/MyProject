@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>Neo Web Chat</title>
+  <style>
+    :root {
+      --primary: #000000;
+      --secondary: #ffffff;
+      --bg: #f4f4f0;
+      --accent: #ff2a5f;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Courier New', monospace;
+    }
+    body {
+      background-color: var(--bg);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .container {
+      width: 900px;
+      height: 620px;
+      border: 2px solid var(--primary);
+      background-color: var(--secondary);
+      box-shadow: 8px 8px 0px var(--primary);
+      position: relative;
+      border-radius: 8px;
+      display: flex;
+      overflow: hidden;
+    }
+    .chat-list-sidebar {
+      width: 280px;
+      border-right: 2px solid var(--primary);
+      padding: 20px;
+      background-color: #fafafa;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .sidebar-title {
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: 1px;
+    }
+    .current-user {
+      padding: 10px 12px;
+      border: 2px solid var(--primary);
+      box-shadow: 3px 3px 0px var(--primary);
+      background: #fff;
+      font-weight: bold;
+      font-size: 13px;
+    }
+    .chat-list {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      overflow-y: auto;
+    }
+    .chat-item {
+      padding: 12px;
+      border: 2px solid var(--primary);
+      cursor: pointer;
+      background: #fff;
+      font-size: 13px;
+      font-weight: bold;
+      transition: all 0.15s;
+    }
+    .chat-item:hover, .chat-item.active {
+      box-shadow: 4px 4px 0px var(--primary);
+      transform: translate(-2px, -2px);
+      background: #eef7ff;
+    }
+    .mode-btn {
+      padding: 10px;
+      border: 2px solid var(--primary);
+      background: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 12px;
+      transition: all 0.15s;
+    }
+    .mode-btn:hover {
+      background: #000;
+      color: #fff;
+      box-shadow: 3px 3px 0px var(--accent);
+    }
+    .chat-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+    }
+    .chat-header {
+      padding: 16px 20px;
+      border-bottom: 2px solid var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #fff;
+    }
+    .header-name {
+      font-size: 16px;
+      font-weight: bold;
+    }
+    .header-status {
+      font-size: 12px;
+      color: #27ae60;
+      font-weight: bold;
+    }
+    .messages-container {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      background: #fdfdfd;
+    }
+    .msg-bubble {
+      padding: 12px 16px;
+      max-width: 75%;
+      border: 2px solid var(--primary);
+      font-size: 13px;
+      line-height: 1.4;
+      position: relative;
+    }
+    .msg-received {
+      align-self: flex-start;
+      background: #fff;
+      box-shadow: 4px 4px 0px var(--primary);
+    }
+    .msg-sent {
+      align-self: flex-end;
+      background: #000;
+      color: #fff;
+      box-shadow: 4px 4px 0px rgba(0,0,0,0.3);
+    }
+    .msg-time {
+      font-size: 10px;
+      margin-top: 6px;
+      opacity: 0.7;
+      text-align: right;
+    }
+    .input-area {
+      padding: 16px 20px;
+      border-top: 2px solid var(--primary);
+      display: flex;
+      gap: 10px;
+      background: #fff;
+    }
+    .input-box {
+      flex: 1;
+      padding: 12px 16px;
+      border: 2px solid var(--primary);
+      font-size: 14px;
+      outline: none;
+      background: #fff;
+    }
+    .input-box:focus {
+      box-shadow: 3px 3px 0px var(--primary);
+    }
+    .send-btn {
+      padding: 12px 24px;
+      border: 2px solid var(--primary);
+      background: #000;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.15s;
+    }
+    .send-btn:hover {
+      background: #fff;
+      color: #000;
+      box-shadow: 4px 4px 0px var(--primary);
+      transform: translate(-2px, -2px);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="chat-list-sidebar">
+      <div class="sidebar-title">NEO CHATS</div>
+      <div class="current-user">User: Phakhaphon (Online)</div>
+      <div class="chat-list">
+        <div class="chat-item active" id="chat-1" onclick="switchContact('Nong Fang (Peer)')">
+          > Nong Fang (Peer)
+        </div>
+        <div class="chat-item" id="chat-2" onclick="switchContact('Dev Channel')">
+          > Dev Channel
+        </div>
+        <div class="chat-item" id="chat-3" onclick="switchContact('ESP32 Mesh Node')">
+          > ESP32 Mesh Node
+        </div>
+      </div>
+      <button class="mode-btn" id="btn-mode" onclick="toggleMode()">Mode: Wi-Fi (Firebase)</button>
+    </div>
+
+    <div class="chat-area">
+      <div class="chat-header">
+        <span class="header-name" id="contact-name">Nong Fang (Peer)</span>
+        <span class="header-status" id="mode-status">Online (Encrypted)</span>
+      </div>
+
+      <div class="messages-container" id="msgs">
+        <div class="msg-bubble msg-received">
+          สวัสดีครับ ระบบแชทพร้อมเชื่อมต่อแล้ว
+          <div class="msg-time">10:14 AM</div>
+        </div>
+        <div class="msg-bubble msg-sent">
+          เชื่อมต่อสำเร็จ ทดสอบส่งข้อความผ่าน Neo-Brutalist Web Chat
+          <div class="msg-time">10:14 AM</div>
+        </div>
+      </div>
+
+      <div class="input-area">
+        <input type="text" class="input-box" id="msg-input" placeholder="Type message in monospace...">
+        <button class="send-btn" id="btn-send" onclick="sendMsg()">SEND</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function sendMsg() {
+      const input = document.getElementById('msg-input');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const box = document.getElementById('msgs');
+      const bubble = document.createElement('div');
+      bubble.className = 'msg-bubble msg-sent';
+      bubble.innerHTML = `${text}<div class="msg-time">10:15 AM</div>`;
+      box.appendChild(bubble);
+      input.value = '';
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function toggleMode() {
+      const btn = document.getElementById('btn-mode');
+      const status = document.getElementById('mode-status');
+      if (btn.innerText.includes('Wi-Fi')) {
+        btn.innerText = 'Mode: BLE Mesh (Offline)';
+        btn.style.background = '#28a745';
+        btn.style.color = '#fff';
+        status.innerText = 'Connected: ESP32_Chat_App (BLE)';
+        status.style.color = '#007aff';
+      } else {
+        btn.innerText = 'Mode: Wi-Fi (Firebase)';
+        btn.style.background = '#fff';
+        btn.style.color = '#000';
+        status.innerText = 'Online (Encrypted)';
+        status.style.color = '#27ae60';
+      }
+    }
+
+    function switchContact(name) {
+      document.getElementById('contact-name').innerText = name;
+      document.querySelectorAll('.chat-item').forEach(el => el.classList.remove('active'));
+      event.currentTarget.classList.add('active');
+    }
+  </script>
+</body>
+</html>

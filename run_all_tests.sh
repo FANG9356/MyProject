@@ -3,7 +3,7 @@ set -e
 
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 echo "================================================================================"
-echo "EXECUTING AUTOMATED TEST SUITE FOR ALL 10 PROJECTS"
+echo "EXECUTING AUTOMATED TEST SUITE FOR ALL 18 PROJECTS"
 echo "================================================================================"
 
 pass_count=0
@@ -65,7 +65,39 @@ run_test "10" "Music Shuffle AI Voice Desktop Player" \
     "\"/Volumes/FangB/tip/.venv/bin/python3\" test_simulation.py" \
     "$DIR/10_Music-Shuffle-AI"
 
+run_test "11" "Bottle & Can Automated Sorter" \
+    "python3 test_simulation.py" \
+    "$DIR/11_Bottle-Can-Sorter"
+
+run_test "12" "Smart Plant Watering Remote System" \
+    "python3 test_simulation.py" \
+    "$DIR/12_Smart-Plant-Watering"
+
+run_test "13" "General Education Web Portal" \
+    "python3 test_simulation.py" \
+    "$DIR/13_General-Education-Web"
+
+run_test "14" "Computer Fundamentals Quiz System" \
+    "python3 test_simulation.py" \
+    "$DIR/14_Computer-Quiz-System"
+
+run_test "15" "SD Calculator & Statistics App" \
+    "python3 test_simulation.py" \
+    "$DIR/15_SD-Calculator-Python"
+
+run_test "16" "Duplicate File Cleaner Utility" \
+    "python3 test_simulation.py" \
+    "$DIR/16_Duplicate-File-Cleaner"
+
+run_test "17" "GPA & GPAX Academic Grade Calculator" \
+    "python3 test_simulation.py" \
+    "$DIR/17_Grade-Calculator-Python"
+
+run_test "18" "Neo Web Chat & Offline BLE Mesh" \
+    "python3 test_simulation.py" \
+    "$DIR/18_Neo-Web-Chat"
+
 echo ""
 echo "================================================================================"
-echo "FINAL TEST REPORT: $pass_count / 10 PROJECTS PASSED ALL TESTS SUCCESSFULLY"
+echo "FINAL TEST REPORT: $pass_count / 18 PROJECTS PASSED ALL TESTS SUCCESSFULLY"
 echo "================================================================================"

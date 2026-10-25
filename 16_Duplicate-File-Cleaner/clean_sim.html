@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>โปรแกรมค้นหาไฟล์ซ้ำ</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: #121212;
+      color: #e0e0e0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .window {
+      width: 780px;
+      background: #242424;
+      border-radius: 10px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.08);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .titlebar {
+      height: 38px;
+      background: #1e1e1e;
+      border-bottom: 1px solid #333;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      user-select: none;
+    }
+    .traffic-lights {
+      display: flex;
+      gap: 8px;
+    }
+    .light {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+    .close { background: #ff5f56; border: 1px solid #e0443e; }
+    .minimize { background: #ffbd2e; border: 1px solid #dea123; }
+    .maximize { background: #27c93f; border: 1px solid #1aab29; }
+    .title {
+      flex: 1;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 500;
+      color: #aaa;
+      margin-right: 50px;
+    }
+    .app-body {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .header-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: #fff;
+      text-align: center;
+    }
+    .folder-box {
+      background: #2b2b2b;
+      border-radius: 8px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .folder-label { font-size: 13px; color: #bbb; white-space: nowrap; }
+    .folder-path {
+      flex: 1;
+      font-size: 13px;
+      color: #4da6ff;
+      background: #1f1f1f;
+      padding: 6px 10px;
+      border-radius: 4px;
+      border: 1px solid #3a3a3a;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .btn {
+      padding: 7px 16px;
+      background: #1f6aa5;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .btn:hover { background: #144870; }
+    .btn-scan {
+      align-self: center;
+      padding: 8px 30px;
+      font-size: 14px;
+    }
+    .btn-delete {
+      background: #d32f2f;
+    }
+    .btn-delete:hover { background: #9a0007; }
+    .results-container {
+      background: #1e1e1e;
+      border-radius: 8px;
+      border: 1px solid #333;
+      padding: 16px;
+      min-height: 220px;
+      max-height: 280px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .group-card {
+      background: #282828;
+      border-radius: 6px;
+      padding: 12px 14px;
+      border-left: 3px solid #1f6aa5;
+    }
+    .group-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .file-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 4px 0;
+      font-size: 13px;
+      color: #ccc;
+      cursor: pointer;
+    }
+    .file-item input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      accent-color: #1f6aa5;
+      cursor: pointer;
+    }
+    .footer-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 8px;
+      border-top: 1px solid #333;
+    }
+    .status-text {
+      font-size: 13px;
+      color: #88c057;
+    }
+  </style>
+</head>
+<body>
+  <div class="window">
+    <div class="titlebar">
+      <div class="traffic-lights">
+        <div class="light close"></div>
+        <div class="light minimize"></div>
+        <div class="light maximize"></div>
+      </div>
+      <div class="title">โปรแกรมลบไฟล์ซ้ำ</div>
+    </div>
+    <div class="app-body">
+      <div class="header-title">โปรแกรมค้นหาไฟล์ซ้ำ</div>
+
+      <div class="folder-box">
+        <span class="folder-label">เลือกโฟลเดอร์:</span>
+        <div class="folder-path" id="folder-display">/Users/Phakhaphon/Documents/ProjectFiles</div>
+        <button class="btn" id="btn-browse" onclick="browse()">เรียกดู...</button>
+      </div>
+
+      <button class="btn btn-scan" id="btn-scan" onclick="startScan()">เริ่มสแกน</button>
+
+      <div class="results-container" id="results-box">
+        <div style="text-align:center; color:#666; padding:40px;">กดปุ่ม 'เริ่มสแกน' เพื่อค้นหาไฟล์ซ้ำ</div>
+      </div>
+
+      <div class="footer-bar">
+        <div class="status-text" id="status-label">พร้อมทำงาน</div>
+        <button class="btn btn-delete" id="btn-delete" onclick="deleteSelected()">ลบไฟล์ที่เลือก</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function browse() {
+      document.getElementById('folder-display').innerText = '/Users/Phakhaphon/Documents/WorkFolder';
+    }
+
+    function startScan() {
+      const status = document.getElementById('status-label');
+      status.innerText = 'กำลังสแกน... กรุณารอสักครู่';
+      status.style.color = '#ffaa00';
+
+      setTimeout(() => {
+        const box = document.getElementById('results-box');
+        box.innerHTML = `
+          <div class="group-card" id="grp1">
+            <div class="group-title">กลุ่มที่ 1 (Hash: a3f89e21)</div>
+            <label class="file-item">
+              <input type="checkbox" id="chk1">
+              <span>report_final_v2.docx (1.2 MB)</span>
+            </label>
+            <label class="file-item">
+              <input type="checkbox" id="chk2" checked>
+              <span style="color:#ff7875;">report_final_copy.docx (1.2 MB) [ตรวจพบว่าซ้ำ]</span>
+            </label>
+          </div>
+          <div class="group-card" id="grp2">
+            <div class="group-title">กลุ่มที่ 2 (Hash: e7b14c99)</div>
+            <label class="file-item">
+              <input type="checkbox" id="chk3">
+              <span>diagram_circuit.png (840 KB)</span>
+            </label>
+            <label class="file-item">
+              <input type="checkbox" id="chk4" checked>
+              <span style="color:#ff7875;">diagram_circuit_backup.png (840 KB) [ตรวจพบว่าซ้ำ]</span>
+            </label>
+          </div>
+        `;
+        status.innerText = 'พบ 2 กลุ่มไฟล์ซ้ำ (รวมขนาดไฟล์ซ้ำ 2.04 MB)';
+        status.style.color = '#88c057';
+      }, 500);
+    }
+
+    function deleteSelected() {
+      const chk2 = document.getElementById('chk2');
+      const chk4 = document.getElementById('chk4');
+      if (chk2 && chk2.parentElement) chk2.parentElement.remove();
+      if (chk4 && chk4.parentElement) chk4.parentElement.remove();
+
+      const status = document.getElementById('status-label');
+      status.innerText = 'ลบไฟล์ซ้ำสำเร็จ 2 ไฟล์ ประหยัดพื้นที่ได้ 2.04 MB';
+      status.style.color = '#4da6ff';
+    }
+  </script>
+</body>
+</html>

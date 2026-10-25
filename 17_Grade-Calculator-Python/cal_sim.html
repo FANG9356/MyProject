@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>โปรแกรมคำนวณเกรด GPA & GPAX</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: #121212;
+      color: #e0e0e0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .window {
+      width: 620px;
+      background: #242424;
+      border-radius: 10px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.08);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .titlebar {
+      height: 38px;
+      background: #1e1e1e;
+      border-bottom: 1px solid #333;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      user-select: none;
+    }
+    .traffic-lights {
+      display: flex;
+      gap: 8px;
+    }
+    .light {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+    .close { background: #ff5f56; border: 1px solid #e0443e; }
+    .minimize { background: #ffbd2e; border: 1px solid #dea123; }
+    .maximize { background: #27c93f; border: 1px solid #1aab29; }
+    .title {
+      flex: 1;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 500;
+      color: #aaa;
+      margin-right: 50px;
+    }
+    .app-body {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      max-height: 720px;
+      overflow-y: auto;
+    }
+    .card {
+      background: #2b2b2b;
+      border-radius: 8px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .card-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: #fff;
+      text-align: center;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 8px;
+      align-items: center;
+      font-size: 13px;
+    }
+    .form-grid label { color: #bbb; }
+    .form-grid input {
+      background: #1e1e1e;
+      border: 1px solid #3a3a3a;
+      border-radius: 4px;
+      padding: 6px 10px;
+      color: #fff;
+      font-size: 13px;
+      outline: none;
+    }
+    .btn {
+      padding: 7px 16px;
+      background: #1f6aa5;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      align-self: center;
+      transition: background 0.15s;
+    }
+    .btn:hover { background: #144870; }
+    .subject-list {
+      background: #1e1e1e;
+      border: 1px solid #333;
+      border-radius: 6px;
+      padding: 8px 12px;
+      min-height: 60px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 13px;
+    }
+    .subject-item {
+      color: #72c02c;
+      display: flex;
+      justify-content: space-between;
+    }
+    .result-badge {
+      text-align: center;
+      font-size: 16px;
+      font-weight: 700;
+      color: #4da6ff;
+      padding: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="window">
+    <div class="titlebar">
+      <div class="traffic-lights">
+        <div class="light close"></div>
+        <div class="light minimize"></div>
+        <div class="light maximize"></div>
+      </div>
+      <div class="title">โปรแกรมคำนวณเกรด GPA & GPAX</div>
+    </div>
+    <div class="app-body">
+      <!-- GPA Section -->
+      <div class="card">
+        <div class="card-title">คำนวณเกรด GPA รายเทอม</div>
+        <div class="form-grid">
+          <label>ชื่อวิชา:</label>
+          <input type="text" id="sub_name" value="แคลคูลัส 1">
+          <label>หน่วยกิต:</label>
+          <input type="text" id="sub_credit" value="3.0">
+          <label>คะแนนที่ได้รับ (0-100):</label>
+          <input type="text" id="sub_score" value="85">
+        </div>
+        <button class="btn" id="btn-add-sub" onclick="addSubject()">เพิ่มวิชา</button>
+
+        <div class="subject-list" id="sub-box">
+          <div class="subject-item">
+            <span>แคลคูลัส 1 (3.0 หน่วยกิต)</span>
+            <span>เกรด: A (4.0)</span>
+          </div>
+        </div>
+
+        <button class="btn" id="btn-calc-gpa" onclick="calcGPA()">คำนวณ GPA เทอมนี้</button>
+        <div class="result-badge" id="gpa-result">GPA เทอมนี้: -</div>
+      </div>
+
+      <!-- GPAX Section -->
+      <div class="card">
+        <div class="card-title">คำนวณเกรด GPAX สะสม</div>
+        <div class="form-grid">
+          <label>GPA ที่ผ่านมา:</label>
+          <input type="text" id="prev_gpa" value="3.20">
+          <label>หน่วยกิตสะสมที่ผ่านมา:</label>
+          <input type="text" id="prev_credit" value="30.0">
+        </div>
+        <button class="btn" id="btn-calc-gpax" onclick="calcGPAX()">คำนวณ GPAX</button>
+        <div class="result-badge" id="gpax-result">GPAX สะสม: -</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let subjects = [
+      { name: "แคลคูลัส 1", credit: 3.0, score: 85, grade: "A", gp: 4.0 }
+    ];
+
+    function addSubject() {
+      const name = document.getElementById('sub_name').value;
+      const credit = parseFloat(document.getElementById('sub_credit').value) || 3.0;
+      const score = parseFloat(document.getElementById('sub_score').value) || 75;
+      
+      let grade = "B+";
+      let gp = 3.5;
+      if (score >= 80) { grade = "A"; gp = 4.0; }
+      else if (score >= 75) { grade = "B+"; gp = 3.5; }
+      else if (score >= 70) { grade = "B"; gp = 3.0; }
+
+      subjects.push({ name, credit, score, grade, gp });
+      
+      const box = document.getElementById('sub-box');
+      const item = document.createElement('div');
+      item.className = 'subject-item';
+      item.innerHTML = `<span>${name} (${credit.toFixed(1)} หน่วยกิต)</span><span>เกรด: ${grade} (${gp.toFixed(1)})</span>`;
+      box.appendChild(item);
+    }
+
+    function calcGPA() {
+      const totalCredit = subjects.reduce((a, b) => a + b.credit, 0);
+      const totalPoints = subjects.reduce((a, b) => a + (b.credit * b.gp), 0);
+      const gpa = totalCredit > 0 ? (totalPoints / totalCredit) : 0;
+      document.getElementById('gpa-result').innerText = `GPA เทอมนี้: ${gpa.toFixed(2)}`;
+    }
+
+    function calcGPAX() {
+      const prevG = parseFloat(document.getElementById('prev_gpa').value) || 3.20;
+      const prevC = parseFloat(document.getElementById('prev_credit').value) || 30.0;
+      const curC = subjects.reduce((a, b) => a + b.credit, 0);
+      const curP = subjects.reduce((a, b) => a + (b.credit * b.gp), 0);
+
+      const num = (prevG * prevC) + curP;
+      const den = prevC + curC;
+      const gpax = den > 0 ? (num / den) : 0;
+      document.getElementById('gpax-result').innerText = `GPAX สะสม: ${gpax.toFixed(2)}`;
+    }
+  </script>
+</body>
+</html>

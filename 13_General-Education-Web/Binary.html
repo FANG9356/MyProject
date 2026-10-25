@@ -1,0 +1,349 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Athiti:wght@300;400;600&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seniormath Binary</title>
+    <link rel="icon" type="image/png" href="picture/10766476.png">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .header {
+            background-image: url('picture/mainbackground.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: scroll;
+            color: #fff;
+            padding: 100px 20px;
+            text-align: center;
+            animation: fadeIn 2s ease-in-out;
+            transition: background-position 0.5s ease;
+        }
+        .navbar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            background-color: transparent;
+            padding: 10px;
+            width: 100%;
+            z-index: 1000;
+            transition: top 0.3s ease-in-out; 
+        }
+        .navbar.hidden {
+            top: -60px; 
+        }
+        .navbar .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+            margin-right: auto;
+            margin-left: 20px;
+        }
+        .navbar .menu {
+            display: flex;
+            gap: 20px;
+        }
+        .navbar .dropdown {
+            position: relative;
+        }
+
+        .navbar .dropdown a {
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            background-color: transparent;
+            transition: background 1s ease-in-out, color 0.3s ease; 
+            border-radius: 20px;
+        }
+        .navbar .dropdown a:hover {
+            background-color: #afa9a9;
+            border-radius: 20px;
+        }
+        .navbar .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #555;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+            display: flex;
+            flex-direction: row;
+            white-space: nowrap;
+        }
+        .navbar .dropdown-content a {
+            padding: 10px;
+            background-color: #444;
+            color: #fff;
+            text-decoration: none;
+            margin: 5px;
+        }
+        .navbar .dropdown-content a:hover {
+            background-color: #666;
+        }
+        .navbar .dropdown:hover .dropdown-content {
+            display: flex;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            animation: slideIn 2s ease-in-out;
+        }
+        .card {
+            padding: 10px;
+            border: 2px solid #ddd;
+            margin-bottom: 20px;
+            border-radius: 20px;
+            transition: transform 0.3s ease-in-out;
+            font-family: 'Athiti', sans-serif;
+        }
+        .card h1 {
+            font-family: 'Athiti', sans-serif;
+            font-size: 17pt;
+        }
+        .card:hover {
+            transform: scale(1.05);
+        }
+        .menu-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    max-width: 1200px;
+    margin: auto;
+    position: relative; 
+    margin-top: -80px; 
+    z-index: 10;
+}.menu-card {
+    height: 200px;
+    border-radius: 20px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.5s ease-in-out;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+}
+.menu-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+        @keyframes popUp {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            animation: fadeIn 1.5s ease-in;
+        }
+        .card h2 {
+            font-size: 18pt;
+            text-align: center;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideIn {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="picture\Screenshot 2025-01-24 162721-Photoroom.png" alt="Senior Math Logo" style="width: 300px; height: auto;">
+    </div>
+    <div class="navbar">
+                <div class="logo"><h2 id="current-time" style="color: white; 
+                margin-top: 10px; font-size: 20px;"></h2></div>
+                <div class="menu">
+            <div class="dropdown"><a href="Seniormath.html">Home</a></div>
+            <div class="dropdown"><a href="About.html">About</a></div>
+            <div class="dropdown"><a href="#">Search</a></div>
+            <div class="dropdown"><a href="#" id="login-link">Login</a></div> 
+        </div>
+    </div>
+    <div class="container">
+        <div class="card"><h1> ประวัติ และ ความเป็นมาของเลขฐาน</h1><ul>
+            <li>การพัฒนาระบบตัวเลขตั้งแต่อดีตถึงปัจจุบัน</li>
+            <li>ระบบตัวเลขของอียิปต์ บาบิโลน และโรมัน </li>
+            <li>ระบบเลขฐานสิบ (Decimal) และการใช้ในชีวิตประจำวัน </li>
+            <li> การพัฒนาระบบเลขฐานสองและเลขฐานอื่น ๆ ในคอมพิวเตอร์  </li></ul></div>
+        <div class="card"><h1>พื้นฐานของระบบเลขฐาน</h1>
+            <ul><li>ความหมายของเลขฐาน (Base or Radix) </li>
+                <li>ประเภทของเลขฐานที่นิยมใช้ </li>
+                <li>วิธีการแทนค่าของแต่ละเลขฐาน </li></ul></div>
+        <div class="card"><h1>สมบัติของเลขฐาน</h1><ul>
+            <li>เลขฐานสอง (Binary - ฐาน 2)</li>
+            <li>เลขฐานแปด (Octal - ฐาน 8)  </li>
+            <li>เลขฐานสิบ (Decimal - ฐาน 10)  </li>
+            <li>เลขฐานสิบหก (Hexadecimal - ฐาน 16) </li>
+            <li>การคำนวณค่าของเลขฐานต่าง ๆ   </li>
+            <li>ความสัมพันธ์ระหว่างเลขฐาน   </li></ul></div>
+        <div class="card"><h1>การแปลงเลขฐาน</h1><ul>
+            <li>การแปลงจากเลขฐานสองเป็นเลขฐานสิบ </li>
+            <li>การแปลงจากเลขฐานสิบเป็นเลขฐานสอง โดยใช้การหารซ้ำ  </li>
+            <li>การแปลงระหว่างเลขฐานสอง แปด และสิบหก  </li>
+            <li>เทคนิคการใช้กลุ่มสามหลักและสี่หลักในการแปลง    </li></ul></div>
+        <div class="card"><h1>การคำนวณในระบบเลขฐาน</h2>
+            <ul><li>การบวกและลบเลขฐานสอง  </li>
+                <li>การคูณและหารในเลขฐานต่าง ๆ  </li>
+                <li>ระบบเลขฐานเชิงลบ  </li>
+                <li>การบวก ลบ คูณ หาร เลขฐานในคอมพิวเตอร์  </li>
+                <li>การคำนวณเลขฐานในการสื่อสารข้อมูล  </li>
+                <li>บิต (Bit) และไบต์ (Byte)  </li>
+                <li>ระบบเลขฐานที่ใช้ในคอมพิวเตอร์ </li></ul></div>
+                <div class="card"><h1>การใช้งานเลขฐานในคอมพิวเตอร์</h2>
+                    <ul><li>เทคนิคการใช้พาริตี้บิตในการตรวจสอบความผิดพลาด </li>
+                        <li>การใช้เลขฐานในวงจรดิจิทัล </li>
+                        <li>เลขฐานและตรรกศาสตร์บูลีน </li>
+                        <li>การเข้ารหัสข้อมูลและการแปลงเลขฐานในเครือข่าย   </li>
+                        <li>การคำนวณที่ใช้เลขฐานในโครงสร้างคอมพิวเตอร์  </li>
+                        <li>การใช้เลขฐานในการประมวลผลสัญญาณดิจิทัล    </li>
+                        <li>การคำนวณเลขฐานในการออกแบบดิจิทัล  </li>
+                        <li>การใช้เลขฐานในการเขียนโปรแกรม</li></ul></div>
+                        <div class="card"><h2>เครื่องมือการแปลงเลขฐาน</h2><p> </p></div>                        
+    </div>
+    <script>
+        let lastScrollTop = 0; 
+window.addEventListener("scroll", function() {
+    const scrollPosition = window.scrollY;
+    const navbar = document.querySelector(".navbar");
+    const dropdowns = document.querySelectorAll(".navbar .dropdown a");
+    const timeElement = document.getElementById("current-time"); 
+    if (scrollPosition > 480) {
+        navbar.classList.add("hidden"); 
+    } else {
+        navbar.classList.remove("hidden"); 
+    }
+    if (scrollPosition < lastScrollTop) {
+        navbar.classList.remove("hidden"); 
+        dropdowns.forEach(link => {
+            link.style.color = "rgba(200, 162, 255, 1)"; 
+        });
+        timeElement.style.color = "rgba(200, 162, 255, 1)";
+    } else {
+        dropdowns.forEach(link => {
+            link.style.color = "#fff";
+        });
+        timeElement.style.color = "#fff";
+    }
+    if (scrollPosition == 0) {
+        dropdowns.forEach(link => {
+            link.style.color = "#fff";
+        });
+        timeElement.style.color = "#fff";
+    }
+    lastScrollTop = scrollPosition <= 0 ? 0 : scrollPosition; 
+});
+    </script>
+    <script>
+        window.addEventListener("scroll", function() {
+            const scrollPosition = window.scrollY;
+            const header = document.querySelector(".header");
+            const offset = scrollPosition * 0.2;
+            header.style.backgroundPosition = `${offset}px center`;
+        });
+    </script>
+    <script>
+        document.querySelector('.dropdown a[href="#"]').addEventListener('click', function(event) {
+            event.preventDefault(); 
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth' 
+            });
+        });
+    </script>
+    <script>
+        document.querySelector('#login-link').addEventListener('click', function(event) {
+            event.preventDefault(); 
+            window.scrollTo({
+                top: 0, 
+                behavior: 'smooth' 
+            });
+            setTimeout(function() {
+                window.location.href = "Login.html"; 
+            }, 800); 
+        });
+    </script>
+    <script>
+        function updateTime() {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            const formattedTime = `${hours}:${minutes}:${seconds}`;
+            document.getElementById('current-time').textContent = formattedTime;
+        }
+        setInterval(updateTime, 1000);
+        updateTime(); 
+    </script>
+    <script>
+        document.getElementById('current-time').addEventListener('click', function() {
+            window.location.href = "Time.html"; 
+        });
+        function updateTime() {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            const formattedTime = `${hours}:${minutes}:${seconds}`;
+            document.getElementById('current-time').textContent = formattedTime;
+        }
+        setInterval(updateTime, 1000);
+        updateTime(); 
+    </script>
+      <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const calculatorCard = document.querySelector(".card h2");
+            if (calculatorCard && calculatorCard.textContent === "เครื่องมือการแปลงเลขฐาน") {
+                calculatorCard.parentElement.addEventListener("click", function() {
+                    const card = this;
+                    card.style.position = "fixed";
+                    card.style.top = "0";
+                    card.style.left = "0";
+                    card.style.width = "100vw";
+                    card.style.height = "100vh";
+                    card.style.backgroundColor = "white";
+                    card.style.zIndex = "9999";
+                    card.style.display = "flex";
+                    card.style.justifyContent = "center";
+                    card.style.alignItems = "center";
+                    card.style.transition = "all 0.5s ease-in-out";
+                    card.style.fontSize = "2em";
+                    setTimeout(function() {
+                        window.location.href = "Binary1.html";
+                    }, 800);
+                });
+            }
+        });
+    </script>
+</body>
+</html>

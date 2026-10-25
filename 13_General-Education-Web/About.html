@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seniormath About</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Athiti:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="picture/10766476.png">
+    <style>
+        body {
+            font-family: 'Athiti', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .header {
+            background-image: url('picture/mainbackground.jpg');
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+            padding: 100px 20px;
+            text-align: center;
+            animation: fadeIn 2s ease-in-out;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            gap: 30px;
+            padding: 20px;
+        }
+        .left-column {
+            flex: 0 0 30%;
+            text-align: left;
+        }
+        .right-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            width: 100%;
+        }
+        .box {
+            padding: 20px;
+            border-radius: 20px;
+            animation: fadeIn 1.5s ease;
+            text-align: center;
+            box-shadow: none;
+            background: none;
+            transition: transform 0.3s ease;
+        }
+        .box:hover {
+            transform: scale(1.05);
+        }
+        h2 {
+            font-weight: 600;
+            font-size: 1.8em;
+            margin-bottom: 10px;
+        }
+        p {
+            font-weight: 400;
+            font-size: 1.4em;
+            margin: 0;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .box:last-child {
+            margin-top: 40px;
+        }
+        .profile-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="Seniormath.html">
+            <img src="picture\Screenshot 2025-01-24 162721-Photoroom.png" alt="Logo" style="width: 300px; height: auto;">
+        </a>
+    </div>
+    <div class="container">
+        <div class="left-column">
+            <div class="box left">
+                <h2>เกี่ยวกับเรา</h2>
+                <p>ยินดีต้อนรับสู่ Senior Math บริษัทที่เชี่ยวชาญในการให้บริการด้านคณิตศาสตร์</p>
+                <p>เรามุ่งมั่นที่จะช่วยให้คุณสามารถแก้ไขปัญหาทางคณิตศาสตร์ต่างๆ ได้อย่างรวดเร็วและแม่นยำ</p>
+            </div>
+        </div>
+        <div class="right-column">
+            <div class="box"><h2>นวัตกรรม</h2><p>เรานำเสนอเทคโนโลยีใหม่ๆ เช่น AI ในการแก้สมการ</p></div>
+            <div class="box"><h2>ความแม่นยำ</h2><p>มุ่งเน้นความแม่นยำในการคำนวณ</p></div>
+            <div class="box"><h2>ความน่าเชื่อถือ</h2><p>ได้รับความไว้วางใจจากลูกค้าทั่วประเทศ</p></div>
+            <div class="box"><h2>เครื่องมือ</h2><p>ใช้ซอฟต์แวร์คำนวณระดับมืออาชีพ</p></div>
+            <div class="box"><h2>อ้างอิง</h2><p>อ้างอิงจากแหล่งข้อมูลทางการศึกษา</p></div>
+            <a href="Aboutme.html" class="profile-link">
+                <div class="box">
+                    <h2>ประวัติผู้สร้างเว็บไซต์</h2>
+                </div>
+            </a>
+        </div>
+    </div>
+</body>
+</html>

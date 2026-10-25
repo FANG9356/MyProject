@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Plant Watering - Blynk IoT Simulation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0A0F1D;
+            --surface: #111A2E;
+            --card: #18243E;
+            --blynk-green: #24C082;
+            --accent-blue: #0071E3;
+            --accent-cyan: #06B6D4;
+            --text-main: #FFFFFF;
+            --text-sub: #94A3B8;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .header h1 {
+            font-size: 26px;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+        .header p {
+            color: var(--text-sub);
+            font-size: 14px;
+        }
+        .main-container {
+            width: 100%;
+            max-width: 960px;
+            display: grid;
+            grid-template-columns: 360px 1fr;
+            gap: 28px;
+            align-items: start;
+        }
+        .phone-frame {
+            background: #000000;
+            border: 8px solid #2D3748;
+            border-radius: 40px;
+            padding: 20px 16px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .phone-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .blynk-logo {
+            font-weight: 800;
+            color: var(--blynk-green);
+            font-size: 18px;
+            letter-spacing: -0.5px;
+        }
+        .online-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: var(--blynk-green);
+            border-radius: 50%;
+            margin-right: 6px;
+            box-shadow: 0 0 8px var(--blynk-green);
+        }
+        .blynk-widget {
+            background: #182234;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px;
+            padding: 16px;
+        }
+        .widget-title {
+            font-size: 11px;
+            color: var(--text-sub);
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .widget-val {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 24px;
+            font-weight: 700;
+        }
+        .blynk-btn {
+            width: 100%;
+            background: #202D45;
+            border: 1px solid rgba(255,255,255,0.12);
+            color: white;
+            padding: 14px;
+            border-radius: 14px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        .blynk-btn.active {
+            background: var(--blynk-green);
+            color: #000;
+            border-color: var(--blynk-green);
+            font-weight: 700;
+            box-shadow: 0 0 20px rgba(36, 192, 130, 0.4);
+        }
+        .greenhouse-view {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .garden-stage {
+            height: 260px;
+            background: linear-gradient(180deg, #132038 0%, #0c1524 100%);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+        }
+        .nozzles {
+            position: absolute;
+            top: 20px;
+            width: 80%;
+            display: flex;
+            justify-content: space-around;
+        }
+        .nozzle {
+            width: 14px;
+            height: 14px;
+            background: #64748B;
+            border-radius: 3px;
+            position: relative;
+        }
+        .spray-effect {
+            position: absolute;
+            top: 14px;
+            left: -15px;
+            width: 44px;
+            height: 150px;
+            background: linear-gradient(180deg, rgba(6, 182, 212, 0.5) 0%, rgba(6, 182, 212, 0) 100%);
+            clip-path: polygon(35% 0%, 65% 0%, 100% 100%, 0% 100%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .spray-effect.active {
+            opacity: 1;
+            animation: pulse-spray 0.5s infinite alternate;
+        }
+        @keyframes pulse-spray {
+            0% { transform: scaleX(0.9); }
+            100% { transform: scaleX(1.1); }
+        }
+        .soil-bed {
+            width: 100%;
+            height: 60px;
+            background: #3B2A1E;
+            border-top: 4px solid #5C4033;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #D7CCC8;
+            font-weight: 600;
+        }
+        .plant-pot {
+            position: absolute;
+            bottom: 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .plant-leaves {
+            font-size: 48px;
+            line-height: 1;
+            filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));
+            transition: transform 0.3s;
+        }
+        .telemetry-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+        }
+        .telemetry-box {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 16px;
+        }
+        .telemetry-label {
+            font-size: 11px;
+            color: var(--text-sub);
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+        .telemetry-val {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 16px;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Smart Plant Watering (WPM)</h1>
+        <p>Blynk IoT Mobile Control + NodeMCU ESP8266 + DHT11 & Dual-Mode Solenoid Valves</p>
+    </div>
+
+    <div class="main-container">
+        <!-- Phone Frame -->
+        <div class="phone-frame">
+            <div class="phone-header">
+                <span class="blynk-logo">BLYNK.IOT</span>
+                <span style="font-size: 12px; color: var(--text-sub);"><span class="online-dot"></span>Connected</span>
+            </div>
+
+            <div class="blynk-widget">
+                <div class="widget-title">Greenhouse Temperature</div>
+                <div class="widget-val" id="blynkTemp">28.4 °C</div>
+            </div>
+
+            <div class="blynk-widget">
+                <div class="widget-title">Air Humidity (DHT11)</div>
+                <div class="widget-val" id="blynkHum">68.5 %</div>
+            </div>
+
+            <button class="blynk-btn" id="btnRain" onclick="toggleMode('rain')">
+                <span>โหมดฝนเทียม (Rain Mode)</span>
+                <span id="stateRain">OFF</span>
+            </button>
+
+            <button class="blynk-btn" id="btnMist" onclick="toggleMode('mist')">
+                <span>โหมดพ่นหมอก (Mist Spray)</span>
+                <span id="stateMist">OFF</span>
+            </button>
+
+            <button class="blynk-btn" id="btnPump" onclick="togglePump()">
+                <span>ปั๊มน้ำหลัก (Main Pump)</span>
+                <span id="statePump">STANDBY</span>
+            </button>
+        </div>
+
+        <!-- Greenhouse Hardware Stage -->
+        <div class="greenhouse-view">
+            <div style="font-size: 16px; font-weight: 700;">Real-Time Plant Bed Physical Simulation</div>
+            
+            <div class="garden-stage">
+                <div class="nozzles">
+                    <div class="nozzle"><div class="spray-effect" id="spray1"></div></div>
+                    <div class="nozzle"><div class="spray-effect" id="spray2"></div></div>
+                    <div class="nozzle"><div class="spray-effect" id="spray3"></div></div>
+                </div>
+
+                <div class="plant-pot">
+                    <div class="plant-leaves" id="plantLeaf"></div>
+                </div>
+
+                <div class="soil-bed" id="soilStatus">Soil Moisture: Optimal (68%)</div>
+            </div>
+
+            <div class="telemetry-row">
+                <div class="telemetry-box">
+                    <div class="telemetry-label">Valve 1 (Rain D8)</div>
+                    <div class="telemetry-val" id="valValve1">CLOSED</div>
+                </div>
+                <div class="telemetry-box">
+                    <div class="telemetry-label">Valve 2 (Mist D7)</div>
+                    <div class="telemetry-val" id="valValve2">CLOSED</div>
+                </div>
+                <div class="telemetry-box">
+                    <div class="telemetry-label">Relay Pump Status</div>
+                    <div class="telemetry-val" id="valRelay">NC (DEACTIVE)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentMode = 'off';
+        let pumpActive = false;
+
+        function updateUI() {
+            const btnR = document.getElementById('btnRain');
+            const btnM = document.getElementById('btnMist');
+            const btnP = document.getElementById('btnPump');
+            const sprays = [document.getElementById('spray1'), document.getElementById('spray2'), document.getElementById('spray3')];
+
+            if (currentMode === 'rain') {
+                btnR.className = 'blynk-btn active';
+                document.getElementById('stateRain').innerText = 'ACTIVE';
+                btnM.className = 'blynk-btn';
+                document.getElementById('stateMist').innerText = 'OFF';
+                document.getElementById('valValve1').innerText = 'OPEN (D8 HIGH)';
+                document.getElementById('valValve2').innerText = 'CLOSED';
+            } else if (currentMode === 'mist') {
+                btnM.className = 'blynk-btn active';
+                document.getElementById('stateMist').innerText = 'ACTIVE';
+                btnR.className = 'blynk-btn';
+                document.getElementById('stateRain').innerText = 'OFF';
+                document.getElementById('valValve2').innerText = 'OPEN (D7 HIGH)';
+                document.getElementById('valValve1').innerText = 'CLOSED';
+            } else {
+                btnR.className = 'blynk-btn';
+                btnM.className = 'blynk-btn';
+                document.getElementById('stateRain').innerText = 'OFF';
+                document.getElementById('stateMist').innerText = 'OFF';
+                document.getElementById('valValve1').innerText = 'CLOSED';
+                document.getElementById('valValve2').innerText = 'CLOSED';
+            }
+
+            if (pumpActive) {
+                btnP.className = 'blynk-btn active';
+                document.getElementById('statePump').innerText = 'RUNNING';
+                document.getElementById('valRelay').innerText = 'COM-NC (12V ON)';
+                sprays.forEach(s => s.classList.add('active'));
+                document.getElementById('soilStatus').innerText = 'Soil Moisture: Watering in progress (15s Loop)';
+                document.getElementById('plantLeaf').style.transform = 'scale(1.1)';
+            } else {
+                btnP.className = 'blynk-btn';
+                document.getElementById('statePump').innerText = 'STANDBY';
+                document.getElementById('valRelay').innerText = 'NC (DEACTIVE)';
+                sprays.forEach(s => s.classList.remove('active'));
+                document.getElementById('soilStatus').innerText = 'Soil Moisture: Optimal (68%)';
+                document.getElementById('plantLeaf').style.transform = 'scale(1.0)';
+            }
+        }
+
+        function toggleMode(mode) {
+            if (currentMode === mode) {
+                currentMode = 'off';
+                pumpActive = false;
+            } else {
+                currentMode = mode;
+                pumpActive = true;
+            }
+            updateUI();
+        }
+
+        function togglePump() {
+            pumpActive = !pumpActive;
+            if (pumpActive && currentMode === 'off') {
+                currentMode = 'mist';
+            }
+            updateUI();
+        }
+    </script>
+</body>
+</html>
