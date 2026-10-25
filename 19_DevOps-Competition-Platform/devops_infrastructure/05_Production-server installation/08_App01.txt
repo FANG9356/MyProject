@@ -1,0 +1,52 @@
+mkdir -p ~/docker/webapp01-stack && cd ~/docker/webapp01-stack
+nano docker-compose.yml
+
+Add .yml stacks[name="webapp01"]:
+
+networks:
+  app_net:
+    external: true
+
+services:
+  backend:
+    image: 192.168.137.3:8080/my-backend:${APP_VERSION:-latest}
+    container_name: backend
+    restart: always
+    networks:
+      - app_net
+    ports:
+      - "8000:8000"
+    environment:
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_USER=root
+      - DB_PASSWORD=11111111
+      - DB_DATABASE=devops_db
+      - PORT=8000
+      - JWT_SECRET=DevopsComputerUTC
+      - JWT_EXPIRES_IN=2h
+
+  frontend:
+    image: 192.168.137.3:8080/my-frontend:${APP_VERSION:-latest}
+    container_name: frontend
+    restart: always
+    networks:
+      - app_net
+
+# Check log backend:
+docker compose logs backend
+
+# Test db login form:
+CREATE TABLE `users` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `profile_image` varchar(255) DEFAULT NULL,
+  `username` varchar(50) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `status` varchar(50) NOT NULL DEFAULT 'Active',
+  `role` varchar(20) NOT NULL DEFAULT 'user',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username` (`username`));
+
+INSERT INTO `users` VALUES (1,'Administrator','/uploads/profile-1-1774346361194-921043947.jpg','admin','$2b$10$vLysX6KAmYg0e5wPpK/sYusPI1eAXggK7N5ryo.L5TQqoNMlCcV1O','Active','admin','2026-03-24 05:15:18'),(2,'Manager',NULL,'manager01','$2b$10$8tC/dysO.Oek2HCXBSRA7OTF.MM1ik33JOMQYc7ix3an2WNBwD.8y','Active','manager','2026-03-24 05:17:17'),(3,'User01',NULL,'user01','$2b$10$4mJH.YcntNKsjiUBX6SNL.knC1L6F0EKY5kJ/IcxKrUTDl9A6nHvK','Active','user','2026-03-24 05:18:46'),(4,'ผู้จัดการคนใหม่ คนที่ 2','/uploads/profile-4-1774516901695-344758488.jpg','Manager02','$2b$10$yZMgzaecQYII9s6JiEdD5e57B9Wzgrtn4l6O95DWvyPxoKXDWc49G','Inactive','manager','2026-03-26 08:51:35');

@@ -1,0 +1,54 @@
+docker volume create mysql_data
+
+mkdir -p ~/docker/mysql-stack/data && cd ~/docker/mysql-stack
+nano docker-compose.yml
+
+Add .yml stacks[name="mysql"]:
+
+networks:
+  app_net:
+    external: true
+
+volumes:
+  mysql_data:
+    external: true
+
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    restart: always
+    networks:
+      - app_net
+    ports:
+      - "3306:3306"
+    environment:
+      - TZ=Asia/Bangkok
+      - MYSQL_ROOT_PASSWORD=11111111
+      - MYSQL_DATABASE=devops_iot_db
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+docker compose up -d
+
+# DBeaver configuration:
+Tab "Main":
+  Server Host: [Your server IP]
+  Database: Your database name
+  Username: root
+  Password: 11111111
+
+Tab "Driver properties":
+  allowPublicKeyRetrieval: true
+  useSSL: false
+
+# SQL Query
+USE iot_db;
+
+CREATE TABLE bmp280_data (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    device_id VARCHAR(50) NOT NULL,
+    temperature FLOAT,
+    pressure FLOAT
+);

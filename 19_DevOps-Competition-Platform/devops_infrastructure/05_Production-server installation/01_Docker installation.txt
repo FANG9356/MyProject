@@ -1,0 +1,66 @@
+sudo -i
+# Create docker structure:
+mkdir -p ~/docker
+
+install:
+	apt install docker.io -y
+	apt install docker-compose-v2 -y
+check version: 
+	docker --version
+delete:			
+	apt remove docker.io -y
+delete config, trash: 	
+	apt purge docker.io -y && apt autoremove -y
+delete container, image: 
+	rm -rf /var/lib/docker
+	rm -rf /etc/docker
+
+start:
+	systemctl start docker
+start auto:
+	systemctl enable docker
+check status:
+	systemctl status docker
+	
+	
+ceate new group:
+	groupadd docker
+add root user:
+	usermod -aG docker $USER
+refresh permission:
+	newgrp docker
+
+nano /etc/docker/daemon.json
+{
+"insecure-registries": ["Committee IP:8080", "Your domain name:5000", "Your IP:5000"]
+}
+
+systemctl restart docker
+
+test run (first-time):
+	docker run hello-world
+run & delete (first-time):
+	docker run --rm hello-world
+
+check all container:
+	docker ps -a
+start container:
+	docker start [CONTAINER_ID / Name]
+restart container:
+	docker restart [CONTAINER_ID / Name]
+stop container:
+	docker stop [CONTAINER_ID / Name]
+delete container:
+	docker rm [CONTAINER_ID / Name]
+delete all container:
+	docker container prune
+
+list all image:
+	docker images
+delete image:
+	docker rmi [IMAGE_Name]
+
+list all volume:
+	docker volume ls
+		
+	

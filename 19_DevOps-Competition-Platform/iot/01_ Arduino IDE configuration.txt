@@ -1,0 +1,27 @@
+# Download Arduino IDE type of "Windows ZIP file"
+URL: https://www.arduino.cc/en/software/
+
+# Step 1: Open Arduino IDE:
+Menu "File" -> Preferences:
+  Additional boards manager URLs: https://espressif.github.io/arduino-esp32/package_esp32_index.json
+
+# Step 2: Install your board:
+Menu "Tools" -> Board -> Board Manager...:
+  Find your search: "esp32"
+  Select package: "esp32 by Espressif Systems" -> Click "Install" button -> Update All
+
+# Step 3: Connect your board
+Menu "Tools" -> Board -> esp32 -> ESP32 Dev Module (If you unknow your board model)
+
+Menu "Tools" > Port: Can check from "Device Mageger": Ports (COM & LPT) -> (e.g. COM3, COM4) 
+
+# Step 4: Install library:
+Menu "Sketch" -> Include Library -> Manage Libraries... -> Search lists and install:
+  lists: 
+    Adafruit BME280: "Adafruit Unified Sensor",
+    Adafruit BMP280: "Adafruit BMP280 Library",
+    PubSubClient: "PubSubClient by Nick O’Leary"
+    
+    
+# Step 5: Fishish:
+Ready to coding and upload program.

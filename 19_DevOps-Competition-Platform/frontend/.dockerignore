@@ -1,0 +1,24 @@
+# 📦 1. ห้ามก๊อปปี้ Library จากเครื่องเราเข้าไป
+node_modules
+npm-debug.log
+
+# 🔑 2. ห้ามก๊อปปี้รหัสผ่านและความลับเข้าไป (เราจะส่งผ่าน Compose แทน)
+#.env
+#.env.*
+#!.env.example
+
+# 🏗️ 3. ห้ามก๊อปปี้โฟลเดอร์ที่ Build เสร็จแล้วจากเครื่องเรา
+dist
+.output
+.nuxt
+
+# 🐙 4. ห้ามก๊อปปี้ไฟล์ระบบของ Git และ Docker เอง
+.git
+.gitignore
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# 🍎 5. ไฟล์ขยะจากระบบปฏิบัติการ
+Thumbs.db
+.DS_Store

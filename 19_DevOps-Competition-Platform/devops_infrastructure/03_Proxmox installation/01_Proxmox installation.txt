@@ -1,0 +1,26 @@
+# Step 1: Boot USB Proxmox image.
+
+# Step 2: When show started page: 
+1.Press key "e"
+2.Find the line starting with "linux"
+3.Move the cursor to the end of that line
+4.Add a space and type "nomodeset"
+5.Pres key "ctrl + x"
+
+# Step 3: Setting
+1.Screen: END USER LICENSE... -> Click "I agree" button
+2.Screen: Proxmox Virtual... -> Check Target Harddisk: Your SSD -> Click "Next" button
+3.Screen: Location... :
+    Country: Thailand
+    Time zone: Asia/Bangkok
+    Keyboard Layout: U.S. English
+4.Screen: Administration... :
+    Password: 11111111
+    Confirm: 11111111
+    Email: email@example.com
+5.Screen: Management Network...:
+    Hostname (FQDN): pve.example.org
+    IP Address (CIDR): 10.10.10.3
+    Gateway: 10.10.10.1
+    DNS Server: 10.10.10.4
+6.Screen: Finished

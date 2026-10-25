@@ -1,0 +1,61 @@
+sudo -i
+sudo visudo
+# Edit file"/etc/sudoers.tmp": (Insert the last line)
+admin1 ALL=(ALL) NOPASSWD: ALL
+
+ip a
+ip route | grep default
+
+nano /etc/netplan/ [[Tab]->("50-cloud-init"/"99-config"/"etc")] .yaml
+	ethernets:
+    	  ens18:
+      	    dhcp4: false
+      	    addresses:
+              - 192.168.137.3/24
+            routes:
+              - to: default
+                via: 192.168.137.1
+
+netplan try
+
+# เครื่องผู้เข้าแข่งขัน (Ubuntu VM) ตั้งค่า IP ของกรรมการ:
+nano /etc/apt/apt.conf.d/00aptproxy
+Acquire::http::Proxy "http://192.168.1.1:3142";
+
+apt update && apt upgrade -y
+
+apt install curl ssh ufw -y
+ufw enable
+ufw allow 22/tcp
+ufw status
+
+apt install qemu-guest-agent -y
+systemctl enable --now qemu-guest-agent
+systemctl status qemu-guest-agent
+
+nano /etc/systemd/resolved.conf
+	DNS=192.168.137.3 8.8.8.8 1.1.1.1
+	DNSStubListener=no
+systemctl restart systemd-resolved
+ln -sf /run/systemd/resolve/resolv.conf /etc/resolv.conf
+
+ls -l /etc/resolv.conf
+	lrwxrwxrwx 1 root root ... /etc/resolv.conf -> /run/systemd/resolve/resolv.conf //success
+ping google.com
+
+apt install systemd-timesyncd -y
+timedatectl set-timezone Asia/Bangkok # UTC base time
+timedatectl set-ntp true
+timedatectl status
+
+# Sync เวลาเครื่องกรรมการ (Ubuntu VM):
+nano /etc/systemd/timesyncd.conf
+	NTP=192.168.1.1 (IP กรรมการ)
+systemctl restart systemd-timesyncd
+timedatectl
+	show status: 
+		System clock synchronized: yes
+		NTP service: active
+timedatectl timesync-status
+	show status:
+		Server: [IP กรรมการ] (เช่น 192.168.137.10 (192.168.137.10))

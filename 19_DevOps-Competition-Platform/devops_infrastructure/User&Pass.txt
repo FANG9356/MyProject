@@ -1,0 +1,31 @@
+proxmox:
+	user: root
+	pass: 11111111
+
+
+dev-server:
+	user: admin1
+	pass: 11111111
+portainer:
+	user: admin1
+	pass: 111111111111
+dns:
+	user: admin
+	pass: 11111111
+gitlab:
+	user: root
+	pass: สวัสดีตอนเช้า/eng
+
+
+product-server:
+	user: admin1
+	pass: 11111111
+emqx:
+	user: admin
+	pass: สวัสดีตอนเช้า/eng
+grafana:
+	user: admin
+	pass: 11111111
+mysql:
+	user: root
+	pass: 11111111

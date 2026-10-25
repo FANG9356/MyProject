@@ -1,0 +1,47 @@
+docker volume create emqx_logs
+docker volume create emqx_data
+docker volume create emqx_etc
+
+mkdir -p ~/docker/emqx-stack/data && cd ~/docker/emqx-stack
+nano docker-compose.yml
+
+Add .yml stacks[name="emqx"]:
+
+networks:
+  app_net:
+    external: true
+
+volumes:
+  emqx_logs:
+    external: true
+  emqx_data:
+    external: true
+  emqx_etc:
+    external: true
+
+services:
+  emqx:
+    image: emqx/emqx:latest
+    container_name: emqx
+    restart: always
+    networks:
+      - app_net
+    ports:
+      - "18083:18083"  # Dashboard UI (User: admin, Pass: public)
+      - "1883:1883"    # MQTT Protocol
+      - "8083:8083"    # MQTT/WebSocket
+    environment:
+      - EMQX_DASHBOARD__UNSUCCESSFUL_LOGIN_DURATION=0
+      - EMQX_DASHBOARD__UNSUCCESSFUL_LOGIN_MAX_ATTEMPTS=999
+    volumes:
+      - emqx_logs:/opt/emqx/log
+      - emqx_data:/opt/emqx/data
+      - emqx_etc:/opt/emqx/etc
+
+docker compose up -d
+
+# EMQX Dashboard:
+# Left menu:
+1. "WebSocket Client" -> Click "Connect" Button
+2. "Client":
+  Column:  Client ID -> ["emqx...", "ESP32..."] (2 Devices are successful)

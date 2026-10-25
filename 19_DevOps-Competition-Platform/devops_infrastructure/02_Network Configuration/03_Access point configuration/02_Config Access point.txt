@@ -1,0 +1,29 @@
+# ไฟล์นี้แสดงตัวอย่างการตั้งค่า Access point 
+# TP-LINK รุ่น AC750 Wireless Dual Band Router
+
+# Step 1:
+Network -> LAN:
+  IP Address: vlan1/vlan server (ตั้งค่า  Static IP เช่น 10.10.10.3)
+  Subnet Mask: 255.255.255.0
+  Click "Save" button (then this system will reboot.)
+
+# Step 2:
+Dual Band Selection -> Checked: 2.4GHz / Unchecked: 5GHz
+  Click "Save" button
+
+# Step 3:
+Wireless 2.4GHz -> Basic Settings:
+  Wireless Network: DevOp_UTC_2.4
+  Click "Save" button
+
+Wireless 2.4GHz -> Wireless Security:
+  Checked: Disable Wireless Security
+  Click "Save" button
+
+# Step 4:
+DHCP -> DHCP Settings:
+  DHCP Server: Checked Disable
+  Click "Save" button
+
+# Step 5:
+System Tools -> Reboot -> Click "Reboot" button (then this system will reboot.)

@@ -1,0 +1,22 @@
+# ไฟล์นี้แสดงตัวอย่างการตั้งค่า Access point 
+# TP-LINK รุ่น AC750 Wireless Dual Band Router
+
+# Reset router
+# วิธีที่ 1 Web Interface:
+System Tools -> Factory Defaults -> Click "Restore" button
+
+# วิธีที่ 2 Physical Reset Button:
+1.Keep the router plugged in and powered on.
+2.Look at the back panel where the antennas and Ethernet ports are. You are looking for either a combined WPS/Reset button or a tiny recessed pinhole labeled Reset.
+3.If it is a standard button, press and hold it. If it is a pinhole, use a paperclip to press and hold the hidden button inside.
+4.Keep holding it down for about 8 to 10 seconds.
+5.Watch the LED lights on the front of the router. When all the lights flash on at once and then go off, release the button.
+6.Wait a minute or two for the router to fully reboot. 
+
+# Login to config
+# วิธีที่ 1 Web browser:
+1. Set your computer IP: 192.168.0.2, subnet mask:255.255.255.0 
+2. Open on browser http://192.168.0.1
+3. Login default: 
+  Username: admin
+ Password: admin

@@ -1,0 +1,40 @@
+docker volume create grafana_data
+
+mkdir -p ~/docker/grafana-stack/data && cd ~/docker/grafana-stack
+nano docker-compose.yml
+
+Add .yml stacks[name="grafana"]:
+
+networks:
+  app_net:
+    external: true
+
+volumes:
+  grafana_data:
+    external: true
+
+services:
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    restart: always
+    networks:
+      - app_net
+    ports:
+      - "3000:3000"
+    environment:
+      - TZ=Asia/Bangkok
+      - GF_SECURITY_ADMIN_PASSWORD=11111111 # เปลี่ยนรหัสผ่านตรงนี้ได้
+      - GF_SECURITY_ALLOW_EMBEDDING=true # อนุญาตให้ใช้ Iframe
+      - GF_AUTH_ANONYMOUS_ENABLED=true # อนุญาตให้ผู้ใช้ทั่วไป เข้าดู Dashboard โดยไม่ต้อง Login 
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Viewer
+      - GF_AUTH_ANONYMOUS_ORG_NAME=Main Org.
+      - GF_AUTH_ANONYMOUS_HIDE_VERSION=true
+      - GF_SERVER_DOMAIN=http://utc.product/
+      - GF_SERVER_ROOT_URL=http://utc.product/grafana/
+      - GF_SERVER_SERVE_FROM_SUB_PATH=true
+
+    volumes:
+      - grafana_data:/var/lib/grafana
+
+docker compose up -d

@@ -1,0 +1,50 @@
+# ไฟล์นี้แสดงตัวอย่างการตั้งค่า Router 
+# Microtik รุ่น RB951G-2HnD
+
+# Step 1:
+Bridge -> Tap: Bridge -> Add:
+  1. Name: wan
+  2. Name: lan
+
+Bridge -> Tap: Ports -> Add:
+  1. Interface: ether1, Bridge: wan
+  2. Interface: ether5, Bridge: lan
+
+# Step 2:
+Interfaces -> Tap: Interfaces -> Add:
+  1. Name: server, VLAN ID: 100, Interface: lan
+  2. Name: dev, VLAN ID: 200, Interface: lan
+
+# Step 3:
+IP -> Addresses -> Add:
+  1. Address: 192.168.1.2/24, Interface: wan (IP Router อยู่ภายในเครือข่าย Server กรรมการ 192.168.1.1)
+  2. Address: 10.10.10.1/24, Interface: server
+  3. Address: 20.20.20.1/24, Interface: dev
+
+# Step 4:
+IP -> Routes -> Add:
+  1. Gateway: 192.168.1.1 (อ้างอิงจาก IP Server กรรมการ)
+
+# Step 5:
+IP -> DNS:
+  1. Servers: 192.168.1.1 
+  2. Servers: 8.8.8.8.8 (ถ้าต้องการ  internet ให้เพิ่ม: 8.8.8.8.8)
+
+# Step 6:
+IP -> Firewall -> Tap: NAT -> Add:
+  1.1 Tap: General -> Set Value:
+    Chain: srcnat, Out. Interface: wan
+  1.2 Tap: Action -> Set Value:
+    Action: masquerade
+
+# Step 7:
+IP -> DHCP Server -> Tap: DHCP -> Press "DHCP Setup" Button
+  1. DHCP Server Interface: server 
+   Push "Next" button to setup successfully
+ 2. DHCP Server Interface: dev 
+   Press "Next" button to setup succesfully
+
+# Step 8: Finish & Ping Test (Time (ms): [แสดงตัวเลข = Success], [แสดงข้อความ "timeout" = Fail])
+Tools -> Ping
+  1. Ping To: 192.168.1.1, Interface: wan  -> Press "Start" button
+  2. Ping To: 8.8.8.8, Interface: wan  -> Press "Start" button

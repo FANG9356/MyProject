@@ -1,0 +1,33 @@
+#Development-server
+General:
+	Node: pve
+	VM ID: 100
+	Name: dev
+OS:
+	ISO image: ubuntu-server.iso
+System:
+	Qemu Agent: checked
+Disk:
+	Disk size (GiB): 32/64
+CPU:
+	Type: host
+	Cores: 4-8
+Memory:
+	Memory (MiB): 8192/16384
+
+#Production-server
+General:
+	Node: pve
+	VM ID: 200
+	Name: product
+OS:
+	ISO image: ubuntu-server.iso
+System:
+	Qemu Agent: checked
+Disk:
+	Disk size (GiB): 32/64
+CPU:
+	Type: host
+	Cores: 4-8
+Memory:
+	Memory (MiB): 8192/16384

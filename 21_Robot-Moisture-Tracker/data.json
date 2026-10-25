@@ -1,0 +1,17 @@
+{
+  "robot_1": {
+    "latitude": 13.7563,
+    "longitude": 100.5018,
+    "moisture_value": 78.5,
+    "is_measuring": false,
+    "timestamp": 1740924000000,
+    
+    "command": {
+      "command": "measure",
+      "target_lat": 13.7500,
+      "target_lng": 100.5100,
+      "status": "pending",
+      "timestamp": 1740924005000 
+    }
+  }
+}

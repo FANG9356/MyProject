@@ -1,0 +1,39 @@
+# ไฟล์นี้แสดงตัวอย่างการตั้งค่า Switch 
+# Cisco รุ่น CBS350-24T-4G
+
+# Reset switch
+# วิธีที่ 1 The Web GUI:
+Administration -> Reboot:
+  Checked on: Restore to Factory Defaults
+  Press "Reboot" button
+# วิธีที่ 2 Physical Reset Button (Manual):
+1.Locate the recessed Reset button (usually a small pinhole near the LED lights).
+2.Using a paperclip or similar tool, press and hold the button.
+3.To Reboot: Hold for less than 10 seconds.
+4.To Factory Reset: Hold for more than 10 seconds.
+5.Release the button. The System LED will likely flash, and the switch will reboot with the default configuration.
+6.Default IP: 
+  The router will typically default to 192.168.1.254
+
+
+# Login to config
+# วิธีที่ 1 Web browser:
+1. Set your computer IP: 192.168.1.2, subnet mask:255.255.255.0 
+2. Open on browser http://192.168.1.254
+
+# วิธีที่ 2 Console:
+1. Connect console cable between CBS350 switch and your computer
+2. Open "Device Manager" to find your COM port (Port Com&LPT -> USB Serial port)
+3. Open "PuTTY":
+  Connection type: Serial
+  Serial line: Checked from Device Manager (เช่น COM1)
+  Speed: 115200
+
+# Login default: 
+    Username: cisco
+    Password: cisco
+  Change new password:
+    Username: admin
+    New Password: สวัสดีตอนเช้า(eng)
+    Confirm Password: สวัสดีตอนเช้า(eng)
+  

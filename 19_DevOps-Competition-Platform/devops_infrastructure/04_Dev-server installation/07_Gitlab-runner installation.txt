@@ -1,0 +1,113 @@
+docker volume create gitlab_runner_config
+docker volume create gitlab_runner_home
+
+mkdir -p ~/docker/gitlab-runner-stack/data && cd ~/docker/gitlab-runner-stack
+nano docker-compose.yml
+
+Add .yml stacks[name="gitlab-runner"]:
+
+networks:
+  app_net:
+    external: true
+
+volumes:
+  gitlab_runner_config:
+    external: true
+  gitlab_runner_home:
+    external: true
+
+services:
+  gitlab-runner:
+    image: gitlab/gitlab-runner:latest
+    container_name: gitlab-runner
+    restart: always
+    networks:
+      - app_net
+#    network_mode: "host" # ใช้สำหรับ install nano จากเครื่องกรรมการ ต้องเอาส่วน "networks: app_net" ออกให้หมด
+    environment:
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - NO_PROXY=gitlab.naphat.demo,10.10.10.5,localhost,127.0.0.1
+      - http_proxy=[Your IP:3142]    # http://10.10.10.5:3142
+      - https_proxy=[Your IP:3142]   # http://10.10.10.5:3142
+      - HTTP_PROXY=[Your IP:3142]    # http://10.10.10.5:3142
+      - HTTPS_PROXY=[Your IP:3142]   # http://10.10.10.5:3142
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - gitlab_runner_config:/etc/gitlab-runner   # - /opt/gitlab-runner:/etc/gitlab-runner(ใช้แทนกันได้)
+      - gitlab_runner_home:/home/gitlab-runner
+# (ทางเลือก) ถ้าใช้ Internal CA สำหรับ HTTPS
+#      - /opt/caddy/caddy-root.crt:/usr/local/share/ca-certificates/caddy-root.crt:ro
+
+docker compose up -d
+
+# การสร้าง Gitlab project: Create new project -> Create blank project:
+Project name: app01
+Project URL [Users]: root 
+Visibility Level: Checked "Public"
+Project Configuration: Unchecked "Initialize repository with a README"
+Click "Create project"
+
+# การลงทะเบียน Runner (Register)
+# ขั้นตอนที่ 1: นำ Token จาก GitLab
+  1. เข้าสู่ระบบ GitLab ของคุณ (เช่น http://gitlab.naphat.demo) ด้วยสิทธิ์ Admin -> ไปที่เมนู Admin Area -> CI/CD -> Runners
+  2. คลิกปุ่ม "Create instance runner" (มุมขวาบน):
+    Tags: docker,build (สำคัญ! ต้องตรงกับที่เรียกใช้ใน Pipeline)
+    Runner description: "docker-runner-01"
+  3. คลิกปุ่ม "Create runner":
+      Operating systems: Linux
+
+# ขั้นตอนที่ 2: รันคำสั่ง Register ที่ได้จากการ คลิกปุ่ม "Create runner"
+docker exec -it gitlab-runner bash
+gitlab-runner register
+  --url : คัดลอกได้จากการ คลิกปุ่ม "Create runner"
+  --token : คัดลอกได้จากการ คลิกปุ่ม "Create runner"
+  Enter name for the runner: docker-runner-01
+  Enter an executor: docker
+  Enter the default Docker image: node:latest
+
+# แก้ไข config.toml
+# ผ่าน ssh
+nano /opt/gitlab-runner/config.toml
+# ผ่าน Console ใน Portainer
+docker exec -it gitlab-runner bash
+echo 'Acquire::http::Proxy "http://192.168.137.10:3142";' > /etc/apt/apt.conf.d/00aptproxy
+echo 'Acquire::http::Proxy "http://192.168.137.10:3142";' >> /etc/apt/apt.conf.d/00aptproxy
+apt update && apt install nano -y
+nano /etc/gitlab-runner/config.toml
+
+[[runners]]
+  # ... (ส่วนอื่นปล่อยไว้เหมือนเดิม)
+  #clone_url = "http://gitlab.naphat.demo" # บังคับให้ Clone ผ่านชื่อ Container ในวงภายใน ในกรณีที่มีปัญหา SSL
+  [runners.docker]
+    # ... (ส่วนอื่นปล่อยไว้เหมือนเดิม)
+    image = "[Your IP]:8080/node:latest"  << แก้ไขบรรทัดนี้
+    privileged = true  # << แก้ไขบรรทัดนี้
+    volumes = ["/var/run/docker.sock:/var/run/docker.sock","/cache"]  << แก้ไขบรรทัดนี้
+    network_mode = "app_net" # << เพิ่มบรรทัดนี้
+    helper_image = "192.168.137.3:5000/gitlab/gitlab-runner-helper:x86_64-latest"  # << เพิ่มบรรทัดนี้
+
+docker restart gitlab-runner
+
+# Test Run Pipeline
+สร้างไฟล์ .gitlab-ci.yml
+
+stages:
+  - test
+  - build
+
+test-job:
+  stage: test
+  tags:
+    - docker # ต้องตรงกับ Tags ของ Runner
+  image: 192.168.137.3:5000/docker:latest
+  script:
+    - echo "Hello from GitLab Runner!"
+    - docker info # ทดสอบว่าเรียกใช้ Docker ได้ไหม
+
+build-job:
+  stage: build
+  tags:
+    - docker
+  script:
+    - echo "Building Docker Image..."
+    # ใส่คำสั่ง build จริงที่นี่

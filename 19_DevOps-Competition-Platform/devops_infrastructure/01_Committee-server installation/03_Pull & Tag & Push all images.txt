@@ -1,0 +1,39 @@
+create file "images.txt":
+
+nodered/node-red:latest
+verdaccio/verdaccio:latest
+portainer/portainer-ce:latest
+node:latest
+gitlab/gitlab-ce:latest
+phpmyadmin
+nginx:latest
+mysql:latest
+gitlab/gitlab-runner:latest
+gitlab/gitlab-runner-helper:x86_64-latest
+mariadb:latest
+jc21/nginx-proxy-manager:latest
+eclipse-mosquitto:latest
+docker:latest
+alpine:latest
+joxit/docker-registry-ui:latest
+technitium/dns-server:latest
+emqx/emqx:latest
+registry:2
+caddy:latest
+grafana/grafana:latest
+prom/prometheus:latest
+gcr.io/cadvisor/cadvisor:latest
+
+# Pull & Tag & Push all images
+# สำหรับ Windows | PowerShell เวอร์ชั่นเก่า (5.1)
+Get-Content images.txt | ForEach-Object { 
+    docker pull $_; 
+    docker tag $_ "127.0.0.1:5000/$_"; 
+    docker push "127.0.0.1:5000/$_" 
+}
+
+# สำหรับ Linux/macOS/WSL
+while read img; do docker pull "$img" && docker tag "$img" "127.0.0.1:5000/$img" && docker push "127.0.0.1:5000/$img"; done < images.txt
+
+# Delete image prefix tags (Delete all registry container & volume):
+docker rmi $(docker images --format "{{.Repository}}:{{.Tag}}"|findstr "127.0.0.1:5000/")

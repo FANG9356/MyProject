@@ -1,0 +1,47 @@
+docker volume create gitlab_config
+docker volume create gitlab_logs
+docker volume create gitlab_data
+
+mkdir -p ~/docker/gitlab-stack/data && cd ~/docker/gitlab-stack
+nano docker-compose.yml
+
+Add .yml stacks[name="gitlab"]:
+
+networks:
+  app_net:
+    external: true
+
+volumes:
+  gitlab_config:
+    external: true
+  gitlab_logs:
+    external: true
+  gitlab_data:
+    external: true
+
+services:
+  gitlab:
+    image: gitlab/gitlab-ce:latest
+    container_name: gitlab
+    hostname: gitlab.naphat.demo
+    restart: always
+    networks:
+      - app_net
+    ports:
+      - "80:80"
+      - "443:443"
+      - "2222:22"
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url "http://gitlab.naphat.demo"
+        gitlab_rails["gitlab_shell_ssh_port"] = 2222
+        gitlab_rails["time_zone"] = "Asia/Bangkok"
+    volumes:
+      - gitlab_config:/etc/gitlab
+      - gitlab_logs:/var/log/gitlab
+      - gitlab_data:/var/opt/gitlab
+
+docker compose up -d
+
+docker exec -it gitlab bash
+cat /etc/gitlab/initial_root_password

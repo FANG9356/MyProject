@@ -29,12 +29,18 @@
 | **16** | [`16_Duplicate-File-Cleaner`](./16_Duplicate-File-Cleaner) | Desktop Utility | `python3 clean.py` | หน้าต่างโปรแกรม Desktop | `python3 test_simulation.py` |
 | **17** | [`17_Grade-Calculator-Python`](./17_Grade-Calculator-Python) | Educational Tools | `python3 cal.py` | หน้าต่างโปรแกรม Desktop | `python3 test_simulation.py` |
 | **18** | [`18_Neo-Web-Chat`](./18_Neo-Web-Chat) | Web & Wireless | `open index.html` / `python3 app.py` | `index.html` | `python3 test_simulation.py` |
+| **19** | [`19_DevOps-Competition-Platform`](./19_DevOps-Competition-Platform) | DevOps & IoT | `cd backend && node server.js` | `http://localhost:5000` | `node test_simulation.js` |
+| **20** | [`20_Color-Detection-Kalman-YOLO`](./20_Color-Detection-Kalman-YOLO) | Computer Vision | `python3 realtime_camera.py` | หน้าต่างกล้อง | `python3 test_simulation.py` |
+| **21** | [`21_Robot-Moisture-Tracker`](./21_Robot-Moisture-Tracker) | Robotics & Geolocation | `open index.html` | `index.html` | `node test_simulation.js` |
+| **22** | [`22_PDF-Speech-Synthesizer`](./22_PDF-Speech-Synthesizer) | NLP / Text-to-Speech | `python3 pdf_to_speech.py` | สังเคราะห์ไฟล์ MP3 | `python3 test_simulation.py` |
+| **23** | [`23_Discord-Voice-Screen-Share`](./23_Discord-Voice-Screen-Share) | Socket Streaming / Voice | `python3 server.py` | พอร์ต 65432/65433 | `python3 test_simulation.py` |
+| **24** | [`24_LAN-Security-Intruder-Sentinel`](./24_LAN-Security-Intruder-Sentinel) | Network Security / IDS | `node server.js` | `http://localhost:3080` | `node test_simulation.js` |
 
 ---
 
 ## การรันชุดทดสอบ
 
-ในโฟลเดอร์หลักมีสคริปต์ [`run_all_tests.sh`](./run_all_tests.sh) สำหรับรัน Simulation Test ของทั้ง 18 โปรเจกต์ สามารถทดสอบได้ด้วยคำสั่ง:
+ในโฟลเดอร์หลักมีสคริปต์ [`run_all_tests.sh`](./run_all_tests.sh) สำหรับรัน Simulation Test ของทั้ง 24 โปรเจกต์ สามารถทดสอบได้ด้วยคำสั่ง:
 ```bash
 ./run_all_tests.sh
 ```
@@ -672,6 +678,164 @@ python3 18_Neo-Web-Chat/app.py
 รันชุดทดสอบโครงสร้างระบบแชทและโปรโตคอล BLE:
 ```bash
 python3 18_Neo-Web-Chat/test_simulation.py
+```
+
+---
+
+### 19. [19_DevOps-Competition-Platform](./19_DevOps-Competition-Platform) — ระบบแพลตฟอร์มการแข่งขันทักษะวิชาชีพ DevOps 2568
+
+* **หมวดหมู่:** DevOps, Full-Stack Web Application, IoT & Enterprise Infrastructure
+* **เทคโนโลยี:** Nuxt 3, Vue 3, Express.js, TypeScript, TailwindCSS, GitLab CI/CD, ESP32, MQTT, BMP280, Node-RED, Grafana, Proxmox VE, Docker
+
+#### สรุปโปรเจกต์
+โครงงานระดับการแข่งขันประกอบด้วย 3 โมดูลหลักตามเกณฑ์การแข่งขันระดับประเทศ รายการที่ 58 ทักษะเทคโนโลยีสารสนเทศด้าน DevOps:
+1. เว็บแอปพลิเคชันบริหารจัดการผู้ใช้งานแบบ Full-Stack ด้วย Nuxt 3, Express.js, JWT และการตรวจสอบสิทธิ์ พร้อมสคริปต์ GitLab CI/CD อัตโนมัติ
+2. ระบบโทรมาตร IoT ด้วยบอร์ด ESP32 อ่านค่าอุณหภูมิและความดันบรรยากาศ ส่งผ่าน MQTT เข้า Node-RED ลง MySQL และแสดงผลบน Grafana Dashboard
+3. สถาปัตยกรรมโครงสร้างพื้นฐานระดับองค์กรบน Proxmox VE พร้อม Docker Compose สำหรับ Container Registry, Verdaccio, GitLab, EMQX และ Nginx
+
+![DevOps Competition Platform Demo](./assets/demo_19_devops_competition.gif)
+
+#### เอกสารประกอบและเกณฑ์การแข่งขัน
+* รายละเอียดโครงงาน: [19_DevOps-Competition-Platform/PORTFOLIO_INFO.md](./19_DevOps-Competition-Platform/PORTFOLIO_INFO.md)
+* เอกสารเกณฑ์การแข่งขัน: [19_DevOps-Competition-Platform/competition_criteria](./19_DevOps-Competition-Platform/competition_criteria)
+
+#### วิธีรันระบบ (How to Run)
+รันแบ็กเอนด์ API:
+```bash
+cd 19_DevOps-Competition-Platform/backend && node server.js
+```
+รันชุดทดสอบความถูกต้องของสถาปัตยกรรม:
+```bash
+node 19_DevOps-Competition-Platform/test_simulation.js
+```
+
+---
+
+### 20. [20_Color-Detection-Kalman-YOLO](./20_Color-Detection-Kalman-YOLO) — ระบบตรวจจับสีวัตถุแบบเรียลไทม์และกรองสัญญาณด้วย Kalman Filter
+
+* **หมวดหมู่:** Computer Vision, Signal Processing & Deep Learning
+* **เทคโนโลยี:** Python 3, OpenCV, NumPy, K-Means Clustering, HSV Color Space, 1D Kalman Filter, YOLOv8
+
+#### สรุปโปรเจกต์
+ระบบตรวจจับและจำแนกสีวัตถุแบบเรียลไทม์ โดยใช้การสกัดสีเด่นด้วย K-Means Clustering บนพื้นที่ภาพที่ตัดจากกรอบ Bounding Box ของโมเดล YOLOv8 จากนั้นแปลงค่าสีเข้าสู่ระบบพิกัด HSV เพื่อจำแนกเป็นชื่อสีภาษาไทยอย่างแม่นยำ พร้อมทั้งประยุกต์ใช้ 1D Kalman Filter เพื่อกรองสัญญาณรบกวน ลดความผันผวนของระยะทาง และติดตามเสถียรภาพของการเคลื่อนที่แบบเรียลไทม์
+
+![Color Detection Kalman Demo](./assets/demo_20_color_kalman_yolo.gif)
+
+#### เอกสารประกอบโครงงาน
+* รายละเอียดโครงงาน: [20_Color-Detection-Kalman-YOLO/PORTFOLIO_INFO.md](./20_Color-Detection-Kalman-YOLO/PORTFOLIO_INFO.md)
+
+#### วิธีรันระบบ (How to Run)
+รันระบบตรวจจับสีผ่านกล้อง:
+```bash
+python3 20_Color-Detection-Kalman-YOLO/realtime_camera.py
+```
+รันชุดทดสอบโมเดลตัวกรองและอัลกอริทึมจำแนกสี:
+```bash
+python3 20_Color-Detection-Kalman-YOLO/test_simulation.py
+```
+
+---
+
+### 21. [21_Robot-Moisture-Tracker](./21_Robot-Moisture-Tracker) — ระบบติดตามพิกัดหุ่นยนต์และข้อมูลความชื้นเรียลไทม์
+
+* **หมวดหมู่:** Robotics Telemetry, Geospatial Tracking & IoT Web
+* **เทคโนโลยี:** HTML5, CSS3, JavaScript, Leaflet.js, OpenStreetMap, Firebase Realtime Database
+
+#### สรุปโปรเจกต์
+เว็บแดชบอร์ดติดตามตำแหน่งพิกัดภูมิศาสตร์ของหุ่นยนต์สำรวจดินแบบเรียลไทม์บนแผนที่โลกจริง OpenStreetMap แสดงผลสถานะการทำงาน ค่าร้อยละความชื้นในดิน พร้อมระบบคลิกบนแผนที่เพื่อสร้างหมุดเป้าหมายใหม่ (Waypoint Target) และส่งคำสั่งพิกัดไปยังหุ่นยนต์เพื่อสั่งการเคลื่อนที่และเก็บข้อมูลความชื้นแบบอัตโนมัติ
+
+![Robot Moisture Tracker Demo](./assets/demo_21_robot_moisture.gif)
+
+#### เอกสารประกอบโครงงาน
+* รายละเอียดโครงงาน: [21_Robot-Moisture-Tracker/PORTFOLIO_INFO.md](./21_Robot-Moisture-Tracker/PORTFOLIO_INFO.md)
+
+#### วิธีรันระบบ (How to Run)
+เปิดเว็บแอปพลิเคชัน:
+```bash
+open 21_Robot-Moisture-Tracker/index.html
+```
+รันชุดทดสอบโครงสร้างข้อมูลและพิกัดหุ่นยนต์:
+```bash
+node 21_Robot-Moisture-Tracker/test_simulation.js
+```
+
+---
+
+### 22. [22_PDF-Speech-Synthesizer](./22_PDF-Speech-Synthesizer) — ระบบแปลงเอกสาร PDF เป็นไฟล์เสียงพูดภาษาไทย
+
+* **หมวดหมู่:** Natural Language Processing & Audio Synthesis
+* **เทคโนโลยี:** Python 3, PyPDF, Google Text-to-Speech (gTTS), MP3 Audio Processing
+
+#### สรุปโปรเจกต์
+เครื่องมือสกัดเนื้อหาจากเอกสาร PDF หลายหน้า ทำความสะอาดอักขระและจัดรูปแบบช่องว่างข้อความ จากนั้นแปลงเป็นไฟล์เสียงพูดภาษาไทยธรรมชาติด้วยโมเดลสังเคราะห์เสียง Google Text-to-Speech โดยสามารถกำหนดความเร็วการอ่าน และบันทึกผลลัพธ์เป็นไฟล์เสียง MP3 เพื่อนำไปใช้เป็นหนังสือเสียงหรือสื่อการเรียนรู้
+
+![PDF Speech Synthesizer Demo](./assets/demo_22_pdf_speech.gif)
+
+#### เอกสารประกอบโครงงาน
+* รายละเอียดโครงงาน: [22_PDF-Speech-Synthesizer/PORTFOLIO_INFO.md](./22_PDF-Speech-Synthesizer/PORTFOLIO_INFO.md)
+
+#### วิธีรันระบบ (How to Run)
+รันการแปลงไฟล์เอกสาร:
+```bash
+python3 22_PDF-Speech-Synthesizer/pdf_to_speech.py
+```
+รันชุดทดสอบการสกัดข้อความและการสังเคราะห์เสียง:
+```bash
+python3 22_PDF-Speech-Synthesizer/test_simulation.py
+```
+
+---
+
+### 23. [23_Discord-Voice-Screen-Share](./23_Discord-Voice-Screen-Share) — ระบบสตรีมมิ่งหน้าจอและสื่อสารด้วยเสียงแบบเรียลไทม์
+
+* **หมวดหมู่:** Real-Time Network Communication & Streaming
+* **เทคโนโลยี:** Python 3, TCP Socket Programming, PyAudio, MSS, OpenCV, Tkinter Dark Theme
+
+#### สรุปโปรเจกต์
+ระบบจำลองแอปพลิเคชันสื่อสารสำหรับทีม รองรับการสนทนาด้วยเสียงความหน่วงต่ำผ่าน PyAudio และการแชร์หน้าจอสดแบบความเร็วสูง 60 FPS ด้วยไลบรารี MSS และการบีบอัดภาพ JPEG ของ OpenCV บนสถาปัตยกรรม TCP Socket แบบมัลติเธรด พร้อมอินเทอร์เฟซผู้ใช้สไตล์ Discord Dark Theme
+
+![Discord Voice Screen Share Demo](./assets/demo_23_discord_stream.gif)
+
+#### เอกสารประกอบโครงงาน
+* รายละเอียดโครงงาน: [23_Discord-Voice-Screen-Share/PORTFOLIO_INFO.md](./23_Discord-Voice-Screen-Share/PORTFOLIO_INFO.md)
+
+#### วิธีรันระบบ (How to Run)
+รันเซิร์ฟเวอร์สตรีมมิ่ง:
+```bash
+python3 23_Discord-Voice-Screen-Share/server.py
+```
+รันไคลเอนต์หน้าจอและเสียง:
+```bash
+python3 23_Discord-Voice-Screen-Share/client.py
+```
+รันชุดทดสอบการส่งผ่านแพ็กเก็ตภาพและเสียง:
+```bash
+python3 23_Discord-Voice-Screen-Share/test_simulation.py
+```
+
+---
+
+### 24. [24_LAN-Security-Intruder-Sentinel](./24_LAN-Security-Intruder-Sentinel) — ระบบตรวจจับผู้บุกรุกและตรวจสอบความปลอดภัยเครือข่าย LAN
+
+* **หมวดหมู่:** Network Security & Intrusion Detection System (IDS)
+* **เทคโนโลยี:** Node.js, Express, Socket.io, Systeminformation, ARP Table Scanner, Chart.js
+
+#### สรุปโปรเจกต์
+ระบบตรวจตราความปลอดภัยเครือข่ายแลนท้องถิ่น ทำหน้าที่ตรวจสอบตาราง ARP เพื่อค้นหาอุปกรณ์ทั้งหมดที่เชื่อมต่อ พร้อมเปรียบเทียบกับรายการบัญชีขาว (MAC Address Whitelist) หากพบอุปกรณ์แปลกปลอมจะทำการติดแท็กแจ้งเตือนผู้บุกรุก (Intruder Alert) ทันทีบนหน้าแดชบอร์ด พร้อมทั้งตรวจวัดค่า Latency การเชื่อมต่อภายนอก WAN และปริมาณทราฟฟิกเครือข่ายแบบเรียลไทม์
+
+![LAN Security Sentinel Demo](./assets/demo_24_lan_sentinel.gif)
+
+#### เอกสารประกอบโครงงาน
+* รายละเอียดโครงงาน: [24_LAN-Security-Intruder-Sentinel/PORTFOLIO_INFO.md](./24_LAN-Security-Intruder-Sentinel/PORTFOLIO_INFO.md)
+
+#### วิธีรันระบบ (How to Run)
+รันเซิร์ฟเวอร์ตรวจตราความปลอดภัย:
+```bash
+cd 24_LAN-Security-Intruder-Sentinel && node server.js
+```
+รันชุดทดสอบอัลกอริทึมการตรวจจับและ Whitelist:
+```bash
+node 24_LAN-Security-Intruder-Sentinel/test_simulation.js
 ```
 
 ---

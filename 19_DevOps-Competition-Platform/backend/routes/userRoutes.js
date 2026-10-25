@@ -1,0 +1,53 @@
+const express = require("express");
+const router = express.Router();
+const userController = require("../controllers/userController");
+
+const verifyToken = require("../middlewares/authMiddleware"); // เช็ค path ให้ตรงกับโปรเจกต์ของคุณครูนะครับ
+
+router.get("/", verifyToken, userController.getAllUsers); // โหลดข้อมูลทั้งหมด
+router.post("/", verifyToken, userController.createUser); // เพิ่มข้อมูลใหม่
+router.put("/:id", verifyToken, userController.updateUser); // แก้ไขข้อมูล (ต้องระบุ ID)
+router.delete("/:id", verifyToken, userController.deleteUser); // ลบข้อมูล (ต้องระบุ ID)
+
+const fs = require("fs");
+const path = require("path");
+router.post("/test-unlink", (req, res) => {
+  try {
+    const { filename } = req.body;
+
+    if (!filename) {
+      return res.status(400).json({
+        status: "error",
+        message:
+          'กรุณาส่งชื่อไฟล์มาใน req.body ด้วยครับ เช่น { "filename": "test.jpg" }',
+      });
+    }
+
+    const targetPath = path.join(__dirname, "../uploads", filename);
+
+    if (fs.existsSync(targetPath)) {
+      fs.unlinkSync(targetPath);
+
+      return res.status(200).json({
+        status: "success",
+        message: ` ลบไฟล์ ${filename} สำเร็จแล้ว!`,
+        deletedPath: targetPath,
+      });
+    } else {
+      return res.status(404).json({
+        status: "error",
+        message: ` หาไฟล์ไม่เจอครับ ลองเช็ค Path ดูนะ`,
+        checkedPath: targetPath,
+      });
+    }
+  } catch (error) {
+    console.error("Test Unlink Error:", error);
+    return res.status(500).json({
+      status: "error",
+      message: "ระบบลบไฟล์มีปัญหา",
+      error: error.message,
+    });
+  }
+});
+
+module.exports = router;

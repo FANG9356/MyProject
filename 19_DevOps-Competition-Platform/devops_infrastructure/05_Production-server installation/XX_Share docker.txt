@@ -1,0 +1,24 @@
+mkdir -p /etc/systemd/system/docker.service.d
+
+# Edit "override.conf"
+nano /etc/systemd/system/docker.service.d/override.conf
+[Service]
+ExecStart=
+ExecStart=/usr/bin/dockerd -H unix:///var/run/docker.sock -H tcp://0.0.0.0:2375
+
+systemctl daemon-reload
+systemctl restart docker
+
+ufw allow 2375/tcp
+ufw allow from <PRODUCT_IP> to any port 2375
+ufw status
+# Show:
+2375/tcp                   ALLOW       Anywhere
+2375                       ALLOW       192.168.137.10
+
+ss -tuln | grep 2375
+# Show:
+tcp   LISTEN 0      4096               *:2375             *:*
+
+# Request from Dev-server
+curl http://192.168.137.10:2375/version

@@ -3,7 +3,7 @@ set -e
 
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 echo "================================================================================"
-echo "EXECUTING AUTOMATED TEST SUITE FOR ALL 18 PROJECTS"
+echo "EXECUTING AUTOMATED TEST SUITE FOR ALL 24 PROJECTS"
 echo "================================================================================"
 
 pass_count=0
@@ -97,7 +97,31 @@ run_test "18" "Neo Web Chat & Offline BLE Mesh" \
     "python3 test_simulation.py" \
     "$DIR/18_Neo-Web-Chat"
 
+run_test "19" "DevOps Competition Platform 2568" \
+    "node test_simulation.js" \
+    "$DIR/19_DevOps-Competition-Platform"
+
+run_test "20" "Color Detection & Kalman Filter YOLO" \
+    "\"/Volumes/FangB/atm/venv/bin/python3\" test_simulation.py" \
+    "$DIR/20_Color-Detection-Kalman-YOLO"
+
+run_test "21" "Autonomous Robot Moisture Tracker" \
+    "node test_simulation.js" \
+    "$DIR/21_Robot-Moisture-Tracker"
+
+run_test "22" "PDF Speech Synthesizer & Audio Reader" \
+    "\"/Volumes/FangB/tip/.venv/bin/python3\" test_simulation.py" \
+    "$DIR/22_PDF-Speech-Synthesizer"
+
+run_test "23" "Discord Voice & Screen Sharing Clone" \
+    "python3 test_simulation.py" \
+    "$DIR/23_Discord-Voice-Screen-Share"
+
+run_test "24" "LAN Security Intruder Sentinel" \
+    "node test_simulation.js" \
+    "$DIR/24_LAN-Security-Intruder-Sentinel"
+
 echo ""
 echo "================================================================================"
-echo "FINAL TEST REPORT: $pass_count / 18 PROJECTS PASSED ALL TESTS SUCCESSFULLY"
+echo "FINAL TEST REPORT: $pass_count / 24 PROJECTS PASSED ALL TESTS SUCCESSFULLY"
 echo "================================================================================"

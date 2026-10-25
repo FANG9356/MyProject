@@ -1,0 +1,76 @@
+# ไฟล์นี้แสดงตัวอย่างการตั้งค่า Switch 
+# Cisco รุ่น CBS350-24T-4G
+
+# วิธีที่ 1: Using console ([shift + backspace = ลบข้อความ]):
+configure terminal
+  show: switch...(config)#
+
+vlan database
+  show: switch...(config-vlan)#
+
+vlan 100
+vlan 200
+exit
+  show: switch...(config)#
+
+interface gi24
+  show: switch...(config-if)#
+
+switchport mode trunk
+  show message: 
+    Date Time %LINK-I-Up:  Vlan 100 (เช่น 10-Mar-2026 03:03:52 %LINK-I-Up:  Vlan 100)
+    Date Time %LINK-I-Up:  Vlan 200
+
+switchport trunk allowed vlan add 100,200
+exit
+  show: switch...(config)#
+
+interface range gi1,gi3,gi5,gi7,gi9,gi11
+  show: switch...(config-if-range)#
+
+switchport mode access
+switchport access vlan 100
+exit
+  show: switch...(config)#
+
+interface range gi2,gi4,gi6,gi8,gi10,gi12
+  show: switch...(config-if-range)#
+
+switchport mode access
+switchport access vlan 200
+exit
+  show: switch...(config)#
+
+ip dhcp snooping
+ip dhcp snooping vlan 100
+ip dhcp snooping vlan 200
+
+interface gi24
+  show: switch...(config-if)#
+
+ip dhcp snooping trust
+exit
+  show: switch...(config)#
+
+exit
+  show: switch...#
+
+show ip dhcp snooping
+  show message:
+    DHCP snooping is Enabled
+    DHCP snooping is configured on following VLANs: 100,200
+    DHCP snooping database is Disabled
+    Relay agent Information option 82 is Disabled
+    Option 82 on untrusted port is forbidden
+    Verification of hwaddr field is Enabled
+
+     Interface    Trusted
+    ----------- ------------
+    gi24        Yes
+
+copy running-config startup-config
+  Overwrite file [startup-config].... (Y/N)[N] ? -> Y
+  show message:
+    10-Mar-2026 03:11:33 %COPY-I-FILECPY: Files Copy - source URL running-config estination URL flash://system/configuration/startup-config
+    10-Mar-2026 03:11:35 %COPY-N-TRAP: The copy operation was completed successfully
+    Copy succeeded

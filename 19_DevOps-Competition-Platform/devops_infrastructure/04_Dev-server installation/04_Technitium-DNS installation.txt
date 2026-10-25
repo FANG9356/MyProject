@@ -1,0 +1,38 @@
+docker volume create dns_config
+
+mkdir -p ~/docker/dns-stack/data && cd ~/docker/dns-stack
+nano docker-compose.yml
+
+Add .yml stacks[name="dns"]:
+
+networks:
+  app_net:
+    external: true
+
+volumes:
+  dns_config:
+    external: true
+
+services:
+  technitium-dns:
+    image: technitium/dns-server:latest
+    container_name: technitium-dns
+    hostname: dns-server
+    restart: unless-stopped
+    ports:
+      - "53:53/udp"      # DNS UDP
+      - "53:53/tcp"      # DNS TCP
+      - "5380:5380/tcp"  # Web Admin UI
+    volumes:
+      - dns_config:/etc/dns
+    networks:
+      - app_net
+    cap_add:
+      - NET_ADMIN
+
+docker compose up -d
+
+Setting browser(Chrome, Edge): Use secure DNS -> "Off", "With your current service provider"
+
+Setting primary DNS in your computer
+

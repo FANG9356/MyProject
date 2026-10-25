@@ -1,0 +1,31 @@
+# Step 1: Open your web browser:
+URL: Porxmox IP:8006
+
+# Step 2: Login:
+Username: root
+Password: 11111111
+
+# Step 3: Config the "Repository" :
+On the left menu
+  Select: "pev" -> Menu "Updates" -> Repositories:
+    Focus on column "Components": Disable "enterprise" and "pve-enterprise" 
+
+# Step 4: Set timezone:
+
+# เครื่องผู้เข้าแข่งขัน (Ubuntu VM) ตั้งค่า IP ของกรรมการ:
+nano /etc/apt/apt.conf.d/00aptproxy
+Acquire::http::Proxy "http://192.168.1.1:3142";
+
+apt update && apt upgrade -y
+
+apt install systemd-timesyncd -y
+timedatectl set-timezone UTC
+timedatectl set-ntp true
+timedatectl status
+
+# Step 5: Download iso image from committee:
+On the left menu
+  Select: "pev" -> local(pve) -> Menu "ISO Images" -> Download from URL:
+    URL: [IP committee/iso path]
+    Click button: "Query URL" -> "Download"
+     

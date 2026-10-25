@@ -1,0 +1,104 @@
+services:
+  mysql:
+    image: 192.168.137.3:5000/mysql:latest
+    container_name: mysql
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      - TZ=UTC
+      - MYSQL_ROOT_PASSWORD=11111111
+      - MYSQL_DATABASE=devops_db
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-h",
+          "localhost",
+          "-u",
+          "root",
+          "-p11111111",
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    volumes:
+      - ./mysql_data:/var/lib/mysql
+
+  backend:
+    image: 192.168.137.3:5000/my-backend:latest
+    container_name: my-backend-app
+    restart: always
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_USER=root
+      - DB_PASSWORD=11111111
+      - DB_DATABASE=devops_db
+      - PORT=8000
+      - JWT_SECRET=DevopsComputerUTC
+      - JWT_EXPIRES_IN=2h
+
+  frontend:
+    image: 192.168.137.3:5000/my-frontend:latest
+    container_name: my-frontend-app
+    restart: always
+
+  nginx:
+    image: 192.168.137.3:5000/nginx:latest
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf # โหลดไฟล์ตั้งค่าต้อนรับ
+    depends_on:
+      - frontend
+      - backend
+
+  emqx:
+    image: 192.168.137.3:5000/emqx/emqx:latest
+    container_name: emqx
+    restart: always
+    ports:
+      - "1883:1883" # MQTT Protocol
+      - "8083:8083" # MQTT/WebSocket
+    environment:
+      - EMQX_DASHBOARD__UNSUCCESSFUL_LOGIN_DURATION=0
+      - EMQX_DASHBOARD__UNSUCCESSFUL_LOGIN_MAX_ATTEMPTS=999
+
+  nodered:
+    image: 192.168.137.3:5000/nodered/node-red:latest
+    container_name: nodered
+    restart: always
+    environment:
+      - TZ=UTC
+      - http_proxy=http://192.168.137.10:3142
+      - https_proxy=http://192.168.137.10:3142
+      - HTTP_PROXY=http://192.168.137.10:3142
+      - HTTPS_PROXY=http://192.168.137.10:3142
+    volumes:
+      - ./nodered_data:/data
+
+  grafana:
+    image: 192.168.137.3:5000/grafana/grafana:latest
+    container_name: grafana
+    restart: always
+    environment:
+      - TZ=UTC
+      - GF_SECURITY_ADMIN_PASSWORD=11111111 # เปลี่ยนรหัสผ่านตรงนี้ได้
+      - GF_SECURITY_ALLOW_EMBEDDING=true # อนุญาตให้ใช้ Iframe
+      - GF_AUTH_ANONYMOUS_ENABLED=true # อนุญาตให้ผู้ใช้ทั่วไป เข้าดู Dashboard โดยไม่ต้อง Login
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Viewer
+      - GF_AUTH_ANONYMOUS_ORG_NAME=Main Org.
+      - GF_AUTH_ANONYMOUS_HIDE_VERSION=true
+      - GF_SERVER_DOMAIN=naphat.production
+      - GF_SERVER_ROOT_URL=http://naphat.production/grafana/
+      - GF_SERVER_SERVE_FROM_SUB_PATH=true
+    volumes:
+      - ./grafana_data:/var/lib/grafana

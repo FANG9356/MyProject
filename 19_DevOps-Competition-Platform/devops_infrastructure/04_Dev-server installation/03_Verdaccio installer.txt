@@ -1,0 +1,51 @@
+docker run -d --name verdaccio -p 4873:4873 verdaccio/verdaccio
+
+docker volume create verdaccio_storage
+docker volume create verdaccio_conf
+
+mkdir -p ~/docker/verdaccio-stack/data && cd ~/docker/verdaccio-stack
+nano docker-compose.yml
+
+Add .yml stacks[name=["verdaccio"]]:
+
+networks:
+  app_net:
+    external: true
+
+volumes:
+  verdaccio_storage:
+    external: true
+
+  verdaccio_conf:
+    external: true
+
+services:
+  verdaccio:
+    image: 192.168.110.242:8080/verdaccio/verdaccio:latest
+    container_name: verdaccio
+    restart: always
+    networks:
+      - app_net
+    ports:
+      - "4873:4873"
+    environment:
+      HTTP_PROXY: http://192.168.87.242:3142
+      HTTPS_PROXY: http://192.168.87.242:3142
+    volumes:
+      - verdaccio_storage:/verdaccio/storage
+      - verdaccio_conf:/verdaccio/conf
+
+docker compose up -d
+
+# เบราว์เซอร์ไปที่ (IP Dev)
+http://10.10.10.5:4873
+
+# ตรวจสอบจากเครื่อง Dev
+curl -I http://localhost:4873 (return 200 OK)
+curl -x http://192.168.110.242:3142 https://registry.npmjs.org/express
+docker run --rm curlimages/curl https://registry.npmjs.org
+
+# ตรวจสอบจากเครื่อง Client
+npm config set registry http://10.10.10.5:4873
+npm config get registry (ควรได้ http:10.10.10.5:4873)
+npm view express version

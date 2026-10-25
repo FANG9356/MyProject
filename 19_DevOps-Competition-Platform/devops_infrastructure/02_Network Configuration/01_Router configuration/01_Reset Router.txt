@@ -1,0 +1,32 @@
+# ไฟล์นี้แสดงตัวอย่างการตั้งค่า Router 
+# Microtik รุ่น RB951G-2HnD
+
+# Reset router
+# วิธีที่ 1:
+System -> Reset Configuration:
+  Cheked on:
+    - No Default Configuration
+    - Do Not Backup
+# วิธีที่ 2:
+1.Power off the device (unplug the power adapter).
+2.Press and hold the Reset button (you may need a paperclip or a small pointed object).
+3.Plug in the power while continuing to hold the button.
+4.Watch the ACT LED light:
+  It will start flashing.
+  Keep holding until the LED stops flashing (usually takes about 5–10 seconds).
+5.Release the button to clear the configuration.
+6.Default Credentials: 
+  After a successful reset, the default login is usually admin with no password.
+7.Default IP: 
+  The router will typically default to 192.168.88.1
+
+#Login to config
+1. Choose tap: Neighbors
+2. Select hardware IP 192.168.88.1
+3. Enter User: admin, Password: ""
+4. Push "Connect" button
+5. Define new password:
+  Old password: ""
+  New Password: utc1234
+  Confirm Password: utc1234
+  

@@ -1,0 +1,88 @@
+docker volume create registry_data
+
+mkdir -p ~/docker/registry-stack/data && cd ~/docker/registry-stack
+nano docker-compose.yml
+
+Add .yml stacks[name=["registry", "regisry-ui"]]:
+
+networks:
+  app_net:
+    external: true
+
+volumes:
+  registry_data:
+    external: true
+
+services:
+  registry:
+    image: registry:2
+    container_name: registry
+    restart: always
+    networks:
+      - app_net
+    ports:
+      - "5000:5000"
+    environment:
+      - REGISTRY_STORAGE_DELETE_ENABLED=true
+    volumes:
+      - registry_data:/var/lib/registry
+
+  registry-ui:
+    image: joxit/docker-registry-ui:main
+    container_name: registry-ui
+    restart: always
+    networks:
+      - app_net
+    ports:
+      - "8080:80"
+    environment:
+      - SINGLE_REGISTRY=true
+      - REGISTRY_TITLE=My Docker Registry UI
+      - DELETE_IMAGE=true
+      - SHOW_CONTENT_DIGEST=true
+      - NGINX_PROXY_PASS_URL=http://registry:5000
+      - SHOW_CATALOG_NB_TAGS=true
+      - CATALOG_MIN_BRANCHES=1
+      - CATALOG_MAX_BRANCHES=1
+      - TAGLIST_PAGE_SIZE=100
+      - REGISTRY_SECURED=false
+      - CATALOG_ELEMENTS_LIMIT=1000
+    depends_on:
+      - registry
+
+docker compose up -d
+
+nano /etc/docker/daemon.json
+{
+"insecure-registries": ["Your domain name:5000", "Your IP:5000", "Committee IP:8080"]
+}
+
+systemctl restart docker
+
+Test pull image:
+docker pull alpine:latest
+docker tag alpine:latest [Your IP]:5000/alpine:latest
+docker push [Your IP]:5000/alpine:latest
+
+#Pull all images from committee server:
+
+#For windows PowerShell 5.1
+$base = "192.168.137.3:8080"
+$repos = (Invoke-RestMethod -Uri "http://$base/v2/_catalog").repositories
+
+foreach ($repo in $repos) {
+    # Fetch all tags for this specific repository
+    $tags = (Invoke-RestMethod -Uri "http://$base/v2/$repo/tags/list").tags
+    foreach ($tag in $tags) {
+        # Use ${} to separate the variable name from the colon
+        docker pull "${base}/${repo}:${tag}"
+    }
+}
+
+
+
+
+
+
+
+

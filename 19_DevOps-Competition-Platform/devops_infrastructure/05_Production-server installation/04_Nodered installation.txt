@@ -1,0 +1,49 @@
+docker volume create nodered_data
+
+mkdir -p ~/docker/nodered-stack/data && cd ~/docker/nodered-stack
+nano docker-compose.yml
+
+Add .yml stacks[name="nodered"]:
+
+networks:
+  app_net:
+    external: true
+
+volumes:
+  nodered_data:
+    external: true
+
+services:
+  nodered:
+    image: nodered/node-red:latest
+    container_name: nodered
+    restart: always
+    networks:
+      - app_net
+    ports:
+      - "1880:1880"
+    environment:
+      - TZ=Asia/Bangkok
+      - http_proxy=[IP กรรมการ:3142]    # http://192.168.137.10:3142
+      - https_proxy=[IP กรรมการ:3142]   # http://192.168.137.10:3142
+      - HTTP_PROXY=[IP กรรมการ:3142]    # http://192.168.137.10:3142
+      - HTTPS_PROXY=[IP กรรมการ:3142]   # http://192.168.137.10:3142
+    volumes:
+      - nodered_data:/data
+
+docker compose up -d
+
+# Install by npm:
+docker exec -it nodered bash
+cd /data
+npm view node-red version (แผนสำรอง: npm config set proxy http://192.168.110.242:3142)
+npm install node-red-dashboard
+npm install node-red-node-mysql
+exit
+
+docker restart nodered
+
+# Install palette:
+Menu top-right (≡) -> Manage palette -> Tab "install" -> Seach textbox:
+  "node-red-node-mysql" -> install
+  "node-red-dashboard" -> install

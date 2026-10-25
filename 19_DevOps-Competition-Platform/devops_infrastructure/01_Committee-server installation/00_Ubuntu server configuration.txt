@@ -1,0 +1,182 @@
+sudo -i
+sudo visudo
+# Edit file"/etc/sudoers.tmp": (Insert the last line)
+admin1 ALL=(ALL) NOPASSWD: ALL
+
+apt update && apt upgrade -y
+apt install curl ssh ufw netfilter-persistent -y
+ufw enable
+ufw allow 22/tcp
+ufw reload
+ufw status
+
+ip a
+ip route | grep default
+
+nano /etc/netplan/ [[Tab]->("50-cloud-init"/"99-config"/"etc")] .yaml
+# รับค่า IP จากผู้ให้บริการ อัตโนมัติ
+	renderer: networkd
+	ethernets:
+    	  enp3s0:
+      	    dhcp4: true
+    	  enp2s0:
+      	    addresses:
+              - 192.168.1.1/24
+
+# ค้นหาด้วยคำสั่ง :
+ip route
+# กำหนดค่า IP จากผู้ให้บริการ
+	ethernets:
+    	  enp3s0:
+      	    dhcp4: false
+      	    addresses:
+              - 10.15.1.120/19
+            routes:
+              - to: default
+                via: 10.15.0.1 (IP ผู้ให้บริการ)
+            nameservers:
+              addresses:[8.8.8.8, 8.8.4.4, 1.1.1.1]
+    	  enp2s0:
+      	    addresses:
+              - 192.168.137.1/24
+
+netplan try
+
+
+# การทำ NAT (Network Address Translation) แชร์อินเตอร์เน็ตให้เครื่อข่ายลูก
+# ตรวจสอบสถานะ ip_forward:
+cat /proc/sys/net/ipv4/ip_forward
+# การสร้าง:
+iptables -t nat -A POSTROUTING -o enp3s0 -j MASQUERADE
+# อนุญาตให้ข้อมูลที่ตอบกลับมาวิ่งเข้าได้
+iptables -A FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT
+# อนุญาตให้เครื่องทั้งหมดใน Interface ส่งข้อมูลออกไปได้ (เช่น enp2s0):
+iptables -A FORWARD -i enp2s0 -j ACCEPT
+
+# อนุญาตให้ IP เครื่องใน Interface ส่งข้อมูลออกไปได้ (เช่น enp2s0: 192.168.1.2):
+iptables -t nat -A POSTROUTING -o enp3s0 -j MASQUERADE
+iptables -A FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT
+iptables -A FORWARD -i enp2s0 -s 192.168.1.2 -j ACCEPT
+iptables -A FORWARD -i enp2s0 -j DROP
+
+# แก้ไข และตรวจสอบ ค่า Forwarding
+sudo nano /etc/sysctl.conf
+	net.ipv4.ip_forward=1
+cat /proc/sys/net/ipv4/ip_forward
+
+#บันทึกค่า
+netfilter-persistent save
+
+# การลบ:
+iptables -t nat -F
+iptables -F
+
+# ตรวจสอบตาราง
+iptables -t nat -L -n -v
+iptables -L FORWARD -v -n --line-numbers
+
+sudo nano /etc/sysctl.conf
+	net.ipv4.ip_forward=0
+cat /proc/sys/net/ipv4/ip_forward
+
+netfilter-persistent save
+
+
+
+# ติดตั้ง Apt-Cacher-Ng (APT Cache)
+apt install apt-cacher-ng -y
+# ตรวจสอบสถานะการทำงาน port 3142:
+systemctl status apt-cacher-ng
+
+# กรณี  ssh จากเครื่องอื่น
+ufw allow 3142/tcp
+ufw reload
+
+# ตรวจสอบ Port ชนกัน:
+ss -tulpn
+
+# การทดสอบ APT Cache:
+# เครื่องกรรมการ:
+# เปิดเบราว์เซอร์ ดู Dashboard สถิติการแคช จาก IP กรรมการ:
+http://192.168.1.1:3142/acng-report.html
+# ดู Log File แบบ Real-time
+tail -f /var/log/apt-cacher-ng/apt-cacher.log
+
+# เครื่องผู้เข้าแข่งขัน (Ubuntu VM) ตั้งค่า IP ของกรรมการ:
+nano /etc/apt/apt.conf.d/00aptproxy
+Acquire::http::Proxy "http://192.168.1.1:3142";
+
+# Test run:
+apt update
+apt install htop
+
+
+
+# การทำ Local Web Server สำหรับให้ Download ISO Image ด้วย Nginx
+apt install nginx -y
+systemctl status nginx (กด q เพื่อออกจากหน้าต่างสถานะ)
+nano /etc/nginx/sites-available/default
+	location {
+		...
+		autoindex on; (เพิ่มเข้าไป)
+	}
+systemctl restart nginx
+ufw allow 'Nginx HTTP'
+
+mkdir -p /var/www/html/iso
+chmod 755 /var/www/html/iso
+wget [URL download .iso] (ระบบจะแสดงแถบความคืบหน้า)
+
+# ทดสอบว่าเจอไฟล์ไหม
+# เครื่องผู้เข้าแข่งขัน
+curl -I http://192.168.137.10/iso/
+curl -s http://192.168.137.10/iso/
+curl -s http://192.168.137.10/iso/ | grep href | cut -d '"' -f 2 | grep -v "\.\."
+
+
+
+# ติดตั้ง NTP Server "การซิงก์เวลากลางของทั้งสนามแข่ง" (ใช้ chrony) ลงในเครื่องกรรมการ
+apt update && apt install chrony -y
+nano /etc/chrony/chrony.conf
+	#allow 192.168.0.0/16 -> allow 192.168.1.0/24 หรือ allow 0.0.0.0/0 (อนุญาตทั้งหมด)
+
+systemctl restart chrony
+systemctl enable chrony
+ufw allow 123/udp
+
+# การทดสอบ NTP Server:
+# เครื่องกรรมการ:
+chronyc clients (มีเครื่องลูกข่ายวิ่งเข้ามาซิงก์เวลาหรือไม่)
+
+# เครื่องผู้เข้าแข่งขัน (Ubuntu VM):
+nano /etc/systemd/timesyncd.conf
+	NTP=192.168.1.1 (IP กรรมการ)
+systemctl restart systemd-timesyncd
+timedatectl
+	show status: 
+		System clock synchronized: yes
+		NTP service: active
+timedatectl timesync-status
+	show status:
+		Server: [IP กรรมการ] (เช่น 192.168.137.10 (192.168.137.10))
+
+# กรณีทำ WiFi to Lan Sharing
+# 1. Sharing Setup
+Press Win + R -> ncpa.cpl -> Right-click your Wi-Fi adapter -> Properties -> Sharing tab
+  Check: "Allow other network users to connect..."
+  Dropdown: Select your Ethernet / LAN adapter from the list
+
+# 2. Verify the IP was Actually Assigned
+ipconfig
+  Ethernet adapter show: 192.168.137.1
+
+# 3. Turn off Windows Firewall
+Start menu -> Windows Defender Firewall -> Click "Turn Windows Defender Firewall on or off"
+   Check: turn off the firewall for both Private and Public networks.
+
+# 4. Restart the ICS Service
+Press Win + R -> services.msc -> find "Internet Connection Sharing (ICS)" -> Right-click and select "Restart"
+
+
+
+curl -s -H "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" http://neverssl.com

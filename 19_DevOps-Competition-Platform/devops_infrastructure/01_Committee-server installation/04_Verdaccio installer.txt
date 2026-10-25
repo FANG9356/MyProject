@@ -1,0 +1,38 @@
+docker run -d --name verdaccio -p 4873:4873 verdaccio/verdaccio
+
+docker volume create verdaccio_storage
+docker volume create verdaccio_conf
+
+mkdir -p ~/docker/verdaccio-stack/data && cd ~/docker/verdaccio-stack
+nano docker-compose.yml
+
+Add .yml stacks[name=["verdaccio"]]:
+
+networks:
+  app_net:
+    external: true
+
+volumes:
+  verdaccio_storage:
+    external: true
+
+  verdaccio_conf:
+    external: true
+
+services:
+  verdaccio:
+    image: verdaccio/verdaccio:latest
+    container_name: verdaccio
+    restart: always
+    networks:
+      - app_net
+    ports:
+      - "4873:4873"
+    volumes:
+      - verdaccio_storage:/verdaccio/storage
+      - verdaccio_conf:/verdaccio/conf
+
+docker compose up -d
+
+#เบราว์เซอร์ไปที่ (IP กรรมการ)
+http://192.168.1.1:4873

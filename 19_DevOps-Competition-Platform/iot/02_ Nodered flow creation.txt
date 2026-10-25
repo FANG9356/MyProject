@@ -1,0 +1,117 @@
+# Step 1: Create EMQX connection:
+network group -> mqtt in -> config:
+  Create new server: 
+    Name: EMQX Broker
+    Server: emqx (Container name)
+    Port: 1883
+    Protocol: MQTT V5, V3 (Match with EMQX WebSocket)
+
+common group -> Debug:
+
+# Link 
+  "mqtt in" to "debug"
+
+# Deploy: 
+  "mqtt in": show "connected".
+  "debug": show values from EMQX.
+
+
+
+# Step 2: Prepare function to insert data:
+function group -> Function:
+  Name: insert db
+  On Message: (JS coding): 
+
+// Get JSON data from MQTT 
+let device = "ESP32_Node_A";
+let temp = msg.payload.temperature;
+let press = msg.payload.pressure;
+
+// SQL Command
+msg.topic = 
+"INSERT INTO bmp280_data "+
+"(device_id, temperature, pressure) "+
+"VALUES (?, ?, ?)";
+
+// Addind array value sent to (?,?)MySQL  
+msg.payload = [device, temp, press];
+
+return msg;
+
+
+
+# Link 
+  "mqtt in" to "function", and "function" to "debug"
+
+# Deploy: 
+  "debug": show array data to prepare inserting data.
+
+
+
+# Step 3: Create MySQL connection:
+storage group -> mysql -> config:
+  Name: mysql
+  Create new database:
+    Name: mysql
+    Host: MySQL (Container name)
+    Port: 3306
+    User: root
+    Password: 11111111
+    Database: devops_iot_db
+    Timezone: Asia/Bangkok
+    Charset: UTF8
+ 
+
+ 
+# Step 4: Create dashboard temperature:
+function group -> Function:
+  Name: temp
+  On Message: (JS coding): 
+
+msg.payload = msg.payload.temperature;
+return msg;
+
+dashboard group -> gauge:
+  Create group: 
+    Name: BMP280 Sensor
+    Create Tab: 
+      Name: IoT Dashboard
+  Label: Temperature
+  Value format: {{value | number:2}} (float .2)
+  Units: °C (Alt + 248) 
+  Range: min 0 max 50
+
+dashboard group -> chart:
+  Group: [Iot Dashboard] BMP280 Sensor
+  Label: Temperature
+  X-axis: 
+    last: 1 hours
+
+
+
+# Step 5: Create dashboard pressure:
+function group -> Function:
+  Name: pres
+  On Message: (JS coding): 
+
+msg.payload = msg.payload.pressure;
+return msg;
+
+dashboard group -> gauge:
+  Group: [Iot Dashboard] BMP280 Sensor
+  Label: Pressure
+  Value format: {{value}}
+  Unit: hPa
+  Range: min 900 max 1100
+
+dashboard group -> chart:
+  Group: [Iot Dashboard] BMP280 Sensor
+  Label: Pressure
+  X-axis: 
+    last: 1 hours
+
+
+
+# Step 6: Manage Dashboard
+Top-right -> Dashboard -> IoT Dashboard -> layout
+View dashboard URL: http://[Your server IP]:1880/ui

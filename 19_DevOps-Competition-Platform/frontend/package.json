@@ -1,0 +1,28 @@
+{
+  "name": "frontend",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "test": "echo \"No tests yet, but passing for CI/CD\""
+  },
+  "dependencies": {
+    "@mdi/font": "^7.4.47",
+    "@pinia/nuxt": "^0.11.3",
+    "axios": "^1.13.6",
+    "jwt-decode": "^4.0.0",
+    "nuxt": "^4.4.2",
+    "pinia": "^3.0.4",
+    "vite-plugin-vuetify": "^2.1.3",
+    "vue": "^3.5.30",
+    "vue-router": "^5.0.3",
+    "vuetify": "^4.0.2"
+  },
+  "devDependencies": {
+    "@nuxtjs/tailwindcss": "^6.14.0"
+  }
+}

@@ -1,0 +1,108 @@
+docker volume create nginx_logs
+
+mkdir -p ~/docker/nginx-stack/data && cd ~/docker/nginx-stack
+nano docker-compose.yml
+
+Add .yml stacks[name="nginx"]:
+
+networks:
+  app_net:
+    external: true
+
+volumes:
+  nginx_logs:
+    external: true
+
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    restart: always
+    networks:
+      - app_net
+    ports:
+      - "80:80"      # เชื่อมพอร์ต 80 ของเครื่องโฮสต์ เข้ากับพอร์ต 80 ของ Container
+    volumes:
+      - nginx_logs:/var/log/nginx
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./html:/usr/share/nginx/html:ro
+
+docker compose up -d
+
+ufw allow 80/tcp
+ufw reload
+ufw status
+
+# Create file: /docker/nginx-stack/nginx/conf.d/default.conf
+nano nginx/conf.d/default.conf
+
+server {
+    listen       80;
+    server_name  192.168.137.10  naphat.product;
+
+    location / {
+        root   /usr/share/nginx/html; # Root ใน Container
+        index  index.html index.htm;
+    }
+
+    error_page   500 502 503 504  /50x.html;
+    location = /50x.html {
+        root /usr/share/nginx/html;
+    }
+
+    location /emqx/ {
+        proxy_pass http://emqx:18083/;
+    }
+
+    location /nodered/ {
+        proxy_pass http://nodered:1880/;
+
+        # ตั้งค่าให้รองรับ WebSocket
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+    }
+
+    location /grafana/ {
+        proxy_pass http://grafana:3000;
+
+        # ตั้งค่าให้รองรับ WebSocket (สำคัญมากสำหรับ Live Dashboard)
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+    }   
+
+#    location / {
+#        proxy_pass http://frontend;
+#        error_page 404 /index.html;
+#    }
+
+#    location /api/ {
+#        proxy_pass http://backend:8000;
+#    }
+
+#    location /uploads/ {
+#        proxy_pass http://backend:8000/uploads/;
+#        proxy_set_header Host $host;
+#    }
+
+}
+
+docker exec nginx nginx -t
+docker exec nginx nginx -s reload
+
+# Edit file ["IP" "Server name"] by administrator notepad: "C:\Windows\System32\drivers\etc\hosts"
+192.168.137.10  naphat.product
+
+ping naphat.product
+
+# For download file server:
+location /iso/ {
+        root /usr/share/nginx/html; 
+        autoindex on;               
+        autoindex_exact_size off;   
+        autoindex_localtime on;     
+        charset utf-8;              
+}

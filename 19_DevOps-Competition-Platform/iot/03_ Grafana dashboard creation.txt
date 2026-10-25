@@ -1,0 +1,123 @@
+# Step 1: Create connection:
+Left menu "Connections" -> Add new connection -> MySQL:
+  Name: mysql
+  Host URL: mysql:3306 (Container name:port)
+  Database name: devops_iot_db
+  Username: root
+  Password: 11111111
+  Timezone: UTC
+  Click "Save & Test": Show message: "Database Connection OK"
+
+
+
+# Step 2: Create new dashboard:
+Left menu "Dashboards" -> Add visualization -> Select mysql:
+
+# Set timezone UTC
+Right menu "Time options" -> Timezone: "Local browser time" (Default UTC)
+
+# Create temperature chart
+Right menu "Time series" (Chart):
+  Title: Temperature
+  Unit: Temperature -> Celsius (°C)
+
+"Tab Queries"
+Select tab "Code":
+
+SELECT
+  timestamp AS "time",
+  temperature AS "Temperature"
+FROM bmp280_data
+WHERE $__timeFilter(timestamp)
+ORDER BY timestamp ASC
+
+Click "Run query" button
+Select: Last 1 hours
+
+Right menu "Time series" (Chart):
+  + Add field override
+    Fields with name: Temperature
+    + Add override property: Standard options -> Color scheme:
+      Select Single color: "select  your color want"
+
+
+Top-right: Click "Save dashboard" button:
+  Title: "BMP280IoT Dashboard" 
+  Click "Save" button
+
+
+
+# Step 3: Create temperature gauge:
+Left menu "Dashboards" -> select your dashboard "MP280IoT Dashboard" -> Click "Edit" -> Add -> Visualization:
+Right menu "Gauge":
+  Title: Temperature
+  Unit: Temperature -> Celsius (°C)
+  Min: 0
+  Max: 50
+
+"Tab Queries"
+Select tab "Code":
+
+SELECT
+  timestamp AS "time",
+  temperature AS "Temperature"
+FROM bmp280_data
+WHERE $__timeFilter(timestamp)
+ORDER BY timestamp ASC
+
+Click "Run query" button
+Select: Last 1 hours
+
+Right menu "Time series" (Chart):
+  + Add field override
+    Fields with name: Temperature
+    + Add override property: Standard options -> Color scheme:
+      Select Single color: "select  your color want"
+
+
+
+# Step 4: Create pressure chart:
+Left menu "Dashboards" -> select your dashboard "MP280IoT Dashboard" -> Click "Edit" -> Add -> Visualization:
+Right menu "Time series" (Chart):
+  Title: Pressure
+  Unit: Pressure -> Millibars
+
+"Tab Queries"
+Select tab "Code":
+
+SELECT
+  timestamp AS "time",
+  pressure AS "Pressure"
+FROM bmp280_data
+WHERE $__timeFilter(timestamp)
+ORDER BY timestamp ASC
+
+Click "Run query" button
+Select: Last 1 hours
+
+Can change color from "# Step 2, 3".
+
+
+
+# Step 5: Create pressure gauge
+Left menu "Dashboards" -> select your dashboard "MP280IoT Dashboard" -> Click "Edit" -> Add -> Visualization:
+Right menu "Gauge":
+  Title: Pressure
+  Unit: Pressure -> Millibars
+  Min: 900
+  Max: 1100
+
+"Tab Queries"
+Select tab "Code":
+
+SELECT
+  timestamp AS "time",
+  pressure AS "Pressure"
+FROM bmp280_data
+WHERE $__timeFilter(timestamp)
+ORDER BY timestamp ASC
+
+Click "Run query" button
+Select: Last 1 hours
+
+Can change color from "# Step 2, 3".
