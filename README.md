@@ -693,6 +693,8 @@ python3 18_Neo-Web-Chat/test_simulation.py
 2. ระบบโทรมาตร IoT ด้วยบอร์ด ESP32 อ่านค่าอุณหภูมิและความดันบรรยากาศ ส่งผ่าน MQTT เข้า Node-RED ลง MySQL และแสดงผลบน Grafana Dashboard
 3. สถาปัตยกรรมโครงสร้างพื้นฐานระดับองค์กรบน Proxmox VE พร้อม Docker Compose สำหรับ Container Registry, Verdaccio, GitLab, EMQX และ Nginx
 
+![DevOps Competition Platform Dashboard](./assets/real_hw_19_devops_competition.png)
+
 ![DevOps Competition Platform Demo](./assets/demo_19_devops_competition.gif)
 
 #### เอกสารประกอบและเกณฑ์การแข่งขัน
@@ -719,6 +721,8 @@ node 19_DevOps-Competition-Platform/test_simulation.js
 #### สรุปโปรเจกต์
 ระบบตรวจจับและจำแนกสีวัตถุแบบเรียลไทม์ โดยใช้การสกัดสีเด่นด้วย K-Means Clustering บนพื้นที่ภาพที่ตัดจากกรอบ Bounding Box ของโมเดล YOLOv8 จากนั้นแปลงค่าสีเข้าสู่ระบบพิกัด HSV เพื่อจำแนกเป็นชื่อสีภาษาไทยอย่างแม่นยำ พร้อมทั้งประยุกต์ใช้ 1D Kalman Filter เพื่อกรองสัญญาณรบกวน ลดความผันผวนของระยะทาง และติดตามเสถียรภาพของการเคลื่อนที่แบบเรียลไทม์
 
+![Color Detection Kalman HUD](./assets/real_hw_20_color_kalman_yolo.png)
+
 ![Color Detection Kalman Demo](./assets/demo_20_color_kalman_yolo.gif)
 
 #### เอกสารประกอบโครงงาน
@@ -743,6 +747,8 @@ python3 20_Color-Detection-Kalman-YOLO/test_simulation.py
 
 #### สรุปโปรเจกต์
 เว็บแดชบอร์ดติดตามตำแหน่งพิกัดภูมิศาสตร์ของหุ่นยนต์สำรวจดินแบบเรียลไทม์บนแผนที่โลกจริง OpenStreetMap แสดงผลสถานะการทำงาน ค่าร้อยละความชื้นในดิน พร้อมระบบคลิกบนแผนที่เพื่อสร้างหมุดเป้าหมายใหม่ (Waypoint Target) และส่งคำสั่งพิกัดไปยังหุ่นยนต์เพื่อสั่งการเคลื่อนที่และเก็บข้อมูลความชื้นแบบอัตโนมัติ
+
+![Robot Moisture Map](./assets/real_hw_21_robot_moisture.png)
 
 ![Robot Moisture Tracker Demo](./assets/demo_21_robot_moisture.gif)
 
@@ -769,6 +775,8 @@ node 21_Robot-Moisture-Tracker/test_simulation.js
 #### สรุปโปรเจกต์
 เครื่องมือสกัดเนื้อหาจากเอกสาร PDF หลายหน้า ทำความสะอาดอักขระและจัดรูปแบบช่องว่างข้อความ จากนั้นแปลงเป็นไฟล์เสียงพูดภาษาไทยธรรมชาติด้วยโมเดลสังเคราะห์เสียง Google Text-to-Speech โดยสามารถกำหนดความเร็วการอ่าน และบันทึกผลลัพธ์เป็นไฟล์เสียง MP3 เพื่อนำไปใช้เป็นหนังสือเสียงหรือสื่อการเรียนรู้
 
+![PDF Speech Engine](./assets/real_hw_22_pdf_speech.png)
+
 ![PDF Speech Synthesizer Demo](./assets/demo_22_pdf_speech.gif)
 
 #### เอกสารประกอบโครงงาน
@@ -793,6 +801,8 @@ python3 22_PDF-Speech-Synthesizer/test_simulation.py
 
 #### สรุปโปรเจกต์
 ระบบจำลองแอปพลิเคชันสื่อสารสำหรับทีม รองรับการสนทนาด้วยเสียงความหน่วงต่ำผ่าน PyAudio และการแชร์หน้าจอสดแบบความเร็วสูง 60 FPS ด้วยไลบรารี MSS และการบีบอัดภาพ JPEG ของ OpenCV บนสถาปัตยกรรม TCP Socket แบบมัลติเธรด พร้อมอินเทอร์เฟซผู้ใช้สไตล์ Discord Dark Theme
+
+![Discord Streaming UI](./assets/real_hw_23_discord_stream.png)
 
 ![Discord Voice Screen Share Demo](./assets/demo_23_discord_stream.gif)
 
@@ -822,6 +832,8 @@ python3 23_Discord-Voice-Screen-Share/test_simulation.py
 
 #### สรุปโปรเจกต์
 ระบบตรวจตราความปลอดภัยเครือข่ายแลนท้องถิ่น ทำหน้าที่ตรวจสอบตาราง ARP เพื่อค้นหาอุปกรณ์ทั้งหมดที่เชื่อมต่อ พร้อมเปรียบเทียบกับรายการบัญชีขาว (MAC Address Whitelist) หากพบอุปกรณ์แปลกปลอมจะทำการติดแท็กแจ้งเตือนผู้บุกรุก (Intruder Alert) ทันทีบนหน้าแดชบอร์ด พร้อมทั้งตรวจวัดค่า Latency การเชื่อมต่อภายนอก WAN และปริมาณทราฟฟิกเครือข่ายแบบเรียลไทม์
+
+![LAN Sentinel Dashboard](./assets/real_hw_24_lan_sentinel.png)
 
 ![LAN Security Sentinel Demo](./assets/demo_24_lan_sentinel.gif)
 

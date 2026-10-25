@@ -2,7 +2,10 @@
 
 ระบบตรวจสอบความปลอดภัยเครือข่ายแลน ตรวจจับอุปกรณ์แปลกปลอมด้วย MAC Address Whitelist พร้อมแดชบอร์ดแสดงสถานะแบบเรียลไทม์
 
-## ตัวอย่างการทำงานจริง (Demonstration)
+## ภาพถ่ายหน้าจอการทำงานจริง (Screenshot)
+![LAN Sentinel Dashboard](../assets/real_hw_24_lan_sentinel.png)
+
+## ภาพเคลื่อนไหวสาธิตการทำงาน (Demonstration)
 ![LAN Security Sentinel Demo](../assets/demo_24_lan_sentinel.gif)
 
 ## ผู้พัฒนา

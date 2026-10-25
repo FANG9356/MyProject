@@ -2,7 +2,10 @@
 
 ระบบตรวจจับสีวัตถุแบบเรียลไทม์จากกรอบ Bounding Box พร้อมโมเดลตัวกรองสัญญาณ Kalman Filter สำหรับงานประมวลผลภาพ
 
-## ตัวอย่างการทำงานจริง (Demonstration)
+## ภาพถ่ายหน้าจอการทำงานจริง (Screenshot)
+![Color Detection Kalman HUD](../assets/real_hw_20_color_kalman_yolo.png)
+
+## ภาพเคลื่อนไหวสาธิตการทำงาน (Demonstration)
 ![Color Detection Kalman Demo](../assets/demo_20_color_kalman_yolo.gif)
 
 ## ผู้พัฒนา

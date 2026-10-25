@@ -2,7 +2,10 @@
 
 ระบบแอปพลิเคชันเดสก์ท็อปสำหรับการสื่อสารด้วยเสียงและสตรีมมิ่งหน้าจอแบบเรียลไทม์ผ่าน Socket Programming
 
-## ตัวอย่างการทำงานจริง (Demonstration)
+## ภาพถ่ายหน้าจอการทำงานจริง (Screenshot)
+![Discord Streaming UI](../assets/real_hw_23_discord_stream.png)
+
+## ภาพเคลื่อนไหวสาธิตการทำงาน (Demonstration)
 ![Discord Voice Screen Share Demo](../assets/demo_23_discord_stream.gif)
 
 ## ผู้พัฒนา

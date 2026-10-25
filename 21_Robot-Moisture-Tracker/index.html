@@ -3,113 +3,197 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Robot Moisture Tracker - Phakhaphon Sukmee</title>
+    <title>Autonomous Soil Moisture Robot Tracker - Phakhaphon Sukmee</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
     <style>
-        body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #0f172a; color: #f8fafc; }
-        .header { padding: 16px 24px; background: #1e293b; border-bottom: 1px solid #334155; display: flex; justify-content: space-between; align-items: center; }
-        .header h1 { margin: 0; font-size: 18px; font-weight: 600; }
-        .metrics-bar { display: flex; gap: 24px; padding: 12px 24px; background: #1e293b; border-bottom: 1px solid #334155; font-size: 14px; }
-        .metric-item { display: flex; flex-direction: column; }
-        .metric-label { font-size: 11px; color: #94a3b8; text-transform: uppercase; }
-        .metric-value { font-weight: 600; color: #38bdf8; font-size: 15px; }
-        #map { height: calc(100vh - 120px); width: 100%; }
-        .robot-pin { background: #0284c7; color: #ffffff; border: 2px solid #ffffff; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; box-shadow: 0 0 10px rgba(2,132,199,0.5); }
-        .target-pin { background: #e11d48; color: #ffffff; border: 2px solid #ffffff; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: bold; }
-        .dispatch-btn { background: #0284c7; color: #ffffff; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; margin-top: 8px; }
-        .dispatch-btn:hover { background: #0369a1; }
+        * { box-sizing: border-box; }
+        body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Sarabun", "Thonburi", sans-serif; background: #0f172a; color: #f8fafc; }
+        .top-navbar { height: 60px; padding: 0 24px; background: #1e293b; border-bottom: 1px solid #334155; display: flex; justify-content: space-between; align-items: center; }
+        .brand-title { font-size: 17px; font-weight: 600; color: #f8fafc; letter-spacing: -0.3px; }
+        .status-badge { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500; color: #10b981; background: rgba(16, 185, 129, 0.1); padding: 4px 12px; border-radius: 9999px; border: 1px solid rgba(16, 185, 129, 0.3); }
+        .status-indicator { width: 8px; height: 8px; border-radius: 50%; background: #10b981; box-shadow: 0 0 8px #10b981; }
+        .control-panel { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; padding: 14px 24px; background: #1e293b; border-bottom: 1px solid #334155; }
+        .stat-card { background: #0f172a; padding: 12px 16px; border-radius: 8px; border: 1px solid #334155; }
+        .stat-label { font-size: 11px; text-transform: uppercase; color: #94a3b8; font-weight: 600; margin-bottom: 4px; }
+        .stat-value { font-size: 16px; font-weight: 700; color: #38bdf8; font-family: ui-monospace, Menlo, Consolas, monospace; }
+        #map { height: calc(100vh - 146px); width: 100%; z-index: 1; }
+        .robot-marker-icon { background: #0284c7; color: #ffffff; border: 2.5px solid #ffffff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; box-shadow: 0 0 14px rgba(2, 132, 199, 0.8); }
+        .target-marker-icon { background: #e11d48; color: #ffffff; border: 2px solid #ffffff; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; box-shadow: 0 0 10px rgba(225, 29, 72, 0.8); }
+        .custom-popup { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Sarabun", sans-serif; }
+        .popup-title { font-weight: 700; color: #0f172a; margin-bottom: 6px; font-size: 14px; }
+        .popup-row { font-size: 12px; color: #475569; margin: 3px 0; }
+        .btn-dispatch { margin-top: 10px; width: 100%; background: #0284c7; color: #ffffff; border: none; padding: 8px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+        .btn-dispatch:hover { background: #0369a1; }
+        .leaflet-popup-content { margin: 14px 16px !important; line-height: 1.4 !important; }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>Autonomous Robot Moisture Telemetry</h1>
-        <div id="connectionStatus" style="font-size: 12px; color: #10b981;">Online Monitoring</div>
-    </div>
-    <div class="metrics-bar">
-        <div class="metric-item">
-            <span class="metric-label">Latitude</span>
-            <span class="metric-value" id="valLat">13.7563</span>
-        </div>
-        <div class="metric-item">
-            <span class="metric-label">Longitude</span>
-            <span class="metric-value" id="valLng">100.5018</span>
-        </div>
-        <div class="metric-item">
-            <span class="metric-label">Soil Moisture</span>
-            <span class="metric-value" id="valMoisture">78.5 %</span>
-        </div>
-        <div class="metric-item">
-            <span class="metric-label">Robot State</span>
-            <span class="metric-value" id="valState">Standby</span>
-        </div>
-        <div class="metric-item">
-            <span class="metric-label">Target Destination</span>
-            <span class="metric-value" id="valTarget">-</span>
+    <div class="top-navbar">
+        <div class="brand-title">ระบบติดตามพิกัดหุ่นยนต์และข้อมูลความชื้นเรียลไทม์ (Leaflet OpenStreetMap)</div>
+        <div class="status-badge">
+            <span class="status-indicator"></span>
+            <span id="txtConnection">เชื่อมต่อระบบแผนที่จริงสำเร็จ</span>
         </div>
     </div>
+
+    <div class="control-panel">
+        <div class="stat-card">
+            <div class="stat-label">พิกัดละติจูด (Lat)</div>
+            <div class="stat-value" id="valLat">13.7563</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">พิกัดลองจิจูด (Lng)</div>
+            <div class="stat-value" id="valLng">100.5018</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">ระดับความชื้นในดิน</div>
+            <div class="stat-value" id="valMoisture" style="color: #10b981;">78.5 %</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">สถานะการทำงาน</div>
+            <div class="stat-value" id="valStatus" style="color: #f59e0b;">พร้อมทำงาน (Standby)</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">พิกัดเป้าหมายถัดไป</div>
+            <div class="stat-value" id="valTarget" style="font-size: 13px;">-</div>
+        </div>
+    </div>
+
     <div id="map"></div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
     <script>
-        const map = L.map('map').setView([13.7563, 100.5018], 15);
+        let currentLat = 13.7563;
+        let currentLng = 100.5018;
+        let currentMoisture = 78.5;
+        let isMoving = false;
+
+        const map = L.map('map').setView([currentLat, currentLng], 16);
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
-            attribution: 'OpenStreetMap'
+            attribution: '&copy; OpenStreetMap contributors'
         }).addTo(map);
 
-        let robotMarker = L.marker([13.7563, 100.5018], {
+        let robotMarker = L.marker([currentLat, currentLng], {
             icon: L.divIcon({
                 className: '',
-                html: '<div class="robot-pin">R1</div>',
-                iconSize: [24, 24]
+                html: '<div class="robot-marker-icon">R1</div>',
+                iconSize: [28, 28]
             })
         }).addTo(map);
 
-        let targetMarker = null;
-
-        function updateRobotTelemetry(lat, lng, moisture, isMeasuring) {
-            document.getElementById('valLat').textContent = lat.toFixed(4);
-            document.getElementById('valLng').textContent = lng.toFixed(4);
-            document.getElementById('valMoisture').textContent = moisture.toFixed(1) + ' %';
-            document.getElementById('valState').textContent = isMeasuring ? 'Measuring Active' : 'Standby';
-            robotMarker.setLatLng([lat, lng]);
+        function updateRobotPopup(lat, lng, moisture, statusText) {
+            const content = `
+                <div class="custom-popup">
+                    <div class="popup-title">หุ่นยนต์สำรวจดิน R-1</div>
+                    <div class="popup-row">พิกัดปัจจุบัน: <b>${lat.toFixed(4)}, ${lng.toFixed(4)}</b></div>
+                    <div class="popup-row">สถานะ: <b>${statusText}</b></div>
+                    <div class="popup-row">ความชื้นในดิน: <b style="color: ${moisture > 70 ? '#10b981' : '#f59e0b'};">${moisture.toFixed(1)} %</b></div>
+                </div>
+            `;
+            robotMarker.bindPopup(content);
         }
+        updateRobotPopup(currentLat, currentLng, currentMoisture, 'พร้อมทำงาน');
 
-        window.sendTargetCommand = function(lat, lng) {
-            document.getElementById('valTarget').textContent = lat.toFixed(4) + ', ' + lng.toFixed(4);
-            document.getElementById('valState').textContent = 'Moving to Target';
-            setTimeout(() => {
-                updateRobotTelemetry(lat, lng, 65.2 + Math.random() * 15, false);
-            }, 2000);
-        };
+        let targetMarker = null;
+        let movementPath = null;
 
         map.on('click', function(e) {
+            if (isMoving) return;
+
             const lat = e.latlng.lat;
             const lng = e.latlng.lng;
 
             if (targetMarker) {
                 map.removeLayer(targetMarker);
             }
+            if (movementPath) {
+                map.removeLayer(movementPath);
+            }
 
             targetMarker = L.marker([lat, lng], {
                 icon: L.divIcon({
                     className: '',
-                    html: '<div class="target-pin">T</div>',
-                    iconSize: [20, 20]
+                    html: '<div class="target-marker-icon">T</div>',
+                    iconSize: [22, 22]
                 })
             }).addTo(map);
 
-            const popup = `
-                <div style="font-size: 13px; color: #1e293b;">
-                    <strong>Destination Coordinate</strong><br>
-                    Lat: ${lat.toFixed(4)}<br>
-                    Lng: ${lng.toFixed(4)}<br>
-                    <button class="dispatch-btn" onclick="sendTargetCommand(${lat}, ${lng})">Dispatch Robot</button>
+            movementPath = L.polyline([[currentLat, currentLng], [lat, lng]], {
+                color: '#0284c7',
+                dashArray: '6, 8',
+                weight: 3
+            }).addTo(map);
+
+            document.getElementById('valTarget').textContent = lat.toFixed(4) + ', ' + lng.toFixed(4);
+
+            const popupContent = `
+                <div class="custom-popup">
+                    <div class="popup-title">กำหนดจุดวัดความชื้นใหม่</div>
+                    <div class="popup-row">พิกัดที่คลิก: <b>${lat.toFixed(4)}, ${lng.toFixed(4)}</b></div>
+                    <button class="btn-dispatch" id="btnDispatchRobot" onclick="dispatchRobotToTarget(${lat}, ${lng})">สั่งหุ่นยนต์เคลื่อนที่ไปวัดค่า</button>
                 </div>
             `;
-            targetMarker.bindPopup(popup).openPopup();
+            targetMarker.bindPopup(popupContent).openPopup();
         });
+
+        window.dispatchRobotToTarget = function(targetLat, targetLng) {
+            if (isMoving) return;
+            isMoving = true;
+
+            if (targetMarker) {
+                targetMarker.closePopup();
+            }
+
+            document.getElementById('valStatus').textContent = 'กำลังเคลื่อนที่ไปเป้าหมาย';
+            document.getElementById('valStatus').style.color = '#38bdf8';
+
+            const steps = 30;
+            let currentStep = 0;
+            const startLat = currentLat;
+            const startLng = currentLng;
+            const dLat = (targetLat - startLat) / steps;
+            const dLng = (targetLng - startLng) / steps;
+
+            const timer = setInterval(() => {
+                currentStep++;
+                currentLat = startLat + dLat * currentStep;
+                currentLng = startLng + dLng * currentStep;
+
+                robotMarker.setLatLng([currentLat, currentLng]);
+                document.getElementById('valLat').textContent = currentLat.toFixed(4);
+                document.getElementById('valLng').textContent = currentLng.toFixed(4);
+
+                if (movementPath) {
+                    movementPath.setLatLngs([[currentLat, currentLng], [targetLat, targetLng]]);
+                }
+
+                if (currentStep >= steps) {
+                    clearInterval(timer);
+                    isMoving = false;
+                    currentLat = targetLat;
+                    currentLng = targetLng;
+                    currentMoisture = 65.0 + Math.random() * 20.0;
+
+                    document.getElementById('valMoisture').textContent = currentMoisture.toFixed(1) + ' %';
+                    document.getElementById('valStatus').textContent = 'วัดค่าสำเร็จแล้ว (พร้อมทำงาน)';
+                    document.getElementById('valStatus').style.color = '#10b981';
+                    document.getElementById('valTarget').textContent = '-';
+
+                    if (movementPath) {
+                        map.removeLayer(movementPath);
+                    }
+                    if (targetMarker) {
+                        map.removeLayer(targetMarker);
+                        targetMarker = null;
+                    }
+
+                    updateRobotPopup(currentLat, currentLng, currentMoisture, 'วัดค่าสำเร็จ');
+                    robotMarker.openPopup();
+                }
+            }, 60);
+        };
     </script>
 </body>
 </html>

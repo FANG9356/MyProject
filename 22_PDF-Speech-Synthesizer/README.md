@@ -2,7 +2,10 @@
 
 ระบบสกัดข้อความจากเอกสาร PDF และสังเคราะห์เป็นไฟล์เสียงพูดภาษาไทยอัตโนมัติ (PDF to Audiobook)
 
-## ตัวอย่างการทำงานจริง (Demonstration)
+## ภาพถ่ายหน้าจอการทำงานจริง (Screenshot)
+![PDF Speech Engine](../assets/real_hw_22_pdf_speech.png)
+
+## ภาพเคลื่อนไหวสาธิตการทำงาน (Demonstration)
 ![PDF Speech Synthesizer Demo](../assets/demo_22_pdf_speech.gif)
 
 ## ผู้พัฒนา

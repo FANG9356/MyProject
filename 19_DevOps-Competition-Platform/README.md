@@ -2,7 +2,10 @@
 
 ระบบแพลตฟอร์มการแข่งขันทักษะวิชาชีพด้าน DevOps และ IoT ครอบคลุมการพัฒนาเว็บแอปพลิเคชัน การวางระบบส่งข้อมูลเซนเซอร์ และการบริหารจัดการโครงสร้างพื้นฐานเครือข่าย
 
-## ตัวอย่างการทำงานจริง (Demonstration)
+## ภาพถ่ายหน้าจอการทำงานจริง (Screenshot)
+![DevOps Competition Platform Dashboard](../assets/real_hw_19_devops_competition.png)
+
+## ภาพเคลื่อนไหวสาธิตการทำงาน (Demonstration)
 ![DevOps Competition Platform Demo](../assets/demo_19_devops_competition.gif)
 
 ## ผู้พัฒนา

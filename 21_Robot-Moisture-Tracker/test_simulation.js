@@ -12,7 +12,7 @@ function runTest() {
 
   const content = fs.readFileSync(htmlFile, 'utf-8');
   assert(content.includes('L.map'), 'Leaflet map instance required');
-  assert(content.includes('updateRobotTelemetry'), 'Telemetry update function required');
+  assert(content.includes('dispatchRobotToTarget'), 'Robot target dispatch function required');
 
   const data = JSON.parse(fs.readFileSync(dataFile, 'utf-8'));
   assert(data.robot_1.latitude !== undefined, 'Latitude required');

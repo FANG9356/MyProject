@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevOps Competition Platform - Phakhaphon Sukmee</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Sarabun", "Thonburi", sans-serif; background: #e3f2fd; color: #1e293b; display: flex; height: 100vh; overflow: hidden; }
+        .sidebar { width: 260px; background: #ffffff; border-right: 1px solid #cbd5e1; display: flex; flex-direction: column; flex-shrink: 0; box-shadow: 2px 0 8px rgba(0,0,0,0.03); }
+        .user-profile-header { padding: 20px 16px; border-bottom: 1px solid #e2e8f0; display: flex; align-items: center; gap: 12px; }
+        .user-avatar { width: 44px; height: 44px; border-radius: 50%; background: #1565c0; color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: bold; }
+        .user-details h4 { font-size: 14px; font-weight: 700; color: #0f172a; }
+        .role-chip { display: inline-block; font-size: 11px; font-weight: 600; color: #1565c0; background: #e3f2fd; padding: 2px 8px; border-radius: 12px; margin-top: 2px; }
+        .nav-list { list-style: none; padding: 12px 8px; flex-grow: 1; display: flex; flex-direction: column; gap: 4px; }
+        .nav-item { display: flex; align-items: center; gap: 12px; padding: 10px 16px; border-radius: 8px; font-size: 13.5px; font-weight: 600; color: #475569; cursor: pointer; transition: all 0.2s; text-decoration: none; }
+        .nav-item:hover { background: #f1f5f9; color: #1565c0; }
+        .nav-item.active { background: #e3f2fd; color: #1565c0; font-weight: 700; }
+        .nav-item i { font-size: 20px; }
+        .main-wrapper { flex-grow: 1; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+        .app-bar { height: 64px; background: #1565c0; color: #ffffff; display: flex; align-items: center; justify-content: space-between; padding: 0 24px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); flex-shrink: 0; }
+        .app-bar-left { display: flex; align-items: center; gap: 16px; font-size: 18px; font-weight: 700; }
+        .content-body { flex-grow: 1; padding: 24px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; }
+        .tab-panel { display: none; flex-direction: column; gap: 20px; }
+        .tab-panel.active { display: flex; }
+        .card { background: #ffffff; border-radius: 16px; box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05); border: 1px solid #e2e8f0; overflow: hidden; }
+        .card-title { padding: 18px 24px; font-size: 17px; font-weight: 800; color: #0d47a1; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #f1f5f9; }
+        .card-body { padding: 20px 24px; }
+        .metrics-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 20px; margin-bottom: 20px; }
+        .sensor-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 18px; }
+        .sensor-label { font-size: 12px; font-weight: 700; color: #64748b; text-transform: uppercase; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+        .sensor-val { font-size: 28px; font-weight: 800; color: #1565c0; font-family: ui-monospace, Menlo, monospace; }
+        .chart-placeholder { height: 160px; background: #0f172a; border-radius: 10px; position: relative; overflow: hidden; display: flex; align-items: flex-end; padding: 12px; gap: 8px; border: 1px solid #334155; }
+        .chart-bar { flex: 1; background: #38bdf8; border-radius: 3px 3px 0 0; min-height: 20px; transition: height 0.3s ease; }
+        .pipeline-status-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 14px; }
+        .pipeline-stage { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 12px; display: flex; flex-direction: column; gap: 4px; }
+        .stage-title { font-size: 11px; font-weight: 700; color: #475569; text-transform: uppercase; font-family: ui-monospace, Menlo, monospace; }
+        .stage-status { font-size: 12px; font-weight: 800; color: #10b981; display: flex; align-items: center; gap: 4px; }
+        .user-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13.5px; }
+        .user-table th { background: #e3f2fd; color: #0d47a1; font-weight: 700; padding: 12px 16px; border-bottom: 2px solid #bbdefb; }
+        .user-table td { padding: 14px 16px; border-bottom: 1px solid #f1f5f9; color: #334155; }
+        .user-table tr:hover { background: #f8fafc; }
+        .search-box { display: flex; align-items: center; background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 8px; padding: 6px 12px; width: 280px; font-size: 13px; }
+        .search-box input { border: none; background: transparent; outline: none; margin-left: 8px; width: 100%; font-size: 13px; }
+        .btn-add { background: #1565c0; color: #ffffff; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 600; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+        .btn-add:hover { background: #0d47a1; }
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="user-profile-header">
+            <div class="user-avatar"><i class="mdi mdi-account-circle"></i></div>
+            <div class="user-details">
+                <h4>Phakhaphon Sukmee</h4>
+                <span class="role-chip">สิทธิ์: ADMIN</span>
+            </div>
+        </div>
+        <ul class="nav-list">
+            <li class="nav-item active" onclick="switchTab('reports')">
+                <i class="mdi mdi-chart-line"></i>
+                <span>รายงานสถิติระบบ</span>
+            </li>
+            <li class="nav-item" onclick="switchTab('users')">
+                <i class="mdi mdi-account-group"></i>
+                <span>จัดการผู้ใช้งาน</span>
+            </li>
+            <li class="nav-item" onclick="switchTab('pipeline')">
+                <i class="mdi mdi-server-network"></i>
+                <span>โครงสร้าง DevOps & CI/CD</span>
+            </li>
+        </ul>
+    </aside>
+
+    <div class="main-wrapper">
+        <header class="app-bar">
+            <div class="app-bar-left">
+                <i class="mdi mdi-menu"></i>
+                <span>DevOps Competition Platform 2568</span>
+            </div>
+            <div style="font-size: 13px; font-weight: 600; background: rgba(255,255,255,0.15); padding: 6px 16px; border-radius: 20px;">
+                <i class="mdi mdi-check-circle" style="color: #4ade80;"></i> สแตกบริการพร้อมใช้งาน
+            </div>
+        </header>
+
+        <main class="content-body">
+            <div id="tab-reports" class="tab-panel active">
+                <div class="card">
+                    <div class="card-title">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <i class="mdi mdi-gauge" style="font-size: 22px; color: #1565c0;"></i>
+                            <span>การอ่านค่าเซนเซอร์สด (ESP32 MQTT Telemetry)</span>
+                        </div>
+                        <span style="font-size: 12px; color: #10b981; font-weight: 700; background: #ecfdf5; padding: 4px 10px; border-radius: 6px;">LIVE 10s REFRESH</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="metrics-grid">
+                            <div class="sensor-card">
+                                <div class="sensor-label"><i class="mdi mdi-thermometer"></i> อุณหภูมิปัจจุบัน (Temperature)</div>
+                                <div class="sensor-val" id="valTemp">27.50 °C</div>
+                                <div style="font-size: 12px; color: #64748b; margin-top: 6px;">BMP280 I2C เซนเซอร์บน ESP32</div>
+                            </div>
+                            <div class="sensor-card">
+                                <div class="sensor-label"><i class="mdi mdi-chart-timeline-variant"></i> อุณหภูมิย้อนหลัง 1 ชั่วโมง (Grafana View)</div>
+                                <div class="chart-placeholder" id="tempChart"></div>
+                            </div>
+                        </div>
+
+                        <div class="metrics-grid">
+                            <div class="sensor-card">
+                                <div class="sensor-label"><i class="mdi mdi-speedometer"></i> ความกดอากาศปัจจุบัน (Pressure)</div>
+                                <div class="sensor-val" id="valPressure">1012.30 hPa</div>
+                                <div style="font-size: 12px; color: #64748b; margin-top: 6px;">ความกดอากาศระดับน้ำทะเลมาตรฐาน</div>
+                            </div>
+                            <div class="sensor-card">
+                                <div class="sensor-label"><i class="mdi mdi-chart-areaspline"></i> ความกดอากาศย้อนหลัง 1 ชั่วโมง</div>
+                                <div class="chart-placeholder" id="presChart"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-users" class="tab-panel">
+                <div class="card">
+                    <div class="card-title">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <i class="mdi mdi-account-group" style="font-size: 22px; color: #1565c0;"></i>
+                            <span>รายชื่อผู้ใช้งานในระบบ</span>
+                        </div>
+                        <div style="display: flex; gap: 12px;">
+                            <div class="search-box">
+                                <i class="mdi mdi-magnify" style="color: #64748b;"></i>
+                                <input type="text" id="userSearchInput" placeholder="ค้นหาชื่อ หรือ Username..." oninput="filterUsers(this.value)">
+                            </div>
+                            <button class="btn-add" id="btnAddUser">
+                                <i class="mdi mdi-plus"></i> เพิ่มผู้ใช้ใหม่
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body" style="padding: 0;">
+                        <table class="user-table">
+                            <thead>
+                                <tr>
+                                    <th>ชื่อ-นามสกุล</th>
+                                    <th>ชื่อผู้ใช้งาน (Username)</th>
+                                    <th>ระดับสิทธิ์ (Role)</th>
+                                    <th>สถานะ</th>
+                                    <th>จัดการ (Actions)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="userTableBody">
+                                <tr>
+                                    <td><strong>Phakhaphon Sukmee</strong></td>
+                                    <td>phakhaphon.admin</td>
+                                    <td><span class="role-chip" style="background: #eff6ff; color: #1d4ed8;">ADMIN</span></td>
+                                    <td><span style="color: #10b981; font-weight: 700;">Active</span></td>
+                                    <td><button style="border: none; background: transparent; color: #1565c0; cursor: pointer; font-weight: 600;">แก้ไข</button></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>IoT Telemetry Monitor</strong></td>
+                                    <td>iot.operator</td>
+                                    <td><span class="role-chip" style="background: #f0fdf4; color: #15803d;">OPERATOR</span></td>
+                                    <td><span style="color: #10b981; font-weight: 700;">Active</span></td>
+                                    <td><button style="border: none; background: transparent; color: #1565c0; cursor: pointer; font-weight: 600;">แก้ไข</button></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Auditor Team</strong></td>
+                                    <td>audit.devops</td>
+                                    <td><span class="role-chip" style="background: #fefce8; color: #a16207;">AUDITOR</span></td>
+                                    <td><span style="color: #10b981; font-weight: 700;">Active</span></td>
+                                    <td><button style="border: none; background: transparent; color: #1565c0; cursor: pointer; font-weight: 600;">แก้ไข</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-pipeline" class="tab-panel">
+                <div class="card">
+                    <div class="card-title">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <i class="mdi mdi-source-branch" style="font-size: 22px; color: #1565c0;"></i>
+                            <span>GitLab CI/CD Pipeline & โครงสร้าง Proxmox VE</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="pipeline-status-row">
+                            <div class="pipeline-stage">
+                                <span class="stage-title">01_test_lint</span>
+                                <span class="stage-status"><i class="mdi mdi-check-circle"></i> PASSED (42s)</span>
+                            </div>
+                            <div class="pipeline-stage">
+                                <span class="stage-title">02_build_docker</span>
+                                <span class="stage-status"><i class="mdi mdi-check-circle"></i> PASSED (1m 15s)</span>
+                            </div>
+                            <div class="pipeline-stage">
+                                <span class="stage-title">03_registry_push</span>
+                                <span class="stage-status"><i class="mdi mdi-check-circle"></i> PASSED (28s)</span>
+                            </div>
+                            <div class="pipeline-stage">
+                                <span class="stage-title">04_deploy_proxmox</span>
+                                <span class="stage-status"><i class="mdi mdi-check-circle"></i> DEPLOYED (54s)</span>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 24px;">
+                            <h4 style="font-size: 14px; font-weight: 700; color: #0d47a1; margin-bottom: 12px;">สถานะคอนเทนเนอร์บริการ (Docker Containers)</h4>
+                            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;">
+                                <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 12px; border-radius: 8px;">
+                                    <div style="font-weight: 700; font-size: 13px;">gitlab-ce</div>
+                                    <div style="font-size: 11px; color: #64748b;">Port 2222:22, 80:80</div>
+                                    <div style="color: #10b981; font-weight: 700; font-size: 12px; margin-top: 4px;">HEALTHY</div>
+                                </div>
+                                <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 12px; border-radius: 8px;">
+                                    <div style="font-weight: 700; font-size: 13px;">emqx-mqtt</div>
+                                    <div style="font-size: 11px; color: #64748b;">Port 1883:1883</div>
+                                    <div style="color: #10b981; font-weight: 700; font-size: 12px; margin-top: 4px;">HEALTHY</div>
+                                </div>
+                                <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 12px; border-radius: 8px;">
+                                    <div style="font-weight: 700; font-size: 13px;">verdaccio-npm</div>
+                                    <div style="font-size: 11px; color: #64748b;">Port 4873:4873</div>
+                                    <div style="color: #10b981; font-weight: 700; font-size: 12px; margin-top: 4px;">HEALTHY</div>
+                                </div>
+                                <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 12px; border-radius: 8px;">
+                                    <div style="font-weight: 700; font-size: 13px;">mysql-devops</div>
+                                    <div style="font-size: 11px; color: #64748b;">Port 3306:3306</div>
+                                    <div style="color: #10b981; font-weight: 700; font-size: 12px; margin-top: 4px;">HEALTHY</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function renderCharts() {
+            const tempBox = document.getElementById('tempChart');
+            const presBox = document.getElementById('presChart');
+            tempBox.innerHTML = '';
+            presBox.innerHTML = '';
+            const tempVals = [24, 25, 26, 25.5, 26.8, 27.1, 27.5, 27.2, 27.4, 27.5];
+            const presVals = [1011.8, 1012.0, 1012.1, 1012.2, 1012.4, 1012.3, 1012.3, 1012.5, 1012.2, 1012.3];
+
+            tempVals.forEach((val, i) => {
+                const bar = document.createElement('div');
+                bar.className = 'chart-bar';
+                const h = Math.round(((val - 23) / 6) * 120 + 20);
+                bar.style.height = h + 'px';
+                tempBox.appendChild(bar);
+            });
+
+            presVals.forEach((val, i) => {
+                const bar = document.createElement('div');
+                bar.className = 'chart-bar';
+                bar.style.background = '#818cf8';
+                const h = Math.round(((val - 1011) / 2) * 120 + 20);
+                bar.style.height = h + 'px';
+                presBox.appendChild(bar);
+            });
+        }
+        renderCharts();
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-panel').forEach(el => el.classList.remove('active'));
+            if (tabId === 'reports') {
+                document.querySelectorAll('.nav-item')[0].classList.add('active');
+                document.getElementById('tab-reports').classList.add('active');
+            } else if (tabId === 'users') {
+                document.querySelectorAll('.nav-item')[1].classList.add('active');
+                document.getElementById('tab-users').classList.add('active');
+            } else if (tabId === 'pipeline') {
+                document.querySelectorAll('.nav-item')[2].classList.add('active');
+                document.getElementById('tab-pipeline').classList.add('active');
+            }
+        }
+
+        function filterUsers(query) {
+            const rows = document.querySelectorAll('#userTableBody tr');
+            rows.forEach(r => {
+                const txt = r.textContent.toLowerCase();
+                r.style.display = txt.includes(query.toLowerCase()) ? '' : 'none';
+            });
+        }
+    </script>
+</body>
+</html>
