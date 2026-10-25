@@ -1,4 +1,6 @@
 # เครื่องคัดแยกขวดและกระป๋องอัตโนมัติ (Eco-Material Machine)
+[![Download Folder](https://img.shields.io/badge/Download-ZIP_Folder-238636?style=for-the-badge&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/11_Bottle-Can-Sorter)
+*ดาวน์โหลดเฉพาะโฟลเดอร์นี้เป็นไฟล์ ZIP (หรือ [ดาวน์โหลดผ่าน DownGit](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/FANG9356/MyProject/tree/main/11_Bottle-Can-Sorter))*
 
 > **หมวดหมู่:** Embedded Systems / Hardware Automation & IoT
 > **ผู้พัฒนา:** Phakhaphon Sukmee, Suphachai Thepchalerm, Napatsakorn Weeraphan

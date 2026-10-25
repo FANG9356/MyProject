@@ -1,4 +1,6 @@
 # SD Calculator Python (โปรแกรมคำนวณค่า S.D. ด้วย Python)
+[![Download Folder](https://img.shields.io/badge/Download-ZIP_Folder-238636?style=for-the-badge&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/15_SD-Calculator-Python)
+*ดาวน์โหลดเฉพาะโฟลเดอร์นี้เป็นไฟล์ ZIP (หรือ [ดาวน์โหลดผ่าน DownGit](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/FANG9356/MyProject/tree/main/15_SD-Calculator-Python))*
 
 โปรแกรมประยุกต์สำหรับประมวลผลข้อมูลทางสถิติและคำนวณแบบประเมินผลความพึงพอใจการใช้งาน พัฒนาด้วยภาษา Python, Tkinter GUI และ NumPy สามารถสร้างตารางกรอกข้อมูลคะแนนตามจำนวนกลุ่มตัวอย่างและข้อคำถามแบบไดนามิก พร้อมประมวลผลคะแนนรวม (Sum), ค่าเฉลี่ย (Mean), ส่วนเบี่ยงเบนมาตรฐาน (Standard Deviation - S.D.) และสัมประสิทธิ์การแปรผัน (Coefficient of Variation - C.V. %) แสดงผลในรูปแบบตาราง Treeview
 

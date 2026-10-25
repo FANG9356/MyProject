@@ -1,4 +1,6 @@
 # General Education Web (เว็บไซต์แนะนำการศึกษาประเภทวิชาสามัญ - Seniormath)
+[![Download Folder](https://img.shields.io/badge/Download-ZIP_Folder-238636?style=for-the-badge&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/13_General-Education-Web)
+*ดาวน์โหลดเฉพาะโฟลเดอร์นี้เป็นไฟล์ ZIP (หรือ [ดาวน์โหลดผ่าน DownGit](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/FANG9356/MyProject/tree/main/13_General-Education-Web))*
 
 เว็บพอร์ทัลสื่อการเรียนรู้ออนไลน์สำหรับกลุ่มวิชาสามัญและพื้นฐานวิชาชีพ ครอบคลุมคณิตศาสตร์ ฟิสิกส์ วิศวกรรมไฟฟ้าพื้นฐาน ระบบเลขฐานคอมพิวเตอร์ และเครื่องมือคำนวณออนไลน์ ออกแบบด้วย Vanilla HTML/CSS/JavaScript พร้อมแอนิเมชันและการแสดงผลแบบอินเทอร์แอคทีฟ
 

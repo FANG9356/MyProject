@@ -1,4 +1,6 @@
 # Neo Web Chat (เว็บไซต์คุยแชทออนไลน์ และระบบแชทออฟไลน์ BLE)
+[![Download Folder](https://img.shields.io/badge/Download-ZIP_Folder-238636?style=for-the-badge&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/18_Neo-Web-Chat)
+*ดาวน์โหลดเฉพาะโฟลเดอร์นี้เป็นไฟล์ ZIP (หรือ [ดาวน์โหลดผ่าน DownGit](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/FANG9356/MyProject/tree/main/18_Neo-Web-Chat))*
 
 ระบบสื่อสารข้อความสองโหมด (Dual-Mode Messaging System) ประกอบด้วยเว็บแอปพลิเคชันสไตล์ Neo-Brutalist เชื่อมต่อระบบคลาวด์แบบเรียลไทม์ และโปรแกรมเดสก์ท็อปรองรับการสื่อสารไร้สายระยะสั้นผ่านโปรโตคอล Bluetooth Low Energy (BLE) โดยตรงกับไมโครคอนโทรลเลอร์ ESP32 โดยไม่ต้องพึ่งพาอินเทอร์เน็ต
 

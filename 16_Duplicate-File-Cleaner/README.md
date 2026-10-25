@@ -1,4 +1,6 @@
 # Duplicate File Cleaner (โปรแกรมค้นหาไฟล์ซ้ำ ด้วย Python)
+[![Download Folder](https://img.shields.io/badge/Download-ZIP_Folder-238636?style=for-the-badge&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/16_Duplicate-File-Cleaner)
+*ดาวน์โหลดเฉพาะโฟลเดอร์นี้เป็นไฟล์ ZIP (หรือ [ดาวน์โหลดผ่าน DownGit](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/FANG9356/MyProject/tree/main/16_Duplicate-File-Cleaner))*
 
 โปรแกรมอรรถประโยชน์บนเดสก์ท็อปสำหรับค้นหาและกำจัดไฟล์ซ้ำซ้อนภายในฮาร์ดดิสก์หรือโฟลเดอร์ พัฒนาด้วยภาษา Python และ CustomTkinter ในธีมสีมืด (Dark Mode) ผสมผสานขั้นตอนวิธีกรองไฟล์สองชั้น (Two-Tier Filtering) ด้วยขนาดไฟล์ (File Size) และการเข้ารหัสแฮชแบบแบ่งบล็อก SHA-256 (Chunked Cryptographic Hashing) เพื่อความเร็วสูงสุดและปลอดภัยต่อหน่วยความจำ
 

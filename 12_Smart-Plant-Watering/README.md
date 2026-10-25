@@ -1,4 +1,6 @@
 # Smart Plant Watering (เครื่องรดน้ำต้นไม้อัตโนมัติควบคุมระยะไกลด้วยมือถือ)
+[![Download Folder](https://img.shields.io/badge/Download-ZIP_Folder-238636?style=for-the-badge&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/12_Smart-Plant-Watering)
+*ดาวน์โหลดเฉพาะโฟลเดอร์นี้เป็นไฟล์ ZIP (หรือ [ดาวน์โหลดผ่าน DownGit](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/FANG9356/MyProject/tree/main/12_Smart-Plant-Watering))*
 
 ระบบรดน้ำต้นไม้อัจฉริยะแบบอัตโนมัติและควบคุมผ่านสมาร์ตโฟนด้วยแอปพลิเคชัน Blynk และไมโครคอนโทรลเลอร์ ESP8266 โดยตรวจวัดค่าความชื้นในดิน (Soil Moisture Sensor) และสั่งการวาล์วน้ำโซลินอยด์ (Solenoid Valve 12V) ผ่านรีเลย์ 4 ช่อง พร้อมระบบควบคุมแบบแมนนวลและตัวตั้งเวลารดน้ำอัตโนมัติ
 

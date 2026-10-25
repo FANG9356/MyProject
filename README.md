@@ -7,35 +7,44 @@
 
 ---
 
+## การดาวน์โหลดเฉพาะโฟลเดอร์โปรเจกต์ (Download Individual Project)
+
+หากต้องการดาวน์โหลดเฉพาะโฟลเดอร์ของโปรเจกต์ที่สนใจ โดยไม่ต้องดาวน์โหลดทั้งคลัง Repository:
+1. **กดปุ่ม `Download ZIP`** ในตารางสารบัญ หรือในหัวข้อรายละเอียดของแต่ละโปรเจกต์
+2. ระบบจะทำการดึงไฟล์เฉพาะโฟลเดอร์นั้นจาก GitHub และสร้างไฟล์ `.zip` ให้ดาวน์โหลดลงเครื่องทันที (ผ่านบริการ GitHub Directory Downloader)
+3. หรือสามารถคลิกที่ลิงก์สำรอง **`DownGit`** ที่ระบุไว้ในแต่ละโปรเจกต์เพื่อดาวน์โหลดได้เช่นกัน
+
+---
+
 ## สารบัญโปรเจกต์
 
-| ลำดับ | โปรเจกต์ | หมวดหมู่ | คำสั่งรัน | URL | คำสั่งทดสอบ |
-| :---: | :--- | :--- | :--- | :---: | :---: |
-| **01** | [`01_AI-WiFi-Sensing-Wall`](./01_AI-WiFi-Sensing-Wall) | AI & RF Sensing | `python3 ai_web_server.py` | `http://localhost:8050` | `python3 test_simulation.py` |
-| **02** | [`02_Smart-Doc-AI`](./02_Smart-Doc-AI) | GenAI Agent | `docker compose up -d` | `http://localhost:5173` | `python3 test_simulation.py` |
-| **03** | [`03_Tip-Desk-PromptPay`](./03_Tip-Desk-PromptPay) | FinTech / Web | `uvicorn main:app` & `npm run dev` | `http://localhost:5173` | `python3 test_simulation.py` |
-| **04** | [`04_Club-Management-System`](./04_Club-Management-System) | Web Management | `cd backend && node server.js` | `http://localhost:3000` | `node test_simulation.js` |
-| **05** | [`05_ATM-YOLOv8-Detector`](./05_ATM-YOLOv8-Detector) | Computer Vision | `python3 person_detector.py` | หน้าต่างกล้อง | `python3 test_simulation.py` |
-| **06** | [`06_Karaoke-Streaming-System`](./06_Karaoke-Streaming-System) | Streaming Server | `python3 main.py` | `http://localhost:8000` (รีโมต: `/remote.html`) | `python3 test_simulation.py` |
-| **07** | [`07_AdGuard-Time-Portal`](./07_AdGuard-Time-Portal) | Network & Admin | `node server.js` | `http://localhost:8080` (แอดมิน: `/admin.html`) | `node test_simulation.js` |
-| **08** | [`08_System-Monitor-Desktop-App`](./08_System-Monitor-Desktop-App) | Desktop Utility | `.exe` (Win) หรือ `node server.js` | `http://localhost:3000` | `node test_simulation.js` |
-| **09** | [`09_HomeServer-Infrastructure`](./09_HomeServer-Infrastructure) | Go, SQLite & React | `cd backend && go run .` | `http://localhost:8001` | `python3 test_simulation.py` |
-| **10** | [`10_Music-Shuffle-AI`](./10_Music-Shuffle-AI) | AI Desktop Player | `python3 main.py` | หน้าต่างโปรแกรม Desktop | `python3 test_simulation.py` |
-| **11** | [`11_Bottle-Can-Sorter`](./11_Bottle-Can-Sorter) | Embedded & IoT | `arduino/bottle_can_sorter.ino` | ฮาร์ดแวร์ / `sorter_sim.html` | `python3 test_simulation.py` |
-| **12** | [`12_Smart-Plant-Watering`](./12_Smart-Plant-Watering) | Smart Agriculture | `arduino/blynk_valve_control.ino` | ฮาร์ดแวร์ / `watering_sim.html` | `python3 test_simulation.py` |
-| **13** | [`13_General-Education-Web`](./13_General-Education-Web) | EdTech / Web | `open index.html` | `index.html` | `python3 test_simulation.py` |
-| **14** | [`14_Computer-Quiz-System`](./14_Computer-Quiz-System) | Web Assessment | `open index.html` | `index.html` | `python3 test_simulation.py` |
-| **15** | [`15_SD-Calculator-Python`](./15_SD-Calculator-Python) | Data Science GUI | `python3 sd.py` | หน้าต่างโปรแกรม Desktop | `python3 test_simulation.py` |
-| **16** | [`16_Duplicate-File-Cleaner`](./16_Duplicate-File-Cleaner) | Desktop Utility | `python3 clean.py` | หน้าต่างโปรแกรม Desktop | `python3 test_simulation.py` |
-| **17** | [`17_Grade-Calculator-Python`](./17_Grade-Calculator-Python) | Educational Tools | `python3 cal.py` | หน้าต่างโปรแกรม Desktop | `python3 test_simulation.py` |
-| **18** | [`18_Neo-Web-Chat`](./18_Neo-Web-Chat) | Web & Wireless | `open index.html` / `python3 app.py` | `index.html` | `python3 test_simulation.py` |
-| **19** | [`19_DevOps-Competition-Platform`](./19_DevOps-Competition-Platform) | DevOps & IoT | `cd backend && node server.js` | `http://localhost:5000` | `node test_simulation.js` |
-| **20** | [`20_Color-Detection-Kalman-YOLO`](./20_Color-Detection-Kalman-YOLO) | Computer Vision | `python3 realtime_camera.py` | หน้าต่างกล้อง | `python3 test_simulation.py` |
-| **21** | [`21_Robot-Moisture-Tracker`](./21_Robot-Moisture-Tracker) | Robotics & Geolocation | `open index.html` | `index.html` | `node test_simulation.js` |
-| **22** | [`22_PDF-Speech-Synthesizer`](./22_PDF-Speech-Synthesizer) | NLP / Text-to-Speech | `python3 pdf_to_speech.py` | สังเคราะห์ไฟล์ MP3 | `python3 test_simulation.py` |
-| **23** | [`23_Discord-Voice-Screen-Share`](./23_Discord-Voice-Screen-Share) | Socket Streaming / Voice | `python3 server.py` | พอร์ต 65432/65433 | `python3 test_simulation.py` |
-| **24** | [`24_LAN-Security-Intruder-Sentinel`](./24_LAN-Security-Intruder-Sentinel) | Network Security / IDS | `node server.js` | `http://localhost:3080` | `node test_simulation.js` |
-| **25** | [`25_DormiNetX-Windows-Desktop`](./25_DormiNetX-Windows-Desktop) | Windows Desktop / Wails | `bin/DormiNetX.exe` หรือ `open standalone_demo.html` | Standalone App / `standalone_demo.html` | `node test_simulation.js` |
+| ลำดับ | โปรเจกต์ | หมวดหมู่ | ดาวน์โหลด (ZIP) | คำสั่งรัน | URL | คำสั่งทดสอบ |
+| :---: | :--- | :--- | :---: | :--- | :---: | :---: |
+| **01** | [`01_AI-WiFi-Sensing-Wall`](./01_AI-WiFi-Sensing-Wall) | AI & RF Sensing | [![Download](https://img.shields.io/badge/ZIP-238636?style=flat-square&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/01_AI-WiFi-Sensing-Wall) | `python3 ai_web_server.py` | `http://localhost:8050` | `python3 test_simulation.py` |
+| **02** | [`02_Smart-Doc-AI`](./02_Smart-Doc-AI) | GenAI Agent | [![Download](https://img.shields.io/badge/ZIP-238636?style=flat-square&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/02_Smart-Doc-AI) | `docker compose up -d` | `http://localhost:5173` | `python3 test_simulation.py` |
+| **03** | [`03_Tip-Desk-PromptPay`](./03_Tip-Desk-PromptPay) | FinTech / Web | [![Download](https://img.shields.io/badge/ZIP-238636?style=flat-square&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/03_Tip-Desk-PromptPay) | `uvicorn main:app` & `npm run dev` | `http://localhost:5173` | `python3 test_simulation.py` |
+| **04** | [`04_Club-Management-System`](./04_Club-Management-System) | Web Management | [![Download](https://img.shields.io/badge/ZIP-238636?style=flat-square&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/04_Club-Management-System) | `cd backend && node server.js` | `http://localhost:3000` | `node test_simulation.js` |
+| **05** | [`05_ATM-YOLOv8-Detector`](./05_ATM-YOLOv8-Detector) | Computer Vision | [![Download](https://img.shields.io/badge/ZIP-238636?style=flat-square&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/05_ATM-YOLOv8-Detector) | `python3 person_detector.py` | หน้าต่างกล้อง | `python3 test_simulation.py` |
+| **06** | [`06_Karaoke-Streaming-System`](./06_Karaoke-Streaming-System) | Streaming Server | [![Download](https://img.shields.io/badge/ZIP-238636?style=flat-square&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/06_Karaoke-Streaming-System) | `python3 main.py` | `http://localhost:8000` (รีโมต: `/remote.html`) | `python3 test_simulation.py` |
+| **07** | [`07_AdGuard-Time-Portal`](./07_AdGuard-Time-Portal) | Network & Admin | [![Download](https://img.shields.io/badge/ZIP-238636?style=flat-square&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/07_AdGuard-Time-Portal) | `node server.js` | `http://localhost:8080` (แอดมิน: `/admin.html`) | `node test_simulation.js` |
+| **08** | [`08_System-Monitor-Desktop-App`](./08_System-Monitor-Desktop-App) | Desktop Utility | [![Download](https://img.shields.io/badge/ZIP-238636?style=flat-square&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/08_System-Monitor-Desktop-App) | `.exe` (Win) หรือ `node server.js` | `http://localhost:3000` | `node test_simulation.js` |
+| **09** | [`09_HomeServer-Infrastructure`](./09_HomeServer-Infrastructure) | Go, SQLite & React | [![Download](https://img.shields.io/badge/ZIP-238636?style=flat-square&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/09_HomeServer-Infrastructure) | `cd backend && go run .` | `http://localhost:8001` | `python3 test_simulation.py` |
+| **10** | [`10_Music-Shuffle-AI`](./10_Music-Shuffle-AI) | AI Desktop Player | [![Download](https://img.shields.io/badge/ZIP-238636?style=flat-square&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/10_Music-Shuffle-AI) | `python3 main.py` | หน้าต่างโปรแกรม Desktop | `python3 test_simulation.py` |
+| **11** | [`11_Bottle-Can-Sorter`](./11_Bottle-Can-Sorter) | Embedded & IoT | [![Download](https://img.shields.io/badge/ZIP-238636?style=flat-square&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/11_Bottle-Can-Sorter) | `arduino/bottle_can_sorter.ino` | ฮาร์ดแวร์ / `sorter_sim.html` | `python3 test_simulation.py` |
+| **12** | [`12_Smart-Plant-Watering`](./12_Smart-Plant-Watering) | Smart Agriculture | [![Download](https://img.shields.io/badge/ZIP-238636?style=flat-square&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/12_Smart-Plant-Watering) | `arduino/blynk_valve_control.ino` | ฮาร์ดแวร์ / `watering_sim.html` | `python3 test_simulation.py` |
+| **13** | [`13_General-Education-Web`](./13_General-Education-Web) | EdTech / Web | [![Download](https://img.shields.io/badge/ZIP-238636?style=flat-square&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/13_General-Education-Web) | `open index.html` | `index.html` | `python3 test_simulation.py` |
+| **14** | [`14_Computer-Quiz-System`](./14_Computer-Quiz-System) | Web Assessment | [![Download](https://img.shields.io/badge/ZIP-238636?style=flat-square&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/14_Computer-Quiz-System) | `open index.html` | `index.html` | `python3 test_simulation.py` |
+| **15** | [`15_SD-Calculator-Python`](./15_SD-Calculator-Python) | Data Science GUI | [![Download](https://img.shields.io/badge/ZIP-238636?style=flat-square&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/15_SD-Calculator-Python) | `python3 sd.py` | หน้าต่างโปรแกรม Desktop | `python3 test_simulation.py` |
+| **16** | [`16_Duplicate-File-Cleaner`](./16_Duplicate-File-Cleaner) | Desktop Utility | [![Download](https://img.shields.io/badge/ZIP-238636?style=flat-square&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/16_Duplicate-File-Cleaner) | `python3 clean.py` | หน้าต่างโปรแกรม Desktop | `python3 test_simulation.py` |
+| **17** | [`17_Grade-Calculator-Python`](./17_Grade-Calculator-Python) | Educational Tools | [![Download](https://img.shields.io/badge/ZIP-238636?style=flat-square&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/17_Grade-Calculator-Python) | `python3 cal.py` | หน้าต่างโปรแกรม Desktop | `python3 test_simulation.py` |
+| **18** | [`18_Neo-Web-Chat`](./18_Neo-Web-Chat) | Web & Wireless | [![Download](https://img.shields.io/badge/ZIP-238636?style=flat-square&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/18_Neo-Web-Chat) | `open index.html` / `python3 app.py` | `index.html` | `python3 test_simulation.py` |
+| **19** | [`19_DevOps-Competition-Platform`](./19_DevOps-Competition-Platform) | DevOps & IoT | [![Download](https://img.shields.io/badge/ZIP-238636?style=flat-square&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/19_DevOps-Competition-Platform) | `cd backend && node server.js` | `http://localhost:5000` | `node test_simulation.js` |
+| **20** | [`20_Color-Detection-Kalman-YOLO`](./20_Color-Detection-Kalman-YOLO) | Computer Vision | [![Download](https://img.shields.io/badge/ZIP-238636?style=flat-square&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/20_Color-Detection-Kalman-YOLO) | `python3 realtime_camera.py` | หน้าต่างกล้อง | `python3 test_simulation.py` |
+| **21** | [`21_Robot-Moisture-Tracker`](./21_Robot-Moisture-Tracker) | Robotics & Geolocation | [![Download](https://img.shields.io/badge/ZIP-238636?style=flat-square&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/21_Robot-Moisture-Tracker) | `open index.html` | `index.html` | `node test_simulation.js` |
+| **22** | [`22_PDF-Speech-Synthesizer`](./22_PDF-Speech-Synthesizer) | NLP / Text-to-Speech | [![Download](https://img.shields.io/badge/ZIP-238636?style=flat-square&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/22_PDF-Speech-Synthesizer) | `python3 pdf_to_speech.py` | สังเคราะห์ไฟล์ MP3 | `python3 test_simulation.py` |
+| **23** | [`23_Discord-Voice-Screen-Share`](./23_Discord-Voice-Screen-Share) | Socket Streaming / Voice | [![Download](https://img.shields.io/badge/ZIP-238636?style=flat-square&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/23_Discord-Voice-Screen-Share) | `python3 server.py` | พอร์ต 65432/65433 | `python3 test_simulation.py` |
+| **24** | [`24_LAN-Security-Intruder-Sentinel`](./24_LAN-Security-Intruder-Sentinel) | Network Security / IDS | [![Download](https://img.shields.io/badge/ZIP-238636?style=flat-square&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/24_LAN-Security-Intruder-Sentinel) | `node server.js` | `http://localhost:3080` | `node test_simulation.js` |
+| **25** | [`25_DormiNetX-Windows-Desktop`](./25_DormiNetX-Windows-Desktop) | Windows Desktop / Wails | [![Download](https://img.shields.io/badge/ZIP-238636?style=flat-square&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/25_DormiNetX-Windows-Desktop) | `bin/DormiNetX.exe` หรือ `open standalone_demo.html` | Standalone App / `standalone_demo.html` | `node test_simulation.js` |
 
 ---
 
@@ -53,6 +62,9 @@
 ---
 
 ### 1. [01_AI-WiFi-Sensing-Wall](./01_AI-WiFi-Sensing-Wall) — ระบบตรวจจับการเคลื่อนไหวผ่านสัญญาณ WiFi (CSI)
+
+> [![Download Folder](https://img.shields.io/badge/Download-ZIP_Folder-238636?style=for-the-badge&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/01_AI-WiFi-Sensing-Wall)
+> *ดาวน์โหลดเฉพาะโฟลเดอร์นี้เป็นไฟล์ ZIP (หรือ [ดาวน์โหลดผ่าน DownGit](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/FANG9356/MyProject/tree/main/01_AI-WiFi-Sensing-Wall))*
 
 > **เทคโนโลยี:** ESP32, WiFi CSI, Scikit-Learn, Python, HTML5 Dashboard
 
@@ -99,6 +111,9 @@ flowchart TD
 
 ### 2. [02_Smart-Doc-AI](./02_Smart-Doc-AI) — เครื่องมือค้นคว้าข้อมูลและร่างเอกสาร Word
 
+> [![Download Folder](https://img.shields.io/badge/Download-ZIP_Folder-238636?style=for-the-badge&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/02_Smart-Doc-AI)
+> *ดาวน์โหลดเฉพาะโฟลเดอร์นี้เป็นไฟล์ ZIP (หรือ [ดาวน์โหลดผ่าน DownGit](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/FANG9356/MyProject/tree/main/02_Smart-Doc-AI))*
+
 > **เทคโนโลยี:** React, Tailwind CSS, Vite, FastAPI, Wikipedia API, DuckDuckGo, ArXiv API, python-docx, Docker
 
 #### ภาพรวมโครงการ (Project Overview)
@@ -138,6 +153,9 @@ flowchart LR
 ---
 
 ### 3. [03_Tip-Desk-PromptPay](./03_Tip-Desk-PromptPay) — ระบบรับเงินบริจาค PromptPay พร้อมเสียงอ่านชื่อ
+
+> [![Download Folder](https://img.shields.io/badge/Download-ZIP_Folder-238636?style=for-the-badge&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/03_Tip-Desk-PromptPay)
+> *ดาวน์โหลดเฉพาะโฟลเดอร์นี้เป็นไฟล์ ZIP (หรือ [ดาวน์โหลดผ่าน DownGit](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/FANG9356/MyProject/tree/main/03_Tip-Desk-PromptPay))*
 
 > **เทคโนโลยี:** React, TypeScript, Vite, FastAPI, SQLite, EMVCo QR Code, Web Speech API
 
@@ -182,6 +200,9 @@ flowchart TD
 
 ### 4. [04_Club-Management-System](./04_Club-Management-System) — ระบบลงทะเบียนและเช็คชื่อสมาชิกชมรม
 
+> [![Download Folder](https://img.shields.io/badge/Download-ZIP_Folder-238636?style=for-the-badge&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/04_Club-Management-System)
+> *ดาวน์โหลดเฉพาะโฟลเดอร์นี้เป็นไฟล์ ZIP (หรือ [ดาวน์โหลดผ่าน DownGit](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/FANG9356/MyProject/tree/main/04_Club-Management-System))*
+
 > **เทคโนโลยี:** Node.js, Express, SQLite, Tailwind CSS, JWT
 
 #### ภาพรวมโครงการ (Project Overview)
@@ -223,6 +244,9 @@ node server.js
 
 ### 5. [05_ATM-YOLOv8-Detector](./05_ATM-YOLOv8-Detector) — ระบบตรวจจับบุคคลหน้าตู้ ATM ด้วย YOLOv8
 
+> [![Download Folder](https://img.shields.io/badge/Download-ZIP_Folder-238636?style=for-the-badge&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/05_ATM-YOLOv8-Detector)
+> *ดาวน์โหลดเฉพาะโฟลเดอร์นี้เป็นไฟล์ ZIP (หรือ [ดาวน์โหลดผ่าน DownGit](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/FANG9356/MyProject/tree/main/05_ATM-YOLOv8-Detector))*
+
 > **เทคโนโลยี:** Python, OpenCV, YOLOv8
 
 #### ภาพรวมโครงการ (Project Overview)
@@ -261,6 +285,9 @@ flowchart LR
 ---
 
 ### 6. [06_Karaoke-Streaming-System](./06_Karaoke-Streaming-System) — ระบบสตรีมมิ่งคาราโอเกะพร้อมรีโมตมือถือ
+
+> [![Download Folder](https://img.shields.io/badge/Download-ZIP_Folder-238636?style=for-the-badge&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/06_Karaoke-Streaming-System)
+> *ดาวน์โหลดเฉพาะโฟลเดอร์นี้เป็นไฟล์ ZIP (หรือ [ดาวน์โหลดผ่าน DownGit](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/FANG9356/MyProject/tree/main/06_Karaoke-Streaming-System))*
 
 > **เทคโนโลยี:** FastAPI, yt-dlp, HTML5 Video, WebSocket, REST API
 
@@ -305,6 +332,9 @@ flowchart TD
 
 ### 7. [07_AdGuard-Time-Portal](./07_AdGuard-Time-Portal) — ระบบจัดการเวลาอินเทอร์เน็ตผ่าน AdGuard Home API
 
+> [![Download Folder](https://img.shields.io/badge/Download-ZIP_Folder-238636?style=for-the-badge&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/07_AdGuard-Time-Portal)
+> *ดาวน์โหลดเฉพาะโฟลเดอร์นี้เป็นไฟล์ ZIP (หรือ [ดาวน์โหลดผ่าน DownGit](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/FANG9356/MyProject/tree/main/07_AdGuard-Time-Portal))*
+
 > **เทคโนโลยี:** Node.js, Express, AdGuard Home REST API, SQLite, Node-Schedule
 
 #### ภาพรวมโครงการ (Project Overview)
@@ -345,6 +375,9 @@ node server.js
 
 ### 8. [08_System-Monitor-Desktop-App](./08_System-Monitor-Desktop-App) — โปรแกรมมอนิเตอร์สถานะระบบคอมพิวเตอร์
 
+> [![Download Folder](https://img.shields.io/badge/Download-ZIP_Folder-238636?style=for-the-badge&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/08_System-Monitor-Desktop-App)
+> *ดาวน์โหลดเฉพาะโฟลเดอร์นี้เป็นไฟล์ ZIP (หรือ [ดาวน์โหลดผ่าน DownGit](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/FANG9356/MyProject/tree/main/08_System-Monitor-Desktop-App))*
+
 > **เทคโนโลยี:** Node.js, Express, pkg
 
 #### ภาพรวมโครงการ (Project Overview)
@@ -379,6 +412,9 @@ flowchart LR
 ---
 
 ### 9. [09_HomeServer-Infrastructure](./09_HomeServer-Infrastructure) — HomeServer Services & Network Scanner
+
+> [![Download Folder](https://img.shields.io/badge/Download-ZIP_Folder-238636?style=for-the-badge&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/09_HomeServer-Infrastructure)
+> *ดาวน์โหลดเฉพาะโฟลเดอร์นี้เป็นไฟล์ ZIP (หรือ [ดาวน์โหลดผ่าน DownGit](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/FANG9356/MyProject/tree/main/09_HomeServer-Infrastructure))*
 
 > **เทคโนโลยี:** Go, SQLite, React, Tailwind CSS, Docker
 
@@ -430,6 +466,9 @@ flowchart TD
 
 ### 10. [10_Music-Shuffle-AI](./10_Music-Shuffle-AI) — โปรแกรมเล่นเพลงเดสก์ท็อปพร้อมระบบค้นหาด้วยเสียงผ่าน AI (Whisper)
 
+> [![Download Folder](https://img.shields.io/badge/Download-ZIP_Folder-238636?style=for-the-badge&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/10_Music-Shuffle-AI)
+> *ดาวน์โหลดเฉพาะโฟลเดอร์นี้เป็นไฟล์ ZIP (หรือ [ดาวน์โหลดผ่าน DownGit](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/FANG9356/MyProject/tree/main/10_Music-Shuffle-AI))*
+
 * **หมวดหมู่:** Desktop Application & AI Audio
 * **เทคโนโลยี:** Python, PyQt6, faster-whisper, mutagen, yt-dlp
 
@@ -467,6 +506,9 @@ python3 test_simulation.py
 
 ### 11. [11_Bottle-Can-Sorter](./11_Bottle-Can-Sorter) — เครื่องคัดแยกขวดพลาสติกและกระป๋องโลหะอัตโนมัติ
 
+> [![Download Folder](https://img.shields.io/badge/Download-ZIP_Folder-238636?style=for-the-badge&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/11_Bottle-Can-Sorter)
+> *ดาวน์โหลดเฉพาะโฟลเดอร์นี้เป็นไฟล์ ZIP (หรือ [ดาวน์โหลดผ่าน DownGit](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/FANG9356/MyProject/tree/main/11_Bottle-Can-Sorter))*
+
 * **หมวดหมู่:** Embedded Systems & Robotics / Waste Management
 * **เทคโนโลยี:** Arduino Uno, C++, Stepper Motor, Servo Motor, HX711 Load Cell, Inductive Sensor, Ultrasonic Sensor, I2C LCD
 
@@ -495,6 +537,9 @@ python3 test_simulation.py
 
 ### 12. [12_Smart-Plant-Watering](./12_Smart-Plant-Watering) — เครื่องรดน้ำต้นไม้อัตโนมัติควบคุมระยะไกลด้วยมือถือ
 
+> [![Download Folder](https://img.shields.io/badge/Download-ZIP_Folder-238636?style=for-the-badge&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/12_Smart-Plant-Watering)
+> *ดาวน์โหลดเฉพาะโฟลเดอร์นี้เป็นไฟล์ ZIP (หรือ [ดาวน์โหลดผ่าน DownGit](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/FANG9356/MyProject/tree/main/12_Smart-Plant-Watering))*
+
 * **หมวดหมู่:** IoT & Smart Agriculture
 * **เทคโนโลยี:** ESP8266 NodeMCU, C++, Blynk IoT Platform, Soil Moisture Sensor, 4-Channel Relay, Solenoid Valve
 
@@ -521,6 +566,9 @@ python3 test_simulation.py
 ---
 
 ### 13. [13_General-Education-Web](./13_General-Education-Web) — เว็บไซต์แนะนำการศึกษาประเภทวิชาสามัญ (Seniormath)
+
+> [![Download Folder](https://img.shields.io/badge/Download-ZIP_Folder-238636?style=for-the-badge&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/13_General-Education-Web)
+> *ดาวน์โหลดเฉพาะโฟลเดอร์นี้เป็นไฟล์ ZIP (หรือ [ดาวน์โหลดผ่าน DownGit](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/FANG9356/MyProject/tree/main/13_General-Education-Web))*
 
 * **หมวดหมู่:** Web Application & Educational Technology
 * **เทคโนโลยี:** HTML5, CSS3, JavaScript (ES6), Glassmorphism UI, MediaStream
@@ -549,6 +597,9 @@ python3 13_General-Education-Web/test_simulation.py
 
 ### 14. [14_Computer-Quiz-System](./14_Computer-Quiz-System) — เว็บไซต์ทำแบบทดสอบพื้นฐานคอมพิวเตอร์
 
+> [![Download Folder](https://img.shields.io/badge/Download-ZIP_Folder-238636?style=for-the-badge&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/14_Computer-Quiz-System)
+> *ดาวน์โหลดเฉพาะโฟลเดอร์นี้เป็นไฟล์ ZIP (หรือ [ดาวน์โหลดผ่าน DownGit](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/FANG9356/MyProject/tree/main/14_Computer-Quiz-System))*
+
 * **หมวดหมู่:** Web Application & Educational Assessment
 * **เทคโนโลยี:** Vanilla HTML5, CSS3, JavaScript, JSON Database
 
@@ -576,6 +627,9 @@ python3 14_Computer-Quiz-System/test_simulation.py
 
 ### 15. [15_SD-Calculator-Python](./15_SD-Calculator-Python) — โปรแกรมคำนวณค่า S.D. ด้วย Python
 
+> [![Download Folder](https://img.shields.io/badge/Download-ZIP_Folder-238636?style=for-the-badge&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/15_SD-Calculator-Python)
+> *ดาวน์โหลดเฉพาะโฟลเดอร์นี้เป็นไฟล์ ZIP (หรือ [ดาวน์โหลดผ่าน DownGit](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/FANG9356/MyProject/tree/main/15_SD-Calculator-Python))*
+
 * **หมวดหมู่:** Desktop Application & Statistics
 * **เทคโนโลยี:** Python 3, Tkinter, ttk, NumPy, PyInstaller
 
@@ -601,6 +655,9 @@ python3 15_SD-Calculator-Python/test_simulation.py
 ---
 
 ### 16. [16_Duplicate-File-Cleaner](./16_Duplicate-File-Cleaner) — โปรแกรมค้นหาและลบไฟล์ซ้ำ ด้วย Python
+
+> [![Download Folder](https://img.shields.io/badge/Download-ZIP_Folder-238636?style=for-the-badge&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/16_Duplicate-File-Cleaner)
+> *ดาวน์โหลดเฉพาะโฟลเดอร์นี้เป็นไฟล์ ZIP (หรือ [ดาวน์โหลดผ่าน DownGit](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/FANG9356/MyProject/tree/main/16_Duplicate-File-Cleaner))*
 
 * **หมวดหมู่:** Desktop Application & Storage Optimizer
 * **เทคโนโลยี:** Python 3, CustomTkinter, hashlib (SHA-256), Dark Mode
@@ -628,6 +685,9 @@ python3 16_Duplicate-File-Cleaner/test_simulation.py
 
 ### 17. [17_Grade-Calculator-Python](./17_Grade-Calculator-Python) — โปรแกรมคำนวณเกรด ด้วย Python (GPA & GPAX)
 
+> [![Download Folder](https://img.shields.io/badge/Download-ZIP_Folder-238636?style=for-the-badge&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/17_Grade-Calculator-Python)
+> *ดาวน์โหลดเฉพาะโฟลเดอร์นี้เป็นไฟล์ ZIP (หรือ [ดาวน์โหลดผ่าน DownGit](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/FANG9356/MyProject/tree/main/17_Grade-Calculator-Python))*
+
 * **หมวดหมู่:** Desktop Application & Educational Utilities
 * **เทคโนโลยี:** Python 3, CustomTkinter, Weighted Average Algorithm
 
@@ -653,6 +713,9 @@ python3 17_Grade-Calculator-Python/test_simulation.py
 ---
 
 ### 18. [18_Neo-Web-Chat](./18_Neo-Web-Chat) — เว็บไซต์คุยแชทออนไลน์ และระบบแชทออฟไลน์ BLE
+
+> [![Download Folder](https://img.shields.io/badge/Download-ZIP_Folder-238636?style=for-the-badge&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/18_Neo-Web-Chat)
+> *ดาวน์โหลดเฉพาะโฟลเดอร์นี้เป็นไฟล์ ZIP (หรือ [ดาวน์โหลดผ่าน DownGit](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/FANG9356/MyProject/tree/main/18_Neo-Web-Chat))*
 
 * **หมวดหมู่:** Web Application & Wireless Networking
 * **เทคโนโลยี:** HTML5, Tailwind CSS, JavaScript, Firebase Realtime Database, Web Bluetooth API, Python, Bleak, asyncio
@@ -685,6 +748,9 @@ python3 18_Neo-Web-Chat/test_simulation.py
 
 ### 19. [19_DevOps-Competition-Platform](./19_DevOps-Competition-Platform) — ระบบแพลตฟอร์มการแข่งขันทักษะวิชาชีพ DevOps 2568
 
+> [![Download Folder](https://img.shields.io/badge/Download-ZIP_Folder-238636?style=for-the-badge&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/19_DevOps-Competition-Platform)
+> *ดาวน์โหลดเฉพาะโฟลเดอร์นี้เป็นไฟล์ ZIP (หรือ [ดาวน์โหลดผ่าน DownGit](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/FANG9356/MyProject/tree/main/19_DevOps-Competition-Platform))*
+
 * **หมวดหมู่:** DevOps, Full-Stack Web Application, IoT & Enterprise Infrastructure
 * **เทคโนโลยี:** Nuxt 3, Vue 3, Express.js, TypeScript, TailwindCSS, GitLab CI/CD, ESP32, MQTT, BMP280, Node-RED, Grafana, Proxmox VE, Docker
 
@@ -716,6 +782,9 @@ node 19_DevOps-Competition-Platform/test_simulation.js
 
 ### 20. [20_Color-Detection-Kalman-YOLO](./20_Color-Detection-Kalman-YOLO) — ระบบตรวจจับสีวัตถุแบบเรียลไทม์และกรองสัญญาณด้วย Kalman Filter
 
+> [![Download Folder](https://img.shields.io/badge/Download-ZIP_Folder-238636?style=for-the-badge&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/20_Color-Detection-Kalman-YOLO)
+> *ดาวน์โหลดเฉพาะโฟลเดอร์นี้เป็นไฟล์ ZIP (หรือ [ดาวน์โหลดผ่าน DownGit](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/FANG9356/MyProject/tree/main/20_Color-Detection-Kalman-YOLO))*
+
 * **หมวดหมู่:** Computer Vision, Signal Processing & Deep Learning
 * **เทคโนโลยี:** Python 3, OpenCV, NumPy, K-Means Clustering, HSV Color Space, 1D Kalman Filter, YOLOv8
 
@@ -742,6 +811,9 @@ python3 20_Color-Detection-Kalman-YOLO/test_simulation.py
 ---
 
 ### 21. [21_Robot-Moisture-Tracker](./21_Robot-Moisture-Tracker) — ระบบติดตามพิกัดหุ่นยนต์และข้อมูลความชื้นเรียลไทม์
+
+> [![Download Folder](https://img.shields.io/badge/Download-ZIP_Folder-238636?style=for-the-badge&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/21_Robot-Moisture-Tracker)
+> *ดาวน์โหลดเฉพาะโฟลเดอร์นี้เป็นไฟล์ ZIP (หรือ [ดาวน์โหลดผ่าน DownGit](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/FANG9356/MyProject/tree/main/21_Robot-Moisture-Tracker))*
 
 * **หมวดหมู่:** Robotics Telemetry, Geospatial Tracking & IoT Web
 * **เทคโนโลยี:** HTML5, CSS3, JavaScript, Leaflet.js, OpenStreetMap, Firebase Realtime Database
@@ -770,6 +842,9 @@ node 21_Robot-Moisture-Tracker/test_simulation.js
 
 ### 22. [22_PDF-Speech-Synthesizer](./22_PDF-Speech-Synthesizer) — ระบบแปลงเอกสาร PDF เป็นไฟล์เสียงพูดภาษาไทย
 
+> [![Download Folder](https://img.shields.io/badge/Download-ZIP_Folder-238636?style=for-the-badge&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/22_PDF-Speech-Synthesizer)
+> *ดาวน์โหลดเฉพาะโฟลเดอร์นี้เป็นไฟล์ ZIP (หรือ [ดาวน์โหลดผ่าน DownGit](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/FANG9356/MyProject/tree/main/22_PDF-Speech-Synthesizer))*
+
 * **หมวดหมู่:** Natural Language Processing & Audio Synthesis
 * **เทคโนโลยี:** Python 3, PyPDF, Google Text-to-Speech (gTTS), MP3 Audio Processing
 
@@ -796,6 +871,9 @@ python3 22_PDF-Speech-Synthesizer/test_simulation.py
 ---
 
 ### 23. [23_Discord-Voice-Screen-Share](./23_Discord-Voice-Screen-Share) — ระบบสตรีมมิ่งหน้าจอและสื่อสารด้วยเสียงแบบเรียลไทม์
+
+> [![Download Folder](https://img.shields.io/badge/Download-ZIP_Folder-238636?style=for-the-badge&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/23_Discord-Voice-Screen-Share)
+> *ดาวน์โหลดเฉพาะโฟลเดอร์นี้เป็นไฟล์ ZIP (หรือ [ดาวน์โหลดผ่าน DownGit](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/FANG9356/MyProject/tree/main/23_Discord-Voice-Screen-Share))*
 
 * **หมวดหมู่:** Real-Time Network Communication & Streaming
 * **เทคโนโลยี:** Python 3, TCP Socket Programming, PyAudio, MSS, OpenCV, Tkinter Dark Theme
@@ -828,6 +906,9 @@ python3 23_Discord-Voice-Screen-Share/test_simulation.py
 
 ### 24. [24_LAN-Security-Intruder-Sentinel](./24_LAN-Security-Intruder-Sentinel) — ระบบตรวจจับผู้บุกรุกและตรวจสอบความปลอดภัยเครือข่าย LAN
 
+> [![Download Folder](https://img.shields.io/badge/Download-ZIP_Folder-238636?style=for-the-badge&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/24_LAN-Security-Intruder-Sentinel)
+> *ดาวน์โหลดเฉพาะโฟลเดอร์นี้เป็นไฟล์ ZIP (หรือ [ดาวน์โหลดผ่าน DownGit](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/FANG9356/MyProject/tree/main/24_LAN-Security-Intruder-Sentinel))*
+
 * **หมวดหมู่:** Network Security & Intrusion Detection System (IDS)
 * **เทคโนโลยี:** Node.js, Express, Socket.io, Systeminformation, ARP Table Scanner, Chart.js
 
@@ -854,6 +935,9 @@ node 24_LAN-Security-Intruder-Sentinel/test_simulation.js
 ---
 
 ### 25. [25_DormiNetX-Windows-Desktop](./25_DormiNetX-Windows-Desktop) — ระบบบริหารจัดการหอพักแบบ Standalone สำหรับ Windows Desktop
+
+> [![Download Folder](https://img.shields.io/badge/Download-ZIP_Folder-238636?style=for-the-badge&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/25_DormiNetX-Windows-Desktop)
+> *ดาวน์โหลดเฉพาะโฟลเดอร์นี้เป็นไฟล์ ZIP (หรือ [ดาวน์โหลดผ่าน DownGit](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/FANG9356/MyProject/tree/main/25_DormiNetX-Windows-Desktop))*
 
 * **หมวดหมู่:** Windows Desktop Native Application / Offline-First Management
 * **เทคโนโลยี:** Wails v2, Go (Golang), React 18, Vite, Tailwind CSS, SQLite (WAL Mode), NSIS Setup Installer

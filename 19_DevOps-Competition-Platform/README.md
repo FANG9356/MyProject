@@ -1,4 +1,6 @@
 # 19_DevOps-Competition-Platform
+[![Download Folder](https://img.shields.io/badge/Download-ZIP_Folder-238636?style=for-the-badge&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/19_DevOps-Competition-Platform)
+*ดาวน์โหลดเฉพาะโฟลเดอร์นี้เป็นไฟล์ ZIP (หรือ [ดาวน์โหลดผ่าน DownGit](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/FANG9356/MyProject/tree/main/19_DevOps-Competition-Platform))*
 
 ระบบแพลตฟอร์มการแข่งขันทักษะวิชาชีพด้าน DevOps และ IoT ครอบคลุมการพัฒนาเว็บแอปพลิเคชัน การวางระบบส่งข้อมูลเซนเซอร์ และการบริหารจัดการโครงสร้างพื้นฐานเครือข่าย
 

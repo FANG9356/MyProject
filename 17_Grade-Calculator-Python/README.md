@@ -1,4 +1,6 @@
 # Grade Calculator Python (โปรแกรมคำนวณเกรด ด้วย Python)
+[![Download Folder](https://img.shields.io/badge/Download-ZIP_Folder-238636?style=for-the-badge&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/17_Grade-Calculator-Python)
+*ดาวน์โหลดเฉพาะโฟลเดอร์นี้เป็นไฟล์ ZIP (หรือ [ดาวน์โหลดผ่าน DownGit](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/FANG9356/MyProject/tree/main/17_Grade-Calculator-Python))*
 
 โปรแกรมประยุกต์สำหรับคำนวณแต้มระดับคะแนนเฉลี่ยรายภาคเรียน (GPA) และแต้มระดับคะแนนเฉลี่ยสะสม (GPAX) พัฒนาด้วยภาษา Python และ CustomTkinter ในธีมสีมืด (Dark Mode) รองรับการคำนวณตามเกณฑ์มาตรฐานการศึกษา 8 ระดับ (A, B+, B, C+, C, D+, D, F) พร้อมระบบจัดการรายวิชาแบบไดนามิกและตรวจสอบความถูกต้องของข้อมูล
 
