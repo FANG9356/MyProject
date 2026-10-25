@@ -35,12 +35,13 @@
 | **22** | [`22_PDF-Speech-Synthesizer`](./22_PDF-Speech-Synthesizer) | NLP / Text-to-Speech | `python3 pdf_to_speech.py` | สังเคราะห์ไฟล์ MP3 | `python3 test_simulation.py` |
 | **23** | [`23_Discord-Voice-Screen-Share`](./23_Discord-Voice-Screen-Share) | Socket Streaming / Voice | `python3 server.py` | พอร์ต 65432/65433 | `python3 test_simulation.py` |
 | **24** | [`24_LAN-Security-Intruder-Sentinel`](./24_LAN-Security-Intruder-Sentinel) | Network Security / IDS | `node server.js` | `http://localhost:3080` | `node test_simulation.js` |
+| **25** | [`25_DormiNetX-Windows-Desktop`](./25_DormiNetX-Windows-Desktop) | Windows Desktop / Wails | `bin/DormiNetX.exe` หรือ `open standalone_demo.html` | Standalone App / `standalone_demo.html` | `node test_simulation.js` |
 
 ---
 
 ## การรันชุดทดสอบ
 
-ในโฟลเดอร์หลักมีสคริปต์ [`run_all_tests.sh`](./run_all_tests.sh) สำหรับรัน Simulation Test ของทั้ง 24 โปรเจกต์ สามารถทดสอบได้ด้วยคำสั่ง:
+ในโฟลเดอร์หลักมีสคริปต์ [`run_all_tests.sh`](./run_all_tests.sh) สำหรับรัน Simulation Test ของทั้ง 25 โปรเจกต์ สามารถทดสอบได้ด้วยคำสั่ง:
 ```bash
 ./run_all_tests.sh
 ```
@@ -848,6 +849,43 @@ cd 24_LAN-Security-Intruder-Sentinel && node server.js
 รันชุดทดสอบอัลกอริทึมการตรวจจับและ Whitelist:
 ```bash
 node 24_LAN-Security-Intruder-Sentinel/test_simulation.js
+```
+
+---
+
+### 25. [25_DormiNetX-Windows-Desktop](./25_DormiNetX-Windows-Desktop) — ระบบบริหารจัดการหอพักแบบ Standalone สำหรับ Windows Desktop
+
+* **หมวดหมู่:** Windows Desktop Native Application / Offline-First Management
+* **เทคโนโลยี:** Wails v2, Go (Golang), React 18, Vite, Tailwind CSS, SQLite (WAL Mode), NSIS Setup Installer
+
+#### สรุปโปรเจกต์
+ระบบบริหารจัดการหอพักแบบเนทีฟเดสก์ท็อปที่คอมไพล์รวมเซิร์ฟเวอร์ Go HTTP และเอนจินฐานข้อมูล SQLite ไว้ในรูปแบบไฟล์ปฏิบัติการเดี่ยว (Single Binary Executable) สามารถทำงานได้แบบออฟไลน์สมบูรณ์โดยไม่ต้องพึ่งพาเซิร์ฟเวอร์คลาวด์ รองรับการทำงานทั้งโหมดเครื่องแม่ข่าย (Host Server) และเครื่องลูกข่าย (Client Terminal) พร้อมระบบตรวจจับ IP เครื่องแม่ข่ายอัตโนมัติในวงแลน มีระบบคำนวณมิเตอร์น้ำ-ไฟและออกใบเสร็จรับเงินผ่านคำสั่ง Wails IPC PrintHtml ส่งตรงสู่เครื่องพิมพ์ของระบบปฏิบัติการ Windows
+
+![DormiNetX Desktop Standalone](./assets/real_app_25_dorminetx.png)
+
+![DormiNetX Desktop Demo](./assets/demo_25_dorminetx.gif)
+
+#### เอกสารประกอบโครงงาน
+* รายละเอียดโครงงาน: [25_DormiNetX-Windows-Desktop/PORTFOLIO_INFO.md](./25_DormiNetX-Windows-Desktop/PORTFOLIO_INFO.md)
+* คู่มือโครงการ: [25_DormiNetX-Windows-Desktop/README.md](./25_DormiNetX-Windows-Desktop/README.md)
+
+#### ไฟล์ปฏิบัติการและตัวติดตั้ง (Binaries)
+* ไฟล์รันเดี่ยวแบบพกพา: [`25_DormiNetX-Windows-Desktop/bin/DormiNetX.exe`](./25_DormiNetX-Windows-Desktop/bin/DormiNetX.exe) (ขนาด 30 MB)
+* ตัวติดตั้งมาตรฐาน Windows Setup: [`25_DormiNetX-Windows-Desktop/bin/DormiNetX-Installer.exe`](./25_DormiNetX-Windows-Desktop/bin/DormiNetX-Installer.exe) (ขนาด 13 MB)
+
+#### วิธีรันระบบ (How to Run)
+รันไฟล์ติดตั้งหรือโปรแกรม Desktop:
+```bash
+# รันไฟล์ปฏิบัติการ Windows (บนเครื่อง Windows 10/11)
+./25_DormiNetX-Windows-Desktop/bin/DormiNetX.exe
+```
+เปิดหน้าต่างจำลองการทำงานแบบ Interactive (Web Preview):
+```bash
+open 25_DormiNetX-Windows-Desktop/standalone_demo.html
+```
+รันชุดทดสอบการคำนวณและสถาปัตยกรรมระบบ:
+```bash
+node 25_DormiNetX-Windows-Desktop/test_simulation.js
 ```
 
 ---

@@ -71,8 +71,10 @@ cookies.txt
 # Build Outputs & Logs
 # ==========================================
 dist/
+!25_DormiNetX-Windows-Desktop/wails_app/frontend/dist
 build/
 *.log
 server
 *.exe
+!25_DormiNetX-Windows-Desktop/bin/*.exe
 *.db

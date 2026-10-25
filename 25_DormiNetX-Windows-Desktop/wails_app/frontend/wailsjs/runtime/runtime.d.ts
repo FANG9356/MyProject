@@ -1,0 +1,180 @@
+
+export interface Position {
+    x: number;
+    y: number;
+}
+
+export interface Size {
+    w: number;
+    h: number;
+}
+
+export interface Screen {
+    isCurrent: boolean;
+    isPrimary: boolean;
+    width : number
+    height : number
+}
+
+export interface EnvironmentInfo {
+    buildType: string;
+    platform: string;
+    arch: string;
+}
+
+export function EventsEmit(eventName: string, ...data: any): void;
+
+export function EventsOn(eventName: string, callback: (...data: any) => void): () => void;
+
+export function EventsOnMultiple(eventName: string, callback: (...data: any) => void, maxCallbacks: number): () => void;
+
+export function EventsOnce(eventName: string, callback: (...data: any) => void): () => void;
+
+export function EventsOff(eventName: string, ...additionalEventNames: string[]): void;
+
+export function EventsOffAll(): void;
+
+export function LogPrint(message: string): void;
+
+export function LogTrace(message: string): void;
+
+export function LogDebug(message: string): void;
+
+export function LogError(message: string): void;
+
+export function LogFatal(message: string): void;
+
+export function LogInfo(message: string): void;
+
+export function LogWarning(message: string): void;
+
+export function WindowReload(): void;
+
+export function WindowReloadApp(): void;
+
+export function WindowSetAlwaysOnTop(b: boolean): void;
+
+export function WindowSetSystemDefaultTheme(): void;
+
+export function WindowSetLightTheme(): void;
+
+export function WindowSetDarkTheme(): void;
+
+export function WindowCenter(): void;
+
+export function WindowSetTitle(title: string): void;
+
+export function WindowFullscreen(): void;
+
+export function WindowUnfullscreen(): void;
+
+export function WindowIsFullscreen(): Promise<boolean>;
+
+export function WindowSetSize(width: number, height: number): void;
+
+export function WindowGetSize(): Promise<Size>;
+
+export function WindowSetMaxSize(width: number, height: number): void;
+
+export function WindowSetMinSize(width: number, height: number): void;
+
+export function WindowSetPosition(x: number, y: number): void;
+
+export function WindowGetPosition(): Promise<Position>;
+
+export function WindowHide(): void;
+
+export function WindowShow(): void;
+
+export function WindowMaximise(): void;
+
+export function WindowToggleMaximise(): void;
+
+export function WindowUnmaximise(): void;
+
+export function WindowIsMaximised(): Promise<boolean>;
+
+export function WindowMinimise(): void;
+
+export function WindowUnminimise(): void;
+
+export function WindowIsMinimised(): Promise<boolean>;
+
+export function WindowIsNormal(): Promise<boolean>;
+
+export function WindowSetBackgroundColour(R: number, G: number, B: number, A: number): void;
+
+export function ScreenGetAll(): Promise<Screen[]>;
+
+export function BrowserOpenURL(url: string): void;
+
+export function Environment(): Promise<EnvironmentInfo>;
+
+export function Quit(): void;
+
+export function Hide(): void;
+
+export function Show(): void;
+
+export function ClipboardGetText(): Promise<string>;
+
+export function ClipboardSetText(text: string): Promise<boolean>;
+
+export function OnFileDrop(callback: (x: number, y: number ,paths: string[]) => void, useDropTarget: boolean) :void
+
+export function OnFileDropOff() :void
+
+export function CanResolveFilePaths(): boolean;
+
+export function ResolveFilePaths(files: File[]): void
+
+export interface NotificationOptions {
+    id: string;
+    title: string;
+    subtitle?: string; 
+    body?: string;
+    categoryId?: string;
+    data?: { [key: string]: any };
+}
+
+export interface NotificationAction {
+    id?: string;
+    title?: string;
+    destructive?: boolean; 
+}
+
+export interface NotificationCategory {
+    id?: string;
+    actions?: NotificationAction[];
+    hasReplyField?: boolean;
+    replyPlaceholder?: string;
+    replyButtonTitle?: string;
+}
+
+export function InitializeNotifications(): Promise<void>;
+
+export function CleanupNotifications(): Promise<void>;
+
+export function IsNotificationAvailable(): Promise<boolean>;
+
+export function RequestNotificationAuthorization(): Promise<boolean>;
+
+export function CheckNotificationAuthorization(): Promise<boolean>;
+
+export function SendNotification(options: NotificationOptions): Promise<void>;
+
+export function SendNotificationWithActions(options: NotificationOptions): Promise<void>;
+
+export function RegisterNotificationCategory(category: NotificationCategory): Promise<void>;
+
+export function RemoveNotificationCategory(categoryId: string): Promise<void>;
+
+export function RemoveAllPendingNotifications(): Promise<void>;
+
+export function RemovePendingNotification(identifier: string): Promise<void>;
+
+export function RemoveAllDeliveredNotifications(): Promise<void>;
+
+export function RemoveDeliveredNotification(identifier: string): Promise<void>;
+
+export function RemoveNotification(identifier: string): Promise<void>;

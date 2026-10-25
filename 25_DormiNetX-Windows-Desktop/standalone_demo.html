@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DormiNetX - ระบบบริหารจัดการหอพักแบบ Standalone สำหรับ Windows</title>
+  <style>
+    :root {
+      --bg-desktop: #0b0f19;
+      --window-bg: #111827;
+      --card-bg: #1f2937;
+      --card-border: rgba(255, 255, 255, 0.08);
+      --accent: #4f46e5;
+      --accent-hover: #4338ca;
+      --accent-light: rgba(99, 102, 241, 0.15);
+      --text-main: #f9fafb;
+      --text-muted: #9ca3af;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Prompt", sans-serif;
+      background: radial-gradient(circle at 50% 20%, #1e1b4b 0%, var(--bg-desktop) 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+    }
+    .window {
+      width: 1200px;
+      max-width: 100%;
+      height: 850px;
+      max-height: 95vh;
+      background: var(--window-bg);
+      border-radius: 12px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 0 1px var(--card-border);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .titlebar {
+      height: 42px;
+      background: rgba(17, 24, 39, 0.95);
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      user-select: none;
+    }
+    .titlebar-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #e5e7eb;
+    }
+    .badge-standalone {
+      background: var(--accent-light);
+      color: #a5b4fc;
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+    }
+    .titlebar-controls {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+    }
+    .win-btn {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      display: inline-block;
+      cursor: pointer;
+    }
+    .btn-close { background: #ef4444; }
+    .btn-min { background: #f59e0b; }
+    .btn-max { background: #10b981; }
+    .app-layout {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+    .sidebar {
+      width: 240px;
+      background: #0f172a;
+      border-right: 1px solid var(--card-border);
+      display: flex;
+      flex-direction: column;
+      padding: 20px 14px;
+      gap: 8px;
+    }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      color: var(--text-muted);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .nav-item:hover, .nav-item.active {
+      background: var(--card-bg);
+      color: var(--text-main);
+    }
+    .nav-item.active {
+      background: var(--accent);
+      color: #ffffff;
+    }
+    .server-status-card {
+      margin-top: auto;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 14px;
+      font-size: 12px;
+    }
+    .status-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+      font-weight: 600;
+      color: var(--success);
+    }
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 8px var(--success);
+    }
+    .main-content {
+      flex: 1;
+      padding: 24px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--card-border);
+    }
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    .stat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 18px;
+    }
+    .stat-label {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+    .stat-val {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+    .content-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 20px;
+    }
+    .panel {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 20px;
+    }
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .panel-title {
+      font-size: 16px;
+      font-weight: 600;
+    }
+    .room-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    .room-card {
+      background: rgba(17, 24, 39, 0.6);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 12px;
+      cursor: pointer;
+      transition: transform 0.15s ease, border-color 0.15s ease;
+    }
+    .room-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent);
+    }
+    .room-card.selected {
+      border-color: #818cf8;
+      background: rgba(79, 70, 229, 0.15);
+    }
+    .room-card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+    .room-number {
+      font-weight: 700;
+      font-size: 15px;
+    }
+    .room-status {
+      font-size: 11px;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .status-occupied {
+      background: rgba(16, 185, 129, 0.2);
+      color: #34d399;
+    }
+    .status-vacant {
+      background: rgba(245, 158, 11, 0.2);
+      color: #fbbf24;
+    }
+    .room-price {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .form-group {
+      margin-bottom: 14px;
+    }
+    .form-label {
+      display: block;
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+    .form-input {
+      width: 100%;
+      background: rgba(17, 24, 39, 0.8);
+      border: 1px solid var(--card-border);
+      border-radius: 6px;
+      padding: 10px 12px;
+      color: var(--text-main);
+      font-size: 14px;
+      outline: none;
+    }
+    .form-input:focus {
+      border-color: var(--accent);
+    }
+    .calc-summary {
+      background: rgba(15, 23, 42, 0.6);
+      border-radius: 8px;
+      padding: 14px;
+      margin: 16px 0;
+      font-size: 13px;
+    }
+    .calc-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+    .calc-row.total {
+      font-size: 15px;
+      font-weight: 700;
+      color: #38bdf8;
+      border-top: 1px solid var(--card-border);
+      padding-top: 8px;
+      margin-top: 8px;
+      margin-bottom: 0;
+    }
+    .btn-primary {
+      width: 100%;
+      background: var(--accent);
+      color: #ffffff;
+      border: none;
+      padding: 12px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+    .btn-primary:hover {
+      background: var(--accent-hover);
+    }
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(4px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .modal-overlay.open {
+      display: flex;
+    }
+    .invoice-modal {
+      width: 500px;
+      background: #ffffff;
+      color: #1f2937;
+      border-radius: 10px;
+      padding: 30px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    }
+    .invoice-title {
+      font-size: 20px;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 4px;
+      color: #111827;
+    }
+    .invoice-sub {
+      text-align: center;
+      font-size: 13px;
+      color: #6b7280;
+      margin-bottom: 24px;
+    }
+    .invoice-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    .invoice-table th, .invoice-table td {
+      padding: 10px 8px;
+      font-size: 13px;
+      text-align: left;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .invoice-table th:last-child, .invoice-table td:last-child {
+      text-align: right;
+    }
+    .invoice-total-box {
+      background: #f3f4f6;
+      border-radius: 6px;
+      padding: 14px;
+      display: flex;
+      justify-content: space-between;
+      font-weight: 700;
+      font-size: 16px;
+      color: #111827;
+      margin-bottom: 20px;
+    }
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+    }
+    .btn-modal {
+      flex: 1;
+      padding: 10px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      border: none;
+    }
+    .btn-print {
+      background: #4f46e5;
+      color: #ffffff;
+    }
+    .btn-close-modal {
+      background: #e5e7eb;
+      color: #374151;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="window">
+    <div class="titlebar">
+      <div class="titlebar-info">
+        <span>DormiNetX Standalone Host v1.0.0</span>
+        <span class="badge-standalone">Windows x64 Native</span>
+      </div>
+      <div class="titlebar-controls">
+        <span class="win-btn btn-min" onclick="alert('จำลองย่อหน้าต่าง Desktop')"></span>
+        <span class="win-btn btn-max" onclick="alert('จำลองขยายเต็มจอ Desktop')"></span>
+        <span class="win-btn btn-close" onclick="alert('ปิดโปรแกรม DormiNetX')"></span>
+      </div>
+    </div>
+
+    <div class="app-layout">
+      <aside class="sidebar">
+        <div class="nav-item active">แดชบอร์ดหลัก</div>
+        <div class="nav-item">ผังห้องพักและผู้เช่า</div>
+        <div class="nav-item">จดมิเตอร์และออกบิล</div>
+        <div class="nav-item">หลักฐานและการชำระเงิน</div>
+        <div class="nav-item">สำรองและกู้คืน SQLite</div>
+
+        <div class="server-status-card">
+          <div class="status-indicator">
+            <div class="dot"></div>
+            <span>เซิร์ฟเวอร์เปิดใช้งานอยู่</span>
+          </div>
+          <div>โหมด: เครื่องแม่ข่าย (Host)</div>
+          <div>พอร์ต: 4282 (Go HTTP)</div>
+          <div>IP ท้องถิ่น: 192.168.1.150</div>
+          <div>ฐานข้อมูล: SQLite WAL</div>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <div class="header-bar">
+          <div>
+            <h2>ภาพรวมสถานะหอพัก</h2>
+            <p style="color: var(--text-muted); font-size: 13px; margin-top: 4px;">DormiNetX Standalone - ทำงานอิสระโดยไม่ต้องเชื่อมเน็ตภายนอก</p>
+          </div>
+          <div>
+            <button class="btn-primary" style="padding: 8px 16px; width: auto;" onclick="openInvoiceModal()">จำลองออกใบเสร็จด่วน</button>
+          </div>
+        </div>
+
+        <div class="stats-row">
+          <div class="stat-card">
+            <div class="stat-label">ห้องพักทั้งหมด</div>
+            <div class="stat-val">24 ห้อง</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">มีผู้เช่าแล้ว</div>
+            <div class="stat-val" style="color: #34d399;">20 ห้อง</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">ห้องว่างพร้อมเช่า</div>
+            <div class="stat-val" style="color: #fbbf24;">4 ห้อง</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">รายรับรอบปัจจุบัน</div>
+            <div class="stat-val" style="color: #38bdf8;">89,450 บาท</div>
+          </div>
+        </div>
+
+        <div class="content-grid">
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title">เลือกห้องเพื่อคำนวณบิล</div>
+              <span style="font-size: 12px; color: var(--text-muted);">คลิกการ์ดห้องเพื่อเลือก</span>
+            </div>
+            <div class="room-grid" id="roomGrid"></div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title">คำนวณค่าเช่าและมิเตอร์</div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">ห้องที่เลือก</label>
+              <input type="text" id="selectedRoomDisplay" class="form-input" value="ห้อง 101 (Standard Air)" readonly>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">เลขมิเตอร์น้ำ (ก่อนหน้า - ปัจจุบัน)</label>
+              <div style="display: flex; gap: 8px;">
+                <input type="number" id="waterPrev" class="form-input" value="120" oninput="updateCalculation()">
+                <input type="number" id="waterCurr" class="form-input" value="135" oninput="updateCalculation()">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">เลขมิเตอร์ไฟ (ก่อนหน้า - ปัจจุบัน)</label>
+              <div style="display: flex; gap: 8px;">
+                <input type="number" id="elecPrev" class="form-input" value="450" oninput="updateCalculation()">
+                <input type="number" id="elecCurr" class="form-input" value="520" oninput="updateCalculation()">
+              </div>
+            </div>
+
+            <div class="calc-summary">
+              <div class="calc-row">
+                <span>ค่าเช่าห้อง:</span>
+                <span id="roomRateText">3,500 บาท</span>
+              </div>
+              <div class="calc-row">
+                <span>ค่าน้ำ (<span id="waterUnitsText">15</span> หน่วย x 18 บ.):</span>
+                <span id="waterTotalText">270 บาท</span>
+              </div>
+              <div class="calc-row">
+                <span>ค่าไฟ (<span id="elecUnitsText">70</span> หน่วย x 8 บ.):</span>
+                <span id="elecTotalText">560 บาท</span>
+              </div>
+              <div class="calc-row">
+                <span>ค่าบริการส่วนกลาง:</span>
+                <span>200 บาท</span>
+              </div>
+              <div class="calc-row total">
+                <span>ยอดชำระสุทธิ:</span>
+                <span id="grandTotalText">4,530 บาท</span>
+              </div>
+            </div>
+
+            <button class="btn-primary" onclick="openInvoiceModal()">พิมพ์ใบแจ้งหนี้ (Wails PrintHtml)</button>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="invoiceModal">
+    <div class="invoice-modal">
+      <div class="invoice-title">ใบแจ้งหนี้ / ใบเสร็จรับเงิน</div>
+      <div class="invoice-sub">หอพักเดอร์มิเน็ต (DormiNetX Standalone Host)</div>
+
+      <div style="margin-bottom: 16px; font-size: 13px; color: #4b5563;">
+        <div><strong>ห้องพัก:</strong> <span id="modalRoomNumber">101</span></div>
+        <div><strong>วันที่ออกบิล:</strong> 25 ตุลาคม 2568</div>
+        <div><strong>ผู้เช่า:</strong> ภคภณ สุขมี</div>
+      </div>
+
+      <table class="invoice-table">
+        <thead>
+          <tr>
+            <th>รายการ</th>
+            <th>จำนวน</th>
+            <th>ยอดรวม (บาท)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>ค่าห้องพัก</td>
+            <td>1 เดือน</td>
+            <td id="modalRoomPrice">3,500</td>
+          </tr>
+          <tr>
+            <td>ค่าน้ำประปา (18 บ./หน่วย)</td>
+            <td id="modalWaterUnits">15 หน่วย</td>
+            <td id="modalWaterPrice">270</td>
+          </tr>
+          <tr>
+            <td>ค่าไฟฟ้า (8 บ./หน่วย)</td>
+            <td id="modalElecUnits">70 หน่วย</td>
+            <td id="modalElecPrice">560</td>
+          </tr>
+          <tr>
+            <td>ค่าบริการส่วนกลาง</td>
+            <td>1 รายการ</td>
+            <td>200</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="invoice-total-box">
+        <span>ยอดรวมที่ต้องชำระทั้งสิ้น</span>
+        <span id="modalGrandTotal">4,530 บาท</span>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-modal btn-close-modal" onclick="closeInvoiceModal()">ยกเลิก</button>
+        <button class="btn-modal btn-print" onclick="simulateWailsPrint()">ส่งคำสั่งพิมพ์ไปยังเครื่องพิมพ์</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const rooms = [
+      { num: '101', type: 'Standard Air', price: 3500, status: 'occupied' },
+      { num: '102', type: 'Standard Air', price: 3500, status: 'vacant' },
+      { num: '103', type: 'Standard Air', price: 3500, status: 'occupied' },
+      { num: '104', type: 'Standard Air', price: 3500, status: 'occupied' },
+      { num: '201', type: 'Deluxe Balcony', price: 4200, status: 'occupied' },
+      { num: '202', type: 'Deluxe Balcony', price: 4200, status: 'vacant' },
+      { num: '203', type: 'Deluxe Balcony', price: 4200, status: 'occupied' },
+      { num: '204', type: 'Deluxe Balcony', price: 4200, status: 'occupied' }
+    ];
+
+    let currentRoom = rooms[0];
+
+    function renderRooms() {
+      const container = document.getElementById('roomGrid');
+      container.innerHTML = '';
+      rooms.forEach(r => {
+        const isSelected = r.num === currentRoom.num;
+        const card = document.createElement('div');
+        card.className = `room-card ${isSelected ? 'selected' : ''}`;
+        card.onclick = () => selectRoom(r);
+        card.innerHTML = `
+          <div class="room-card-head">
+            <span class="room-number">ห้อง ${r.num}</span>
+            <span class="room-status ${r.status === 'occupied' ? 'status-occupied' : 'status-vacant'}">
+              ${r.status === 'occupied' ? 'ไม่ว่าง' : 'ว่าง'}
+            </span>
+          </div>
+          <div class="room-price">${r.price.toLocaleString()} บ./ด.</div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function selectRoom(r) {
+      currentRoom = r;
+      document.getElementById('selectedRoomDisplay').value = `ห้อง ${r.num} (${r.type})`;
+      document.getElementById('roomRateText').textContent = `${r.price.toLocaleString()} บาท`;
+      renderRooms();
+      updateCalculation();
+    }
+
+    function updateCalculation() {
+      const wPrev = parseFloat(document.getElementById('waterPrev').value) || 0;
+      const wCurr = parseFloat(document.getElementById('waterCurr').value) || 0;
+      const ePrev = parseFloat(document.getElementById('elecPrev').value) || 0;
+      const eCurr = parseFloat(document.getElementById('elecCurr').value) || 0;
+
+      const wUnits = Math.max(0, wCurr - wPrev);
+      const eUnits = Math.max(0, eCurr - ePrev);
+
+      const wCost = wUnits * 18;
+      const eCost = eUnits * 8;
+      const common = 200;
+      const grandTotal = currentRoom.price + wCost + eCost + common;
+
+      document.getElementById('waterUnitsText').textContent = wUnits;
+      document.getElementById('waterTotalText').textContent = `${wCost.toLocaleString()} บาท`;
+      document.getElementById('elecUnitsText').textContent = eUnits;
+      document.getElementById('elecTotalText').textContent = `${eCost.toLocaleString()} บาท`;
+      document.getElementById('grandTotalText').textContent = `${grandTotal.toLocaleString()} บาท`;
+
+      document.getElementById('modalRoomNumber').textContent = currentRoom.num;
+      document.getElementById('modalRoomPrice').textContent = currentRoom.price.toLocaleString();
+      document.getElementById('modalWaterUnits').textContent = `${wUnits} หน่วย`;
+      document.getElementById('modalWaterPrice').textContent = wCost.toLocaleString();
+      document.getElementById('modalElecUnits').textContent = `${eUnits} หน่วย`;
+      document.getElementById('modalElecPrice').textContent = eCost.toLocaleString();
+      document.getElementById('modalGrandTotal').textContent = `${grandTotal.toLocaleString()} บาท`;
+    }
+
+    function openInvoiceModal() {
+      document.getElementById('invoiceModal').classList.add('open');
+    }
+
+    function closeInvoiceModal() {
+      document.getElementById('invoiceModal').classList.remove('open');
+    }
+
+    function simulateWailsPrint() {
+      alert('คำสั่งพิมพ์สำเร็จ: ส่งข้อมูล HTML สู่โมดูล Wails PrintHtml และเปิดหน้าต่างการพิมพ์ Windows สำเร็จ');
+      closeInvoiceModal();
+    }
+
+    renderRooms();
+    updateCalculation();
+  </script>
+</body>
+</html>
