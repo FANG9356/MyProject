@@ -6,9 +6,10 @@
 
 ## ข้อมูลโครงการและเอกสารประกอบ
 
-- ผู้จัดทำ: ภคพล สุขมี (Phakhaphon Sukmee)
-- เอกสารโครงงานฉบับสมบูรณ์ (99 หน้า): [docs/project_report_full.pdf](docs/project_report_full.pdf)
-- อุปกรณ์หลัก: NodeMCU ESP8266, Soil Moisture Sensor, 4-Channel Relay Module, Solenoid Valve 12V, Step-Down Buck Converter
+- ผู้จัดทำ: นายภคพล สุขมี (Phakhaphon Sukmee), นายกรพล สวัสดิ์ตระกูล, นายพงศ์พีช โสมเกศตรินทร์
+- ครูประจำวิชา: นายธนวัฒน์ พร้อมสุข (วิชาพื้นฐานการอินเตอร์เฟส 20128-2005 วิทยาลัยเทคนิคอุบลราชธานี)
+- เอกสารโครงงานฉบับสมบูรณ์ (107 หน้าเต็ม พร้อมหน้าปกและคำนำ): [docs/รายงาน-พื้นฐานการอินเตอร์เฟซ.pdf](docs/รายงาน-พื้นฐานการอินเตอร์เฟซ.pdf)
+- อุปกรณ์หลัก: NodeMCU ESP8266, Soil Moisture Sensor, DHT11, 4-Channel Relay Module, Solenoid Valve 12V, Mist Spray, Step-Down Buck Converter
 
 ## คุณสมบัติเด่น
 

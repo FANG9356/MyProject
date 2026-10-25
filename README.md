@@ -505,7 +505,7 @@ python3 test_simulation.py
 ![Live Simulation Demo](./assets/demo_12_smart_plant.gif)
 
 #### เอกสารประกอบโครงงาน
-* รายงานโครงงานฉบับสมบูรณ์ (99 หน้า): [12_Smart-Plant-Watering/docs/project_report_full.pdf](./12_Smart-Plant-Watering/docs/project_report_full.pdf)
+* รายงานโครงงานฉบับสมบูรณ์ (107 หน้าเต็ม พร้อมหน้าปกและคำนำ): [12_Smart-Plant-Watering/docs/รายงาน-พื้นฐานการอินเตอร์เฟซ.pdf](./12_Smart-Plant-Watering/docs/รายงาน-พื้นฐานการอินเตอร์เฟซ.pdf) (หรือ [project_report_full.pdf](./12_Smart-Plant-Watering/docs/project_report_full.pdf))
 
 #### วิธีรันระบบ (How to Run)
 1. อัปโหลดเฟิร์มแวร์เข้าสู่ NodeMCU ESP8266:

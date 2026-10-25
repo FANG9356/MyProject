@@ -4,7 +4,8 @@
 เครื่องรดน้ำต้นไม้อัตโนมัติควบคุมระยะไกลด้วยมือถือ (Smart Plant Watering System)
 
 ## ผู้พัฒนา
-ภคพล สุขมี (Phakhaphon Sukmee)
+นายภคพล สุขมี (Phakhaphon Sukmee), นายกรพล สวัสดิ์ตระกูล, นายพงศ์พีช โสมเกศตรินทร์
+ครูประจำวิชา: นายธนวัฒน์ พร้อมสุข (วิชาพื้นฐานการอินเตอร์เฟส 20128-2005 วิทยาลัยเทคนิคอุบลราชธานี)
 
 ## หมวดหมู่
 IoT / Embedded Systems / Smart Agriculture
@@ -13,13 +14,13 @@ IoT / Embedded Systems / Smart Agriculture
 - ไมโครคอนโทรลเลอร์: NodeMCU ESP8266 (WiFi 802.11 b/g/n)
 - ภาษาโปรแกรม: C++ / Arduino
 - แพลตฟอร์ม IoT: Blynk IoT Platform
-- โมดูลเซนเซอร์: Soil Moisture Sensor (Analog ADC)
+- โมดูลเซนเซอร์: Soil Moisture Sensor (Analog ADC), DHT11 Temperature & Humidity
 - ภาคขับกำลัง: 4-Channel Relay Module (Optocoupler Isolation)
-- ตัวกระตุ้น: 12V Solenoid Valve, 12V DC Submersible Pump
+- ตัวกระตุ้น: 12V Solenoid Valve, Mist Spray, 12V DC Submersible Pump
 - แหล่งจ่ายไฟ: Step-Down Buck Converter (12V to 5V DC)
 
 ## สรุปภาพรวมและผลการดำเนินงาน
 โครงการนี้จัดทำขึ้นเพื่อแก้ปัญหาการดูแลต้นไม้และพืชสวนในพื้นที่แปลงเกษตรและอาคารที่อยู่อาศัย โดยระบบสามารถตรวจวัดความชื้นในดินอย่างแม่นยำและตัดสินใจจ่ายน้ำอัตโนมัติเมื่อค่าความชื้นต่ำกว่าระดับที่กำหนด ผู้ใช้งานสามารถตรวจสอบสถานะและสั่งการรดน้ำแบบแมนนวลได้จากทุกที่ผ่านแอปพลิเคชันบนสมาร์ตโฟน มีระบบตัดการทำงานเมื่อรดน้ำต่อเนื่องเกินระยะเวลาที่กำหนดเพื่อป้องกันน้ำท่วมขังและความเสียหายของรากพืช
 
 ## เอกสารอ้างอิง
-- รายงานโครงงานฉบับสมบูรณ์ (99 หน้า): docs/project_report_full.pdf
+- รายงานโครงงานฉบับสมบูรณ์ (107 หน้าเต็ม พร้อมหน้าปกและคำนำ): docs/รายงาน-พื้นฐานการอินเตอร์เฟซ.pdf (หรือ docs/project_report_full.pdf)
