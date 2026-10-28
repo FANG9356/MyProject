@@ -39,7 +39,7 @@ func SetupUserRoutes(db *sql.DB) {
 					json.Unmarshal([]byte(slipsStr), &u.BookingSlips)
 				}
 
-
+				// Mask National ID for PDPA compliance on frontend delivery
 				if len(u.NationalID) >= 13 {
 					u.NationalID = "X-XXXX-XXXXX-" + u.NationalID[len(u.NationalID)-3:]
 				} else if len(u.NationalID) > 4 {
@@ -114,7 +114,7 @@ func SetupUserRoutes(db *sql.DB) {
 				return
 			}
 
-
+			// Remove masking string from ID if it wasn't edited, by retrieving original ID
 			if r.Method == "PUT" && strings.Contains(strings.ToUpper(u.NationalID), "X") {
 				var originalID string
 				db.QueryRow("SELECT national_id FROM users WHERE user_id = ?", u.ID).Scan(&originalID)
@@ -122,7 +122,7 @@ func SetupUserRoutes(db *sql.DB) {
 			}
 
 			if r.Method == "POST" {
-
+				// [เพิ่มใหม่] เช็คว่ามีคนอยู่ในห้องนี้แล้วหรือยัง (ป้องกันการเพิ่มผู้เช่าซ้ำ)
 				if u.Status == "กำลังพักอาศัย" || u.Status == "จอง" {
 					var count int
 					db.QueryRow("SELECT COUNT(*) FROM users WHERE room_number = ? AND (status = 'กำลังพักอาศัย' OR status = 'จอง')", u.RoomNumber).Scan(&count)
@@ -157,7 +157,7 @@ func SetupUserRoutes(db *sql.DB) {
 				w.WriteHeader(http.StatusCreated)
 				json.NewEncoder(w).Encode(map[string]interface{}{"id": id})
 			} else {
-
+				// [เพิ่มใหม่] เช็คว่ามีคนอยู่ในห้องนี้แล้วหรือยังตอนแก้ไขข้อมูล
 				if u.Status == "กำลังพักอาศัย" || u.Status == "จอง" {
 					var count int
 					db.QueryRow("SELECT COUNT(*) FROM users WHERE room_number = ? AND (status = 'กำลังพักอาศัย' OR status = 'จอง') AND user_id != ?", u.RoomNumber, u.ID).Scan(&count)

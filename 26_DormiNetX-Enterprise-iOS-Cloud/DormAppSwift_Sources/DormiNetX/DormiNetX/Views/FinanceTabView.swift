@@ -938,7 +938,7 @@ private struct BillingHistorySheet: View {
         let scheduledMonths = Set(cycles.map(\.monthId))
         let activePayments = payments.filter { !$0.isDeletedLocally }
         let paymentMonths = Set(activePayments.compactMap { BillingCycle.normalizedMonthKey($0.month) })
-
+        // Historical invoices remain accessible even after contract dates are edited.
         for month in paymentMonths.subtracting(scheduledMonths) {
             guard let date = BillingCycle.date("\(month)-01") else { continue }
             let due = BillingCycle.dueDateKey(month: month, moveInDate: user.moveInDate)
@@ -1211,7 +1211,7 @@ private struct PaymentReceiptView: View {
     @State private var saveMessage: String?
     @State private var showingSaveAlert = false
     @State private var isSavingReceipt = false
-
+    
     @State private var showingLedgerAlert = false
     @State private var ledgerActionType: String = ""
     @State private var ledgerReason: String = ""
@@ -1261,7 +1261,7 @@ private struct PaymentReceiptView: View {
                                 } label: {
                                     Label("ยกเลิกบิล", systemImage: "xmark.bin")
                                 }
-
+                                
                                 Button {
                                     ledgerActionType = "adjust"
                                     ledgerReason = ""
@@ -1335,7 +1335,7 @@ private struct PaymentReceiptView: View {
             else { Text("คุณต้องการปรับปรุงยอดเงินบิลนี้ใช่หรือไม่?") }
         }
     }
-
+    
     private var ledgerActionTitle: String {
         switch ledgerActionType {
         case "void": return "ยกเลิกบิล"
@@ -1344,7 +1344,7 @@ private struct PaymentReceiptView: View {
         default: return "จัดการบัญชี"
         }
     }
-
+    
     private func processLedgerAction() {
         guard !ledgerReason.isEmpty, let serverId = payment.serverId else { return }
         isProcessingLedger = true
@@ -1370,11 +1370,11 @@ private struct PaymentReceiptView: View {
                 payment.lastUpdated = Date()
                 modelContext.insert(LocalSystemLog(action: "ระบบบัญชี: \(ledgerActionType)", details: "อัปเดตบิลห้อง \(payment.roomNumber) รอบ \(payment.month) แล้ว (\(msg))"))
                 try? modelContext.save()
-
+                
                 Task {
                     await SyncManager.shared.pushCurrentLocalState(modelContext: modelContext, reason: "Ledger Action")
                 }
-
+                
                 saveMessage = "ดำเนินการสำเร็จ: \(msg)"
                 showingSaveAlert = true
             } catch {
@@ -1537,7 +1537,7 @@ private struct ReceiptExportCard: View {
                 .stroke(Color.black.opacity(0.08), lineWidth: 1)
         )
     }
-
+    
     private var receiptStatusLabel: String {
         switch payment.paymentStatus {
         case "paid": return "ชำระแล้ว"

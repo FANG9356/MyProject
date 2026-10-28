@@ -3,6 +3,7 @@ import SwiftData
 import Charts
 import Combine
 
+// Dashboard Models are in DashboardTab.swift
 
 struct RoomListView: View {
     @Environment(\.modelContext) private var modelContext
@@ -31,13 +32,13 @@ struct RoomListView: View {
     @State private var syncButtonRotation = 0.0
     @State private var lastAutoPullCheck: Date?
     @State private var lastBookingPromotionCheck: Date?
-
-
+    
+    // Auto-polling timer (every 10 seconds)
     private let pollingTimer = Timer.publish(every: 10, on: .main, in: .common).autoconnect()
-
+    
     var body: some View {
         ZStack(alignment: .leading) {
-
+            
             ZStack {
                 Color.clear
                     .ignoresSafeArea()
@@ -76,7 +77,7 @@ struct RoomListView: View {
                         hideKeyboard()
                     })
                 }
-
+                
                 VStack {
                     HStack {
                         Button(action: {
@@ -96,24 +97,24 @@ struct RoomListView: View {
                             }
                         }
                         .buttonStyle(PressableButtonStyle())
-
+                        
                         Text(LocalizedStringKey(selectedTab.rawValue))
                             .font(.custom("SukhumvitSet-Bold", size: 24))
                             .foregroundColor(.primary)
                             .padding(.leading, 8)
-
+                        
                         Spacer()
-
+                        
                         HStack(spacing: 12) {
                             ThemeToggleButton()
-
+                            
                             Button(action: syncData) {
                                 ZStack {
                                     Circle()
                                         .fill(.ultraThinMaterial)
                                         .frame(width: 44, height: 44)
                                         .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 2)
-
+                                    
                                     Image(systemName: "arrow.triangle.2.circlepath")
                                         .font(.custom("SukhumvitSet-Medium", size: 18))
                                         .foregroundColor(colorScheme == .dark ? .white : .indigo)
@@ -154,7 +155,7 @@ struct RoomListView: View {
             .animation(.spring(response: 0.35, dampingFraction: 0.75), value: selectedTab)
             .scaleEffect(isSidebarOpen ? 0.92 : 1)
             .disabled(isSidebarOpen)
-
+            
             if isSidebarOpen {
                 Rectangle()
                     .fill(colorScheme == .dark ? Color.black.opacity(0.2) : Color.white.opacity(0.05))
@@ -167,7 +168,7 @@ struct RoomListView: View {
                     }
                     .transition(.opacity)
             }
-
+            
             SidebarMenu(isOpen: $isSidebarOpen, isLoggedIn: $isLoggedIn, isSettingsMode: $isSettingsMode, selectedTab: $selectedTab, isLoggingOut: $isLoggingOut)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .offset(x: isSidebarOpen ? 0 : -(UIApplication.shared.connectedScenes.compactMap { ($0 as? UIWindowScene)?.screen.bounds.width }.first ?? 400))
@@ -186,12 +187,12 @@ struct RoomListView: View {
                     Rectangle()
                         .fill(.ultraThinMaterial)
                         .ignoresSafeArea()
-
+                    
                     VStack(spacing: 30) {
                         LogoutAnimationView(isLoggingOut: isLoggingOut)
                             .frame(width: 86, height: 100)
                             .scaleEffect(1.2)
-
+                        
                         Text("ออกจากระบบ...")
                             .font(.custom("SukhumvitSet-Bold", size: 16))
                             .foregroundColor(.indigo)
@@ -209,7 +210,7 @@ struct RoomListView: View {
                     let translation = value.translation.width
                     let predicted = value.predictedEndTranslation.width
                     let startedNearLeadingEdge = value.startLocation.x <= 28
-
+                    
                     if !isSidebarOpen && startedNearLeadingEdge && (translation > 40 || predicted > 80) {
                         withAnimation(.spring(response: 0.35, dampingFraction: 0.7)) {
                             isSidebarOpen = true
@@ -228,7 +229,7 @@ struct RoomListView: View {
             ensureCurrentMonthPaymentsIfNeeded()
             scheduleAutoPullCheck()
             scheduleBookingPromotionCheck()
-
+            
             if !hasSeenNotificationOnboarding {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
                     showNotificationOnboarding = true
@@ -503,7 +504,7 @@ struct RoomListView: View {
     private func clean(_ value: String) -> String {
         value.trimmingCharacters(in: .whitespacesAndNewlines)
     }
-
+    
     private func syncData() {
         guard !showSyncOverlay, !syncManager.isSyncing else { return }
 
@@ -555,7 +556,7 @@ struct CloudOutlineShape: Shape {
         var path = Path()
         let w = rect.width
         let h = rect.height
-
+        
         path.move(to: CGPoint(x: w * 0.15, y: h * 0.85))
         path.addLine(to: CGPoint(x: w * 0.85, y: h * 0.85))
         path.addQuadCurve(to: CGPoint(x: w * 0.92, y: h * 0.62), control: CGPoint(x: w * 1.0, y: h * 0.85))
@@ -563,7 +564,7 @@ struct CloudOutlineShape: Shape {
         path.addQuadCurve(to: CGPoint(x: w * 0.45, y: h * 0.22), control: CGPoint(x: w * 0.65, y: h * 0.12))
         path.addQuadCurve(to: CGPoint(x: w * 0.22, y: h * 0.42), control: CGPoint(x: w * 0.25, y: h * 0.15))
         path.addQuadCurve(to: CGPoint(x: w * 0.15, y: h * 0.85), control: CGPoint(x: w * -0.02, y: h * 0.7))
-
+        
         return path
     }
 }
@@ -612,14 +613,14 @@ struct SyncAnimationOverlay: View {
             return "กำลังเชื่อมต่อ..."
         }
     }
-
+    
     var body: some View {
         ZStack {
             Rectangle()
                 .fill(.ultraThinMaterial)
                 .ignoresSafeArea()
                 .opacity(bgOpacity)
-
+            
             VStack(spacing: 24) {
                 ZStack {
                     ForEach(0..<6, id: \.self) { i in
@@ -637,7 +638,7 @@ struct SyncAnimationOverlay: View {
                             style: StrokeStyle(lineWidth: 4, lineCap: .round, lineJoin: .round)
                         )
                         .frame(width: 140, height: 110)
-
+                    
                     VStack(spacing: 2) {
                         Image(systemName: "arrow.down")
                             .font(.custom("SukhumvitSet-Bold", size: 28))
@@ -648,7 +649,7 @@ struct SyncAnimationOverlay: View {
                     .scaleEffect(pulseArrow ? 1.15 : 1.0)
                 }
                 .frame(width: 140, height: 110)
-
+                
                 Text(LocalizedStringKey(statusText))
                     .font(.custom("SukhumvitSet-Bold", size: 16))
                     .foregroundColor(.indigo)
@@ -659,7 +660,7 @@ struct SyncAnimationOverlay: View {
             startSyncAnimation()
         }
     }
-
+    
     private func startSyncAnimation() {
         withAnimation(.easeIn(duration: 0.3)) {
             bgOpacity = 1.0
@@ -723,7 +724,7 @@ struct GlassSummaryCard: View {
     var value: String
     var icon: String
     var color: Color
-
+    
     var body: some View {
         GlassCard {
             VStack(alignment: .leading, spacing: 12) {
@@ -763,7 +764,7 @@ struct SidebarMenu: View {
     @State private var showingEditProfile = false
     @State private var currentEditingAdmin: Admin? = nil
     @State private var gearRotation: Double = 0
-
+    
     var body: some View {
         ZStack(alignment: .leading) {
             Color.clear
@@ -773,7 +774,7 @@ struct SidebarMenu: View {
                         isOpen = false
                     }
                 }
-
+            
             VStack(alignment: .leading, spacing: 0) {
                 HStack(spacing: 12) {
                     Image(selectedSidebarIconAssetName)
@@ -786,7 +787,7 @@ struct SidebarMenu: View {
                                 .stroke(Color.white.opacity(colorScheme == .dark ? 0.18 : 0.42), lineWidth: 1)
                         )
                         .shadow(color: .black.opacity(colorScheme == .dark ? 0.18 : 0.08), radius: 8, x: 0, y: 4)
-
+                    
                     Text(isSettingsMode ? "MAINTENANCE" : "DORMINET ADMIN")
                         .font(.custom("SukhumvitSet-Bold", size: 14))
                         .tracking(1.5)
@@ -795,14 +796,14 @@ struct SidebarMenu: View {
                 .padding(.top, 60)
                 .padding(.horizontal, 25)
                 .padding(.bottom, 30)
-
+                
                 Text("MENU")
                     .font(.custom("SukhumvitSet-Bold", size: 11))
                     .foregroundColor(.secondary)
                     .tracking(2)
                     .padding(.horizontal, 25)
                     .padding(.bottom, 10)
-
+                
                 VStack(spacing: 5) {
                     let tabsToShow = DashboardTab.allCases.filter { $0.isSettingsMenu == isSettingsMode }
                     ForEach(tabsToShow) { tab in
@@ -816,17 +817,17 @@ struct SidebarMenu: View {
                 .padding(.horizontal, 15)
                 .padding(.vertical, 15)
                 .frame(width: 280, alignment: .leading)
-
+                
                 Spacer()
-
+                
                 VStack(spacing: 15) {
                     Divider()
                         .background(Color.secondary.opacity(0.3))
-
+                    
                     HStack(spacing: 12) {
                         let displayChar = userName.isEmpty ? "A" : String(userName.prefix(1).uppercased())
                         let displayName = userName.isEmpty ? "Admin" : userName
-
+                        
                         ZStack {
                             let _ = profileImageUpdateToken
                             if let localURL = APIService.shared.getLocalProfileImageURL(adminID: adminID),
@@ -843,7 +844,7 @@ struct SidebarMenu: View {
                                     .overlay(Text(displayChar).font(.custom("SukhumvitSet-Bold", size: 17)).foregroundColor(.white))
                             }
                         }
-
+                        
                         VStack(alignment: .leading, spacing: 2) {
                             Text(LocalizedStringKey(displayName))
                                 .font(.custom("SukhumvitSet-Bold", size: 14))
@@ -853,17 +854,17 @@ struct SidebarMenu: View {
                                 .font(.custom("SukhumvitSet-Medium", size: 10))
                                 .foregroundColor(.secondary)
                         }
-
+                        
                         Spacer()
-
+                        
                         Button(action: {
                             let generator = UIImpactFeedbackGenerator(style: .medium)
                             generator.impactOccurred()
-
+                            
                             withAnimation(.spring(response: 0.5, dampingFraction: 0.6)) {
                                 gearRotation += 90
                             }
-
+                            
                             if userRole == "superadmin" {
                                 withAnimation(.spring(response: 0.4, dampingFraction: 0.75)) {
                                     isSettingsMode.toggle()
@@ -891,7 +892,7 @@ struct SidebarMenu: View {
                                 )
                         }
                         .animation(.spring(response: 0.4, dampingFraction: 0.7), value: isSettingsMode)
-
+                        
                         Button(action: {
                             do { try CredentialStore.shared.setSavedAccountsData(nil) }
                             catch { return }
@@ -905,27 +906,27 @@ struct SidebarMenu: View {
                                 .background(Color.orange.opacity(0.1))
                                 .clipShape(Circle())
                         }
-
+                        
                         Button(action: {
                             let generator = UIImpactFeedbackGenerator(style: .heavy)
                             generator.impactOccurred()
-
+                            
                             isOpen = false
-
+                            
                             withAnimation(.easeInOut(duration: 0.4)) {
                                 isLoggingOut = true
                             }
-
+                            
                             APIService.shared.authToken = nil
                             APIService.shared.currentEmail = nil
                             APIService.shared.userRole = nil
-
+                            
                             DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
-
+                                // ปรับเวลาให้เท่ากับของ ContentView (0.8 วิ) จะได้ละลายสลับหน้าแบบพอดีกัน
                                 withAnimation(.easeInOut(duration: 0.8)) {
                                     isLoggedIn = false
                                 }
-
+                                
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
                                     isLoggingOut = false
                                 }
@@ -986,11 +987,11 @@ struct SidebarItem: View {
     @Binding var selectedTab: DashboardTab
     var action: () -> Void
     @Environment(\.colorScheme) var colorScheme
-
+    
     var isActive: Bool {
         selectedTab == tab
     }
-
+    
     var body: some View {
         Button(action: {
             selectedTab = tab
@@ -1018,7 +1019,7 @@ struct SidebarItem: View {
 
 struct LogoutAnimationView: View {
     var isLoggingOut: Bool
-
+    
     let scatteredOffsets: [CGSize] = [
         CGSize(width: -200, height: -250),
         CGSize(width: -100, height: -300),
@@ -1031,7 +1032,7 @@ struct LogoutAnimationView: View {
     ]
     @State private var dotOffsets: [CGSize]
     @State private var dotOpacities: [Double] = Array(repeating: 0.0, count: 8)
-
+    
     let scatteredOffsets2: [CGSize] = [
         CGSize(width: 250, height: -200),
         CGSize(width: 200, height: 50),
@@ -1039,15 +1040,15 @@ struct LogoutAnimationView: View {
     ]
     @State private var dotOffsets2: [CGSize]
     @State private var dotOpacities2: [Double] = Array(repeating: 0.0, count: 3)
-
+    
     @State private var outlineProgress: CGFloat = 0.0
-
+    
     init(isLoggingOut: Bool) {
         self.isLoggingOut = isLoggingOut
         _dotOffsets = State(initialValue: scatteredOffsets)
         _dotOffsets2 = State(initialValue: scatteredOffsets2)
     }
-
+    
     var body: some View {
         ZStack(alignment: .bottomLeading) {
             LazyVGrid(columns: [GridItem(.fixed(16)), GridItem(.fixed(16))], spacing: 10) {
@@ -1061,7 +1062,7 @@ struct LogoutAnimationView: View {
             }
             .frame(width: 38, height: 86)
             .offset(x: 7, y: -7)
-
+            
             LazyVGrid(columns: [GridItem(.fixed(16))], spacing: 10) {
                 ForEach(0..<3, id: \.self) { index in
                     RoundedRectangle(cornerRadius: 3)
@@ -1073,7 +1074,7 @@ struct LogoutAnimationView: View {
             }
             .frame(width: 14, height: 62)
             .offset(x: 65, y: -7)
-
+            
             TwinBuildingsOutline()
                 .trim(from: 0, to: outlineProgress)
                 .stroke(Color.indigo, style: StrokeStyle(lineWidth: 4, lineCap: .round, lineJoin: .round))
@@ -1084,33 +1085,33 @@ struct LogoutAnimationView: View {
                 withAnimation(.easeInOut(duration: 0.8)) {
                     outlineProgress = 1.0
                 }
-
+                
                 for i in 0..<8 {
                     withAnimation(.spring(response: 0.6, dampingFraction: 0.7).delay(Double(i) * 0.05 + 0.3)) {
                         dotOffsets[i] = .zero
                         dotOpacities[i] = 1.0
                     }
                 }
-
+                
                 for i in 0..<3 {
                     withAnimation(.spring(response: 0.6, dampingFraction: 0.7).delay(Double(i) * 0.07 + 0.4)) {
                         dotOffsets2[i] = .zero
                         dotOpacities2[i] = 1.0
                     }
                 }
-
+                
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.6) {
                     withAnimation(.easeInOut(duration: 0.8)) {
                         outlineProgress = 0.0
                     }
-
+                    
                     for i in 0..<8 {
                         withAnimation(.spring(response: 0.8, dampingFraction: 0.8).delay(Double(7 - i) * 0.05)) {
                             dotOffsets[i] = scatteredOffsets[i]
                             dotOpacities[i] = 0.0
                         }
                     }
-
+                    
                     for i in 0..<3 {
                         withAnimation(.spring(response: 0.8, dampingFraction: 0.8).delay(Double(2 - i) * 0.07)) {
                             dotOffsets2[i] = scatteredOffsets2[i]

@@ -1,7 +1,11 @@
 import Foundation
 import SwiftData
 
-
+/// An append-only record of money received for an issued bill.
+///
+/// `Payment.paidAmount` remains as a compatibility balance while older app
+/// versions exist. New code mirrors every increase into this ledger so a later
+/// migration can stop treating one mutable number as the accounting history.
 @Model
 final class PaymentTransaction: Identifiable {
     @Attribute(.unique) var id: UUID = UUID()

@@ -15,7 +15,7 @@ enum PaymentAmounts {
         String(format: "%.2f", locale: Locale(identifier: "en_US_POSIX"), value)
     }
 
-
+    // Old bills may include an unlabelled deposit or adjustment. Preserve it, never infer its purpose.
     static func unallocated(in payment: Payment) -> Double {
         sum([payment.amount, -payment.rentFee, -payment.waterFee, -payment.electricFee,
              -payment.commonFee, -payment.lateFee, -payment.applianceFee, -payment.depositFee])

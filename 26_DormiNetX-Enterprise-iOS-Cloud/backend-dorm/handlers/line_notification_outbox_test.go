@@ -110,7 +110,9 @@ func TestInitializeLineIntegrationRecoversClaimedNotification(t *testing.T) {
 	}
 }
 
-
+// TestDuplicateNotificationFromTwoPathsIsPreventedByEventKey จำลอง scenario ที่เกิด bug:
+// REST API path และ snapshot path ส่ง event_key เดียวกันสำหรับสถานะเดียวกัน
+// outbox ต้องเก็บแค่ 1 row และส่งแค่ครั้งเดียว
 func TestDuplicateNotificationFromTwoPathsIsPreventedByEventKey(t *testing.T) {
 	db, err := sql.Open("sqlite3", ":memory:")
 	if err != nil {
@@ -120,7 +122,8 @@ func TestDuplicateNotificationFromTwoPathsIsPreventedByEventKey(t *testing.T) {
 	db.Exec(`CREATE TABLE admins (id INTEGER PRIMARY KEY, promptpay_id TEXT)`)
 	InitializeLineIntegration(db)
 
-
+	// event_key เดิม: สร้างจาก maintenance ID + status + last_updated
+	// ทั้ง 2 path ควรใช้ key เดียวกันถ้าเป็น event เดียวกัน
 	sharedEventKey := "maintenance:1:ext-abc:2026-09-18T04:49:00Z:กำลังติดต่อช่าง"
 	notification := maintenanceStatusNotification{
 		EventKey:      sharedEventKey,
@@ -132,11 +135,11 @@ func TestDuplicateNotificationFromTwoPathsIsPreventedByEventKey(t *testing.T) {
 		LastUpdated:   "2026-09-18T04:49:00Z",
 	}
 
-
+	// Path A (snapshot): enqueue ครั้งแรก
 	if err := EnqueueMaintenanceStatusNotification(db, 1, notification); err != nil {
 		t.Fatalf("first enqueue failed: %v", err)
 	}
-
+	// Path B (snapshot retry หรือ race): enqueue ซ้ำด้วย event_key เดิม
 	if err := EnqueueMaintenanceStatusNotification(db, 1, notification); err != nil {
 		t.Fatalf("second enqueue failed: %v", err)
 	}
@@ -149,7 +152,7 @@ func TestDuplicateNotificationFromTwoPathsIsPreventedByEventKey(t *testing.T) {
 		t.Fatalf("outbox has %d rows for same event_key, want 1 — duplicate notification would be sent", count)
 	}
 
-
+	// ตรวจว่า worker ส่งแค่ครั้งเดียว
 	sendCount := 0
 	processPendingLineNotifications(db, func(n maintenanceStatusNotification) error {
 		sendCount++
@@ -163,7 +166,8 @@ func TestDuplicateNotificationFromTwoPathsIsPreventedByEventKey(t *testing.T) {
 	}
 }
 
-
+// TestDifferentStatusTransitionGeneratesSeparateOutboxEntries ตรวจว่าสถานะต่างกัน
+// (คนละ event) สร้าง outbox entry แยกกันได้ถูกต้อง
 func TestDifferentStatusTransitionGeneratesSeparateOutboxEntries(t *testing.T) {
 	db, err := sql.Open("sqlite3", ":memory:")
 	if err != nil {
@@ -180,7 +184,7 @@ func TestDifferentStatusTransitionGeneratesSeparateOutboxEntries(t *testing.T) {
 		Issue:         "น้ำรั่ว",
 	}
 
-
+	// event 1: กำลังติดต่อช่าง
 	n1 := base
 	n1.EventKey = "maintenance:1:ext-def:2026-09-18T05:00:00Z:กำลังติดต่อช่าง"
 	n1.Status = "กำลังติดต่อช่าง"
@@ -189,7 +193,7 @@ func TestDifferentStatusTransitionGeneratesSeparateOutboxEntries(t *testing.T) {
 		t.Fatal(err)
 	}
 
-
+	// event 2: รออนุมัติค่าใช้จ่าย (สถานะต่างกัน → event_key ต่างกัน)
 	n2 := base
 	n2.EventKey = "maintenance:1:ext-def:2026-09-18T05:05:00Z:รออนุมัติค่าใช้จ่าย"
 	n2.Status = "รออนุมัติค่าใช้จ่าย"

@@ -16,13 +16,13 @@ enum DashboardTab: String, CaseIterable, Identifiable {
     case appBackground = "พื้นหลังแอพ"
     case backup = "สำรองและกู้คืนข้อมูล"
     case systemLogs = "บันทึกระบบ"
-
+    
     var id: String { self.rawValue }
-
+    
     var identifier: String {
         return String(describing: self)
     }
-
+    
     var icon: String {
         switch self {
         case .overview: return "square.grid.2x2.fill"
@@ -42,7 +42,7 @@ enum DashboardTab: String, CaseIterable, Identifiable {
         case .systemLogs: return "doc.text.magnifyingglass"
         }
     }
-
+    
     var isSettingsMenu: Bool {
         switch self {
         case .adminManagement, .securityToken, .language, .appIcon, .appBackground, .backup, .systemLogs:

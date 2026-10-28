@@ -182,7 +182,7 @@ func SetupSyncRoutes(db *sql.DB) {
 			return
 		}
 
-
+		// Check for existing username
 		var count int
 		err := db.QueryRow("SELECT COUNT(*) FROM admins WHERE username = ?", req.Name).Scan(&count)
 		if err == nil && count > 0 {
@@ -201,14 +201,14 @@ func SetupSyncRoutes(db *sql.DB) {
 			return
 		}
 
-
+		// Check for Authorization header to determine if it's an internal staff creation
 		authHeader := r.Header.Get("Authorization")
 		var isInternalCreation bool
 		var superadminEmail string
 		var superadminID int
 
 		if authHeader != "" {
-
+			// Internal staff creation!
 			parts := strings.Fields(authHeader)
 			if len(parts) == 2 && parts[0] == "Bearer" {
 				claims, currentRole, authErr := authenticateSession(db, parts[1])
@@ -227,10 +227,10 @@ func SetupSyncRoutes(db *sql.DB) {
 		var backupEmail string
 
 		if isInternalCreation {
-
+			// Option A (Staff): Primary email is superadmin's email, backup email is staff's email
 			roleToInsert = req.Role
 			if roleToInsert == "" {
-				roleToInsert = "admin"
+				roleToInsert = "admin" // Default staff role
 			}
 			roleToInsert = strings.ToLower(strings.TrimSpace(roleToInsert))
 			if !validStaffRole(roleToInsert) {
@@ -238,9 +238,9 @@ func SetupSyncRoutes(db *sql.DB) {
 				return
 			}
 			primaryEmail = superadminEmail
-			backupEmail = req.Email
+			backupEmail = req.Email // The email sent from AddAdminSheet
 
-
+			// Check: staff email must not be the same as superadmin's email
 			if strings.EqualFold(req.Email, superadminEmail) {
 				w.Header().Set("Content-Type", "application/json")
 				w.WriteHeader(http.StatusConflict)
@@ -251,7 +251,7 @@ func SetupSyncRoutes(db *sql.DB) {
 				return
 			}
 
-
+			// Check: staff email must not already be used by another admin
 			var backupExists bool
 			db.QueryRow("SELECT EXISTS(SELECT 1 FROM admins WHERE backup_email = ? OR email = ?)", req.Email, req.Email).Scan(&backupExists)
 			if backupExists {
@@ -264,12 +264,12 @@ func SetupSyncRoutes(db *sql.DB) {
 				return
 			}
 		} else {
-
+			// Option A (Public Signup): New Superadmin and New Dorm
 			roleToInsert = "superadmin"
 			primaryEmail = strings.ToLower(strings.TrimSpace(req.Email))
 			backupEmail = ""
 
-
+			// Ensure primary email doesn't already exist for any admin
 			var emailExists bool
 			db.QueryRow("SELECT EXISTS(SELECT 1 FROM admins WHERE email = ? OR backup_email = ?)", primaryEmail, primaryEmail).Scan(&emailExists)
 			if emailExists {
@@ -298,7 +298,7 @@ func SetupSyncRoutes(db *sql.DB) {
 		adminID, _ := result.LastInsertId()
 
 		if !isInternalCreation {
-
+			// Auto-initialize tenant DB ONLY for new superadmins
 			_, _ = GetTenantDB(int(adminID))
 		}
 
@@ -376,7 +376,7 @@ func SetupSyncRoutes(db *sql.DB) {
 		})
 	})
 
-
+	// ตัวอย่าง API สำหรับให้ Swift App ดึงข้อมูลล่าสุดไปอัพเดทในเครื่อง
 	latestHandler := func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodGet {
 			http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)

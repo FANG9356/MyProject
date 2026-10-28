@@ -38,7 +38,7 @@ func SetupPaymentRoutes(db *sql.DB) {
 				http.Error(w, "จำนวนเงินห้ามติดลบ", http.StatusBadRequest)
 				return
 			}
-			err := r.ParseMultipartForm(10 << 20)
+			err := r.ParseMultipartForm(10 << 20) // จำกัด 10MB
 			if err != nil && err != http.ErrNotMultipart {
 				http.Error(w, "ไฟล์ขนาดใหญ่เกินไป หรือข้อมูลไม่ถูกต้อง", http.StatusBadRequest)
 				return
@@ -61,7 +61,7 @@ func SetupPaymentRoutes(db *sql.DB) {
 			}
 
 			if queryErr == nil {
-
+				// Record exists! Let's append the slips to it and update.
 				var savedFiles []string
 				if existingSlipArrayStr != "" && existingSlipArrayStr != "[]" {
 					json.Unmarshal([]byte(existingSlipArrayStr), &savedFiles)
@@ -116,7 +116,7 @@ func SetupPaymentRoutes(db *sql.DB) {
 				return
 			}
 
-
+			// รองรับการอัปโหลดไฟล์พร้อมกันหลายไฟล์จากคีย์ "slips" หรือ "slip"
 			var savedFiles []string
 			var firstFileName string
 
@@ -152,9 +152,9 @@ func SetupPaymentRoutes(db *sql.DB) {
 				slipPathArrayStr = "[]"
 			}
 
-
-			_, err = db.Exec(`INSERT INTO payments
-				(user_id, room_number, rent_fee, water_fee, electric_fee, common_fee, late_fee, appliance_fee, amount, month, payment_date, method, slip_path, water_meter_prev, water_meter_curr, electric_meter_prev, electric_meter_curr, payment_plan, installment_phase, due_date, payment_status, slip_path_array, paid_amount)
+			// บันทึกข้อมูลและสลิปทั้งหมด
+			_, err = db.Exec(`INSERT INTO payments 
+				(user_id, room_number, rent_fee, water_fee, electric_fee, common_fee, late_fee, appliance_fee, amount, month, payment_date, method, slip_path, water_meter_prev, water_meter_curr, electric_meter_prev, electric_meter_curr, payment_plan, installment_phase, due_date, payment_status, slip_path_array, paid_amount) 
 				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
 				userID, r.FormValue("room_number"), r.FormValue("rent_fee"), r.FormValue("water_fee"), r.FormValue("electric_fee"), r.FormValue("common_fee"), r.FormValue("late_fee"), r.FormValue("appliance_fee"), r.FormValue("amount"), month, r.FormValue("date"), r.FormValue("method"), firstFileName, r.FormValue("water_meter_prev"), r.FormValue("water_meter_curr"), r.FormValue("electric_meter_prev"), r.FormValue("electric_meter_curr"), r.FormValue("payment_plan"), r.FormValue("installment_phase"), r.FormValue("due_date"), r.FormValue("payment_status"), slipPathArrayStr, r.FormValue("paid_amount"))
 
@@ -171,7 +171,7 @@ func SetupPaymentRoutes(db *sql.DB) {
 			return
 		}
 		if r.Method == "GET" {
-
+			// ดึงเลขมิเตอร์กลับไปแสดงผล
 			rows, err := db.Query("SELECT payment_id, user_id, room_number, COALESCE(CAST(NULLIF(rent_fee,'') AS REAL),0), COALESCE(CAST(NULLIF(water_fee,'') AS REAL),0), COALESCE(CAST(NULLIF(electric_fee,'') AS REAL),0), COALESCE(CAST(NULLIF(common_fee,'') AS REAL),0), COALESCE(CAST(NULLIF(late_fee,'') AS REAL),0), COALESCE(CAST(NULLIF(appliance_fee,'') AS REAL),0), COALESCE(CAST(NULLIF(amount,'') AS REAL),0), month, payment_date, method, slip_path, COALESCE(CAST(NULLIF(water_meter_prev,'') AS REAL),0), COALESCE(CAST(NULLIF(water_meter_curr,'') AS REAL),0), COALESCE(CAST(NULLIF(electric_meter_prev,'') AS REAL),0), COALESCE(CAST(NULLIF(electric_meter_curr,'') AS REAL),0), COALESCE(payment_plan,''), CAST(COALESCE(NULLIF(installment_phase,''),0) AS INTEGER), COALESCE(due_date,''), COALESCE(payment_status,'pending'), COALESCE(slip_path_array,''), COALESCE(CAST(NULLIF(paid_amount,'') AS REAL),0) FROM payments ORDER BY payment_id DESC")
 			if err != nil {
 				http.Error(w, "Database Error", http.StatusInternalServerError)
@@ -218,7 +218,7 @@ func SetupPaymentRoutes(db *sql.DB) {
 				return
 			}
 
-
+			// Get existing slips
 			var existingSlipArrayStr string
 			err = db.QueryRow("SELECT COALESCE(slip_path_array,'[]') FROM payments WHERE payment_id = ?", paymentID).Scan(&existingSlipArrayStr)
 			if err != nil {
@@ -268,7 +268,7 @@ func SetupPaymentRoutes(db *sql.DB) {
 				slipPathArrayStr = "[]"
 			}
 
-
+			// Update data
 			_, err = db.Exec(`UPDATE payments SET
 				rent_fee=?, water_fee=?, electric_fee=?, common_fee=?, late_fee=?, appliance_fee=?, amount=?, payment_date=?, method=?, slip_path=?, water_meter_prev=?, water_meter_curr=?, electric_meter_prev=?, electric_meter_curr=?, slip_path_array=?, payment_status=?, paid_amount=?
 				WHERE payment_id=?`,
@@ -289,7 +289,7 @@ func SetupPaymentRoutes(db *sql.DB) {
 					if slipPathStr != "" {
 						baseURL := GetBaseURLFromWebhook()
 						if baseURL == "" {
-							baseURL = "https://" + r.Host
+							baseURL = "https://" + r.Host // Fallback
 						}
 						imageURL, _ = SignedLineMediaURL(baseURL, slipPathStr, time.Now())
 					}
@@ -307,7 +307,7 @@ func SetupPaymentRoutes(db *sql.DB) {
 				return
 			}
 
-
+			// ถ้ามี filename คือลบไฟล์รูปภาพสลิปอย่างเดียว
 			if filename != "" {
 				var slipPathArrayStr string
 				err := db.QueryRow("SELECT COALESCE(slip_path_array,'[]') FROM payments WHERE payment_id = ?", paymentID).Scan(&slipPathArrayStr)
@@ -345,11 +345,12 @@ func SetupPaymentRoutes(db *sql.DB) {
 				return
 			}
 
-
+			// ถ้าไม่มี filename คือลบบิลการเงินทั้งหมด
 			var roomNumber, status string
 			var amount float64
 			db.QueryRow("SELECT room_number, amount, COALESCE(payment_status, 'pending') FROM payments WHERE payment_id = ?", paymentID).Scan(&roomNumber, &amount, &status)
 
+			// Allow deleting paid bills based on user request
 
 			_, err := db.Exec("DELETE FROM payments WHERE payment_id = ?", paymentID)
 			if err != nil {
@@ -387,7 +388,7 @@ func SetupPaymentRoutes(db *sql.DB) {
 					if slipPathStr != "" {
 						baseURL := GetBaseURLFromWebhook()
 						if baseURL == "" {
-							baseURL = "https://" + r.Host
+							baseURL = "https://" + r.Host // Fallback
 						}
 						imageURL, _ = SignedLineMediaURL(baseURL, slipPathStr, time.Now())
 					}
@@ -397,7 +398,7 @@ func SetupPaymentRoutes(db *sql.DB) {
 				}
 				db.Exec("INSERT INTO system_logs (action_type, details, timestamp) VALUES ('Confirm Payment', 'ยืนยันรับชำระเงินบิล ' || ?, ?)", payload.PaymentID, time.Now().Format("2006-01-02 15:04:05"))
 			} else if payload.PaymentStatus == "rejected" {
-
+				// Change status back to pending, remove slip_path
 				_, err := db.Exec("UPDATE payments SET payment_status = 'pending', slip_path = NULL WHERE payment_id = ?", payload.PaymentID)
 				if err != nil {
 					http.Error(w, "Update failed", http.StatusInternalServerError)
@@ -469,7 +470,7 @@ func SetupPaymentRoutes(db *sql.DB) {
 			http.Error(w, "Payment not found", http.StatusNotFound)
 			return
 		}
-
+		
 		if currentStatus == "voided" {
 			tx.Rollback()
 			http.Error(w, "Payment already voided", http.StatusBadRequest)
@@ -483,10 +484,10 @@ func SetupPaymentRoutes(db *sql.DB) {
 			return
 		}
 
-
+		// Audit Log
 		var adminName string
 		_ = db.QueryRow("SELECT COALESCE(username, 'unknown') FROM admins WHERE id = ?", adminID).Scan(&adminName)
-
+		
 		_, err = tx.Exec("INSERT INTO financial_audits (payment_id, action_type, actor, reason, previous_amount, new_amount, previous_status, new_status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", payload.PaymentID, "VOID", adminName, payload.Reason, currentAmount, currentAmount, currentStatus, "voided", time.Now().Format("2006-01-02 15:04:05"))
 		if err != nil {
 			tx.Rollback()
@@ -539,7 +540,7 @@ func SetupPaymentRoutes(db *sql.DB) {
 			http.Error(w, "Payment not found", http.StatusNotFound)
 			return
 		}
-
+		
 		if currentStatus != "paid" {
 			tx.Rollback()
 			http.Error(w, "Only paid bills can be refunded", http.StatusBadRequest)
@@ -553,10 +554,10 @@ func SetupPaymentRoutes(db *sql.DB) {
 			return
 		}
 
-
+		// Audit Log
 		var adminName string
 		_ = db.QueryRow("SELECT COALESCE(username, 'unknown') FROM admins WHERE id = ?", adminID).Scan(&adminName)
-
+		
 		_, err = tx.Exec("INSERT INTO financial_audits (payment_id, action_type, actor, reason, previous_amount, new_amount, previous_status, new_status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", payload.PaymentID, "REFUND", adminName, payload.Reason, currentAmount, currentAmount, currentStatus, "refunded", time.Now().Format("2006-01-02 15:04:05"))
 		if err != nil {
 			tx.Rollback()
@@ -613,7 +614,7 @@ func SetupPaymentRoutes(db *sql.DB) {
 			http.Error(w, "Payment not found", http.StatusNotFound)
 			return
 		}
-
+		
 		if currentStatus == "paid" || currentStatus == "voided" || currentStatus == "refunded" {
 			tx.Rollback()
 			http.Error(w, "Cannot adjust paid, voided, or refunded bills", http.StatusBadRequest)
@@ -627,10 +628,10 @@ func SetupPaymentRoutes(db *sql.DB) {
 			return
 		}
 
-
+		// Audit Log
 		var adminName string
 		_ = db.QueryRow("SELECT COALESCE(username, 'unknown') FROM admins WHERE id = ?", adminID).Scan(&adminName)
-
+		
 		_, err = tx.Exec("INSERT INTO financial_audits (payment_id, action_type, actor, reason, previous_amount, new_amount, previous_status, new_status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", payload.PaymentID, "ADJUST", adminName, payload.Reason, currentAmount, payload.NewAmount, currentStatus, currentStatus, time.Now().Format("2006-01-02 15:04:05"))
 		if err != nil {
 			tx.Rollback()

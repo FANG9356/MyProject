@@ -80,7 +80,7 @@ func HandlePasswordReset(db *sql.DB) http.HandlerFunc {
 			return
 		}
 		defer tx.Rollback()
-
+		// Consume the exact OTP in the same transaction as the password update.
 		result, err := tx.Exec("DELETE FROM password_resets WHERE email = ? AND token = ? AND expires_at = ?", req.Email, req.OTP, expires)
 		if err != nil {
 			http.Error(w, `{"error":"บันทึกรหัสผ่านไม่สำเร็จ"}`, http.StatusInternalServerError)
@@ -101,8 +101,9 @@ func HandlePasswordReset(db *sql.DB) http.HandlerFunc {
 			http.Error(w, `{"error":"ไม่พบบัญชีที่ต้องการเปลี่ยนรหัสผ่าน"}`, http.StatusUnauthorized)
 			return
 		}
-
-
+		// Password reset is an account-recovery boundary. Revoke every
+		// previously issued session in the same transaction so a token copied
+		// from another device cannot remain valid after the password changes.
 		if _, err = tx.Exec("DELETE FROM sessions WHERE admin_id IN (SELECT id FROM admins WHERE email = ?)", req.Email); err != nil {
 			http.Error(w, `{"error":"บันทึกรหัสผ่านไม่สำเร็จ"}`, http.StatusInternalServerError)
 			return
@@ -111,8 +112,8 @@ func HandlePasswordReset(db *sql.DB) http.HandlerFunc {
 			http.Error(w, `{"error":"บันทึกรหัสผ่านไม่สำเร็จ"}`, http.StatusInternalServerError)
 			return
 		}
-
-
+		// Password and OTP consumption are already committed. Cleanup is
+		// best-effort so a transient cleanup error cannot report a false failure.
 		_ = clearOTPAttempts(db, req.Email)
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(map[string]string{"message": "รีเซ็ตรหัสผ่านสำเร็จ กรุณาเข้าสู่ระบบด้วยรหัสใหม่"})

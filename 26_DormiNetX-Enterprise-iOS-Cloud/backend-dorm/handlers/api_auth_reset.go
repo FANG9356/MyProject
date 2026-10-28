@@ -31,7 +31,8 @@ func ensureAuthRateLimitTable(db *sql.DB) error {
 	return err
 }
 
-
+// recordAuthRateLimit uses a single SQLite upsert so limits survive restarts
+// and are shared by every process using the same master database.
 func recordAuthRateLimit(db *sql.DB, scope, identifier string, window time.Duration) (int, error) {
 	if err := ensureAuthRateLimitTable(db); err != nil {
 		return 0, err
@@ -76,7 +77,7 @@ func clearOTPAttempts(db *sql.DB, email string) error {
 	return err
 }
 
-
+// generateOTP creates a random 6-digit string
 func generateOTP() (string, error) {
 	max := big.NewInt(1000000)
 	n, err := rand.Int(rand.Reader, max)
@@ -86,12 +87,12 @@ func generateOTP() (string, error) {
 	return fmt.Sprintf("%06d", n.Int64()), nil
 }
 
-
+// sendEmailOTP sends an email using Resend API
 func sendEmailOTP(toEmail string, otp string, refCode string) error {
 	apiKey := os.Getenv("RESEND_API_KEY")
 	if apiKey == "" {
 		if os.Getenv("GO_ENV") == "test" || strings.HasSuffix(os.Args[0], ".test") {
-			return nil
+			return nil // Mock email sending in test environment
 		}
 		return fmt.Errorf("RESEND_API_KEY is not set in .env")
 	}
@@ -115,37 +116,37 @@ func sendEmailOTP(toEmail string, otp string, refCode string) error {
 			<style>
 				body { margin: 0; padding: 0; background-color: #f4f5f7; font-family: 'Inter', -apple-system, sans-serif; color: #111827; -webkit-text-size-adjust: 100%%; }
 				table { border-collapse: collapse; width: 100%%; }
-
+				
 				.wrapper { padding: 40px 20px; }
 				.card { max-width: 560px; margin: 0 auto; background-color: #ffffff; border: 1px solid #e5e7eb; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); }
 				.header { padding: 32px 40px; border-bottom: 1px solid #e5e7eb; text-align: center; }
 				.content { padding: 40px; }
-
+				
 				h1, h2, h3, p { margin: 0; }
 				.brand { font-size: 26px; font-weight: 700; color: #111827; letter-spacing: -0.5px; }
 				.brand span { color: #4f46e5; }
-
+				
 				.greeting { font-size: 18px; font-weight: 700; color: #111827; margin-bottom: 16px; }
 				.message { font-size: 15px; color: #4b5563; line-height: 1.6; margin-bottom: 32px; }
-
+				
 				.otp-container { background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 32px; text-align: center; margin-bottom: 32px; }
 				.otp-label { font-size: 13px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
 				.otp-number { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 42px; font-weight: 700; color: #4f46e5; letter-spacing: 12px; margin-right: -12px; }
 				.otp-warning { margin-top: 16px; font-size: 13px; color: #4b5563; }
-
+				
 				.section-title { font-size: 14px; font-weight: 700; color: #111827; margin-bottom: 16px; border-left: 3px solid #4f46e5; padding-left: 10px; }
-
+				
 				.details-table { background-color: #ffffff; border-radius: 6px; margin-bottom: 32px; border: 1px solid #e5e7eb; }
 				.details-table td { padding: 14px 16px; border-bottom: 1px solid #e5e7eb; font-size: 14px; line-height: 1.4; }
 				.details-table tr:last-child td { border-bottom: none; }
 				.key { color: #6b7280; width: 35%%; font-weight: 500; }
 				.value { color: #111827; font-weight: 600; text-align: right; }
-
+				
 				.tips-box { background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px; padding: 20px; }
 				.tip-title { font-size: 13px; font-weight: 700; color: #111827; margin-bottom: 6px; }
 				.tip-desc { font-size: 13px; color: #6b7280; line-height: 1.5; margin-bottom: 16px; }
 				.tip-desc:last-child { margin-bottom: 0; }
-
+				
 				.footer { background-color: #ffffff; padding: 32px 40px; text-align: center; border-top: 1px solid #e5e7eb; border-radius: 0 0 8px 8px; }
 				.footer-links { margin-bottom: 16px; }
 				.footer-links a { color: #4f46e5; text-decoration: none; font-size: 13px; font-weight: 500; margin: 0 10px; display: inline-block; white-space: nowrap; }
@@ -157,26 +158,26 @@ func sendEmailOTP(toEmail string, otp string, refCode string) error {
 					.header { border-bottom-color: #2a2e37 !important; }
 					.brand { color: #f9fafb !important; }
 					.brand span { color: #818cf8 !important; }
-
+					
 					.greeting { color: #f9fafb !important; }
 					.message { color: #9ca3af !important; }
-
+					
 					.otp-container { background-color: #14161b !important; border-color: #2a2e37 !important; }
 					.otp-label { color: #6b7280 !important; }
 					.otp-number { color: #818cf8 !important; }
 					.otp-warning { color: #9ca3af !important; }
-
+					
 					.section-title { color: #f9fafb !important; border-left-color: #818cf8 !important; }
-
+					
 					.details-table { background-color: #14161b !important; border-color: #2a2e37 !important; }
 					.details-table td { border-bottom-color: #2a2e37 !important; }
 					.key { color: #9ca3af !important; }
 					.value { color: #f9fafb !important; }
-
+					
 					.tips-box { background-color: #14161b !important; border-color: #2a2e37 !important; }
 					.tip-title { color: #f9fafb !important; }
 					.tip-desc { color: #9ca3af !important; }
-
+					
 					.footer { background-color: #1a1d24 !important; border-top-color: #2a2e37 !important; }
 					.footer-links a { color: #818cf8 !important; }
 					.footer-text { color: #6b7280 !important; }
@@ -194,7 +195,7 @@ func sendEmailOTP(toEmail string, otp string, refCode string) error {
 									<div class="brand">Dormi<span>Net</span></div>
 								</td>
 							</tr>
-
+							
 							<!-- Content -->
 							<tr>
 								<td class="content">
@@ -236,14 +237,14 @@ func sendEmailOTP(toEmail string, otp string, refCode string) error {
 									<div class="tips-box">
 										<div class="tip-title">หากท่านไม่ได้ทำรายการนี้</div>
 										<div class="tip-desc">โปรดเพิกเฉยต่ออีเมลฉบับนี้ บัญชีของท่านยังคงปลอดภัยตราบใดที่ไม่มีผู้ใดทราบรหัส OTP ห้ามเปิดเผยรหัสนี้แก่บุคคลอื่นโดยเด็ดขาด รวมถึงเจ้าหน้าที่ของ DormiNet</div>
-
+										
 										<div class="tip-title">การตั้งรหัสผ่านใหม่</div>
 										<div class="tip-desc">รหัสผ่านควรมีความยาวอย่างน้อย 8 ตัวอักษร ประกอบด้วยตัวอักษรพิมพ์เล็ก พิมพ์ใหญ่ และตัวเลข ไม่ควรใช้ข้อมูลส่วนตัวที่คาดเดาได้ง่าย</div>
 									</div>
 
 								</td>
 							</tr>
-
+							
 							<!-- Footer -->
 							<tr>
 								<td class="footer">
@@ -323,20 +324,20 @@ func HandleForgotPassword(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-
+		// ตอบกลับข้อความเดียวกันทุกกรณี เพื่อป้องกัน User Enumeration
 		successMsg := "หากอีเมลนี้อยู่ในระบบ คุณจะได้รับรหัส OTP ภายใน 5 นาที"
 
-
+		// Generate RefCode here so it can be returned
 		now := time.Now().In(time.FixedZone("ICT", 7*3600))
 		b := make([]byte, 2)
 		rand.Read(b)
 		refCode := fmt.Sprintf("REQ-%s-%X", now.Format("20060102"), b)
 
-
+		// Check if email exists in admins table
 		var id int
 		err = db.QueryRow("SELECT id FROM admins WHERE email = ?", req.Email).Scan(&id)
 		if err != nil {
-
+			// Email not found — but respond with same message to prevent enumeration
 			w.Header().Set("Content-Type", "application/json")
 			json.NewEncoder(w).Encode(map[string]string{"message": successMsg, "ref_code": refCode})
 			return
@@ -349,17 +350,18 @@ func HandleForgotPassword(db *sql.DB) http.HandlerFunc {
 		}
 		expiresAt := time.Now().Add(15 * time.Minute).Format(time.RFC3339)
 
-
+		// The unique email index plus one statement guarantees that concurrent
+		// requests leave exactly one active OTP for the account.
 		_, err = db.Exec("INSERT OR REPLACE INTO password_resets (email, token, expires_at) VALUES (?, ?, ?)", req.Email, otp, expiresAt)
 		if err != nil {
 			http.Error(w, `{"error": "ระบบขัดข้อง กรุณาลองใหม่"}`, http.StatusInternalServerError)
 			return
 		}
 
-
+		// Send Email
 		if err := sendEmailOTP(req.Email, otp, refCode); err != nil {
 			fmt.Println("Error sending email:", err)
-
+			// ยังคงตอบกลับ success เพื่อไม่ให้รู้ว่าส่งไม่ได้
 		}
 
 		w.Header().Set("Content-Type", "application/json")
@@ -393,7 +395,7 @@ func HandleVerifyOTP(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-
+		// Rate limit check
 		locked, err := authRateLimitLocked(db, "otp_failure", req.Email, maxOTPAttempts)
 		if err != nil {
 			http.Error(w, `{"error":"ระบบขัดข้อง กรุณาลองใหม่"}`, http.StatusInternalServerError)
@@ -404,7 +406,7 @@ func HandleVerifyOTP(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-
+		// Verify OTP
 		var expiresAtStr string
 		err = db.QueryRow("SELECT expires_at FROM password_resets WHERE email = ? AND token = ?", req.Email, req.OTP).Scan(&expiresAtStr)
 		if err != nil {

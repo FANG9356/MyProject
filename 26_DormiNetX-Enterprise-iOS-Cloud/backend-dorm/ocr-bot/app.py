@@ -8,23 +8,23 @@ from PIL import Image
 
 app = Flask(__name__)
 
-
+# Configurable receiver name for verification
 RECEIVER_NAME = os.getenv("RECEIVER_NAME", "ภคพล")
 
 def preprocess_image(image_path):
     img = cv2.imread(image_path)
     if img is None:
         return None
-
+    # Convert to grayscale
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-
-
-    scale_percent = 150
+    
+    # Resize to make text larger for better OCR
+    scale_percent = 150 # percent of original size
     width = int(gray.shape[1] * scale_percent / 100)
     height = int(gray.shape[0] * scale_percent / 100)
     dim = (width, height)
     resized = cv2.resize(gray, dim, interpolation = cv2.INTER_LINEAR)
-
+    
     return resized
 
 @app.route('/verify', methods=['POST'])
@@ -33,10 +33,10 @@ def verify_slip():
     filepath = data.get("filepath")
     expected_amount = data.get("amount")
     expected_receiver = data.get("expected_receiver")
-
+    
     if not filepath or expected_amount is None:
         return jsonify({"valid": False, "reason": "Missing filepath or amount"}), 400
-
+        
     if not os.path.isabs(filepath):
         base_dir = os.getenv("BACKEND_DIR", "../backend-dorm")
         filepath = os.path.join(base_dir, filepath)
@@ -49,28 +49,30 @@ def verify_slip():
         if img is None:
             return jsonify({"valid": False, "reason": "Failed to read image"}), 400
 
-
+        # Run OCR (using Thai + English)
         custom_config = r'--oem 3 --psm 4'
         text = pytesseract.image_to_string(img, lang='tha+eng', config=custom_config)
-
-
+        
+        # Clean up text for easier searching
         clean_text = text.replace(" ", "").replace(",", "")
-
-
+        
+        # 1. Verify Name
         receiver_to_check = expected_receiver if expected_receiver else RECEIVER_NAME
-
-
+        
+        # Use last 4 digits of PromptPay or just standard Name check
+        # Since expected_receiver can be a PromptPay ID, we'll check for it
         if receiver_to_check:
-
+            # Only use last 4 digits of PromptPay ID if it's numeric/phone/nid
             search_term = receiver_to_check[-4:] if receiver_to_check.replace("-", "").isdigit() and len(receiver_to_check) >= 4 else receiver_to_check
             if search_term not in clean_text:
                 return jsonify({"valid": False, "reason": f"Recipient identifier '{search_term}' not found on slip"}), 200
-
-
+            
+        # 2. Verify Amount
         amount_exact = f"{float(expected_amount):.2f}"
         amount_int = f"{int(float(expected_amount))}"
-
-
+        
+        # Use regex to match the amount with boundaries to avoid matching inside transaction IDs (which are alphanumeric)
+        # e.g., prevents matching "60" inside "l60o" or "2560"
         amount_pattern = rf"(?<![\dA-Za-z])({amount_int}|{amount_exact})(?![\dA-Za-z])"
         if not re.search(amount_pattern, clean_text):
             return jsonify({"valid": False, "reason": f"Expected amount {amount_exact} not found on slip"}), 200

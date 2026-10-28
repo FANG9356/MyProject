@@ -137,11 +137,13 @@ func resolveTenantDBFromCode(master *sql.DB, code string) (*sql.DB, int, error) 
 		return nil, 0, fmt.Errorf("กรุณากรอกรหัสหอพัก")
 	}
 
-
+	// Tenant databases are owned by superadmin accounts. Validate against the
+	// master database before opening one so a guessed code cannot create an
+	// empty tenant database on disk.
 	var ownerID int
 	if err := master.QueryRow(`SELECT id FROM admins WHERE dorm_code = ? AND role = 'superadmin'`, code).Scan(&ownerID); err != nil {
 		if err == sql.ErrNoRows {
-
+			// Fallback for legacy numerical ID in case it hasn't migrated or users are still using it during transition
 			accountID, errAtoi := strconv.Atoi(code)
 			if errAtoi == nil {
 				if err := master.QueryRow(`SELECT id FROM admins WHERE id = ? AND role = 'superadmin'`, accountID).Scan(&ownerID); err == nil {
@@ -171,8 +173,9 @@ func HandleLiffRooms(_ *sql.DB) http.HandlerFunc {
 			http.Error(w, `{"error":"Method not allowed"}`, http.StatusMethodNotAllowed)
 			return
 		}
-
-
+		// Keep the route so stale clients receive an explicit response, but never
+		// expose the dorm's room inventory. The current LIFF flow discovers one
+		// exact room only after verifying the resident's phone number.
 		http.Error(w, `{"error":"กรุณากรอกเบอร์โทรศัพท์เพื่อค้นหาห้อง"}`, http.StatusGone)
 	}
 }
@@ -271,7 +274,7 @@ func lookupLinkedResident(master *sql.DB, openTenantDB liffTenantDBOpener, lineU
 	}
 
 	_ = tenantDB.QueryRow(`SELECT COALESCE(rt.price, 0) + COALESCE(u.additional_appliance_fee, 0)
-		FROM users u
+		FROM users u 
 		LEFT JOIN rooms r ON u.room_number = r.room_number
 		LEFT JOIN room_types rt ON r.room_type = rt.name
 		WHERE u.user_id = ?`, userID).Scan(&summary.Billing.ProjectedBill)
@@ -361,8 +364,8 @@ func HandleLiffVerify(master *sql.DB) http.HandlerFunc {
 		if request.RoomNumber == "" {
 			roomNumber, name, err = findLineTenantByPhone(db, request.Phone)
 		} else {
-
-
+			// Keep accepting room_number for older LIFF clients while the current UI
+			// discovers the room from the phone number instead.
 			name, err = verifyLineTenant(db, request.RoomNumber, request.Phone)
 			roomNumber = request.RoomNumber
 		}
@@ -497,8 +500,8 @@ func findLineTenantByPhone(db *sql.DB, inputPhone string) (string, string, error
 		matchedRoom = strings.TrimSpace(roomNumber)
 		matchedName = name
 		if matches > 1 {
-
-
+			// A shared or duplicated phone number must never select a room
+			// implicitly. The resident has to contact the dorm administrator.
 			return "", "", sql.ErrNoRows
 		}
 	}

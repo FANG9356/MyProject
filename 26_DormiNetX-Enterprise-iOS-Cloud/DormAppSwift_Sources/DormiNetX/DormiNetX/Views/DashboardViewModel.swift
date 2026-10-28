@@ -35,8 +35,8 @@ struct APIUser: Codable, Identifiable {
     var additional_appliances: String?
     var additional_appliance_fee: Double?
     var additional_details: String?
-
-
+    
+    // Sync Metadata
     var isDirty: Bool? = false
     var isDeletedLocally: Bool? = false
 
@@ -150,20 +150,20 @@ struct MaintenanceCounts: Equatable {
 @MainActor
 class DashboardViewModel: ObservableObject {
     @Published var stats = APIDashboardStats(total_residents: 0, empty_rooms: 0, income_this_month: 0, billing_cycle_income: 0, pending_bills: 0)
-
+    
     @Published var moveInStats: [MoveInStat] = []
     @Published var financialStats: [FinancialStat] = []
-
+    
     @Published var pendingMaints: Int = 0
     @Published var inProgressMaints: Int = 0
     @Published var completedMaints: Int = 0
-
+    
     @Published var depositThisMonth: Double = 0
-
+    
     @Published var pendingUsers: [APIUser] = []
     @Published var expiringContracts: [APIUser] = []
     @Published var recentLogs: [APILog] = []
-
+    
     @Published var isLoading = true
     @Published var errorMessage: String?
 
@@ -236,8 +236,8 @@ class DashboardViewModel: ObservableObject {
             case "เสร็จสิ้น":
                 completed += 1
             default:
-
-
+                // Includes กำลังดำเนินการ, กำลังติดต่อช่าง, กำลังซ่อม,
+                // รอตรวจสอบชำระเงิน and any future non-final workflow state.
                 inProgress += 1
             }
         }
@@ -268,55 +268,55 @@ class DashboardViewModel: ObservableObject {
             MoveInStat(name: AppDate.thaiShortMonth(month), monthKey: month, newResidents: grouped[month]?.count ?? 0)
         }
     }
-
+    
     func fetchAllData() async {
         isLoading = true
         errorMessage = nil
-
+        
         do {
             async let statsData = APIService.shared.fetchDashboardStats()
             async let usersData = APIService.shared.fetchUsersData()
             async let paymentsData = APIService.shared.fetchPaymentsData()
             async let logsData = APIService.shared.fetchLogsData()
             async let maintenancesData = APIService.shared.fetchMaintenancesData()
-
+            
             let (dStats, dUsers, dPayments, dLogs, dMaints) = try await (statsData, usersData, paymentsData, logsData, maintenancesData)
-
+            
             let decoder = JSONDecoder()
             let parsedStats = try? decoder.decode(APIDashboardStats.self, from: dStats)
             let users = (try? decoder.decode([APIUser].self, from: dUsers)) ?? []
             let payments = (try? decoder.decode([APIPayment].self, from: dPayments)) ?? []
             let logs = (try? decoder.decode([APILog].self, from: dLogs)) ?? []
             let maintenances = (try? decoder.decode([APIMaintenance].self, from: dMaints)) ?? []
-
+            
             if let ps = parsedStats {
                 self.stats = ps
             }
-
-
+            
+            // Maintenance stats
             self.applyMaintenanceCounts(Self.maintenanceCounts(for: maintenances.map(\.status)))
-
+            
             self.recentLogs = Array(logs.prefix(10))
-
-
+            
+            // Process Users & Payments
             let dateFormatter = DateFormatter()
             dateFormatter.locale = Locale(identifier: "en_US_POSIX")
             dateFormatter.calendar = Calendar(identifier: .gregorian)
             dateFormatter.timeZone = TimeZone(identifier: "Asia/Bangkok")
             dateFormatter.dateFormat = "yyyy-MM"
             let currentMonthString = dateFormatter.string(from: Date())
-
+            
             let activeUsers = users.filter { $0.status == "กำลังพักอาศัย" }
-
-
+            
+            // Pending Bills
             let unpaid = activeUsers.filter { u in
                 !payments.contains(where: { p in
                     p.user_id == u.id && BillingCycle.normalizedMonthKey(p.month ?? "") == currentMonthString && p.payment_status == "paid"
                 })
             }
             self.pendingUsers = unpaid.sorted { ($0.room_number ?? "") < ($1.room_number ?? "") }
-
-
+            
+            // Expiring Contracts
             let upcoming = activeUsers.filter { $0.contract_end_date != nil && $0.contract_end_date != "" }
                 .sorted {
                     let d1 = AppDate.date(fromStorageDate: $0.contract_end_date ?? "") ?? Date.distantFuture
@@ -324,46 +324,46 @@ class DashboardViewModel: ObservableObject {
                     return d1 < d2
                 }
             self.expiringContracts = Array(upcoming.prefix(5))
-
-
+            
+            // Monthly Move-in & Deposit
             var monthlyMoveIn: [String: (Int, Double)] = [:]
             var currentDeposit: Double = 0
-
+            
             for u in users {
                 guard let moveIn = u.move_in_date, u.status != "ยกเลิก", u.status != "ย้ายออกแล้ว", moveIn.count >= 7 else { continue }
                 guard let monthKey = BillingCycle.normalizedMonthKey(String(moveIn.prefix(7))) else { continue }
-
+                
                 let dep = u.deposit ?? 0
                 if monthlyMoveIn[monthKey] == nil {
                     monthlyMoveIn[monthKey] = (0, 0)
                 }
                 monthlyMoveIn[monthKey]!.0 += 1
                 monthlyMoveIn[monthKey]!.1 += dep
-
+                
                 if monthKey == currentMonthString {
                     currentDeposit += dep
                 }
             }
             self.depositThisMonth = currentDeposit
-
-
+            
+            // Sort Move-In Stats
             let sortedMoveInKeys = monthlyMoveIn.keys.sorted().suffix(6)
             self.moveInStats = sortedMoveInKeys.map { key in
                 MoveInStat(name: AppDate.thaiShortMonth(key), monthKey: key, newResidents: monthlyMoveIn[key]!.0)
             }
-
-
+            
+            // Financial Trends
             var payStats: [String: (Double, Double)] = [:]
             let cal = Calendar.current
             let now = Date()
-
+            
             for i in (0...5).reversed() {
                 if let pastDate = cal.date(byAdding: .month, value: -i, to: now) {
                     let mKey = dateFormatter.string(from: pastDate)
                     payStats[mKey] = (0, 0)
                 }
             }
-
+            
             for p in payments {
                 let amt = p.amount ?? 0
                 if amt > 0 {
@@ -381,17 +381,17 @@ class DashboardViewModel: ObservableObject {
                     }
                 }
             }
-
+            
             let sortedPayKeys = payStats.keys.sorted().suffix(6)
             self.financialStats = sortedPayKeys.map { key in
                 FinancialStat(month: key, name: AppDate.thaiShortMonth(key), income: payStats[key]!.0, pending: payStats[key]!.1)
             }
-
+            
         } catch {
             print("Dashboard Fetch Error: \(error)")
             self.errorMessage = String(localized: "ไม่สามารถโหลดข้อมูลได้")
         }
-
+        
         self.isLoading = false
     }
 }

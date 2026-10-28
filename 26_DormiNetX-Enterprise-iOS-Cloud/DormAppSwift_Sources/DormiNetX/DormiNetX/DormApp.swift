@@ -2,7 +2,10 @@ import SwiftUI
 import SwiftData
 import UIKit
 
-
+/// Owns the local SwiftData container for the currently authenticated account.
+///
+/// Each account gets a separate persistent store. This keeps local data isolated
+/// even when multiple accounts use the same physical iPhone/iPad.
 enum AccountScopedStore {
     static let schema = Schema([
         DormUser.self,
@@ -43,7 +46,9 @@ enum AccountScopedStore {
         return container
     }
 
-
+    /// A temporary in-memory container is used while the user is logged out.
+    /// It prevents the previous account's persistent context from remaining
+    /// attached to the login screen.
     static func makeGuestContainer() throws -> ModelContainer {
         let configuration = ModelConfiguration(
             schema: schema,
@@ -88,7 +93,8 @@ enum AccountStoreError: LocalizedError {
     }
 }
 
-
+/// Keeps SwiftData attached to the same account as the authentication state.
+/// Existing views can continue using @Query and @Environment(\.modelContext).
 struct AccountScopedRootView: View {
     @AppStorage("isLoggedIn") private var isLoggedIn: Bool = false
     @AppStorage("adminID") private var adminID: Int = 0
@@ -186,14 +192,14 @@ struct AccountScopedRootView: View {
                 loadedStoreKey = "guest"
                 storeInitError = nil
             } catch {
-                print("[ERROR] Failed to create guest SwiftData container: \(error)")
+                print("❌ Failed to create guest SwiftData container: \(error)")
                 storeInitError = error
             }
             return
         }
 
         guard let accountID = Self.resolveAccountID() else {
-            print("[WARN] Logged in but no adminID is available; returning to login")
+            print("⚠️ Logged in but no adminID is available; returning to login")
             resetToGuestStore()
             return
         }
@@ -202,9 +208,9 @@ struct AccountScopedRootView: View {
             modelContainer = try AccountScopedStore.makeContainer(accountID: accountID)
             loadedStoreKey = storeKey
             storeInitError = nil
-            print("[OK] Opened local SwiftData store for account \(accountID)")
+            print("✅ Opened local SwiftData store for account \(accountID)")
         } catch {
-            print("[ERROR] Failed to open account-local SwiftData store: \(error)")
+            print("❌ Failed to open account-local SwiftData store: \(error)")
             storeInitError = error
         }
     }
@@ -220,11 +226,11 @@ struct AccountScopedRootView: View {
             modelContainer = try AccountScopedStore.makeGuestContainer()
             loadedStoreKey = "guest"
         } catch {
-            print("[ERROR] Failed to recover guest SwiftData container: \(error)")
+            print("❌ Failed to recover guest SwiftData container: \(error)")
         }
     }
 
-
+    /// Resolve the local store from the saved session, never from a stale account preference.
     private static func resolveAccountID() -> Int? {
         guard let token = CredentialStore.shared.token,
               let accountID = APIService.shared.localSessionAccountID(token: token) else { return nil }
@@ -268,9 +274,9 @@ private struct SwiftDataRecoveryView: View {
     let accountID: Int
     let onRetry: () -> Void
     let onLogout: () -> Void
-
+    
     @State private var isBusy = false
-
+    
     private var isDiskFull: Bool {
         let nsError = error as NSError
         return nsError.domain == NSCocoaErrorDomain && (nsError.code == CocoaError.fileWriteOutOfSpace.rawValue || nsError.code == 512 || nsError.code == 640)
@@ -279,24 +285,24 @@ private struct SwiftDataRecoveryView: View {
     var body: some View {
         ZStack {
             GlassBackgroundView().ignoresSafeArea()
-
+            
             VStack(spacing: 24) {
                 Image(systemName: isDiskFull ? "externaldrive.fill.badge.xmark" : "exclamationmark.triangle.fill")
                     .font(.system(size: 48))
                     .foregroundColor(isDiskFull ? .orange : .red)
                     .padding(.top, 20)
-
+                
                 VStack(spacing: 8) {
                     Text(isDiskFull ? "พื้นที่เก็บข้อมูลเต็ม" : "ข้อมูลมีปัญหา (Schema Mismatch)")
                         .font(.custom("SukhumvitSet-Bold", size: 22))
-
+                    
                     Text(isDiskFull ? "ไม่สามารถเปิดฐานข้อมูลได้เนื่องจากพื้นที่ในเครื่องของคุณไม่เพียงพอ กรุณาลบข้อมูลที่ไม่จำเป็นแล้วลองใหม่" : "พบปัญหาขณะอัปเกรดโครงสร้างฐานข้อมูล หรือไฟล์ฐานข้อมูลในเครื่องเสียหาย\n(\(error.localizedDescription))")
                         .font(.custom("SukhumvitSet-Medium", size: 14))
                         .foregroundStyle(.secondary)
                         .multilineTextAlignment(.center)
                         .padding(.horizontal)
                 }
-
+                
                 VStack(spacing: 12) {
                     Button {
                         isBusy = true
@@ -317,7 +323,7 @@ private struct SwiftDataRecoveryView: View {
                         .cornerRadius(12)
                     }
                     .disabled(isBusy)
-
+                    
                     if !isDiskFull {
                         Button {
                             isBusy = true
@@ -337,7 +343,7 @@ private struct SwiftDataRecoveryView: View {
                         }
                         .disabled(isBusy)
                     }
-
+                    
                     Button {
                         onLogout()
                     } label: {
@@ -356,7 +362,7 @@ private struct SwiftDataRecoveryView: View {
             .padding(.horizontal, 24)
         }
     }
-
+    
     private func deleteLocalData() {
         do {
             let directory = try FileManager.default.url(
@@ -367,15 +373,15 @@ private struct SwiftDataRecoveryView: View {
             )
             .appendingPathComponent("DormiNet", isDirectory: true)
             .appendingPathComponent("Accounts", isDirectory: true)
-
+            
             let storeURL = directory.appendingPathComponent("account_\(accountID).store")
             let shmURL = directory.appendingPathComponent("account_\(accountID).store-shm")
             let walURL = directory.appendingPathComponent("account_\(accountID).store-wal")
-
+            
             try? FileManager.default.removeItem(at: storeURL)
             try? FileManager.default.removeItem(at: shmURL)
             try? FileManager.default.removeItem(at: walURL)
-            print("[CLEANUP] Deleted corrupted store for account \(accountID)")
+            print("🗑️ Deleted corrupted store for account \(accountID)")
         } catch {
             print("Failed to delete corrupted store: \(error)")
         }

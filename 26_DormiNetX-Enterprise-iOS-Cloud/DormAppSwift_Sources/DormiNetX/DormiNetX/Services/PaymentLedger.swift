@@ -3,8 +3,8 @@ import SwiftData
 
 @MainActor
 enum PaymentLedger {
-
-
+    /// Mirrors any portion of `paidAmount` that is not represented in the
+    /// append-only ledger yet. Repeating this operation is safe.
     @discardableResult
     static func recordUnrecordedBalance(
         for payment: Payment,
@@ -54,7 +54,9 @@ enum PaymentLedger {
         return transaction
     }
 
-
+    /// Additive migration for stores/snapshots created before the ledger.
+    /// Existing transaction rows are respected, so opening a store repeatedly
+    /// never duplicates historical money or receipt records.
     @discardableResult
     static func migrateLegacyBalances(in context: ModelContext) throws -> Int {
         let payments = try context.fetch(FetchDescriptor<Payment>())
@@ -71,7 +73,9 @@ enum PaymentLedger {
         PaymentAmounts.sum(try transactions(for: paymentID, in: context).map(\.amount))
     }
 
-
+    /// A bill with recorded money is accounting evidence. It must be adjusted
+    /// through a reversal/refund workflow rather than hidden by the legacy
+    /// soft-delete flag, otherwise sync would leave orphan ledger rows.
     static func ensureInvoiceCanBeDeleted(_ payment: Payment, in context: ModelContext) throws {
         guard try recordedTotal(for: payment.id, in: context) == 0 else {
             throw LedgerError.cannotDeleteRecordedInvoice

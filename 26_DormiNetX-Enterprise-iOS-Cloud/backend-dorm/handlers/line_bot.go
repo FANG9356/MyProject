@@ -59,7 +59,7 @@ func getLineSecret() string {
 	return lineChannelSecret
 }
 
-
+// LineWebhookRequest represents the incoming webhook from LINE
 type LineWebhookRequest struct {
 	Events []struct {
 		Type       string `json:"type"`
@@ -101,7 +101,7 @@ type lineInvoiceFlexData struct {
 	AdditionalBills int
 }
 
-
+// verifySignature checks if the webhook request actually came from LINE
 func verifySignature(body []byte, signature, secret string) bool {
 	mac := hmac.New(sha256.New, []byte(secret))
 	mac.Write(body)
@@ -109,7 +109,7 @@ func verifySignature(body []byte, signature, secret string) bool {
 	return hmac.Equal([]byte(signature), []byte(expectedSignature))
 }
 
-
+// HandleLineWebhook handles POST /api/webhook/line
 func HandleLineWebhook(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != "POST" {
@@ -117,14 +117,14 @@ func HandleLineWebhook(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-
+		// Read body for signature verification
 		bodyBytes, err := io.ReadAll(r.Body)
 		if err != nil {
 			http.Error(w, "Error reading body", http.StatusBadRequest)
 			return
 		}
 
-
+		// Verify signature
 		secret := getLineSecret()
 		if secret == "" {
 			http.Error(w, "LINE integration is not configured", http.StatusServiceUnavailable)
@@ -136,7 +136,7 @@ func HandleLineWebhook(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-
+		// Restore body for json decoding
 		r.Body = io.NopCloser(bytes.NewBuffer(bodyBytes))
 
 		var req LineWebhookRequest
@@ -187,7 +187,7 @@ func HandleLineWebhook(db *sql.DB) http.HandlerFunc {
 func handleTextMessage(master, db *sql.DB, accountID int, replyToken, lineUserID, text, serverURL string) {
 	text = strings.TrimSpace(text)
 
-
+	// Command: ผูกบัญชี [เลขบัตรประชาชน] [เบอร์โทร] (Deprecated for security reasons)
 	if strings.HasPrefix(text, "ผูกบัญชี") {
 		replyToLine(replyToken, "เพื่อความปลอดภัยสูงสุด ระบบยกเลิกการผูกบัญชีผ่านการพิมพ์แล้วค่ะ\n\nรบกวนลูกบ้านกดที่ปุ่ม 'ผูกบัญชี' ที่เมนูหลักด้านล่าง เพื่อดำเนินการแทนนะคะ")
 		return
@@ -221,7 +221,7 @@ func handleTextMessage(master, db *sql.DB, accountID int, replyToken, lineUserID
 		replyToLineWithFlexMessage(replyToken, "ช่องทางการติดต่อ", buildContactMenuFlexMessage())
 		return
 	}
-
+	
 	if text == "wifi" || text == "ไวไฟ" || text == "อินเทอร์เน็ต" || text == "รหัสไวไฟ" {
 		replyToLineWithFlexMessage(replyToken, "รหัสอินเทอร์เน็ต (Wi-Fi)", buildWifiFlexMessage())
 		return
@@ -271,7 +271,7 @@ func handleTextMessage(master, db *sql.DB, accountID int, replyToken, lineUserID
 		})
 		return
 	}
-
+	
 	if text == "ฝากข้อความถึงแอดมิน" {
 		replyToLine(replyToken, "สามารถพิมพ์ข้อความหรือคำถามทิ้งไว้ได้เลยค่ะ แอดมินจะเข้ามาตอบกลับให้เร็วที่สุดนะคะ")
 		return
@@ -375,18 +375,20 @@ func handleImageMessage(master, db *sql.DB, accountID int, replyToken, lineUserI
 		}
 	}
 
-
+	// Bug Fix: ถ้า bot_state เป็น "maintenance" แต่มีเคสซ่อมที่รอชำระเงินอยู่
+	// หมายความว่าผู้ใช้อาจตั้งใจส่งสลิปชำระค่าซ่อม ไม่ใช่แจ้งซ่อมใหม่
+	// เปลี่ยน bot_state เป็น pay_maint_* เพื่อให้รับสลิปได้อย่างถูกต้อง
 	if botState == "maintenance" {
 		var pendingMaintID int
 		errPending := db.QueryRow(
 			"SELECT id FROM maintenances WHERE room_number = ? AND status = 'รอตรวจสอบชำระเงิน' AND cost > 0 ORDER BY id DESC LIMIT 1",
 			roomNumber).Scan(&pendingMaintID)
 		if errPending == nil {
-
+			// มีเคสรอชำระอยู่ — เปลี่ยนเป็นโหมดชำระค่าซ่อมแทน
 			db.Exec("UPDATE users SET bot_state = ? WHERE line_user_id = ?", fmt.Sprintf("pay_maint_%d", pendingMaintID), lineUserID)
 			botState = fmt.Sprintf("pay_maint_%d", pendingMaintID)
 		}
-
+		// ถ้าไม่มีเคสรอชำระ ให้ดำเนินการแจ้งซ่อมปกติต่อไป
 	}
 
 	if botState != "slip" && botState != "maintenance" && botState != "maintenance_wait_image" && botState != "maintenance_wait_text" && !strings.HasPrefix(botState, "pay_maint_") {
@@ -436,8 +438,8 @@ func handleImageMessage(master, db *sql.DB, accountID int, replyToken, lineUserI
 		expectedReceiver := promptpayID + "_" + bankAccount
 
 		isValid, verifyReason, payload := utils.VerifySlip(filepath, amount, expectedReceiver)
-
-
+		
+		// Replay Protection Check
 		if payload != "" {
 			var existingID int
 			errCheck := db.QueryRow("SELECT payment_id FROM payments WHERE slip_payload = ?", payload).Scan(&existingID)
@@ -474,7 +476,7 @@ func handleImageMessage(master, db *sql.DB, accountID int, replyToken, lineUserI
 			db.Exec("UPDATE users SET bot_state = 'none' WHERE line_user_id = ?", lineUserID)
 			return
 		}
-
+		
 		logAction := "Auto Slip Check Failed"
 		if isValid {
 			logAction = "Auto Slip Verified"
@@ -549,7 +551,7 @@ func handleImageMessage(master, db *sql.DB, accountID int, replyToken, lineUserI
 		publishLineChanges(master, db, accountID)
 
 		if currentImages == "" {
-
+			// ส่งกลับเฉพาะรูปแรก เพื่อไม่ให้ส่งข้อความซ้ำซ้อนเมื่อลูกบ้านส่งหลายรูปพร้อมกัน
 			replyToLineWithQuickReply(replyToken, "เพิ่มรูปภาพประกอบเรียบร้อยค่ะ (หากมีอีกสามารถส่งเพิ่มได้เลย หรือกด 'เสร็จสิ้น' เพื่อจบการแจ้งซ่อม)", []string{"เสร็จสิ้น"})
 		}
 	} else if botState == "maintenance_wait_text" {
@@ -588,8 +590,8 @@ func handleImageMessage(master, db *sql.DB, accountID int, replyToken, lineUserI
 		expectedReceiver := promptpayID + "_" + bankAccount
 
 		isValid, verifyReason, payload := utils.VerifySlip(filepath, cost, expectedReceiver)
-
-
+		
+		// Replay Protection Check
 		if payload != "" {
 			var existingID int
 			errCheck := db.QueryRow("SELECT payment_id FROM payments WHERE slip_payload = ?", payload).Scan(&existingID)
@@ -618,7 +620,7 @@ func handleImageMessage(master, db *sql.DB, accountID int, replyToken, lineUserI
 			replyToLine(replyToken, "เกิดข้อผิดพลาดในการอัปเดตข้อมูล")
 			return
 		}
-
+		
 		logAction := "Auto Slip Check Failed"
 		if isValid {
 			logAction = "Auto Slip Verified"
@@ -631,7 +633,7 @@ func handleImageMessage(master, db *sql.DB, accountID int, replyToken, lineUserI
 		if isValid {
 			dateStr := time.Now().Format("02/01/2006 15:04")
 			receiptNo := fmt.Sprintf("M-REC-%05s", maintID)
-
+			
 			flexJSON := fmt.Sprintf(`{
 				"type": "bubble",
 				"header": { "type": "box", "layout": "vertical", "contents": [ { "type": "text", "text": "ใบเสร็จรับเงิน (ค่าซ่อมแซม)", "weight": "bold", "color": "#4F46E5", "size": "xl" }, { "type": "text", "text": "MAINTENANCE RECEIPT", "size": "sm", "color": "#818CF8", "margin": "sm" } ] },
@@ -662,7 +664,7 @@ func handleImageMessage(master, db *sql.DB, accountID int, replyToken, lineUserI
 					]
 				}
 			}`, receiptNo, roomNumber, dateStr, cost, replyMsg)
-
+	
 			var contents map[string]interface{}
 			json.Unmarshal([]byte(flexJSON), &contents)
 			replyToLineWithFlexMessage(replyToken, replyMsg, contents)
@@ -704,7 +706,7 @@ func replyToLine(replyToken, text string) {
 	}
 }
 
-
+// PushLineMessage sends a direct message to a user
 func PushLineMessage(lineUserID, text string) {
 	token := getLineToken()
 	if token == "" || lineUserID == "" {
@@ -1210,16 +1212,16 @@ func HandlePushInvoices(db *sql.DB) http.HandlerFunc {
 		}
 		tenantDB := getTenantDB(r, db)
 
-
+		// ค้นหาบิลทั้งหมดที่ค้างชำระ (pending) และห้องนั้นมีการผูก LINE (line_user_id) แล้ว
 		rows, err := tenantDB.Query(`
 			SELECT p.payment_id, p.room_number, p.amount, p.month, COALESCE(p.due_date, ''),
 			       COALESCE(p.last_updated, ''), COALESCE(p.payment_date, ''), COALESCE(p.payment_status, 'pending'),
 			       COALESCE(p.installment_phase, 0), p.rent_fee, COALESCE(p.deposit_fee, 0),
 			       p.water_fee, p.electric_fee, p.common_fee, COALESCE(p.appliance_fee, 0), p.late_fee,
 			       COALESCE(p.paid_amount, 0),
-			       u.full_name, u.line_user_id
-			FROM payments p
-			JOIN users u ON p.user_id = u.user_id
+			       u.full_name, u.line_user_id 
+			FROM payments p 
+			JOIN users u ON p.user_id = u.user_id 
 			WHERE p.payment_status = 'pending' AND u.line_user_id IS NOT NULL AND u.line_user_id != '' AND (u.status = 'กำลังพักอาศัย' OR u.status = 'จอง')
 		`)
 		if err != nil {
@@ -1482,13 +1484,14 @@ func handleMaintenanceQuoteDecision(master, db *sql.DB, accountID int, replyToke
 		return
 	}
 
-
+	// เมื่ออนุมัติ: เปลี่ยนสถานะเป็น "รอตรวจสอบชำระเงิน" แทน "กำลังติดต่อช่าง"
+	// เพื่อให้ลูกบ้านชำระเงินก่อนที่ช่างจะมาซ่อม
 	nextStatus := "ปฏิเสธค่าใช้จ่าย"
 	approvedAt := ""
 	if approved {
 		nextStatus = "รอตรวจสอบชำระเงิน"
 		approvedAt = time.Now().UTC().Format(time.RFC3339Nano)
-
+		// Fetch PromptPay ID from master DB for the superadmin
 		_ = master.QueryRow("SELECT COALESCE(promptpay_id, '') FROM admins WHERE id = ? AND role = 'superadmin'", accountID).Scan(&notification.PromptPayID)
 	}
 	now := time.Now().UTC().Format(time.RFC3339Nano)
@@ -1507,7 +1510,7 @@ func handleMaintenanceQuoteDecision(master, db *sql.DB, accountID int, replyToke
 	actionName := "rejected"
 	if approved {
 		actionName = "approved"
-
+		// Ensure the user's state is ready to receive a slip for this maintenance right away
 		db.Exec("UPDATE users SET bot_state = ? WHERE line_user_id = ?", "pay_maint_"+maintenanceID, lineUserID)
 	}
 	notification.EventKey = fmt.Sprintf("maintenance-quote-%s:%d:%s:%s", actionName, accountID, maintenanceID, now)
@@ -1519,8 +1522,9 @@ func handleMaintenanceQuoteDecision(master, db *sql.DB, accountID int, replyToke
 	if err := EnqueueMaintenanceStatusNotification(master, accountID, notification); err != nil {
 		queued = false
 		log.Printf("[LINE] queue %s maintenance status failed (account=%d maintenance=%s): %v", actionName, accountID, maintenanceID, err)
-
-
+		// A plain-text reply is only a delivery fallback. On the normal path the
+		// queued Flex card is the single confirmation, so LINE does not show the
+		// same approval or rejection twice.
 		replyToLine(replyToken, "บันทึกผลการพิจารณาแล้วค่ะ กรุณาตรวจสอบสถานะงานซ่อมอีกครั้ง")
 	}
 
@@ -1550,9 +1554,9 @@ func PushMaintenanceBillFlexMessage(lineUserID, maintID, roomNumber, issue strin
 		buttonColor = "#d1d5db"
 		actionData = "action=ignore"
 
-
-		headerColor = "#4338CA"
-		subHeaderColor = "#818CF8"
+		// Indigo Theme for No Cost
+		headerColor = "#4338CA"    // Indigo-700
+		subHeaderColor = "#818CF8" // Indigo-400
 		amountColor = "#4338CA"
 	}
 
@@ -1764,7 +1768,7 @@ func buildMaintenanceQuoteApprovedFlexMessage(notification maintenanceStatusNoti
 	}
 
 	const stepCount = 6
-	step := 2
+	step := 2 // 0=รอดำเนินการ, 1=กำลังติดต่อช่าง, 2=รออนุมัติ/อนุมัติ
 	progressContents := make([]interface{}, 0, stepCount)
 	for index := 0; index < stepCount; index++ {
 		color := "#D1D5DB"
@@ -1828,7 +1832,7 @@ func buildMaintenanceQuoteApprovedFlexMessage(notification maintenanceStatusNoti
 			},
 		},
 	}
-
+	
 	bubble2 := map[string]interface{}{
 		"type": "bubble", "size": "mega",
 		"header": map[string]interface{}{

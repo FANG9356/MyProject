@@ -128,7 +128,9 @@ func getJWTSecret() []byte {
 	return jwtSecretKey
 }
 
-
+// InitializeJWTSecret validates configuration before the HTTP listener starts.
+// Authentication must fail closed instead of silently replacing the signing
+// key and invalidating every existing session.
 func InitializeJWTSecret() error {
 	secret := strings.TrimSpace(os.Getenv("JWT_SECRET"))
 	if len(secret) < 32 {
@@ -143,7 +145,7 @@ func InitAdminTable(db *sql.DB) {
 	db.Exec(`ALTER TABLE admins ADD COLUMN backup_email TEXT DEFAULT ''`)
 }
 
-
+// isLocalIP checks if an IP string is a loopback or private network IP.
 func isLocalIP(ipStr string) bool {
 	ip := net.ParseIP(ipStr)
 	if ip == nil {
@@ -346,8 +348,8 @@ func AuthMiddleware(db *sql.DB, next http.Handler) http.Handler {
 			return
 		}
 
-
-		r.Body = http.MaxBytesReader(w, r.Body, 50<<20)
+		// ป้องกันเซิร์ฟเวอร์ล่มจากการยิงไฟล์ขนาดใหญ่ (DoS Disk Exhaustion)
+		r.Body = http.MaxBytesReader(w, r.Body, 50<<20) // จำกัดขนาดที่ 50MB ต่อ 1 Request
 
 		if path == "/api/login" || path == "/api/login/qr" || path == "/api/register" || path == "/api/change-password" || path == "/api/forgot-password" || path == "/api/verify-otp" || path == "/api/reset-password" || path == "/api/webhook/line" || path == "/api/liff/link" || path == "/api/liff/rooms" || path == "/api/liff/status" || path == "/api/liff/verify-tenant" || path == "/api/setup/status" || path == "/api/setup" || path == "/api/system/ping" || path == "/api/auth/register" || path == "/api/auth/login" {
 			next.ServeHTTP(w, r)
@@ -465,7 +467,7 @@ func ChangePasswordHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-
+		// Check if authenticated via token (e.g., from QR login) or via old password
 		authHeader := r.Header.Get("Authorization")
 		tokenStr := ""
 		if authHeader != "" {
@@ -676,7 +678,7 @@ func CreateAdminHandler(db *sql.DB) http.HandlerFunc {
 		req.Username = strings.TrimSpace(req.Username)
 		req.Email = strings.TrimSpace(req.Email)
 
-
+		// Check if username already exists
 		var userExists bool
 		err = db.QueryRow("SELECT EXISTS(SELECT 1 FROM admins WHERE LOWER(username) = LOWER(?))", req.Username).Scan(&userExists)
 		if err == nil && userExists {
@@ -737,7 +739,7 @@ func DeleteAdminHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-
+		// Extract ID from URL
 		parts := strings.Split(r.URL.Path, "/")
 		if len(parts) < 4 {
 			http.Error(w, `{"error": "Invalid URL"}`, http.StatusBadRequest)
@@ -867,7 +869,7 @@ func UpdateAdminHandler(db *sql.DB) http.HandlerFunc {
 			}
 		}
 
-
+		// Dynamically build the UPDATE query
 		query := "UPDATE admins SET "
 		var args []interface{}
 
@@ -876,8 +878,8 @@ func UpdateAdminHandler(db *sql.DB) http.HandlerFunc {
 			args = append(args, req.Username)
 		}
 		if req.NewPassword != "" {
-
-
+			// A superadmin may reset staff passwords. Everyone changing their own
+			// password must prove knowledge of the current password.
 			if id == requesterID {
 				if req.OldPassword == "" {
 					http.Error(w, `{"error": "ต้องระบุรหัสผ่านเดิมเพื่อเปลี่ยนรหัสผ่านใหม่"}`, http.StatusBadRequest)
@@ -911,6 +913,11 @@ func UpdateAdminHandler(db *sql.DB) http.HandlerFunc {
 			args = append(args, req.Role)
 		}
 
+		// Let's use a map to decode instead to know exactly what was sent
+		// json.NewDecoder(r.Body) // Oops, we already decoded.
+		// Just rely on the struct fields and update them if they are not empty.
+		// Wait! If they want to remove their email, req.Email is "". We can't tell if it was sent as "" or omitted.
+		// Let's just update email if it was sent. But since we already decoded into `req`, we can just check if Username is present (rename request), we also update Email.
 
 		if req.Username != "" {
 			query += "email = ?, "
@@ -935,7 +942,7 @@ func UpdateAdminHandler(db *sql.DB) http.HandlerFunc {
 			args = append(args, strings.TrimSpace(*req.AccountName))
 		}
 
-
+		// If nothing to update, return success
 		if len(args) == 0 {
 			w.Header().Set("Content-Type", "application/json")
 			json.NewEncoder(w).Encode(map[string]string{
@@ -944,7 +951,7 @@ func UpdateAdminHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-
+		// Remove trailing comma and space
 		query = strings.TrimSuffix(query, ", ")
 		query += " WHERE id = ?"
 		args = append(args, id)
@@ -1015,13 +1022,13 @@ func LogoutAdminHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 		tokenString := parts[1]
-
+		// Set last_active to an old date to instantly show as Offline
 		if _, err := db.Exec("UPDATE admins SET last_active = '2000-01-01 00:00:00' WHERE id = ?", adminID); err != nil {
 			http.Error(w, "Database error", http.StatusInternalServerError)
 			return
 		}
 
-
+		// Remove session to force remote kick
 		if _, err := db.Exec("DELETE FROM sessions WHERE admin_id = ? AND token = ?", adminID, tokenString); err != nil {
 			http.Error(w, "Database error", http.StatusInternalServerError)
 			return
@@ -1096,14 +1103,14 @@ func UpdateProfileImageHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-
+		// Ensure directory exists
 		uploadDir := "./uploads/profiles"
 		if err := os.MkdirAll(uploadDir, 0700); err != nil {
 			http.Error(w, `{"error": "Error preparing upload directory"}`, http.StatusInternalServerError)
 			return
 		}
 
-
+		// Create unique filename
 		fileName := fmt.Sprintf("admin_%d_%d%s", targetID, time.Now().UnixNano(), ext)
 		filePath := filepath.Join(uploadDir, fileName)
 
@@ -1124,7 +1131,7 @@ func UpdateProfileImageHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-
+		// Update database
 		imageURL := "/uploads/profiles/" + fileName
 		_, err = db.Exec("UPDATE admins SET profile_image = ? WHERE id = ? AND LOWER(TRIM(email)) = ?", imageURL, targetID, requesterEmail)
 		if err != nil {
@@ -1190,7 +1197,7 @@ func RegisterHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-
+		// Check if email already exists
 		var exists bool
 		err := db.QueryRow("SELECT EXISTS(SELECT 1 FROM admins WHERE email = ?)", req.Email).Scan(&exists)
 		if err != nil {
@@ -1202,7 +1209,7 @@ func RegisterHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-
+		// Check if username (name) already exists just in case
 		err = db.QueryRow("SELECT EXISTS(SELECT 1 FROM admins WHERE username = ?)", req.Name).Scan(&exists)
 		if err != nil {
 			http.Error(w, `{"status": "error", "message": "เกิดข้อผิดพลาดกับฐานข้อมูล"}`, http.StatusInternalServerError)
@@ -1213,14 +1220,14 @@ func RegisterHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-
+		// Hash password and insert
 		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
 		if err != nil {
 			http.Error(w, `{"status": "error", "message": "ไม่สามารถเข้ารหัสรหัสผ่านได้"}`, http.StatusInternalServerError)
 			return
 		}
 
-
+		// Create as superadmin for their own new dorm
 		dormCode := generateUniqueDormCode(db)
 		result, err := db.Exec("INSERT INTO admins (username, password, role, email, dorm_code) VALUES (?, ?, 'superadmin', ?, ?)", req.Name, hashedPassword, req.Email, dormCode)
 		if err != nil {
@@ -1230,14 +1237,14 @@ func RegisterHandler(db *sql.DB) http.HandlerFunc {
 
 		adminID, _ := result.LastInsertId()
 
-
+		// Immediately provision their new tenant DB
 		_, err = GetTenantDB(int(adminID))
 		if err != nil {
-
+			// Don't block registration if DB creation fails, they can retry on login
 			fmt.Println("Warning: Failed to create tenant DB on register:", err)
 		}
 
-
+		// Generate a revocable session so the token works with AuthMiddleware.
 		tokenString, err := issueSessionToken(db, int(adminID), req.Name, "superadmin", 24*time.Hour)
 		if err != nil {
 			http.Error(w, `{"status": "error", "message": "สร้าง Token ล้มเหลว"}`, http.StatusInternalServerError)
@@ -1268,13 +1275,13 @@ func GenerateInviteTokenHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-
+		// Ensure the user requesting this has services (admin) role
 		if !IsServicesRole(r) {
 			http.Error(w, `{"error": "Unauthorized"}`, http.StatusForbidden)
 			return
 		}
 
-
+		// Generate a token valid for 5 minutes
 		expirationTime := time.Now().Add(5 * time.Minute)
 		claims := jwt.MapClaims{
 			"username": "invite",
@@ -1297,7 +1304,7 @@ func GenerateInviteTokenHandler(db *sql.DB) http.HandlerFunc {
 	}
 }
 
-
+// RegisterOpenLocalHandler allows registration ONLY if the client is on the local subnet.
 func RegisterOpenLocalHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		utils.EnableCORS(w)
@@ -1310,7 +1317,7 @@ func RegisterOpenLocalHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-
+		// Security Check: Ensure client is on local subnet
 		ipStr, _, err := net.SplitHostPort(r.RemoteAddr)
 		if err != nil {
 			ipStr = r.RemoteAddr
@@ -1335,7 +1342,7 @@ func RegisterOpenLocalHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-
+		// Check if username exists
 		var exists bool
 		err = db.QueryRow("SELECT EXISTS(SELECT 1 FROM admins WHERE username = ?)", req.Username).Scan(&exists)
 		if err != nil {
@@ -1347,7 +1354,7 @@ func RegisterOpenLocalHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-
+		// Hash password and insert
 		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
 		if err != nil {
 			http.Error(w, `{"error": "Failed to hash password"}`, http.StatusInternalServerError)
@@ -1395,7 +1402,7 @@ func RegisterWithInviteHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-
+		// Basic Validation
 		if req.Username == "" || req.Password == "" {
 			http.Error(w, `{"error": "กรุณากรอกข้อมูลให้ครบถ้วน"}`, http.StatusBadRequest)
 			return
@@ -1405,14 +1412,14 @@ func RegisterWithInviteHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-
+		// Hash password
 		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
 		if err != nil {
 			http.Error(w, `{"error": "Failed to hash password"}`, http.StatusInternalServerError)
 			return
 		}
 
-
+		// Insert into DB with default role 'dorm'
 		_, err = db.Exec("INSERT INTO admins (username, password, role) VALUES (?, ?, ?)", req.Username, string(hashedPassword), "dorm")
 		if err != nil {
 			if strings.Contains(err.Error(), "UNIQUE constraint failed") {
@@ -1430,7 +1437,7 @@ func RegisterWithInviteHandler(db *sql.DB) http.HandlerFunc {
 	}
 }
 
-
+// GenerateLoginTokenHandler generates a short-lived token for an existing user to login via QR code
 func GenerateLoginTokenHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		utils.EnableCORS(w)
@@ -1443,7 +1450,7 @@ func GenerateLoginTokenHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-
+		// Only admins can generate login tokens for others
 		if !IsServicesRole(r) {
 			http.Error(w, `{"error": "Unauthorized"}`, http.StatusForbidden)
 			return
@@ -1463,7 +1470,7 @@ func GenerateLoginTokenHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-
+		// Verify that the user exists
 		var exists bool
 		err := db.QueryRow("SELECT EXISTS(SELECT 1 FROM admins WHERE username = ?)", req.TargetUsername).Scan(&exists)
 		if err != nil || !exists {
@@ -1471,11 +1478,11 @@ func GenerateLoginTokenHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-
+		// Generate a token valid for 1 minute
 		expirationTime := time.Now().Add(1 * time.Minute)
 		claims := jwt.MapClaims{
 			"username": req.TargetUsername,
-			"role":     "login_qr",
+			"role":     "login_qr", // specific role for QR login
 			"exp":      expirationTime.Unix(),
 		}
 
@@ -1494,7 +1501,7 @@ func GenerateLoginTokenHandler(db *sql.DB) http.HandlerFunc {
 	}
 }
 
-
+// LoginWithQRHandler logs a user in using a valid login_token
 func LoginWithQRHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		utils.EnableCORS(w)
@@ -1532,7 +1539,7 @@ func LoginWithQRHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-
+		// Check if user still exists and get their info
 		var id int
 		var userRole, profileImage string
 		var mustChangePassword int
@@ -1542,14 +1549,14 @@ func LoginWithQRHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-
+		// Generate the real revocable session token.
 		tokenString, err := issueSessionToken(db, id, username, userRole, 24*time.Hour)
 		if err != nil {
 			http.Error(w, `{"error": "Could not generate session token"}`, http.StatusInternalServerError)
 			return
 		}
 
-
+		// Update last_active
 		_, _ = db.Exec("UPDATE admins SET last_active = ? WHERE id = ?", time.Now().Format("2006-01-02 15:04:05"), id)
 
 		w.Header().Set("Content-Type", "application/json")

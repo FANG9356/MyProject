@@ -44,7 +44,7 @@
 - แก้ไขให้ `BackupTabView` แสดง Alert ผลการดำเนินการสำเร็จและผิดพลาดได้ตามปกติ
 - ปรับ Maintenance Workflow ให้รัดกุมยิ่งขึ้น (iOS/Backend): ป้องกันสถานะปริศนา, ห้ามแอปข้ามการอนุมัติใบเสนอราคา, และบังคับ Backend ตรวจ `quoteApproved` ก่อนขอให้ชำระเงิน
 - เพิ่มระบบตรวจสอบ LIFF โดยเช็กว่ารหัสหอมีจริงก่อนอนุญาตสร้าง/เปิด Tenant DB ป้องกันผู้สุ่มเดา
-- พัฒนาระบบ Financial Ledger: เพิ่ม API และ iOS UI สำหรับการดำเนินการ Void (ยกเลิกบิล), Refund (คืนเงิน) และ Adjust (ปรับปรุงยอด) บิลค่าเช่า โดยระบบมีการเขียน Immutable Audit Log สำหรับทุก action
+- พัฒนาระบบ Financial Ledger: เพิ่ม API และ iOS UI สำหรับการดำเนินการ Void (ยกเลิกบิล), Refund (คืนเงิน) และ Adjust (ปรับปรุงยอด) บิลค่าเช่า โดยระบบมีการเขียน Immutable Audit Log สำหรับทุก action 
 - ทำ User Acceptance Testing (UAT) สำหรับระบบ Financial Ledger บน Production Server จริง โดยดำเนินการกับข้อมูลทดสอบที่ได้รับอนุญาตและผ่านการตรวจเช็กความถูกต้องแล้ว (Rollback ข้อมูลหลังเสร็จสิ้นการ UAT)
 
 ## หลักฐานทดสอบล่าสุด

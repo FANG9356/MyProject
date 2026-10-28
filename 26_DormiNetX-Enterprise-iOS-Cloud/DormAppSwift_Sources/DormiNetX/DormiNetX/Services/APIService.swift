@@ -3,16 +3,16 @@ import CryptoKit
 
 class APIService {
     static let shared = APIService()
-
+    // No actor-bound cleanup; avoid the Swift 6.2 isolated-deinit runtime crash (swiftlang/swift#85663).
     nonisolated deinit {}
-
-
+    
+    // โดเมนที่เจาะอุโมงค์ Cloudflare ไว้ ทะลุเข้าเซิร์ฟเวอร์เราโดยตรง
     var baseURL = "https://dorminet.studio/api"
-
-
+    
+    // เก็บอีเมลล์ที่ใช้งานอยู่ปัจจุบัน
     var currentEmail: String?
-
-
+    
+    // เก็บ Token สำหรับยืนยันตัวตน
     var authToken: String? {
         get { CredentialStore.shared.token }
         set {
@@ -59,7 +59,7 @@ class APIService {
         return nil
     }
 
-
+    // This is an expiry/scope check for local session restoration, not signature verification.
     func localSessionAccountID(token: String, now: Date = Date()) -> Int? {
         guard let payload = jwtPayload(from: token), let expiry = payload["exp"] as? Double,
               expiry.isFinite, expiry > now.timeIntervalSince1970,
@@ -87,7 +87,7 @@ class APIService {
         }
         return dictionary
     }
-
+    
     func login(email: String, password: String) async throws -> (Bool, String?) {
         guard let url = URL(string: "\(baseURL)/auth/login") else { return (false, nil) }
         var request = URLRequest(url: url)
@@ -95,12 +95,12 @@ class APIService {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         let body = ["email": email, "password": password]
         request.httpBody = try JSONEncoder().encode(body)
-
+        
         let (data, response) = try await URLSession.shared.data(for: request)
         guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
             return (false, nil)
         }
-
+        
         if let json = try JSONSerialization.jsonObject(with: data) as? [String: Any],
            let status = json["status"] as? String, status == "success" {
             self.currentEmail = email
@@ -108,22 +108,22 @@ class APIService {
                 try CredentialStore.shared.setToken(token)
             }
             let name = json["name"] as? String
-
-
+            
+            // Use role from server response
             if let role = json["role"] as? String {
                 self.userRole = role
             } else {
-                self.userRole = "admin"
+                self.userRole = "admin" // Default fallback
             }
             if let adminId = json["admin_id"] as? Int {
                 UserDefaults.standard.set(adminId, forKey: "adminID")
             }
             return (true, name)
         }
-
+        
         return (false, nil)
     }
-
+    
     func register(name: String, email: String, password: String, role: String? = nil) async throws -> (Bool, String?, String?) {
         guard let url = URL(string: "\(baseURL)/auth/register") else { return (false, nil, "Invalid URL") }
         var request = URLRequest(url: url)
@@ -137,11 +137,11 @@ class APIService {
             body["role"] = role
         }
         request.httpBody = try JSONEncoder().encode(body)
-
+        
         let (data, response) = try await URLSession.shared.data(for: request)
-
+        
         var errorMessage: String? = nil
-
+        
         if let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any] {
             if let status = json["status"] as? String, status == "success" {
                 self.currentEmail = email
@@ -162,16 +162,16 @@ class APIService {
         } else if let plainTextMsg = String(data: data, encoding: .utf8)?.trimmingCharacters(in: .whitespacesAndNewlines), !plainTextMsg.isEmpty {
             errorMessage = plainTextMsg
         }
-
+        
         guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
             return (false, nil, errorMessage ?? "Registration failed")
         }
-
+        
         return (false, nil, errorMessage ?? "Registration failed")
     }
-
+    
     func fetchRooms() async throws -> Data {
-
+        // ตัวอย่างการดึงข้อมูลห้องจาก Go Backend
         guard let url = URL(string: "\(baseURL)/rooms") else { throw URLError(.badURL) }
         var request = URLRequest(url: url)
         if let token = authToken {
@@ -180,8 +180,11 @@ class APIService {
         let (data, _) = try await URLSession.shared.data(for: request)
         return data
     }
-
-
+    
+    // เพิ่มฟังก์ชัน push/pull ข้อมูลอื่นๆ ได้ที่นี่
+    
+    // MARK: - Admin Management APIs
+    
     func fetchAdmins() async throws -> [Admin] {
         guard let url = URL(string: "\(baseURL)/admins") else { throw URLError(.badURL) }
         var request = URLRequest(url: url)
@@ -189,16 +192,16 @@ class APIService {
             request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         }
         let (data, response) = try await URLSession.shared.data(for: request)
-
+        
         guard let httpResponse = response as? HTTPURLResponse else {
             throw URLError(.badServerResponse)
         }
-
+        
         if httpResponse.statusCode != 200 {
             let errorMsg = String(data: data, encoding: .utf8) ?? "Unknown Error"
             throw NSError(domain: "", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Server Error: \(errorMsg)"])
         }
-
+        
         do {
             let admins = try JSONDecoder().decode([Admin].self, from: data)
             return admins
@@ -234,28 +237,29 @@ class APIService {
                           userInfo: [NSLocalizedDescriptionKey: message])
         }
     }
-
-
+    
+    // MARK: - Dashboard APIs
+    
     func fetchDashboardStats() async throws -> Data {
         return try await performGetRequest(path: "/dashboard-stats")
     }
-
+    
     func fetchUsersData() async throws -> Data {
         return try await performGetRequest(path: "/users")
     }
-
+    
     func fetchPaymentsData() async throws -> Data {
         return try await performGetRequest(path: "/payments")
     }
-
+    
     func fetchLogsData() async throws -> Data {
         return try await performGetRequest(path: "/logs")
     }
-
+    
     func fetchRoomTypesData() async throws -> Data {
         return try await performGetRequest(path: "/room-types")
     }
-
+    
     func fetchMaintenancesData() async throws -> Data {
         return try await performGetRequest(path: "/maintenances")
     }
@@ -289,7 +293,7 @@ class APIService {
     func registerDeviceToken(token: String) async throws {
         let payload = ["device_token": token]
         let jsonData = try JSONEncoder().encode(payload)
-
+        
         guard let url = URL(string: baseURL + "/device-token") else { throw URLError(.badURL) }
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
@@ -298,7 +302,7 @@ class APIService {
         if let authToken = authToken {
             request.setValue("Bearer \(authToken)", forHTTPHeaderField: "Authorization")
         }
-
+        
         let (_, response) = try await URLSession.shared.data(for: request)
         guard let httpResponse = response as? HTTPURLResponse, (200..<300).contains(httpResponse.statusCode) else {
             throw URLError(.badServerResponse)
@@ -367,8 +371,9 @@ class APIService {
         throw NSError(domain: "DormiNet.LINE", code: httpResponse.statusCode,
                       userInfo: [NSLocalizedDescriptionKey: message])
     }
-
-
+    
+    // MARK: - Financial Ledger
+    
     func voidPayment(serverId: Int, reason: String) async throws -> String {
         guard let url = URL(string: "\(baseURL)/payments/void") else { throw URLError(.badURL) }
         var request = URLRequest(url: url)
@@ -379,7 +384,7 @@ class APIService {
         }
         let payload: [String: Any] = ["payment_id": serverId, "reason": reason]
         request.httpBody = try JSONSerialization.data(withJSONObject: payload)
-
+        
         let (data, response) = try await URLSession.shared.data(for: request)
         guard let httpResponse = response as? HTTPURLResponse else {
             throw URLError(.badServerResponse)
@@ -390,7 +395,7 @@ class APIService {
         }
         throw NSError(domain: "DormiNet.Finance", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: body?["error"] as? String ?? "Failed to void payment"])
     }
-
+    
     func refundPayment(serverId: Int, reason: String) async throws -> String {
         guard let url = URL(string: "\(baseURL)/payments/refund") else { throw URLError(.badURL) }
         var request = URLRequest(url: url)
@@ -401,7 +406,7 @@ class APIService {
         }
         let payload: [String: Any] = ["payment_id": serverId, "reason": reason]
         request.httpBody = try JSONSerialization.data(withJSONObject: payload)
-
+        
         let (data, response) = try await URLSession.shared.data(for: request)
         guard let httpResponse = response as? HTTPURLResponse else {
             throw URLError(.badServerResponse)
@@ -412,7 +417,7 @@ class APIService {
         }
         throw NSError(domain: "DormiNet.Finance", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: body?["error"] as? String ?? "Failed to refund payment"])
     }
-
+    
     func adjustPayment(serverId: Int, newAmount: Double, reason: String) async throws -> String {
         guard let url = URL(string: "\(baseURL)/payments/adjust") else { throw URLError(.badURL) }
         var request = URLRequest(url: url)
@@ -423,7 +428,7 @@ class APIService {
         }
         let payload: [String: Any] = ["payment_id": serverId, "new_amount": newAmount, "reason": reason]
         request.httpBody = try JSONSerialization.data(withJSONObject: payload)
-
+        
         let (data, response) = try await URLSession.shared.data(for: request)
         guard let httpResponse = response as? HTTPURLResponse else {
             throw URLError(.badServerResponse)
@@ -435,6 +440,7 @@ class APIService {
         throw NSError(domain: "DormiNet.Finance", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: body?["error"] as? String ?? "Failed to adjust payment"])
     }
 
+    // MARK: - Backup & Restore APIs
 
     func createServerBackup() async throws {
         _ = try await performEmptyResponseRequest(path: "/system/backup/zip", method: "GET")
@@ -496,7 +502,7 @@ class APIService {
     func resetServerSystem() async throws {
         _ = try await performEmptyResponseRequest(path: "/system/reset", method: "POST")
     }
-
+    
     private func performGetRequest(path: String) async throws -> Data {
         guard let url = URL(string: "\(baseURL)\(path)") else { throw URLError(.badURL) }
         var request = URLRequest(url: url)
@@ -504,15 +510,15 @@ class APIService {
             request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         }
         let (data, response) = try await URLSession.shared.data(for: request)
-
+        
         guard let httpResponse = response as? HTTPURLResponse else {
             throw URLError(.badServerResponse)
         }
-
+        
         if httpResponse.statusCode != 200 {
             throw NSError(domain: "", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Server Error"])
         }
-
+        
         return data
     }
 
@@ -530,7 +536,7 @@ class APIService {
         }
         return data
     }
-
+    
     func deleteAdmin(id: Int) async throws -> Bool {
         guard let url = URL(string: "\(baseURL)/admins/\(id)") else { throw URLError(.badURL) }
         var request = URLRequest(url: url)
@@ -544,7 +550,7 @@ class APIService {
         }
         return false
     }
-
+    
     func updateAdmin(id: Int, username: String, email: String, backupEmail: String = "", promptPayID: String = "", paymentType: String = "promptpay", bankAccount: String = "", accountName: String = "", oldPassword: String? = nil, newPassword: String?) async throws -> Bool {
         guard let url = URL(string: "\(baseURL)/admins/\(id)") else { throw URLError(.badURL) }
         var request = URLRequest(url: url)
@@ -553,7 +559,7 @@ class APIService {
         if let token = authToken {
             request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         }
-
+        
         var body: [String: Any] = [
             "username": username,
             "email": email,
@@ -569,10 +575,10 @@ class APIService {
                 body["old_password"] = oldPassword
             }
         }
-
+        
         request.httpBody = try JSONSerialization.data(withJSONObject: body)
         let (data, response) = try await URLSession.shared.data(for: request)
-
+        
         if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
             return true
         } else {
@@ -586,7 +592,7 @@ class APIService {
             throw NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: errorMsg])
         }
     }
-
+    
     func getLocalProfileImageURL(adminID: Int) -> URL? {
         let fileManager = FileManager.default
         if let docsDir = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first {
@@ -603,11 +609,11 @@ class APIService {
         guard let docsDir = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else {
             return false
         }
-
+        
         let fileURL = docsDir.appendingPathComponent("profile_\(adminID).jpg")
         do {
             try imageData.write(to: fileURL)
-
+            // Update token to refresh image across the app
             DispatchQueue.main.async {
                 UserDefaults.standard.set(Date().timeIntervalSince1970, forKey: "profileImageUpdateToken")
             }
@@ -619,7 +625,7 @@ class APIService {
     }
 }
 
-
+// MARK: - Models
 struct ServerBackupItem: Identifiable, Codable {
     let name: String
     let type: String
@@ -648,7 +654,7 @@ struct Admin: Identifiable, Codable {
     let bank_account: String?
     let account_name: String?
     let dorm_code: String?
-
+    
     init(id: Int, username: String, role: String, email: String, profile_image: String? = nil, backup_email: String? = nil, promptpay_id: String? = nil, payment_type: String? = "promptpay", bank_account: String? = nil, account_name: String? = nil, dorm_code: String? = nil) {
         self.id = id
         self.username = username

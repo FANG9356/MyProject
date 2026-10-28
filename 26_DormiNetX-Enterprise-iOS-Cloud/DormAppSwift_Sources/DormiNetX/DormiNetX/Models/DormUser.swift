@@ -5,7 +5,7 @@ import SwiftData
 final class DormUser: Identifiable {
     @Attribute(.unique) var id: UUID = UUID()
     var serverId: Int?
-
+    
     var prefix: String = ""
     var firstName: String = ""
     var lastName: String = ""
@@ -28,12 +28,12 @@ final class DormUser: Identifiable {
     var additionalAppliances: String = ""
     var additionalApplianceFee: Double = 0.0
     var additionalDetails: String = ""
-
-
+    
+    // Sync Metadata
     var lastUpdated: Date = Date()
     var isDirty: Bool = false
     var isDeletedLocally: Bool = false
-
+    
     init(serverId: Int? = nil, firstName: String = "", lastName: String = "") {
         self.serverId = serverId
         self.firstName = firstName

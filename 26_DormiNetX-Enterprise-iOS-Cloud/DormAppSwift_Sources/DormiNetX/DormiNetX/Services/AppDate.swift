@@ -14,11 +14,11 @@ enum AppDate {
         let appLanguage = UserDefaults.standard.string(forKey: "appLanguageCode") ?? "system"
         let systemIsThai = Locale.autoupdatingCurrent.language.languageCode?.identifier == "th"
         let isThai = (appLanguage == "system" ? systemIsThai : (appLanguage == "th"))
-
+        
         if locale == "th_TH" {
             formatter.locale = appLanguage == "system" ? Locale.autoupdatingCurrent : Locale(identifier: appLanguage)
             formatter.calendar = isThai ? Calendar(identifier: .buddhist) : gregorianCalendar
-
+            // Adjust format for English (e.g., remove "เวลา" and "น.")
             var adjustedFormat = format
             if !isThai {
                 adjustedFormat = adjustedFormat.replacingOccurrences(of: " เวลา ", with: " ")

@@ -1,6 +1,6 @@
 import SwiftUI
 
-
+/// ช่องค้นหามาตรฐานสำหรับหน้าจัดการข้อมูล ใช้รูปแบบเดียวกับหน้าทะเบียนลูกบ้าน
 struct ManagementSearchField: View {
     @Environment(\.colorScheme) private var colorScheme
     @Binding var text: String

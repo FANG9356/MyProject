@@ -15,7 +15,7 @@
 ## 2. Dynamic Type & Text Scaling
 - ปัจจุบันแอปมีการใช้ฟอนต์ `SukhumvitSet` ผ่าน `.font(.custom(..., size: ...))` เป็นหลัก
 - **ปัญหา:** การกำหนดขนาดแบบ Hardcode `size: 16` จะไม่รองรับ Dynamic Type (เมื่อผู้ใช้ปรับตัวอักษรใหญ่ใน iOS Settings)
-- **ข้อเสนอแนะ:**
+- **ข้อเสนอแนะ:** 
   - ใช้ `relativeTo: .body` เช่น `.font(.custom("SukhumvitSet-Medium", size: 16, relativeTo: .body))`
   - ตรวจสอบไม่ให้กล่องข้อความถูกตัด (Truncated) เมื่อตัวอักษรใหญ่ขึ้น
 

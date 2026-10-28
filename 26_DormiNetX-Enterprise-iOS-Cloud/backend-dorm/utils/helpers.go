@@ -75,7 +75,7 @@ func SaveUploadedFile(file multipart.File, destPath string) error {
 	defer dst.Close()
 
 	if _, err := io.Copy(dst, file); err != nil {
-
+		// Attempt to remove the partially written file on error
 		os.Remove(destPath)
 		return err
 	}

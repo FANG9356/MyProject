@@ -13,11 +13,11 @@ import (
 	"time"
 )
 
-
+// EnsureTLSCerts checks if cert and key files exist. If not, it generates self-signed ones.
 func EnsureTLSCerts(certPath, keyPath string) error {
 	if _, err := os.Stat(certPath); err == nil {
 		if _, err := os.Stat(keyPath); err == nil {
-			return nil
+			return nil // Certs already exist
 		}
 	}
 
@@ -40,7 +40,7 @@ func EnsureTLSCerts(certPath, keyPath string) error {
 			Organization: []string{"DormiNet Local Secure Server"},
 		},
 		NotBefore:             time.Now(),
-		NotAfter:              time.Now().Add(365 * 24 * time.Hour),
+		NotAfter:              time.Now().Add(365 * 24 * time.Hour), // Valid for 1 year
 		KeyUsage:              x509.KeyUsageKeyEncipherment | x509.KeyUsageDigitalSignature,
 		ExtKeyUsage:           []x509.ExtKeyUsage{x509.ExtKeyUsageServerAuth},
 		BasicConstraintsValid: true,

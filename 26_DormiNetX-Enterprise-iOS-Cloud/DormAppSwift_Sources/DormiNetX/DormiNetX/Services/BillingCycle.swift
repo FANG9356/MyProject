@@ -26,7 +26,10 @@ struct BillingCycle {
         AppDate.date(fromStorageDate: value)
     }
 
-
+    /// Returns the canonical Gregorian storage key for month values created by
+    /// both current app versions (`2026-09`) and legacy Thai-calendar versions
+    /// (`2569-09`). The stored payment is left untouched; normalization is used
+    /// when grouping and presenting billing history.
     static func normalizedMonthKey(_ value: String) -> String? {
         AppDate.normalizedMonthKey(value)
     }

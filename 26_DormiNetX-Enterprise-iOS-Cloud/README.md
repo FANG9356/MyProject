@@ -1,6 +1,4 @@
-# 26_DormiNetX-Enterprise-iOS-Cloud
-[![Download Folder](https://img.shields.io/badge/Download-ZIP_Folder-238636?style=for-the-badge&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/26_DormiNetX-Enterprise-iOS-Cloud)
-*ดาวน์โหลดเฉพาะโฟลเดอร์นี้เป็นไฟล์ ZIP (หรือ [ดาวน์โหลดผ่าน DownGit](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/FANG9356/MyProject/tree/main/26_DormiNetX-Enterprise-iOS-Cloud))*
+# DormiNetX — Enterprise Local-First Dormitory Management System
 
 [![iOS Build & Test](https://img.shields.io/badge/iOS-SwiftUI%20%7C%20SwiftData-orange?logo=swift)](https://developer.apple.com/swift/)
 [![Backend](https://img.shields.io/badge/Backend-Go%20%7C%20SQLite-00ADD8?logo=go)](https://golang.org/)
@@ -9,9 +7,6 @@
 [![Release Version](https://img.shields.io/badge/Release-v1.0.0-blue)](https://github.com/FANG9356/dorm_ios_version/releases/tag/v1.0.0)
 
 **DormiNetX** คือระบบบริหารจัดการหอพักและอพาร์ตเมนต์ครบวงจร ออกแบบด้วยสถาปัตยกรรม **Local-First** สำหรับ iPhone และ iPad ทำงานร่วมกับ **Go High-Performance Backend**, **Multi-Tenant SQLite Database**, **LINE Official Account (OA)**, และ **LIFF Web Application** ระบบให้ความสำคัญสูงสุดกับความต่อเนื่องในการทำงานแบบออฟไลน์ ความถูกต้องของข้อมูลทางบัญชี และมาตรฐานความปลอดภัยระดับองค์กร
-
-## ผู้พัฒนา
-Phakhaphon Sukmee
 
 ---
 
@@ -25,7 +20,6 @@ Phakhaphon Sukmee
 7. [โครงสร้างโปรเจกต์ (Project Directory Structure)](#7-โครงสร้างโปรเจกต์-project-directory-structure)
 8. [คู่มือการติดตั้งและทดสอบ (Getting Started & Operations)](#8-คู่มือการติดตั้งและทดสอบ-getting-started--operations)
 9. [สถานะความพร้อมและการส่งมอบงาน (Release Readiness: 100% Complete)](#9-สถานะความพร้อมและการส่งมอบงาน-release-readiness-100-complete)
-10. [การทดสอบแบบจำลองอัตโนมัติ (Simulation Testing)](#10-การทดสอบแบบจำลองอัตโนมัติ-simulation-testing)
 
 ---
 
@@ -85,11 +79,11 @@ Phakhaphon Sukmee
 - **Glassmorphism & Material Design:** ใช้ Thin-material Card, Frosted Glass, และ Hierarchy ความลึกที่ทันสมัย
 - **Monochrome Status Timeline:** ระบบการ์ดแจ้งซ่อมและบิลใช้แถบแสดงขั้นตอนสีเทากลาง เพื่อความสะอาดตาและลด Cognitive Load ของผู้ใช้งาน
 - **Adaptive Themes & Customization:** รองรับ Dark Mode / Light Mode สมบูรณ์แบบ พร้อมระบบเปลี่ยนไอคอนแอป (Alternate App Icons) และพื้นหลังวิดีโอ/ภาพเคลื่อนไหว
-- **Date & Calendar Normalization:** โมดูล `AppDate` จัดการแปลงปี พ.ศ. และ ค.ศ. แบบอัตโนมัติ แก้ปัญหาปีผิดเพี้ยน
+- **Date & Calendar Normalization:** โมดูล `AppDate` จัดการแปลงปี พ.ศ. และ ค.ศ. แบบอัตโนมัติ แก้ปัญหาปีผิดเพี้ยน (ป้องกันบั๊กปี ค.ศ. 3112)
 
 ### 2.4 ระบบรองรับหลายภาษา 100% (Dynamic Multi-Language Engine)
-- ทำงานผ่าน **String Catalog (`Localizable.xcstrings`)** ครอบคลุมคำศัพท์ทั้งระบบกว่า 670 คีย์
-- รองรับ 4 ภาษาหลัก: **ไทย (Thai), อังกฤษ (English), พม่า (Burmese), และ จีน (Chinese)**
+- ทำงานผ่าน **String Catalog (`Localizable.xcstrings`)** ครอบคลุมคำศัพท์ทั้งระบบกว่า 445 คีย์
+- รองรับ 4 ภาษาหลัก: **ไทย (Thai), อังกฤษ (English), จีน (Chinese), และ ญี่ปุ่น (Japanese)**
 - รองรับการสลับภาษาแบบ Dynamic Runtime Switching โดยไม่ต้องปิดหรือรีสตาร์ตแอป
 
 ### 2.5 การทดสอบ UI อัตโนมัติ (UI Automation Target)
@@ -187,7 +181,7 @@ Backend พัฒนาด้วยภาษา **Go (Golang)** ซึ่งใ�
 │  Maintenance E2E     │ TestMaintenanceE2E (6 Flow) │ PASS (100%)       │
 │  iOS Unit & Safety   │ MaintenanceWorkflowTests    │ PASS (23/23)      │
 │  iOS UI Automation   │ DormiNetXUITests Target     │ Build Succeeded   │
-│  Simulation Suite    │ node test_simulation.js     │ PASS (100%)       │
+│  CI/CD Automation    │ GitHub Actions (ci.yml)     │ Configured        │
 └────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -206,7 +200,7 @@ Backend พัฒนาด้วยภาษา **Go (Golang)** ซึ่งใ�
 ขนาดของ Source Code ทั้งระบบถูก Clean ให้มีความกะทัดรัดเพียง **~39.5 MB** ปราศจาก Build Artifacts และไฟล์ขยะ:
 
 ```text
-26_DormiNetX-Enterprise-iOS-Cloud/
+/Volumes/FangB/dorm_project
 ├── DormAppSwift_Sources/
 │   └── DormiNetX/
 │       ├── DormiNetX.xcodeproj          # Xcode Project Configuration
@@ -216,13 +210,14 @@ Backend พัฒนาด้วยภาษา **Go (Golang)** ซึ่งใ�
 │       │   ├── Views/                   # หน้าจอแสดงผล (Dashboard, Rooms, Tenants, Billing)
 │       │   ├── Components/              # UI Components ส่วนกลาง (Cards, Sheets, Buttons)
 │       │   ├── Services/                # SyncManager, KeychainService, LocalizationManager
-│       │   └── Localizable.xcstrings    # String Catalog แปลภาษา 4 ภาษา (TH, EN, MY, ZH)
+│       │   └── Resources/
+│       │       └── Localizable.xcstrings# String Catalog แปลภาษา 4 ภาษา (TH, EN, ZH, JA)
 │       ├── DormiNetXTests/              # ชุดทดสอบ Unit Tests และ Data Safety Tests
 │       └── DormiNetXUITests/            # ชุดทดสอบ UI Automation Tests
 │
 ├── backend-dorm/                        # ซอร์สโค้ดฝั่งหลังบ้าน (Go / SQLite)
 │   ├── handlers/                        # API Controllers & Handlers
-│   │   ├── api_payments.go              # Financial Ledger (Void, Refund, Adjust)
+│   │   ├── api_financial_ledger.go      # Financial Ledger (Void, Refund, Adjust)
 │   │   ├── api_maintenances.go          # Maintenance Materialization & Status
 │   │   ├── line_bot.go                  # LINE Webhook, Flex Messages & Outbox Sender
 │   │   ├── line_snapshot.go             # LINE to iOS Snapshot Publisher
@@ -232,9 +227,7 @@ Backend พัฒนาด้วยภาษา **Go (Golang)** ซึ่งใ�
 │   └── scripts/                         # สคริปต์ Safe Deploy และ Maintenance Tooling
 │
 ├── docs/                                # เอกสารคู่มือ runbook และการดูแลระบบ
-├── project-tracking/                    # เอกสารติดตามสถานะและรายงานกิจกรรมแบบ Append-Only
-├── standalone_demo.html                 # ตัวอย่างการใช้งานและจำลองหน้าต่างโปรแกรมแบบ Interactive
-└── test_simulation.js                   # สคริปต์ทดสอบการทำงานระบบอัตโนมัติ
+└── project-tracking/                    # เอกสารติดตามสถานะและรายงานกิจกรรมแบบ Append-Only
 ```
 
 ---
@@ -272,7 +265,6 @@ Backend พัฒนาด้วยภาษา **Go (Golang)** ซึ่งใ�
    ```
 2. รันเฉพาะชุดทดสอบ Maintenance E2E Integration:
    ```bash
-   cd backend-dorm
    go test -v -run TestMaintenanceE2E ./handlers
    ```
 
@@ -286,17 +278,3 @@ Backend พัฒนาด้วยภาษา **Go (Golang)** ซึ่งใ�
 - **Engineering & Concurrency Stability (100%):** ผ่านการทดสอบระดับ Automated Quality Gates ทุกระดับ ปราศจาก Data Race (ผ่าน Go Race Detector), ตรวจสอบโค้ดผ่าน Go Vet 100% และไม่มีปัญหา Memory Leak
 - **Security Hardening (100%):** ปฏิบัติตามมาตรฐานความปลอดภัยระดับองค์กร แยกฐานข้อมูล Multi-Tenant SQLite, จัดเก็บ Token ใน Apple Keychain, บังคับ HTTPS/TLS 1.3 และมี Immutable Financial Audit Trail บันทึกทุกธุรกรรม
 - **Automated E2E Verification (100%):** ผ่านชุดทดสอบเชิงบูรณาการ Maintenance E2E Automated Integration Suite ครบทั้ง 6 สถานการณ์สำคัญ และผูก UI Automation Test Target เรียบร้อย
-
----
-
-## 10. การทดสอบแบบจำลองอัตโนมัติ (Simulation Testing)
-
-สามารถรันชุดทดสอบความถูกต้องของสถาปัตยกรรมและตรรกะระบบได้ทันที:
-```bash
-node test_simulation.js
-```
-
-หรือเปิดหน้าจอจำลองการทำงานแบบ Interactive ผ่านเบราว์เซอร์:
-```bash
-open standalone_demo.html
-```

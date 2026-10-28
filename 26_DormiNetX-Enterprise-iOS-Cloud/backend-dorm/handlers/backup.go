@@ -56,7 +56,7 @@ func PerformRestore(db *sql.DB, filePath string) error {
 		if err != nil {
 			continue
 		}
-		lr := io.LimitReader(rc, 50<<20)
+		lr := io.LimitReader(rc, 50<<20) // Limit to 50MB per file to prevent Zip Bombs
 		content, err := io.ReadAll(lr)
 		rc.Close()
 		if err != nil {
@@ -190,10 +190,10 @@ func PerformRestore(db *sql.DB, filePath string) error {
 func StartBackupScheduler(db *sql.DB, dbPath, uploadsDir, backupBaseDir string) {
 	for {
 		now := time.Now()
-
+		// Get next 10 PM (22:00:00)
 		nextBackupTime := time.Date(now.Year(), now.Month(), now.Day(), 22, 0, 0, 0, now.Location())
 		if now.After(nextBackupTime) {
-
+			// If 10 PM today has already passed, schedule for 10 PM tomorrow
 			nextBackupTime = nextBackupTime.Add(24 * time.Hour)
 		}
 
@@ -224,7 +224,10 @@ type serverBackupManifest struct {
 	Files         []serverBackupFile `json:"files"`
 }
 
-
+// PerformServerBackup creates consistent SQLite snapshots of the master and
+// every tenant database. It is deliberately separate from the legacy JSON
+// export, which expects users/payments in the master DB and cannot represent a
+// multi-tenant installation.
 func PerformServerBackup(master *sql.DB, masterPath, tenantDir, uploadsDir, backupDir string) (string, error) {
 	if err := os.MkdirAll(backupDir, 0700); err != nil {
 		return "", fmt.Errorf("create server backup directory: %w", err)

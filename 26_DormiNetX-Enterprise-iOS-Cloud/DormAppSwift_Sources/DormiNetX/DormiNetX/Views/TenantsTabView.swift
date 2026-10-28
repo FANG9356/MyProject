@@ -12,20 +12,20 @@ struct TenantsTabView: View {
     @State private var userToDelete: APIUser? = nil
     @Binding var showAddSheet: Bool
     @State private var editingUser: APIUser? = nil
-
+    
     var body: some View {
-
+        // บังคับ ZStack ให้กางเต็มจอ 100% เสมอ และจัดตำแหน่งของในนี้ให้อยู่มุมล่างขวา
         ZStack(alignment: .bottomTrailing) {
-
-
+            
+            // 1. ล็อกพื้นหลังให้เต็มจอ เพื่อดันให้ ZStack ไม่หดตัว
             Color.clear
                 .ignoresSafeArea()
                 .contentShape(Rectangle())
                 .onTapGesture {
                     hideKeyboard()
                 }
-
-
+            
+            // 2. เนื้อหาหลัก
             ScrollView {
                 VStack(spacing: 0) {
                     VStack(alignment: .leading, spacing: 6) {
@@ -40,10 +40,10 @@ struct TenantsTabView: View {
                     .padding(.horizontal, 20)
                     .padding(.top, 112)
                     .padding(.bottom, 16)
-
-
+                    
+                    // MARK: - Liquid Glass Control Bar
                     VStack(spacing: 0) {
-
+                        // Search + Sort in one row
                         HStack(spacing: 12) {
                             HStack(spacing: 8) {
                                 Image(systemName: "magnifyingglass")
@@ -63,12 +63,12 @@ struct TenantsTabView: View {
                             }
                             .padding(.horizontal, 12)
                             .padding(.vertical, 10)
-
+                            
                             Divider()
                                 .frame(height: 24)
                                 .opacity(colorScheme == .dark ? 0.35 : 0.16)
-
-
+                            
+                            // Sort Menu
                             Menu {
                                 Button { viewModel.sortBy = "room_asc" } label: {
                                     Label("ห้อง 1 → 9", systemImage: viewModel.sortBy == "room_asc" ? "checkmark" : "arrow.up")
@@ -95,12 +95,12 @@ struct TenantsTabView: View {
                             }
                         }
                         .frame(height: 48)
-
+                        
                         Divider()
                             .opacity(colorScheme == .dark ? 0.35 : 0.12)
                             .padding(.horizontal, 12)
-
-
+                        
+                        // Filter Tabs
                         LoupeFilterTabs(viewModel: viewModel)
                     }
                     .background(
@@ -115,8 +115,8 @@ struct TenantsTabView: View {
                     .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
                     .padding(.horizontal, 16)
                     .padding(.bottom, 12)
-
-
+                    
+                    // MARK: - Error
                     if let error = viewModel.errorMessage {
                         Text(error)
                             .foregroundColor(.red)
@@ -124,8 +124,8 @@ struct TenantsTabView: View {
                             .padding(.horizontal, 20)
                             .padding(.bottom, 8)
                     }
-
-
+                    
+                    // MARK: - Content
                     if viewModel.isLoading {
                         VStack(spacing: 10) {
                             ForEach(0..<5, id: \.self) { _ in
@@ -156,7 +156,7 @@ struct TenantsTabView: View {
                             hideKeyboard()
                         }
                     } else {
-
+                        // Results count
                         HStack {
                             Text("รายการลูกบ้าน")
                                 .font(.custom("SukhumvitSet-Bold", size: 16))
@@ -175,7 +175,7 @@ struct TenantsTabView: View {
                         .padding(.horizontal, 20)
                         .padding(.top, 4)
                         .padding(.bottom, 8)
-
+                        
                         LazyVStack(spacing: 12) {
                             ForEach(viewModel.filteredUsers) { user in
                                 PremiumTenantCard(user: user, viewModel: viewModel) {
@@ -190,19 +190,19 @@ struct TenantsTabView: View {
                         }
                         .padding(.horizontal, 16)
                     }
-
-                    Spacer().frame(height: 120)
+                    
+                    Spacer().frame(height: 120) // ดันให้เนื้อหาพ้นปุ่มลอยด้านล่าง
                 }
             }
             .scrollDismissesKeyboard(.interactively)
             .simultaneousGesture(TapGesture().onEnded {
                 hideKeyboard()
             })
-
+            // บังคับ ScrollView ให้เต็มจอ ป้องกันการหดตัว
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
             .onAppear { Task { await viewModel.fetchUsers(modelContext: modelContext) } }
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing) // ล็อกกรอบใหญ่สุดอีกชั้น พร้อมยึดมุมขวาล่าง
         .sheet(item: $selectedUser) { user in
             TenantDetailSheet(user: user, viewModel: viewModel) {
                 editingUser = user
@@ -246,34 +246,34 @@ struct TenantsTabView: View {
     }
 }
 
-
+// MARK: - Loupe Filter Tabs (เพิ่มความสมูทละมุนตา)
 struct LoupeFilterTabs: View {
     @ObservedObject var viewModel: TenantsViewModel
-
+    
     @State private var dragX: CGFloat = 0
     @State private var isDragging = false
     @State private var hoveredTab: String? = nil
     @State private var tabFrames: [String: CGRect] = [:]
-
+    
     let tabs = [
         ("all", "ทั้งหมด", Color.primary),
         ("active", "พักอาศัย", Color.primary),
         ("booking", "จอง", Color.primary),
         ("inactive", "ย้ายออก", Color.primary)
     ]
-
+    
     var body: some View {
         HStack(spacing: 0) {
             ForEach(tabs, id: \.0) { tab in
                 let count = getCount(for: tab.0)
                 let isBeingHovered = isDragging && hoveredTab == tab.0
-
+                
                 Button {
-
+                    // เพิ่มการสั่นเบาๆ ให้รู้สึกพรีเมียม
                     let impact = UIImpactFeedbackGenerator(style: .light)
                     impact.impactOccurred()
-
-
+                    
+                    // ปรับ Animation ให้นุ่มนวลขึ้น (Smooth Spring)
                     withAnimation(.spring(response: 0.35, dampingFraction: 0.75, blendDuration: 0.1)) {
                         viewModel.activeTab = tab.0
                     }
@@ -308,7 +308,7 @@ struct LoupeFilterTabs: View {
                 ZStack {
                     if isDragging, let current = hoveredTab, let tabData = tabs.first(where: { $0.0 == current }) {
                         let count = getCount(for: tabData.0)
-
+                        
                         HStack(spacing: 4) {
                             Text(tabData.1)
                                 .font(.custom("SukhumvitSet-Bold", size: 14))
@@ -332,7 +332,7 @@ struct LoupeFilterTabs: View {
                                 .stroke(Color.primary.opacity(0.18), lineWidth: 1)
                         )
                         .position(x: dragX, y: geo.size.height / 2)
-
+                        // ให้ตัวแว่นขยายสไลด์ตามนิ้วแบบติดสปริงนุ่มๆ
                         .animation(.interactiveSpring(response: 0.25, dampingFraction: 0.8), value: dragX)
                     }
                 }
@@ -344,7 +344,7 @@ struct LoupeFilterTabs: View {
                 .onChanged { value in
                     isDragging = true
                     dragX = value.location.x
-
+                    
                     if let closest = tabFrames.min(by: { abs($0.value.midX - value.location.x) < abs($1.value.midX - value.location.x) }) {
                         if value.location.x > 0 {
                             if hoveredTab != closest.key {
@@ -358,7 +358,7 @@ struct LoupeFilterTabs: View {
                 .onEnded { value in
                     isDragging = false
                     if let selected = hoveredTab {
-
+                        // ตอนปล่อยนิ้วก็ให้นุ่มนวลเหมือนตอนแตะ
                         withAnimation(.spring(response: 0.35, dampingFraction: 0.75, blendDuration: 0.1)) {
                             viewModel.activeTab = selected
                         }
@@ -367,7 +367,7 @@ struct LoupeFilterTabs: View {
                 }
         )
     }
-
+    
     private func getCount(for tab: String) -> Int {
         switch tab {
         case "all": return viewModel.allCount
@@ -379,21 +379,21 @@ struct LoupeFilterTabs: View {
     }
 }
 
-
+// MARK: - Liquid Filter Tab
 struct LiquidFilterTab: View {
     let title: String
     let count: Int
     let isActive: Bool
     let color: Color
     @Environment(\.colorScheme) private var colorScheme
-
+    
     var body: some View {
         HStack(spacing: 4) {
             Text(LocalizedStringKey(title))
                 .font(.custom("SukhumvitSet-Bold", size: 13))
                 .lineLimit(1)
                 .minimumScaleFactor(0.8)
-
+            
             Text("\(count)")
                 .font(.system(size: 11, weight: .bold, design: .rounded))
                 .padding(.horizontal, 5)
@@ -416,7 +416,7 @@ struct LiquidFilterTab: View {
                 .stroke(isActive ? activeBorderColor : Color.clear, lineWidth: 1)
         )
         .contentShape(Rectangle())
-
+        // ทำให้เวลาเฟดเปลี่ยนสีมันนุ่มและดูเป็นธรรมชาติมากขึ้น
         .animation(.easeInOut(duration: 0.25), value: isActive)
     }
 
@@ -437,7 +437,7 @@ struct LiquidFilterTab: View {
     }
 }
 
-
+// MARK: - Premium Tenant Card
 struct PremiumTenantCard: View {
     let user: APIUser
     let viewModel: TenantsViewModel
@@ -446,7 +446,7 @@ struct PremiumTenantCard: View {
     let onDelete: () -> Void
     @State private var isPressed = false
     @Environment(\.colorScheme) private var colorScheme
-
+    
     var body: some View {
         Button(action: onTap) {
             HStack(spacing: 14) {
@@ -469,13 +469,13 @@ struct PremiumTenantCard: View {
                     RoundedRectangle(cornerRadius: 16, style: .continuous)
                         .stroke(roomBadgeBorderColor, lineWidth: 1)
                 )
-
+                
                 VStack(alignment: .leading, spacing: 5) {
                     Text("\(user.prefix ?? "")\(user.first_name ?? "") \(user.last_name ?? "")")
                         .font(.custom("SukhumvitSet-Bold", size: 16))
                         .foregroundColor(.primary)
                         .lineLimit(1)
-
+                    
                     HStack(spacing: 6) {
                         Image(systemName: "phone.fill")
                             .font(.custom("SukhumvitSet-Medium", size: 10))
@@ -492,9 +492,9 @@ struct PremiumTenantCard: View {
                             .lineLimit(1)
                     }
                 }
-
+                
                 Spacer()
-
+                
                 VStack(alignment: .trailing, spacing: 8) {
                     HStack(spacing: 6) {
                         Circle()
@@ -508,11 +508,11 @@ struct PremiumTenantCard: View {
                     .padding(.horizontal, 9)
                     .padding(.vertical, 5)
                     .background(Capsule().fill(statusChipFill))
-
+                    
                     if user.isDirty == true || user.isDeletedLocally == true {
                         SyncStatusBadge(isDirty: user.isDirty ?? false, isDeletedLocally: user.isDeletedLocally ?? false)
                     }
-
+                    
                     Image(systemName: "chevron.right")
                         .font(.custom("SukhumvitSet-SemiBold", size: 11))
                         .foregroundColor(.secondary.opacity(0.5))
@@ -583,7 +583,7 @@ struct PremiumTenantCard: View {
     }
 }
 
-
+// MARK: - Tenant Detail Sheet
 struct TenantDetailSheet: View {
     let user: APIUser
     let viewModel: TenantsViewModel
@@ -594,7 +594,7 @@ struct TenantDetailSheet: View {
     @Environment(\.colorScheme) private var colorScheme
     @State private var showEditSheet = false
     @State private var showDeleteAlert = false
-
+    
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -605,7 +605,7 @@ struct TenantDetailSheet: View {
                             .foregroundColor(.primary)
                             .lineLimit(1)
                             .minimumScaleFactor(0.7)
-
+                        
                         HStack(spacing: 6) {
                             Circle()
                                 .fill(viewModel.statusColor(displayUser.status))
@@ -620,7 +620,7 @@ struct TenantDetailSheet: View {
                     }
                     .frame(maxWidth: .infinity)
                     .padding(.top, 28)
-
+                    
                     Button {
                         showEditSheet = true
                     } label: {
@@ -660,7 +660,7 @@ struct TenantDetailSheet: View {
                         }
                         .padding(.horizontal, 20)
                     }
-
+                    
                     VStack(spacing: 14) {
                         DetailSection(title: "ข้อมูลส่วนตัว") {
                             DetailRow(icon: "person.fill", label: "ชื่อ-นามสกุล", value: "\(displayUser.prefix ?? "")\(displayUser.first_name ?? "") \(displayUser.last_name ?? "")")
@@ -668,7 +668,7 @@ struct TenantDetailSheet: View {
                             DetailRow(icon: "creditcard.fill", label: "เลขบัตรประชาชน", value: maskNationalID(displayUser.national_id))
                             DetailRow(icon: "map.fill", label: "ที่อยู่", value: displayUser.address ?? "-")
                         }
-
+                        
                         DetailSection(title: "ข้อมูลสัญญา") {
                             DetailRow(icon: "calendar", label: "วันเข้าอยู่", value: formatDate(displayUser.move_in_date))
                             if displayUser.status == "จอง" {
@@ -685,14 +685,14 @@ struct TenantDetailSheet: View {
                             }
                             DetailRow(icon: "photo.on.rectangle", label: "สลิปแนบ", value: (displayUser.booking_slips?.isEmpty == false) ? "\(displayUser.booking_slips?.count ?? 0) ไฟล์" : "-")
                         }
-
+                        
                         if let appliances = displayUser.additional_appliances, !appliances.isEmpty {
                             DetailSection(title: "เครื่องใช้ไฟฟ้าเพิ่มเติม") {
                                 DetailRow(icon: "bolt.fill", label: "รายการ", value: appliances)
                                 DetailRow(icon: "banknote.fill", label: "ค่าใช้จ่ายเพิ่ม", value: String(format: "฿%.0f/เดือน", displayUser.additional_appliance_fee ?? 0))
                             }
                         }
-
+                        
                         if let details = displayUser.additional_details, !details.isEmpty {
                             DetailSection(title: "หมายเหตุ") {
                                 Text(details)
@@ -702,7 +702,7 @@ struct TenantDetailSheet: View {
                         }
                     }
                     .padding(.horizontal, 20)
-
+                    
                     Spacer().frame(height: 30)
                 }
             }
@@ -759,7 +759,7 @@ struct TenantDetailSheet: View {
     private var deleteBorderColor: Color {
         colorScheme == .dark ? Color.red.opacity(0.25) : Color.red.opacity(0.18)
     }
-
+    
     private func maskNationalID(_ id: String?) -> String {
         guard let id = id, id.count >= 6 else { return id ?? "-" }
         let prefix = id.prefix(2)
@@ -767,12 +767,12 @@ struct TenantDetailSheet: View {
         let masked = String(repeating: "•", count: id.count - 6)
         return "\(prefix)\(masked)\(suffix)"
     }
-
+    
     private func formatDate(_ dateStr: String?) -> String {
         guard let dateStr else { return "-" }
         return AppDate.thaiDate(dateStr)
     }
-
+    
     private func paymentMethodText(_ method: String?) -> String {
         switch method {
         case "full_payment": return "ชำระเต็มจำนวน"
@@ -795,7 +795,7 @@ struct TenantDetailSheet: View {
     }
 }
 
-
+// MARK: - Add / Edit Tenant Form Sheet
 struct TenantFormSheet: View {
     @ObservedObject var viewModel: TenantsViewModel
     let editUser: APIUser?
@@ -804,7 +804,7 @@ struct TenantFormSheet: View {
     @Query(sort: \Room.roomNumber) private var rooms: [Room]
     @Query(sort: \RoomType.name) private var roomTypes: [RoomType]
     @Query(sort: \DormUser.roomNumber) private var localUsers: [DormUser]
-
+    
     @State private var prefix = "นาย"
     @State private var firstName = ""
     @State private var lastName = ""
@@ -843,9 +843,9 @@ struct TenantFormSheet: View {
         ("bank_transfer", "โอนผ่านธนาคาร"),
         ("cash", "เงินสด")
     ]
-
+    
     var isEditing: Bool { editUser != nil }
-
+    
     var body: some View {
         NavigationStack {
             Form {
@@ -857,7 +857,7 @@ struct TenantFormSheet: View {
                     }
                     .pickerStyle(.menu)
                     .tint(.primary)
-
+                    
                     LabeledContent("ชื่อ") {
                         TextField("ชื่อ", text: $firstName)
                             .multilineTextAlignment(.trailing)
@@ -886,7 +886,7 @@ struct TenantFormSheet: View {
                             .limitedText($address, maxLength: 180, trimNewlines: true)
                     }
                 }
-
+                
                 Section(header: Text("ข้อมูลห้องพัก")) {
                     if selectableRooms.isEmpty {
                         Text("ยังไม่มีห้องว่างให้เลือก กรุณาสร้างประเภทห้องในหน้าตั้งราคา แล้วเพิ่มห้องในหน้าจัดการห้องพักก่อน")
@@ -932,7 +932,7 @@ struct TenantFormSheet: View {
                             .foregroundStyle(.secondary)
                         }
                     }
-
+                    
                     Picker("สถานะ", selection: $status) {
                         Text("กำลังพักอาศัย").tag("กำลังพักอาศัย")
                         Text("จอง").tag("จอง")
@@ -941,17 +941,17 @@ struct TenantFormSheet: View {
                     .pickerStyle(.menu)
                     .tint(.primary)
                 }
-
+                
                 Section(header: Text("ข้อมูลสัญญา")) {
                     DatePicker(status == "จอง" ? LocalizedStringKey("วันที่คาดว่าจะเข้าอยู่") : LocalizedStringKey("วันเข้าอยู่"), selection: $moveInDate, displayedComponents: .date)
 
                     if status == "จอง" {
                         DatePicker("หมดเขตจอง", selection: $bookingEndDate, displayedComponents: .date)
                     }
-
+                    
                     if status != "จอง" {
                         Toggle("ไม่กำหนดระยะเวลาสัญญา", isOn: $indefiniteContract.animation(.easeInOut(duration: 0.2)))
-
+                        
                         if !indefiniteContract {
                             DatePicker("วันหมดสัญญา", selection: $contractEndDate, displayedComponents: .date)
                         }
@@ -1019,7 +1019,7 @@ struct TenantFormSheet: View {
                         tenantSlipPickerContent
                     }
                 }
-
+                
                 if let err = errorText {
                     Section {
                         Text(err)
@@ -1027,7 +1027,7 @@ struct TenantFormSheet: View {
                             .font(.custom("SukhumvitSet-Text", size: 13))
                     }
                 }
-
+                
                 Section {
                     Button {
                         Task { await submitForm() }
@@ -1082,7 +1082,7 @@ struct TenantFormSheet: View {
                     installmentWasEdited = true
                     bookingSlipPaths = u.booking_slips ?? []
                     indefiniteContract = (u.indefinite_contract ?? 0) == 1
-
+                    
                     if let d = u.move_in_date, let date = AppDate.date(fromStorageDate: d) { moveInDate = date }
                     if let d = u.booking_end_date, let date = AppDate.date(fromStorageDate: d) { bookingEndDate = date }
                     if let d = u.contract_end_date, let date = AppDate.date(fromStorageDate: d) { contractEndDate = date }
@@ -1525,7 +1525,7 @@ struct TenantFormSheet: View {
         let month = monthKey(for: moveInDate)
         let userID = stableLocalUserID(for: user)
         let localPayments = try modelContext.fetch(FetchDescriptor<Payment>())
-
+        // Issued bills are edited in Finance, never regenerated by a tenant profile edit.
         if isEditing && localPayments.contains(where: { isPayment($0, for: user, userID: userID) }) {
             return
         }
@@ -1758,18 +1758,18 @@ struct TenantFormSheet: View {
     }
 }
 
-
+// MARK: - Detail Section
 struct DetailSection<Content: View>: View {
     let title: String
     @ViewBuilder let content: Content
     @Environment(\.colorScheme) private var colorScheme
-
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
             Text(LocalizedStringKey(title))
                 .font(.custom("SukhumvitSet-Bold", size: 15))
                 .foregroundColor(.primary)
-
+            
             VStack(spacing: 0) {
                 content
             }
@@ -1797,13 +1797,13 @@ struct DetailSection<Content: View>: View {
     }
 }
 
-
+// MARK: - Detail Row
 struct DetailRow: View {
     let icon: String
     let label: String
     let value: String
     @Environment(\.colorScheme) private var colorScheme
-
+    
     var body: some View {
         HStack(alignment: .top, spacing: 12) {
             Image(systemName: icon)
@@ -1811,7 +1811,7 @@ struct DetailRow: View {
                 .foregroundColor(iconColor)
                 .frame(width: 26, height: 26)
                 .background(Circle().fill(iconFillColor))
-
+            
             VStack(alignment: .leading, spacing: 2) {
                 Text(LocalizedStringKey(label))
                     .font(.custom("SukhumvitSet-Text", size: 12))
@@ -1920,13 +1920,13 @@ private struct PaymentMethodOptionRow: View {
     }
 }
 
-
+// MARK: - Form Field Row
 struct FormFieldRow: View {
     let label: String
     let placeholder: String
     @Binding var text: String
     var keyboard: UIKeyboardType = .default
-
+    
     var body: some View {
         HStack {
             Text(LocalizedStringKey(label))
@@ -1941,10 +1941,10 @@ struct FormFieldRow: View {
     }
 }
 
-
+// MARK: - Shimmer Effect
 struct ShimmerModifier: ViewModifier {
     @State private var phase: CGFloat = 0
-
+    
     func body(content: Content) -> some View {
         content
             .overlay(
@@ -1970,7 +1970,7 @@ extension View {
     }
 }
 
-
+// MARK: - Keyboard Dismiss Helper
 extension View {
     func hideKeyboard() {
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)

@@ -99,7 +99,7 @@ func TestPublishLineTenantChangesCreatesAppSnapshot(t *testing.T) {
 		t.Fatalf("maintenance quote approval was not copied to app snapshot: %#v", item)
 	}
 
-
+	// Publishing the exact same tenant state must not generate endless versions.
 	if err := PublishLineTenantChanges(master, tenant, 1); err != nil {
 		t.Fatal(err)
 	}

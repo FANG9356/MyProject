@@ -15,7 +15,8 @@ import (
 
 const maxSyncRequestBytes = 16 << 20
 
-
+// HandleSyncPush accepts a snapshot only if the client's base is still current.
+// One conditional INSERT makes the version check atomic across concurrent writers.
 func HandleSyncPush(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodPost {
@@ -61,8 +62,11 @@ func HandleSyncPush(db *sql.DB) http.HandlerFunc {
 			http.Error(w, "Snapshot account does not match session", http.StatusBadRequest)
 			return
 		}
-
-
+		// Reject workflow-invalid snapshots before the immutable snapshot is
+		// inserted. Otherwise a stale local maintenance record can become the
+		// latest snapshot even though tenant materialization rejects it, leaving
+		// the client checkpoint behind an accepted snapshot that always returns
+		// HTTP 500.
 		if err := validateLineSnapshotForPush(accountID, payload); err != nil {
 			log.Printf("sync push for account %d rejected before storage: %v", accountID, err)
 			http.Error(w, "Newer LINE data conflicts with a local workflow change. Refresh and merge the latest data.", http.StatusConflict)
@@ -92,7 +96,7 @@ func HandleSyncPush(db *sql.DB) http.HandlerFunc {
 			return
 		}
 		if rows == 0 {
-
+			// A retry after a lost response is successful only for the exact same write.
 			var storedChecksum, storedDevice string
 			err := db.QueryRow(`SELECT checksum, device_id FROM sync_snapshots WHERE account_id = ? AND version = ?`, accountID, nextVersion).Scan(&storedChecksum, &storedDevice)
 			if err != nil || storedChecksum != checksum || storedDevice != req.DeviceID {

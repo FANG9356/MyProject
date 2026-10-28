@@ -7,15 +7,15 @@ import SwiftData
 class TenantsViewModel: ObservableObject {
     @Published var users: [APIUser] = []
     @Published var searchText: String = ""
-    @Published var activeTab: String = "all"
+    @Published var activeTab: String = "all"  // all, active, booking, inactive
     @Published var sortBy: String = "room_asc"
     @Published var isLoading: Bool = true
     @Published var errorMessage: String?
-
+    
     var filteredUsers: [APIUser] {
         var result = users
-
-
+        
+        // Filter by tab
         switch activeTab {
         case "active":
             result = result.filter { $0.status == "กำลังพักอาศัย" }
@@ -26,8 +26,8 @@ class TenantsViewModel: ObservableObject {
         default:
             break
         }
-
-
+        
+        // Filter by search
         if !searchText.isEmpty {
             let term = searchText.lowercased()
             result = result.filter { user in
@@ -37,8 +37,8 @@ class TenantsViewModel: ObservableObject {
                 (user.phone ?? "").contains(term)
             }
         }
-
-
+        
+        // Sort
         switch sortBy {
         case "room_asc":
             result.sort { ($0.room_number ?? "") < ($1.room_number ?? "") }
@@ -57,15 +57,15 @@ class TenantsViewModel: ObservableObject {
         default:
             break
         }
-
+        
         return result
     }
-
+    
     var allCount: Int { users.count }
     var activeCount: Int { users.filter { $0.status == "กำลังพักอาศัย" }.count }
     var bookingCount: Int { users.filter { $0.status == "จอง" }.count }
     var inactiveCount: Int { users.filter { $0.status == "ย้ายออกแล้ว" }.count }
-
+    
     func fetchUsers(modelContext: ModelContext? = nil) async {
         isLoading = true
         errorMessage = nil
@@ -118,7 +118,7 @@ class TenantsViewModel: ObservableObject {
         }
         isLoading = false
     }
-
+    
     func deleteUser(id: Int, modelContext: ModelContext? = nil) async -> Bool {
         if let modelContext {
             do {
@@ -154,12 +154,12 @@ class TenantsViewModel: ObservableObject {
         }
         return false
     }
-
+    
     func formatPhone(_ phone: String?) -> String {
         guard let p = phone, p.count == 10 else { return phone ?? "-" }
         return "\(p.prefix(3))-\(p.dropFirst(3).prefix(3))-\(p.suffix(4))"
     }
-
+    
     func statusColor(_ status: String?) -> Color {
         switch status {
         case "กำลังพักอาศัย": return .green
@@ -168,7 +168,7 @@ class TenantsViewModel: ObservableObject {
         default: return .gray
         }
     }
-
+    
     func statusIcon(_ status: String?) -> String {
         switch status {
         case "กำลังพักอาศัย": return "checkmark.circle.fill"

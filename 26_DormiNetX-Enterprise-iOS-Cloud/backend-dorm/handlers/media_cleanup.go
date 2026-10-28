@@ -8,10 +8,11 @@ import (
 	"time"
 )
 
-
+// RunMediaCleanup removes orphaned media files in the uploads directory that are
+// older than 24 hours and not referenced in the master DB or any tenant DB.
 func RunMediaCleanup(masterDB *sql.DB, uploadsDir string) {
 	log.Println("[Media Cleanup] Starting media cleanup job...")
-
+	
 	entries, err := os.ReadDir(uploadsDir)
 	if err != nil {
 		if !os.IsNotExist(err) {
@@ -38,7 +39,7 @@ func RunMediaCleanup(masterDB *sql.DB, uploadsDir string) {
 			continue
 		}
 
-
+		// Only check files older than 24 hours
 		if info.ModTime().After(cutoff) {
 			skippedCount++
 			continue
@@ -47,35 +48,35 @@ func RunMediaCleanup(masterDB *sql.DB, uploadsDir string) {
 		fileName := entry.Name()
 		referenced := false
 
-
+		// 1. Check if referenced by admins in masterDB
 		referenced, err = adminReferencesMedia(masterDB, fileName)
 		if err != nil {
 			log.Printf("[Media Cleanup] Error checking master DB for %s: %v", fileName, err)
 			continue
 		}
 
-
+		// 2. Check tenant DBs if not referenced in masterDB
 		if !referenced {
 			rows, err := masterDB.Query("SELECT id FROM admins WHERE role = 'superadmin'")
 			if err != nil {
 				log.Printf("[Media Cleanup] Error querying superadmins: %v", err)
-				continue
+				continue // Skip this file if we can't query reliably
 			}
-
+			
 			for rows.Next() {
 				var adminID int
 				if err := rows.Scan(&adminID); err != nil {
 					continue
 				}
-
+				
 				tenantDB, err := GetTenantDB(adminID)
 				if err != nil {
 					continue
 				}
-
+				
 				ref, err := tenantReferencesMedia(tenantDB, fileName)
 				if err != nil {
-
+					// Assume error means we can't be sure, so don't delete
 					referenced = true
 					break
 				}
@@ -87,7 +88,7 @@ func RunMediaCleanup(masterDB *sql.DB, uploadsDir string) {
 			rows.Close()
 		}
 
-
+		// If still not referenced, delete the file
 		if !referenced {
 			filePath := filepath.Join(uploadsDir, fileName)
 			if err := os.Remove(filePath); err != nil {
@@ -109,20 +110,20 @@ func adminReferencesMedia(db *sql.DB, fileName string) (bool, error) {
 	withUploadPrefix := "/uploads/" + fileName
 	var allowed bool
 	err := db.QueryRow(`SELECT EXISTS(
-		SELECT 1 FROM admins
+		SELECT 1 FROM admins 
 		WHERE profile_image IN (?, ?)
 	)`, fileName, withUploadPrefix).Scan(&allowed)
 	return allowed, err
 }
 
-
+// StartMediaCleanupScheduler runs the media cleanup job every day at 3 AM.
 func StartMediaCleanupScheduler(db *sql.DB, uploadsDir string) {
 	for {
 		now := time.Now()
-
+		// Get next 3 AM (03:00:00)
 		nextCleanupTime := time.Date(now.Year(), now.Month(), now.Day(), 3, 0, 0, 0, now.Location())
 		if now.After(nextCleanupTime) {
-
+			// If 3 AM today has already passed, schedule for 3 AM tomorrow
 			nextCleanupTime = nextCleanupTime.Add(24 * time.Hour)
 		}
 

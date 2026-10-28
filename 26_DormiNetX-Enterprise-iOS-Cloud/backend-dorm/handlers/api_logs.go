@@ -41,7 +41,7 @@ func SetupLogRoutes(db *sql.DB) {
 				http.Error(w, "Database error", http.StatusInternalServerError)
 				return
 			}
-
+			// Log Rotation: Keep only the latest 1000 logs to prevent database bloat
 			db.Exec("DELETE FROM system_logs WHERE log_id NOT IN (SELECT log_id FROM system_logs ORDER BY log_id DESC LIMIT 1000)")
 
 			w.WriteHeader(http.StatusCreated)

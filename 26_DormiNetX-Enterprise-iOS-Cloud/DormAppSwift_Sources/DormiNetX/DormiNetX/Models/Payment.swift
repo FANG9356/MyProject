@@ -5,7 +5,7 @@ import SwiftData
 final class Payment: Identifiable {
     @Attribute(.unique) var id: UUID = UUID()
     var serverId: Int?
-
+    
     var userId: Int = 0
     var roomNumber: String = ""
     var rentFee: Double = 0.0
@@ -30,12 +30,12 @@ final class Payment: Identifiable {
     var paymentStatus: String = ""
     var slipPathArray: [String]?
     var paidAmount: Double? = 0.0
-
-
+    
+    // Sync Metadata
     var lastUpdated: Date = Date()
     var isDirty: Bool = false
     var isDeletedLocally: Bool = false
-
+    
     init(serverId: Int? = nil, month: String = "", amount: Double = 0.0) {
         self.serverId = serverId
         self.month = month

@@ -29,7 +29,7 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         logger.error("Failed to register for remote notifications: \(error.localizedDescription)")
     }
 
-
+    // Handle notifications while app is in foreground
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         completionHandler([.banner, .sound, .badge])
     }
@@ -49,7 +49,7 @@ class NotificationManager: ObservableObject {
             }
         }
     }
-
+    
     func checkPermissionStatus() {
         UNUserNotificationCenter.current().getNotificationSettings { settings in
             DispatchQueue.main.async {

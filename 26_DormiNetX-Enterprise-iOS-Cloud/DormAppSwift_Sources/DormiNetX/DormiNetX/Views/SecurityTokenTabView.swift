@@ -4,17 +4,17 @@ struct SecurityTokenTabView: View {
     @AppStorage("securityTokenEnabled") var securityTokenEnabled: Bool = false
     @ObservedObject private var credentials = CredentialStore.shared
     private var securityPasscode: String { credentials.passcode ?? "" }
-
+    
     @State private var customCode: String = ""
     @State private var showCustomInput: Bool = false
     @State private var errorMessage: String = ""
     @State private var showErrorAlert: Bool = false
     @FocusState private var isCustomInputFocused: Bool
-
+    
     var body: some View {
         ZStack {
             VStack(alignment: .leading, spacing: 18) {
-
+                // Standard Settings Header
                 VStack(alignment: .leading, spacing: 8) {
                     Text("โทเคนเข้าสู่ระบบ")
                         .font(.custom("SukhumvitSet-Bold", size: 30))
@@ -27,10 +27,10 @@ struct SecurityTokenTabView: View {
                 }
                 .padding(.bottom, 6)
 
-
+                // Fixed non-scrollable content area
                 VStack(spacing: 16) {
-
-
+                    
+                    // Enable/Disable Toggle — fixed height so toggling doesn't shift layout
                     GlassCard {
                         HStack {
                             VStack(alignment: .leading, spacing: 4) {
@@ -48,7 +48,7 @@ struct SecurityTokenTabView: View {
                                         try credentials.setPasscode(String(format: "%06d", Int.random(in: 0...999999)))
                                     }
                                     securityTokenEnabled = enabled
-                                } catch {
+                                } catch { 
                                         errorMessage = error.localizedDescription
                                         showErrorAlert = true
                                     }
@@ -59,15 +59,15 @@ struct SecurityTokenTabView: View {
                         .frame(height: 52)
                         .padding(.horizontal, 16)
                     }
-
-
+                    
+                    // Passcode Display & Management Card — only visible when enabled
                     if securityTokenEnabled {
                         GlassCard {
                             VStack(spacing: 20) {
                                 Text("รหัสที่ใช้อยู่ตอนนี้")
                                     .font(.custom("SukhumvitSet-Bold", size: 15))
                                     .foregroundColor(.secondary)
-
+                                
                                 HStack(spacing: 8) {
                                     ForEach(0..<6, id: \.self) { index in
                                         let char = index < securityPasscode.count ? String(Array(securityPasscode)[index]) : "-"
@@ -83,9 +83,9 @@ struct SecurityTokenTabView: View {
                                             )
                                     }
                                 }
-
+                                
                                 Divider()
-
+                                
                                 HStack(spacing: 12) {
                                     Button(action: generateRandomPasscode) {
                                         HStack {
@@ -100,7 +100,7 @@ struct SecurityTokenTabView: View {
                                         .cornerRadius(10)
                                     }
                                     .buttonStyle(PressableButtonStyle())
-
+                                    
                                     Button(action: {
                                         customCode = securityPasscode
                                         withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) { showCustomInput = true }
@@ -126,14 +126,14 @@ struct SecurityTokenTabView: View {
                         }
                         .transition(.scale(scale: 0.95).combined(with: .opacity))
                     }
-
-
+                    
+                    // Custom Code Input Section
                     if showCustomInput && securityTokenEnabled {
                         GlassCard {
                             VStack(spacing: 16) {
                                 Text("กำหนดรหัสผ่าน 6 หลัก")
                                     .font(.custom("SukhumvitSet-Bold", size: 16))
-
+                                
                                 ZStack {
                                     TextField("", text: $customCode)
                                         .keyboardType(.numberPad)
@@ -143,7 +143,7 @@ struct SecurityTokenTabView: View {
                                             let filtered = newValue.filter { $0.isNumber }
                                             customCode = String(filtered.prefix(6))
                                         }
-
+                                    
                                     HStack(spacing: 8) {
                                         ForEach(0..<6, id: \.self) { index in
                                             let char = index < customCode.count ? String(Array(customCode)[index]) : ""
@@ -164,7 +164,7 @@ struct SecurityTokenTabView: View {
                                         isCustomInputFocused = true
                                     }
                                 }
-
+                                
                                 HStack(spacing: 12) {
                                     Button("ยกเลิก") {
                                         isCustomInputFocused = false
@@ -172,17 +172,17 @@ struct SecurityTokenTabView: View {
                                     }
                                     .font(.custom("SukhumvitSet-Medium", size: 14))
                                     .foregroundColor(.secondary)
-
+                                    
                                     Spacer()
-
+                                    
                                     Button("บันทึก") {
                                         if customCode.count == 6 {
-                                            do {
-                                                try credentials.setPasscode(customCode)
-                                            } catch {
+                                            do { 
+                                                try credentials.setPasscode(customCode) 
+                                            } catch { 
                                                 errorMessage = error.localizedDescription
                                                 showErrorAlert = true
-                                                return
+                                                return 
                                             }
                                             isCustomInputFocused = false
                                             withAnimation(.easeInOut(duration: 0.2)) { showCustomInput = false }
@@ -203,7 +203,7 @@ struct SecurityTokenTabView: View {
                         }
                         .transition(.scale(scale: 0.95).combined(with: .opacity))
                     }
-
+                    
                     Spacer()
                 }
                 .dismissKeyboardOnTap()
@@ -220,7 +220,7 @@ struct SecurityTokenTabView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
             .padding(.horizontal, 20)
             .padding(.top, 126)
-
+            // Intercept scroll gestures so page cannot be dragged
             .gesture(DragGesture().onChanged { _ in })
         }
         .alert("เกิดข้อผิดพลาด", isPresented: $showErrorAlert) {
@@ -234,7 +234,7 @@ struct SecurityTokenTabView: View {
         let newCode = String((0..<6).map { _ in Int.random(in: 0...9) }.map(String.init).joined())
         do {
             try credentials.setPasscode(newCode)
-        } catch {
+        } catch { 
             errorMessage = error.localizedDescription
             showErrorAlert = true
         }

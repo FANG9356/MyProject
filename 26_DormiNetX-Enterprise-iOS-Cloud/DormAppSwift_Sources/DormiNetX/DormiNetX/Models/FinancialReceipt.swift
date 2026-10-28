@@ -1,7 +1,8 @@
 import Foundation
 import SwiftData
 
-
+/// Immutable receipt facts captured when a payment transaction is recorded.
+/// Invoice edits after this point must not rewrite these values.
 @Model
 final class FinancialReceipt: Identifiable {
     @Attribute(.unique) var id: UUID = UUID()

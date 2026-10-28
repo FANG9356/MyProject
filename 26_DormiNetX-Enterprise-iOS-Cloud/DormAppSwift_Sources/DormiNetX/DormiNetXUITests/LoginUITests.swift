@@ -10,11 +10,11 @@ final class LoginUITests: XCTestCase {
         let app = XCUIApplication()
         app.launch()
 
-
+        // Verify we are on login screen
         let loginButton = app.buttons["LoginButton"]
         XCTAssertTrue(loginButton.waitForExistence(timeout: 5))
 
-
+        // Enter credentials
         let usernameField = app.textFields["UsernameField"]
         usernameField.tap()
         usernameField.typeText("admin")
@@ -23,14 +23,14 @@ final class LoginUITests: XCTestCase {
         passwordField.tap()
         passwordField.typeText("password123")
 
-
+        // Tap login
         loginButton.tap()
 
-
+        // Verify successful login (TabBar appears)
         let tabBar = app.tabBars["MainTabBar"]
         XCTAssertTrue(tabBar.waitForExistence(timeout: 5))
     }
-
+    
     func testLoginFailure() throws {
         let app = XCUIApplication()
         app.launch()
@@ -48,7 +48,7 @@ final class LoginUITests: XCTestCase {
 
         loginButton.tap()
 
-
+        // Verify error message
         let errorAlert = app.staticTexts["LoginErrorText"]
         XCTAssertTrue(errorAlert.waitForExistence(timeout: 5))
     }

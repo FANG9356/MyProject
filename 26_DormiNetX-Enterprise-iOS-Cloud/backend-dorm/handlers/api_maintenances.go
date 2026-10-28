@@ -54,7 +54,7 @@ func SetupMaintenanceRoutes(master, db *sql.DB) {
 			}
 			db.Exec("INSERT INTO system_logs (action_type, details, timestamp) VALUES ('Create', 'รับแจ้งซ่อมห้อง ' || ? || ' (' || ? || ')', ?)", m.RoomNumber, m.Issue, time.Now().Format("2006-01-02 15:04:05"))
 
-
+			// Push to all admins
 			go func() {
 				rows, _ := db.Query("SELECT line_user_id FROM admins WHERE line_user_id != ''")
 				if rows != nil {
@@ -62,7 +62,7 @@ func SetupMaintenanceRoutes(master, db *sql.DB) {
 					for rows.Next() {
 						var adminLineID string
 						rows.Scan(&adminLineID)
-						msg := fmt.Sprintf("[MAINTENANCE] แจ้งซ่อมใหม่!\nห้อง: %s\nปัญหา: %s", m.RoomNumber, m.Issue)
+						msg := fmt.Sprintf("🛠️ แจ้งซ่อมใหม่!\nห้อง: %s\nปัญหา: %s", m.RoomNumber, m.Issue)
 						PushLineMessage(adminLineID, msg)
 					}
 				}
@@ -118,8 +118,8 @@ func SetupMaintenanceRoutes(master, db *sql.DB) {
 				if m.Status == "รออนุมัติค่าใช้จ่าย" && prevStatus != m.Status {
 					db.Exec("UPDATE maintenances SET quote_approved_at = '' WHERE id = ?", m.ID)
 				}
-
-
+				// Bug 4 Fix: Trigger LINE notification immediately after status change
+				// instead of waiting for next iOS snapshot push.
 				if prevStatus != m.Status {
 					go ProcessPendingLineNotifications(master)
 				}
@@ -177,7 +177,7 @@ func SetupMaintenanceRoutes(master, db *sql.DB) {
 					db.Exec("UPDATE maintenances SET quote_approved_at = '' WHERE id = ?", id)
 				}
 
-
+				// Push receipt flex message for cash-verified payment
 				if prevStatus == "รอตรวจสอบชำระเงิน" && status == "เสร็จสิ้น" && paymentMethod == "โอนเงิน" {
 					go func() {
 						var roomNumber, lineUserID string
@@ -198,7 +198,7 @@ func SetupMaintenanceRoutes(master, db *sql.DB) {
 						}
 					}()
 				}
-
+				// Bug 4 Fix: Trigger LINE notification immediately after any status change
 				if prevStatus != status {
 					go ProcessPendingLineNotifications(master)
 				}
@@ -220,12 +220,12 @@ func SetupMaintenanceRoutes(master, db *sql.DB) {
 			id := r.URL.Query().Get("id")
 			filename := r.URL.Query().Get("filename")
 
-
+			// ดึงชื่อไฟล์จาก DB เพื่อป้องกัน IDOR และ Path Traversal
 			var expectedFilename string
 			db.QueryRow("SELECT COALESCE(slip_path, '') FROM maintenances WHERE id = ?", id).Scan(&expectedFilename)
 
 			if filename != "" {
-
+				// ลบเฉพาะรูปภาพ
 				if expectedFilename != "" && expectedFilename == filename {
 					os.Remove(filepath.Join("uploads", filepath.Base(expectedFilename)))
 					if _, err := db.Exec("UPDATE maintenances SET slip_path = '' WHERE id = ?", id); err != nil {
@@ -237,7 +237,7 @@ func SetupMaintenanceRoutes(master, db *sql.DB) {
 					return
 				}
 			} else {
-
+				// ลบรายการแจ้งซ่อมทั้งหมด (ต้องลบไฟล์ภาพทิ้งด้วยถ้ามี)
 				if expectedFilename != "" {
 					os.Remove(filepath.Join("uploads", filepath.Base(expectedFilename)))
 				}
@@ -277,10 +277,10 @@ func maintenanceHasLineRecipient(db *sql.DB, maintenanceID string) bool {
 	return err == nil && count > 0
 }
 
-
+// [เพิ่มใหม่] ฟังก์ชันสำหรับแจ้งเตือนลูกบ้านเมื่อสถานะแจ้งซ่อมเปลี่ยน
 func notifyMaintenanceStatus(db *sql.DB, maintID string, status string) {
 	if status == "รอดำเนินการ" {
-		return
+		return // ไม่ต้องแจ้งถ้าเพิ่งกลับมารอดำเนินการ (หรือแจ้งก็ได้ แต่ปกติจะแจ้งแค่ตอนกำลังทำกับเสร็จ)
 	}
 	var notification maintenanceStatusNotification
 	err := db.QueryRow(`SELECT CAST(id AS TEXT), room_number, issue, status, cost,

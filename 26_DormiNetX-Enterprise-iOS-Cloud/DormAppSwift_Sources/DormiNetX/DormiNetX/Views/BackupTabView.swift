@@ -59,7 +59,7 @@ struct BackupTabView: View {
     var body: some View {
         ScrollView(showsIndicators: false) {
             VStack(alignment: .leading, spacing: 18) {
-
+                // Standard Settings Header
                 VStack(alignment: .leading, spacing: 8) {
                     Text("สำรองและกู้คืนข้อมูล")
                         .font(.custom("SukhumvitSet-Bold", size: 30))

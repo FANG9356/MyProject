@@ -6,13 +6,15 @@ final class Room: Identifiable {
     @Attribute(.unique) var id: UUID = UUID()
     var serverId: Int?
 
-
+    // Local account scope. This must be set from the authenticated admin ID.
+    // Optional keeps existing SwiftData stores migratable; legacy records are
+    // assigned by LocalAccountScope during the first authenticated session.
     var ownerAccountID: Int?
 
     var roomNumber: String = ""
     var roomType: String = ""
 
-
+    // Sync Metadata
     var lastUpdated: Date = Date()
     var isDirty: Bool = false
     var isDeletedLocally: Bool = false

@@ -189,7 +189,7 @@ func TestMaterializeLineSnapshotNotifiesOnlyChangedMaintenanceStatus(t *testing.
 		t.Fatalf("quote notification = %+v", quote)
 	}
 
-
+	// LINE approval returns the visible status to payment verification.
 	if _, err := tenantDB.Exec(`UPDATE maintenances
 		SET status = 'รอตรวจสอบชำระเงิน', quote_approved_at = '2026-09-17T08:31:00Z'
 		WHERE external_id = ?`, snapshot.Maintenance[0].ID); err != nil {
@@ -209,6 +209,7 @@ func TestMaterializeLineSnapshotNotifiesOnlyChangedMaintenanceStatus(t *testing.
 		t.Fatalf("persisted status = %q, want กำลังซ่อม", persistedStatus)
 	}
 }
+
 
 
 func TestNormalizeMaintenanceSnapshotsDeduplicatesUUIDCaseAndKeepsNewest(t *testing.T) {

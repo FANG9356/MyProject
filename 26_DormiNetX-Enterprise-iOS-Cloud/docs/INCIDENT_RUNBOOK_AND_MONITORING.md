@@ -45,17 +45,17 @@
 
 ใช้ Checklist นี้ทุกครั้ง **ก่อน** และ **หลัง** การ Deploy Production:
 
-### [GREEN] ก่อน Deploy (Pre-Release)
+### 🟢 ก่อน Deploy (Pre-Release)
 - [ ] สคริปต์ใช้งานคือ `deploy_flex_safe_remote.sh` (ห้าม Build/Upload manual)
 - [ ] รัน Unit Tests, Race Detector และ Vet ผ่านหมด
 - [ ] ระบบมีพื้นที่ (Disk Space) เพียงพอต่อการ Backup
 - [ ] สคริปต์ได้สร้าง Rollback Set ครบถ้วน (เก็บ Master, Tenant DB และ Media) ก่อนเริ่มเขียนทับ
 
-### [YELLOW] ระหว่าง Deploy
+### 🟡 ระหว่าง Deploy
 - [ ] รอให้เซิร์ฟเวอร์ Verify Health HTTP 200 หลัง Restart
 - [ ] สคริปต์แจ้งเตือน `DEPLOY_SUCCESS` โดยไม่ error หรือ timeout
 
-### [RED] หากพบปัญหาหลัง Deploy (Rollback Procedure)
+### 🔴 หากพบปัญหาหลัง Deploy (Rollback Procedure)
 - [ ] ตัดสินใจ Rollback ทันทีหาก Health check ล้มเหลวต่อเนื่องเกิน 3 นาที
 - [ ] เข้าไปยัง Server และรันสคริปต์ Rollback อัตโนมัติ: `sudo env DORMINET_MAINTENANCE_MODE=true ./server_debian rollback-server-restore --rollback ./restore_rollbacks/<target>`
 - [ ] Verify ระบบว่ากลับมาปกติ (HTTP 200) หลัง Rollback สำเร็จ

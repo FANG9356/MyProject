@@ -33,16 +33,16 @@ enum MaintenanceWorkflow {
             return false
         }
 
-
+        // Quote approval and the transition to payment are performed by LINE.
         if hasCost {
             if originalStatus == "รออนุมัติค่าใช้จ่าย" {
-                return newStatus == "กำลังติดต่อช่าง"
+                return newStatus == "กำลังติดต่อช่าง" // Can return for edit
             }
             if originalStatus == "รอตรวจสอบชำระเงิน" {
                 return newStatus == "กำลังซ่อม"
             }
             if currentIndex < 2 && newIndex > 2 {
-                return false
+                return false // Cannot skip quote approval
             }
         }
         return newIndex > currentIndex || (newIndex - currentIndex == 1)
@@ -142,8 +142,9 @@ struct MaintenanceTabView: View {
             await SyncManager.shared.syncWithGoBackend(modelContext: modelContext)
         }
         .task {
-
-
+            // Maintenance can be created from LINE while this device is idle.
+            // Refresh on entry so the list does not depend on the global
+            // refresh button being pressed first.
             await SyncManager.shared.syncWithGoBackend(modelContext: modelContext)
         }
         .sheet(isPresented: $showingEditor) {
@@ -243,7 +244,7 @@ private struct MaintenanceRow: View {
                         .padding(.horizontal, 11)
                         .frame(minHeight: 34)
                         .background(.ultraThinMaterial, in: Capsule())
-
+                        
                         if maintenance.isDirty || maintenance.isDeletedLocally {
                             SyncStatusBadge(isDirty: maintenance.isDirty, isDeletedLocally: maintenance.isDeletedLocally)
                         }
@@ -413,7 +414,7 @@ private struct MaintenanceEditor: View {
                 VStack(spacing: 18) {
                     MaintenanceEditorCard(title: "ห้องและรายละเอียด", systemImage: "door.left.hand.open") {
                         roomSelector
-
+                        
                         if !reportedAt.isEmpty {
                             Divider().overlay(Color.primary.opacity(0.08))
                             HStack {
@@ -812,7 +813,7 @@ private struct MaintenanceEditor: View {
         let flow = MaintenanceWorkflow.statuses(hasCost: hasCost)
         guard let originalIndex = flow.firstIndex(of: originalStatus),
               let selectedIndex = flow.firstIndex(of: status) else { return true }
-
+        
         let quoteIndex = flow.firstIndex(of: "รออนุมัติค่าใช้จ่าย") ?? 2
         if !quoteApprovedAt.isEmpty && originalStatus == "กำลังติดต่อช่าง" && status != "รออนุมัติค่าใช้จ่าย" {
             return false

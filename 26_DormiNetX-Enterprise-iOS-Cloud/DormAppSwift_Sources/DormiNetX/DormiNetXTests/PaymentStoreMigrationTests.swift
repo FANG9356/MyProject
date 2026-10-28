@@ -38,7 +38,7 @@ final class PaymentStoreMigrationTests: XCTestCase {
     }
 }
 
-
+// Frozen pre-deposit schema. Keep this fixture unchanged when the live model evolves.
 private enum LegacyPaymentSchema {
     @Model final class Payment {
         @Attribute(.unique) var id: UUID = UUID()

@@ -11,7 +11,9 @@ import (
 
 var lineNotificationWorkerMu sync.Mutex
 
-
+// EnqueueMaintenanceStatusNotification persists the intent before delivery.
+// eventKey makes a retried snapshot idempotent while still allowing a later
+// status transition for the same maintenance item to generate a new message.
 func EnqueueMaintenanceStatusNotification(db *sql.DB, accountID int, notification maintenanceStatusNotification) error {
 	notification.EventKey = strings.TrimSpace(notification.EventKey)
 	notification.LineUserID = strings.TrimSpace(notification.LineUserID)
@@ -32,7 +34,8 @@ func EnqueueMaintenanceStatusNotification(db *sql.DB, accountID int, notificatio
 	return err
 }
 
-
+// StartLineNotificationWorker retries transient LINE delivery failures. The
+// immediate call handles normal updates quickly; the ticker recovers outages.
 func StartLineNotificationWorker(db *sql.DB) {
 	go func() {
 		ProcessPendingLineNotifications(db)

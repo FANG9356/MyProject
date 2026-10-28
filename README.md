@@ -45,7 +45,7 @@
 | **23** | [`23_Discord-Voice-Screen-Share`](./23_Discord-Voice-Screen-Share) | Socket Streaming / Voice | [![Download](https://img.shields.io/badge/ZIP-238636?style=flat-square&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/23_Discord-Voice-Screen-Share) | `python3 server.py` | พอร์ต 65432/65433 | `python3 test_simulation.py` |
 | **24** | [`24_LAN-Security-Intruder-Sentinel`](./24_LAN-Security-Intruder-Sentinel) | Network Security / IDS | [![Download](https://img.shields.io/badge/ZIP-238636?style=flat-square&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/24_LAN-Security-Intruder-Sentinel) | `node server.js` | `http://localhost:3080` | `node test_simulation.js` |
 | **25** | [`25_DormiNetX-Windows-Desktop`](./25_DormiNetX-Windows-Desktop) | Windows Desktop / Wails | [![Download](https://img.shields.io/badge/ZIP-238636?style=flat-square&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/25_DormiNetX-Windows-Desktop) | `bin/DormiNetX.exe` หรือ `open standalone_demo.html` | Standalone App / `standalone_demo.html` | `node test_simulation.js` |
-| **26** | [`26_DormiNetX-Enterprise-iOS-Cloud`](./26_DormiNetX-Enterprise-iOS-Cloud) | Native iOS & Cloud Platform | [![Download](https://img.shields.io/badge/ZIP-238636?style=flat-square&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/26_DormiNetX-Enterprise-iOS-Cloud) | `Xcode Build` หรือ `open standalone_demo.html` | iOS App / `standalone_demo.html` | `node test_simulation.js` |
+| **26** | [`26_DormiNetX-Enterprise-iOS-Cloud`](./26_DormiNetX-Enterprise-iOS-Cloud) | Native iOS & Cloud Platform | [![Download](https://img.shields.io/badge/ZIP-238636?style=flat-square&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/26_DormiNetX-Enterprise-iOS-Cloud) | `open Xcode` / `cd backend-dorm && go run main.go` | iOS App / Web LIFF | `cd backend-dorm && go test ./...` |
 
 ---
 
@@ -995,21 +995,21 @@ node 25_DormiNetX-Windows-Desktop/test_simulation.js
 * **Multi-Language Engine:** รองรับการแปลภาษา 4 ภาษา (ไทย, อังกฤษ, พม่า, จีน) สมบูรณ์ 100% ครอบคลุมกว่า 670 คำศัพท์
 
 #### เอกสารประกอบโครงงาน
-* รายละเอียดโครงงาน: [26_DormiNetX-Enterprise-iOS-Cloud/PORTFOLIO_INFO.md](./26_DormiNetX-Enterprise-iOS-Cloud/PORTFOLIO_INFO.md)
-* คู่มือโครงการฉบับสมบูรณ์: [26_DormiNetX-Enterprise-iOS-Cloud/README.md](./26_DormiNetX-Enterprise-iOS-Cloud/README.md)
+* คู่มือและสถาปัตยกรรมโครงการฉบับสมบูรณ์: [26_DormiNetX-Enterprise-iOS-Cloud/README.md](./26_DormiNetX-Enterprise-iOS-Cloud/README.md)
+* เอกสารความปลอดภัยและการดูแลระบบ: [26_DormiNetX-Enterprise-iOS-Cloud/docs](./26_DormiNetX-Enterprise-iOS-Cloud/docs)
 
 #### วิธีรันระบบ (How to Run)
-เปิดหน้าต่างจำลองการทำงานแบบ Interactive (Web Preview):
+เปิดโปรเจกต์ iOS Native:
 ```bash
-open 26_DormiNetX-Enterprise-iOS-Cloud/standalone_demo.html
+open 26_DormiNetX-Enterprise-iOS-Cloud/DormAppSwift_Sources/DormiNetX/DormiNetX.xcodeproj
 ```
 รันแบ็กเอนด์ Go Cloud:
 ```bash
 cd 26_DormiNetX-Enterprise-iOS-Cloud/backend-dorm && go run main.go
 ```
-รันชุดทดสอบการทำงานของระบบ:
+รันชุดทดสอบ Backend จาก Origin:
 ```bash
-node 26_DormiNetX-Enterprise-iOS-Cloud/test_simulation.js
+cd 26_DormiNetX-Enterprise-iOS-Cloud/backend-dorm && go test -count=1 ./core/... ./handlers/... ./utils/...
 ```
 
 ---

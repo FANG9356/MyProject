@@ -38,7 +38,7 @@ enum RoomTransferService {
         for payment in payments where !payment.isDeletedLocally {
             let belongs = payment.userId > 0 ? payment.userId == userID : payment.roomNumber == previous
             guard belongs else { continue }
-
+            // Preserve the room printed on a settled receipt, including the current month.
             payment.userId = userID
             if payment.paymentStatus != "paid" { payment.roomNumber = destination }
             payment.lastUpdated = Date()

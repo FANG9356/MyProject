@@ -244,8 +244,8 @@
     outstandingCount.textContent = count > 0 ? `${count} ใบแจ้งหนี้ที่ยังไม่ปิดยอด · เรียงล่าสุดก่อน` : "ไม่มีรายการค้างชำระ";
 
     const invoices = Array.isArray(billing.invoices) ? billing.invoices : [];
-
-
+    
+    // Split into outstanding and paid
     const outstandingInvoices = invoices.filter(i => i.status !== 'paid');
     const paidInvoices = invoices.filter(i => i.status === 'paid');
 
@@ -255,7 +255,7 @@
       ? "พบใบแจ้งหนี้ค้างชำระมากกว่า 1 ใบในรอบเดียวกัน กรุณาตรวจสอบกับผู้ดูแลหอพัก"
       : "";
     billingWarning.hidden = !hasRepeatedPeriod;
-
+    
     invoiceList.replaceChildren();
     outstandingInvoices.forEach((invoice, index) => invoiceList.appendChild(renderInvoice(invoice, index)));
     noBill.hidden = outstandingInvoices.length > 0;
@@ -263,7 +263,7 @@
     historyList.replaceChildren();
     paidInvoices.forEach((invoice, index) => historyList.appendChild(renderInvoice(invoice, index)));
     noHistory.hidden = paidInvoices.length > 0;
-
+    
     const projected = Number(billing.projected_bill) || 0;
     projectedBillAmount.textContent = formatMoney(projected);
   }
@@ -332,17 +332,17 @@
       const response = await fetch("/api/liff/verify-tenant", {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({
+        body: JSON.stringify({ 
           dorm_code: normalizedDormCode,
-          phone: normalizedPhone
+          phone: normalizedPhone 
         })
       });
       const data = await parseResponse(response);
       if (!response.ok) throw new Error(data.error || "ตรวจสอบข้อมูลไม่สำเร็จ");
       if (!data.room_number) throw new Error("ไม่พบหมายเลขห้อง กรุณาติดต่อผู้ดูแลหอพัก");
 
-      verified = {
-        roomNumber: data.room_number,
+      verified = { 
+        roomNumber: data.room_number, 
         phone: normalizedPhone,
         dormCode: normalizedDormCode
       };

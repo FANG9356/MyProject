@@ -15,7 +15,8 @@ var (
 	dbMutex   sync.RWMutex
 )
 
-
+// GetTenantDB returns the *sql.DB for the given adminID.
+// It opens a new connection if one doesn't exist, and ensures the database is initialized.
 func GetTenantDB(adminID int) (*sql.DB, error) {
 	dbMutex.RLock()
 	db, exists := tenantDBs[adminID]
@@ -28,12 +29,12 @@ func GetTenantDB(adminID int) (*sql.DB, error) {
 	dbMutex.Lock()
 	defer dbMutex.Unlock()
 
-
+	// Double-check after acquiring write lock
 	if db, exists := tenantDBs[adminID]; exists {
 		return db, nil
 	}
 
-
+	// Create directory if not exists
 	err := os.MkdirAll("./dorm_data", os.ModePerm)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create dorm_data directory: %w", err)
@@ -51,14 +52,14 @@ func GetTenantDB(adminID int) (*sql.DB, error) {
 	newDB.SetMaxIdleConns(5)
 	newDB.SetConnMaxLifetime(5 * time.Minute)
 
-
+	// Initialize tables for this tenant
 	InitializeTenantDatabase(newDB)
 
 	tenantDBs[adminID] = newDB
 	return newDB, nil
 }
 
-
+// CloseAllTenantDBs cleanly closes all cached tenant DB connections.
 func CloseAllTenantDBs() {
 	dbMutex.Lock()
 	defer dbMutex.Unlock()
@@ -68,7 +69,7 @@ func CloseAllTenantDBs() {
 	}
 }
 
-
+// InitializeTenantDatabase creates the tables required for a tenant.
 func InitializeTenantDatabase(db *sql.DB) {
 	db.Exec(`CREATE TABLE IF NOT EXISTS users (user_id INTEGER PRIMARY KEY AUTOINCREMENT, prefix TEXT, first_name TEXT, last_name TEXT, full_name TEXT, room_number TEXT, status TEXT, national_id TEXT, phone TEXT, address TEXT, move_in_date TEXT, contract_end_date TEXT, deposit REAL DEFAULT 0)`)
 	db.Exec(`CREATE UNIQUE INDEX IF NOT EXISTS idx_users_active_room ON users (room_number) WHERE status = 'กำลังพักอาศัย' OR status = 'จอง'`)
@@ -125,8 +126,8 @@ func InitializeTenantDatabase(db *sql.DB) {
 	db.Exec(`CREATE UNIQUE INDEX IF NOT EXISTS idx_users_external_id ON users(external_id) WHERE external_id != ''`)
 	db.Exec(`CREATE UNIQUE INDEX IF NOT EXISTS idx_payments_external_id ON payments(external_id) WHERE external_id != ''`)
 	db.Exec(`CREATE UNIQUE INDEX IF NOT EXISTS idx_maintenance_external_id ON maintenances(external_id) WHERE external_id != ''`)
-
-
+	
+	// Replay Protection for slips
 	db.Exec(`ALTER TABLE payments ADD COLUMN slip_payload TEXT DEFAULT ''`)
 	db.Exec(`ALTER TABLE maintenances ADD COLUMN slip_payload TEXT DEFAULT ''`)
 	db.Exec(`CREATE UNIQUE INDEX IF NOT EXISTS idx_payments_slip_payload ON payments(slip_payload) WHERE slip_payload != '' AND slip_payload IS NOT NULL`)

@@ -174,8 +174,8 @@ func InitializeLineIntegration(db *sql.DB) {
 		created_at TEXT NOT NULL,
 		sent_at TEXT NOT NULL DEFAULT ''
 	)`)
-
-
+	// Keep event timestamps and financial context in the outbox so a delayed
+	// retry renders the original maintenance event, not the worker retry time.
 	db.Exec(`ALTER TABLE line_notification_outbox ADD COLUMN cost REAL NOT NULL DEFAULT 0`)
 	db.Exec(`ALTER TABLE line_notification_outbox ADD COLUMN reported_at TEXT NOT NULL DEFAULT ''`)
 	db.Exec(`ALTER TABLE line_notification_outbox ADD COLUMN resolved_at TEXT NOT NULL DEFAULT ''`)
@@ -184,8 +184,8 @@ func InitializeLineIntegration(db *sql.DB) {
 	db.Exec(`ALTER TABLE line_notification_outbox ADD COLUMN maintenance_record_id TEXT NOT NULL DEFAULT ''`)
 	db.Exec(`CREATE INDEX IF NOT EXISTS idx_line_notification_outbox_pending
 		ON line_notification_outbox(status, next_attempt_at)`)
-
-
+	// A process may stop after claiming a row but before sending it. Recover the
+	// row at startup so the notification is not permanently stranded.
 	db.Exec(`UPDATE line_notification_outbox SET status = 'pending' WHERE status = 'processing'`)
 }
 
@@ -235,7 +235,9 @@ func MaterializeLineSnapshot(master *sql.DB, accountID int, payload []byte) erro
 	return materializeLineSnapshotPayload(master, accountID, payload, nil)
 }
 
-
+// MaterializeLineSnapshotAndNotify is used only for a newly accepted app push.
+// Startup reconciliation uses MaterializeLineSnapshot so it cannot resend old
+// LINE notifications after every server restart.
 func MaterializeLineSnapshotAndNotify(master *sql.DB, accountID int, payload []byte) error {
 	err := materializeLineSnapshotPayload(master, accountID, payload, func(notification maintenanceStatusNotification) error {
 		return EnqueueMaintenanceStatusNotification(master, accountID, notification)
@@ -246,7 +248,9 @@ func MaterializeLineSnapshotAndNotify(master *sql.DB, accountID int, payload []b
 	return err
 }
 
-
+// validateLineSnapshotForPush applies the workflow checks that can be decided
+// without mutating tenant data. It must run before sync_snapshots INSERT so an
+// invalid stale app state cannot become the latest immutable snapshot.
 func validateLineSnapshotForPush(accountID int, payload []byte) error {
 	var snapshot lineSyncEnvelope
 	if err := json.Unmarshal(payload, &snapshot); err != nil {
@@ -607,8 +611,9 @@ func validateMaintenanceCostChange(previousStatus, nextStatus string, previousCo
 	if previousIndex < quoteIndex {
 		return nil
 	}
-
-
+	// A changed amount is safe only while returning to pre-quote work or while
+	// explicitly issuing a replacement quote. It must never mutate an amount
+	// already shown in LINE while the approved workflow continues.
 	if nextIndex < quoteIndex || (nextIndex == quoteIndex && previousIndex != quoteIndex) {
 		return nil
 	}
@@ -616,7 +621,7 @@ func validateMaintenanceCostChange(previousStatus, nextStatus string, previousCo
 }
 
 func maintenanceStatusIndex(value string) int {
-
+	// ลำดับใหม่: ชำระเงินก่อนซ่อม
 	statuses := []string{"รอดำเนินการ", "กำลังติดต่อช่าง", "รออนุมัติค่าใช้จ่าย", "รอตรวจสอบชำระเงิน", "กำลังซ่อม", "เสร็จสิ้น"}
 	for index, status := range statuses {
 		if strings.TrimSpace(value) == status {
@@ -626,7 +631,13 @@ func maintenanceStatusIndex(value string) int {
 	return -1
 }
 
-
+// validateMaintenanceAppTransition enforces the new pay-before-repair workflow:
+//
+//	รอดำเนินการ → กำลังติดต่อช่าง → รออนุมัติค่าใช้จ่าย → รอตรวจสอบชำระเงิน → กำลังซ่อม → เสร็จสิ้น
+//
+// For cost=0 jobs, payment step is skipped:
+//
+//	ติดต่อช่าง → กำลังซ่อม → เสร็จสิ้น
 func validateMaintenanceAppTransition(previousStatus, nextStatus string, cost float64, quoteApproved bool) error {
 	previousStatus = strings.TrimSpace(previousStatus)
 	nextStatus = strings.TrimSpace(nextStatus)
@@ -634,7 +645,7 @@ func validateMaintenanceAppTransition(previousStatus, nextStatus string, cost fl
 	if previousStatus == nextStatus {
 		return nil
 	}
-
+	// Quote rejection is a terminal branch. Accept both safe predecessors.
 	if nextStatus == rejectedStatus {
 		if previousStatus == "กำลังติดต่อช่าง" || previousStatus == "รออนุมัติค่าใช้จ่าย" {
 			return nil
@@ -645,46 +656,48 @@ func validateMaintenanceAppTransition(previousStatus, nextStatus string, cost fl
 		return fmt.Errorf("rejected quote is terminal; issue a replacement quote")
 	}
 
+	// --- กฎ flow ใหม่: ชำระก่อนซ่อม ---
 
+	// ติดต่อช่าง → รออนุมัติค่าใช้จ่าย: ต้องมีค่าใช้จ่าย
 	if previousStatus == "กำลังติดต่อช่าง" && nextStatus == "รออนุมัติค่าใช้จ่าย" {
 		if cost <= 0 {
 			return fmt.Errorf("quote cost must be greater than zero")
 		}
 		return nil
 	}
-
+	// ติดต่อช่าง → กำลังซ่อม: อนุญาตเฉพาะเมื่อไม่มีค่าใช้จ่าย
 	if previousStatus == "กำลังติดต่อช่าง" && nextStatus == "กำลังซ่อม" {
 		if cost <= 0 {
 			return nil
 		}
 		return fmt.Errorf("chargeable repairs must go through quote approval and payment before repair")
 	}
-
+	// รออนุมัติค่าใช้จ่าย → กำลังติดต่อช่าง: ถอยกลับได้
 	if previousStatus == "รออนุมัติค่าใช้จ่าย" && nextStatus == "กำลังติดต่อช่าง" {
 		return nil
 	}
-
-
+	// รออนุมัติค่าใช้จ่าย → รอตรวจสอบชำระเงิน: ต้องให้ลูกบ้านกดอนุมัติ
+	// ผ่าน LINE ก่อนเท่านั้น เพื่อป้องกันผู้ดูแลข้ามขั้นตอนอนุมัติราคา
 	if previousStatus == "รออนุมัติค่าใช้จ่าย" && nextStatus == "รอตรวจสอบชำระเงิน" {
 		if quoteApproved {
 			return nil
 		}
 		return fmt.Errorf("quote must be approved by the resident before payment")
 	}
-
+	// รออนุมัติค่าใช้จ่าย → กำลังซ่อม: ไม่อนุญาต ต้องผ่านชำระก่อน
 	if previousStatus == "รออนุมัติค่าใช้จ่าย" && nextStatus == "กำลังซ่อม" {
 		return fmt.Errorf("payment must be verified before starting repair")
 	}
-
+	// รอตรวจสอบชำระเงิน → กำลังซ่อม: admin ยืนยันรับเงินแล้ว เริ่มซ่อมได้
 	if previousStatus == "รอตรวจสอบชำระเงิน" && nextStatus == "กำลังซ่อม" {
 		return nil
 	}
-
+	// กำลังซ่อม → เสร็จสิ้น: ซ่อมเสร็จ ชำระเงินเรียบร้อยแล้วก่อนหน้า
 	if previousStatus == "กำลังซ่อม" && nextStatus == "เสร็จสิ้น" {
 		return nil
 	}
 
-
+	// กฎทั่วไป: ห้ามกระโดดข้ามขั้น
 	previousIndex := maintenanceStatusIndex(previousStatus)
 	nextIndex := maintenanceStatusIndex(nextStatus)
 	if previousIndex < 0 || nextIndex < 0 {
@@ -696,7 +709,9 @@ func validateMaintenanceAppTransition(previousStatus, nextStatus string, cost fl
 	return nil
 }
 
-
+// ReconcileLineTenantChanges publishes operational changes made through LINE
+// before the latest app snapshot is materialized. This prevents a restart from
+// replacing a newly uploaded slip or maintenance request with an older snapshot.
 func ReconcileLineTenantChanges(master *sql.DB) error {
 	rows, err := master.Query(`SELECT DISTINCT account_id FROM sync_snapshots ORDER BY account_id`)
 	if err != nil {
@@ -723,7 +738,10 @@ func ReconcileLineTenantChanges(master *sql.DB) error {
 	return nil
 }
 
-
+// PublishLineTenantChanges creates a new immutable sync snapshot containing
+// payment and maintenance changes accepted by the LINE webhook. The conditional
+// INSERT uses the same optimistic version rule as an app push, so a concurrent
+// device write cannot be overwritten.
 func PublishLineTenantChanges(master, tenantDB *sql.DB, accountID int) error {
 	if accountID <= 0 {
 		return errors.New("invalid account id")

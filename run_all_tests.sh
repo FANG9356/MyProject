@@ -126,8 +126,8 @@ run_test "25" "DormiNetX Windows Desktop Standalone" \
     "$DIR/25_DormiNetX-Windows-Desktop"
 
 run_test "26" "DormiNetX Enterprise Native iOS & Cloud" \
-    "node test_simulation.js" \
-    "$DIR/26_DormiNetX-Enterprise-iOS-Cloud"
+    "go test ./core/... ./handlers/... ./utils/..." \
+    "$DIR/26_DormiNetX-Enterprise-iOS-Cloud/backend-dorm"
 
 echo ""
 echo "================================================================================"

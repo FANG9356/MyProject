@@ -17,10 +17,10 @@ type discoveryNotifee struct {
 	h host.Host
 }
 
-
+// HandlePeerFound connects to peers discovered via mDNS
 func (n *discoveryNotifee) HandlePeerFound(pi peer.AddrInfo) {
 	if pi.ID == n.h.ID() {
-		return
+		return // Ignore self
 	}
 	fmt.Printf("Discovered new peer: %s\n", pi.ID.String())
 	err := n.h.Connect(context.Background(), pi)
@@ -32,7 +32,7 @@ func (n *discoveryNotifee) HandlePeerFound(pi peer.AddrInfo) {
 }
 
 func StartP2PNode() (host.Host, error) {
-
+	// Create a new libp2p Host that listens on a random TCP port
 	h, err := libp2p.New(
 		libp2p.ListenAddrStrings("/ip4/0.0.0.0/tcp/0"),
 	)
@@ -45,7 +45,7 @@ func StartP2PNode() (host.Host, error) {
 		log.Printf("Listening on: %s/p2p/%s", addr, h.ID())
 	}
 
-
+	// Setup local mDNS discovery
 	mdnsService := mdns.NewMdnsService(h, DiscoveryServiceTag, &discoveryNotifee{h: h})
 	if err := mdnsService.Start(); err != nil {
 		return nil, err

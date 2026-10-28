@@ -27,8 +27,8 @@ struct FloatingGlassAddButton: View {
                 .symbolEffect(.bounce, value: rotation)
         }
         .buttonStyle(.plain)
-
-
+        // Give the control a deterministic hit-test shape and keep it above
+        // surrounding ScrollView/gesture layers.
         .contentShape(Circle())
         .frame(width: 64, height: 64)
         .zIndex(1000)

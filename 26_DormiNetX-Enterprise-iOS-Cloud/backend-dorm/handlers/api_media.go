@@ -18,7 +18,9 @@ import (
 
 const lineMediaURLLifetime = 24 * time.Hour
 
-
+// SignedLineMediaURL creates a short-lived capability URL for LINE's servers.
+// The raw uploads directory stays private; only a correctly signed filename can
+// be fetched without an administrator session.
 func SignedLineMediaURL(baseURL, storedPath string, now time.Time) (string, error) {
 	fileName := mediaFileName(storedPath)
 	if fileName == "" {
@@ -49,7 +51,9 @@ func mediaFileName(storedPath string) string {
 	return cleaned
 }
 
-
+// HandleSignedLineMedia serves a private upload only while its HMAC URL is
+// valid. This is intentionally outside /api because LINE cannot send the app's
+// administrator JWT when it fetches an image for a chat message.
 func HandleSignedLineMedia() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodGet && r.Method != http.MethodHead {
@@ -69,12 +73,14 @@ func HandleSignedLineMedia() http.HandlerFunc {
 	}
 }
 
-
+// HandleLegacyPublicUploadsDisabled prevents the SPA fallback from returning
+// index.html for old /uploads URLs after public file serving is disabled.
 func HandleLegacyPublicUploadsDisabled(w http.ResponseWriter, r *http.Request) {
 	http.Error(w, "Media not found", http.StatusNotFound)
 }
 
-
+// HandleTenantMedia serves payment and maintenance images only when the
+// authenticated account's tenant database references the requested file.
 func HandleTenantMedia(master *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodGet {

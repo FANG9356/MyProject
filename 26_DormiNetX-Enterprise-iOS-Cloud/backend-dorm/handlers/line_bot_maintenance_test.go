@@ -156,9 +156,11 @@ func TestMaintenanceTimeParsesLegacyBangkokValue(t *testing.T) {
 	}
 }
 
-
+// TestMaintenanceFreeJobFlexHasNoQuoteButton ตรวจว่า flow ฟรี (cost=0) ไม่สร้าง Flex
+// ใบเสนอราคา (รออนุมัติค่าใช้จ่าย ที่ถูกต้องต้องมี cost>0) และสามารถสร้าง Flex
+// สถานะกำลังซ่อมได้โดยไม่ต้องการ MaintenanceID
 func TestMaintenanceFreeJobFlexHasNoQuoteButton(t *testing.T) {
-
+	// กำลังซ่อม cost=0 คือ free-job ต้องสร้าง Flex สถานะปกติได้โดยไม่ต้องการ id
 	notification := maintenanceStatusNotification{
 		LineUserID:  "line-free",
 		RoomNumber:  "201",
@@ -175,14 +177,15 @@ func TestMaintenanceFreeJobFlexHasNoQuoteButton(t *testing.T) {
 	if payload == nil {
 		t.Fatal("missing contents in Flex message")
 	}
-
+	// ต้องไม่มีปุ่ม approve/reject
 	raw, _ := marshalJSONTest(message)
 	if strings.Contains(raw, "maintenance_quote_approve") || strings.Contains(raw, "maintenance_quote_reject") {
 		t.Fatal("free-job Flex should not contain quote approve/reject actions")
 	}
 }
 
-
+// TestMaintenanceQuoteFlexRejectsZeroCost ตรวจว่า รออนุมัติค่าใช้จ่าย ที่มี cost=0
+// ไม่สร้าง Flex ใบเสนอราคา (ต้องมียอดก่อนส่ง quote)
 func TestMaintenanceQuoteFlexRejectsZeroCost(t *testing.T) {
 	notification := maintenanceStatusNotification{
 		MaintenanceID: "99",
@@ -190,33 +193,35 @@ func TestMaintenanceQuoteFlexRejectsZeroCost(t *testing.T) {
 		RoomNumber:    "103",
 		Issue:         "น้ำไม่ไหล",
 		Status:        "รออนุมัติค่าใช้จ่าย",
-		Cost:          0,
+		Cost:          0, // ยอด 0 บาท
 		LastUpdated:   "2026-09-18T03:00:00Z",
 	}
 	message, err := buildMaintenanceStatusFlexMessage(notification, time.Time{})
 	if err != nil {
-
-
+		// zero-cost quote falls back to the generic status card (not an error from buildMaintenanceStatusFlexMessage)
+		// ถ้า error ให้ตรวจว่าไม่ใช่ error จากข้อมูลขาด แต่จาก cost=0
 		t.Logf("zero-cost quote returned error (acceptable): %v", err)
 		return
 	}
-
+	// ถ้า build สำเร็จ ต้องไม่มีปุ่ม approve/reject เพราะ cost=0 ไม่ผ่านเงื่อนไขใบเสนอราคา
 	raw, _ := marshalJSONTest(message)
 	if strings.Contains(raw, "maintenance_quote_approve") {
 		t.Fatal("zero-cost quote Flex should not contain approve action")
 	}
 }
 
-
+// TestMaintenanceStaleApproveDetection ตรวจว่า handleMaintenanceQuoteDecision logic
+// จะปฏิเสธ action ที่ซ้ำหลังจากอนุมัติ/ปฏิเสธแล้ว โดยตรวจที่ระดับ Flex payload
+// (การทดสอบ DB-level ต้องการ integration test แยก)
 func TestMaintenanceStaleApproveDetection(t *testing.T) {
-
-
+	// ตรวจว่า buildMaintenanceStatusFlexMessage สำหรับ "กำลังติดต่อช่าง" หลังอนุมัติ
+	// ไม่มีปุ่ม approve/reject (เพราะ approved แล้ว ไม่ควรมีปุ่มเหล่านั้น)
 	notification := maintenanceStatusNotification{
 		MaintenanceID: "44",
 		LineUserID:    "line-one",
 		RoomNumber:    "103",
 		Issue:         "เครื่องซักผ้าเสีย",
-		Status:        "กำลังติดต่อช่าง",
+		Status:        "กำลังติดต่อช่าง", // หลังอนุมัติจะกลับมา state นี้
 		Cost:          2750,
 		LastUpdated:   "2026-09-18T06:00:00Z",
 	}
@@ -225,23 +230,24 @@ func TestMaintenanceStaleApproveDetection(t *testing.T) {
 		t.Fatal(err)
 	}
 	raw, _ := marshalJSONTest(message)
-
+	// หลังอนุมัติแล้ว card สถานะ "กำลังติดต่อช่าง" ต้องไม่มีปุ่ม approve/reject
 	if strings.Contains(raw, "maintenance_quote_approve") || strings.Contains(raw, "maintenance_quote_reject") {
 		t.Fatal("post-approval status card should not contain quote decision buttons")
 	}
-
+	// ต้องมีชื่อสถานะ
 	if !strings.Contains(raw, "กำลังติดต่อช่าง") {
 		t.Fatal("status card should display current status")
 	}
 }
 
-
+// TestMaintenanceNonQuoteStatusDoesNotRequireID ตรวจว่าสถานะ non-quote/payment
+// สร้าง Flex ได้โดยไม่ต้องการ MaintenanceID
 func TestMaintenanceNonQuoteStatusDoesNotRequireID(t *testing.T) {
 	statuses := []string{"รอดำเนินการ", "กำลังติดต่อช่าง", "กำลังซ่อม", "เสร็จสิ้น"}
 	for _, status := range statuses {
 		t.Run(status, func(t *testing.T) {
 			notification := maintenanceStatusNotification{
-
+				// ไม่มี MaintenanceID
 				LineUserID:  "line-one",
 				RoomNumber:  "103",
 				Issue:       "น้ำไม่ไหล",
@@ -256,7 +262,8 @@ func TestMaintenanceNonQuoteStatusDoesNotRequireID(t *testing.T) {
 	}
 }
 
-
+// TestMaintenanceQuoteApprovedFlexMessage ตรวจว่า EventKey ของการอนุมัติใบเสนอราคา
+// จะสร้าง Flex message แบบ Carousel ที่มี 2 Bubble (การ์ดอนุมัติ และ QR)
 func TestMaintenanceQuoteApprovedFlexMessage(t *testing.T) {
 	notification := maintenanceStatusNotification{
 		EventKey:      "maintenance-quote-approved:1:55:2026-09-18T12:00:00Z",
@@ -264,7 +271,7 @@ func TestMaintenanceQuoteApprovedFlexMessage(t *testing.T) {
 		LineUserID:    "line-user",
 		RoomNumber:    "103",
 		Issue:         "ก๊อกน้ำรั่ว",
-		Status:        "กำลังติดต่อช่าง",
+		Status:        "กำลังติดต่อช่าง", // Status จะเป็นแบบนี้เมื่ออนุมัติ
 		Cost:          500,
 		LastUpdated:   "2026-09-18T12:00:00Z",
 		PromptPayID:   "0961950943",
@@ -280,7 +287,7 @@ func TestMaintenanceQuoteApprovedFlexMessage(t *testing.T) {
 		t.Fatal("expected contents to be a map")
 	}
 
-
+	// ต้องเป็น Carousel
 	if contents["type"] != "carousel" {
 		t.Fatalf("expected type carousel, got %v", contents["type"])
 	}
@@ -302,7 +309,7 @@ func TestMaintenanceQuoteApprovedFlexMessage(t *testing.T) {
 	}
 }
 
-
+// marshalJSONTest เป็น helper สำหรับ test เพื่อ marshal Flex message เป็น string
 func marshalJSONTest(v interface{}) (string, error) {
 	b, err := json.Marshal(v)
 	return string(b), err

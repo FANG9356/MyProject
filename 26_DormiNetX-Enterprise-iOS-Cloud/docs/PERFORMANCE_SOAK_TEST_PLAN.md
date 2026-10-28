@@ -19,7 +19,7 @@
 **Step 1: Initial Sync & Parsing (Heavy Load)**
 1. ลบแอปแล้วติดตั้งใหม่ (Clean Install)
 2. เข้าสู่ระบบด้วยแอคเคาท์ Staging (ที่มีข้อมูล 50,000 รายการ)
-3. ปล่อยให้แอปทำ Initial Sync
+3. ปล่อยให้แอปทำ Initial Sync 
    - **Expectation:** แอปไม่ควรแครชจาก OOM (Out of Memory)
    - **Expectation:** อุณหภูมิเครื่องควรอยู่ระดับอุ่นปกติ ไม่ทะลุขั้น Thermal Critical
 
@@ -27,7 +27,7 @@
 1. เข้าไปที่แท็บ "หลักฐานการโอน"
 2. ไถดูสลิปโอนเงิน (Thumbnails) เป็นเวลาต่อเนื่อง 10 นาที
 3. กดดูรูปเต็ม (Full Image) และกดปิดสลับไปมาอย่างน้อย 100 ครั้ง
-   - **Expectation:** Frame rate ควรอยู่ที่ 60fps (หรือ 120fps บน ProMotion)
+   - **Expectation:** Frame rate ควรอยู่ที่ 60fps (หรือ 120fps บน ProMotion) 
    - **Expectation:** Memory usage ควรคงที่ (plateau) ไม่พุ่งทะยานต่อเนื่องตามการเลื่อน
 
 **Step 3: Background & Foreground Transition**
@@ -36,7 +36,7 @@
    - **Expectation:** แอปตื่นขึ้นมาตอบสนองทันที ไม่ค้างเกิน 2 วินาที
 
 ## 3. การมอนิเตอร์และจับปัญหา
-ให้นักพัฒนาเปิดใช้งาน **Xcode Instruments**
+ให้นักพัฒนาเปิดใช้งาน **Xcode Instruments** 
 - **Time Profiler:** สำหรับจับ UI thread block (เช่น การแปลง JSON ใน Main thread)
 - **Allocations & Leaks:** หาก Memory ทะลุ 1.5 GB บนอุปกรณ์ RAM น้อยให้แจ้งเตือน
 - **Energy Log:** สำหรับประเมินอัตราการใช้แบตเตอรี่ใน 1 ชั่วโมง หากเกิน 10% ให้ทำ Code Review หา Background process ที่ไม่ยอมหยุดทำงาน

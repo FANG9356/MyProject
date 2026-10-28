@@ -59,7 +59,10 @@ type restoreTarget struct {
 	movedNew bool
 }
 
-
+// RestoreServerBackup restores a multi-tenant archive created by
+// PerformServerBackup. The caller must stop the server first and explicitly
+// enter maintenance mode. Every archive entry is verified before any live
+// path is touched. Live data is retained in RollbackPath after success.
 func RestoreServerBackup(options ServerRestoreOptions) (ServerRestoreResult, error) {
 	var result ServerRestoreResult
 	if strings.TrimSpace(options.ArchivePath) == "" {
@@ -140,7 +143,9 @@ func RestoreServerBackup(options ServerRestoreOptions) (ServerRestoreResult, err
 	return result, nil
 }
 
-
+// RollbackServerRestore reactivates the pre-restore data retained by
+// RestoreServerBackup. The replaced restore is preserved as another recovery
+// set instead of being deleted.
 func RollbackServerRestore(options ServerRollbackOptions) (ServerRollbackResult, error) {
 	var result ServerRollbackResult
 	if strings.TrimSpace(options.RollbackPath) == "" {

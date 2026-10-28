@@ -4,8 +4,8 @@ struct LoginView: View {
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var isPasswordVisible: Bool = false
-
-
+    
+    // Authentication modes
     @State private var isSignUpMode: Bool = false
     @State private var isForgotPasswordMode: Bool = false
     @State private var passwordResetEmail: String?
@@ -16,32 +16,32 @@ struct LoginView: View {
     @State private var name: String = ""
     @State private var confirmPassword: String = ""
     @State private var isConfirmPasswordVisible: Bool = false
-
+    
     @State private var errorMessage: String? = nil
     @State private var isLoading: Bool = false
-
+    
     @AppStorage("isLoggedIn") var isLoggedIn: Bool = false
     @AppStorage("userEmail") var userEmail: String = ""
     @AppStorage("userName") var userName: String = ""
     @AppStorage("securityTokenEnabled") var securityTokenEnabled: Bool = false
     @ObservedObject private var credentials = CredentialStore.shared
-
+    
     @State private var showingPasscodeModal: Bool = false
     @State private var passcodeInput: String = ""
     @State private var passcodeError: String? = nil
     @State private var pendingSavedAccount: SavedAccount?
     @State private var isVerifyingPasscode = false
     @FocusState private var isPasscodeFocused: Bool
-
+    
     @State private var savedAccounts: [SavedAccount] = []
     @Environment(\.colorScheme) var colorScheme
-
-
+    
+    // Controls fade-in
     @State private var isScreenReady = false
-
+    
     var body: some View {
         ZStack {
-
+            // Keep the inner UI grouped so the whole screen can fade together
             ZStack {
                 ScrollView(showsIndicators: false) {
                     VStack(spacing: 35) {
@@ -116,7 +116,7 @@ struct LoginView: View {
                                     removal: .scale(scale: 0.9).combined(with: .opacity).combined(with: .move(edge: .top))
                                 ))
                             }
-
+                            
                             HStack {
                                 Image(systemName: "envelope.fill")
                                     .foregroundColor(colorScheme == .dark ? .white.opacity(0.7) : .indigo)
@@ -138,13 +138,13 @@ struct LoginView: View {
                                     .stroke(colorScheme == .dark ? Color.white.opacity(0.2) : Color.white, lineWidth: 1.5)
                             )
                             .shadow(color: .black.opacity(0.045), radius: 6, x: 0, y: 3)
-
+                            
                             if !isForgotPasswordMode {
                                 HStack {
                                     Image(systemName: "lock.fill")
                                     .foregroundColor(colorScheme == .dark ? .white.opacity(0.7) : .indigo)
                                     .frame(width: 20)
-
+                                
                                 if isPasswordVisible {
                                     TextField("รหัสผ่าน", text: $password)
                                         .font(.custom("SukhumvitSet-Medium", size: 16))
@@ -159,7 +159,7 @@ struct LoginView: View {
                                         .limitedText($password, maxLength: 64, trimNewlines: true)
                                         .accessibilityIdentifier("PasswordField")
                                 }
-
+                                
                                 Button(action: {
                                     isPasswordVisible.toggle()
                                 }) {
@@ -176,13 +176,13 @@ struct LoginView: View {
                             )
                             .shadow(color: .black.opacity(0.045), radius: 6, x: 0, y: 3)
                             }
-
+                            
                             if isSignUpMode {
                                 HStack {
                                     Image(systemName: "lock.fill")
                                         .foregroundColor(colorScheme == .dark ? .white.opacity(0.7) : .indigo)
                                         .frame(width: 20)
-
+                                    
                                     if isConfirmPasswordVisible {
                                         TextField("ยืนยันรหัสผ่าน", text: $confirmPassword)
                                             .font(.custom("SukhumvitSet-Medium", size: 16))
@@ -196,7 +196,7 @@ struct LoginView: View {
                                             .foregroundColor(.primary)
                                             .limitedText($confirmPassword, maxLength: 64, trimNewlines: true)
                                     }
-
+                                    
                                     Button(action: {
                                         isConfirmPasswordVisible.toggle()
                                     }) {
@@ -288,7 +288,7 @@ struct LoginView: View {
                         }
                         .padding(.horizontal, 30)
                         .animation(.easeInOut(duration: 0.42), value: errorMessage)
-
+                        
                         Button(action: {
                             withAnimation(.spring(response: 0.6, dampingFraction: 0.75)) {
                                 if isForgotPasswordMode {
@@ -319,12 +319,12 @@ struct LoginView: View {
                 .simultaneousGesture(TapGesture().onEnded {
                     dismissKeyboard()
                 })
-
+                
                 VStack {
                     if !showingPasscodeModal {
                         HStack(spacing: 15) {
                             ThemeToggleButton()
-
+                            
                             if !savedAccounts.isEmpty {
                                 Menu {
                                     ForEach(savedAccounts) { account in
@@ -354,7 +354,7 @@ struct LoginView: View {
                     Spacer()
                 }
                 .safeAreaPadding()
-
+                
                 if showingPasscodeModal {
                     ZStack {
                         Rectangle()
@@ -364,7 +364,7 @@ struct LoginView: View {
                                 isPasscodeFocused = false
                                 UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                             }
-
+                        
                         VStack {
                             GlassCard {
                                 VStack(spacing: 20) {
@@ -373,12 +373,12 @@ struct LoginView: View {
                                             .fill(LinearGradient(colors: [.indigo, .purple], startPoint: .topLeading, endPoint: .bottomTrailing))
                                             .frame(width: 56, height: 56)
                                             .shadow(color: .indigo.opacity(0.3), radius: 8, x: 0, y: 4)
-
+                                        
                                         Image(systemName: "lock.shield.fill")
                                             .font(.custom("SukhumvitSet-Medium", size: 26))
                                             .foregroundColor(.white)
                                     }
-
+                                    
                                     VStack(spacing: 4) {
                                         Text("ใส่รหัสยืนยัน 6 หลัก")
                                             .font(.custom("SukhumvitSet-Bold", size: 17))
@@ -388,7 +388,7 @@ struct LoginView: View {
                                             .foregroundColor(.secondary)
                                             .multilineTextAlignment(.center)
                                     }
-
+                                    
                                     ZStack {
                                         TextField("", text: $passcodeInput)
                                             .font(.custom("SukhumvitSet-Bold", size: 22))
@@ -402,7 +402,7 @@ struct LoginView: View {
                                                     verifyPasscode()
                                                 }
                                             }
-
+                                        
                                         HStack(spacing: 8) {
                                             ForEach(0..<6, id: \.self) { index in
                                                 let char = index < passcodeInput.count ? String(Array(passcodeInput)[index]) : ""
@@ -423,13 +423,13 @@ struct LoginView: View {
                                             isPasscodeFocused = true
                                         }
                                     }
-
+                                    
                                     if let error = passcodeError {
                                         Text(error)
                                             .font(.custom("SukhumvitSet-Medium", size: 13))
                                             .foregroundColor(.red)
                                     }
-
+                                    
                                     HStack(spacing: 12) {
                                         Button(action: {
                                             isPasscodeFocused = false
@@ -447,7 +447,7 @@ struct LoginView: View {
                                                 .frame(maxWidth: .infinity)
                                                 .padding(.vertical, 10)
                                         }
-
+                                        
                                         Button(action: {
                                             verifyPasscode()
                                         }) {
@@ -475,7 +475,7 @@ struct LoginView: View {
                     .transition(.opacity.combined(with: .scale(scale: 0.95)))
                 }
             }
-            .opacity(isScreenReady ? 1.0 : 0.0)
+            .opacity(isScreenReady ? 1.0 : 0.0) // 💡 ควบคุมให้ทุกอย่างเฟดเข้า/ออกพร้อมกันทั้งหมด
             .dismissKeyboardOnTap()
         }
         .animation(.spring(response: 0.38, dampingFraction: 0.8), value: showingPasscodeModal)
@@ -498,7 +498,7 @@ struct LoginView: View {
             if let passwordResetEmail {
                 PasswordResetView(email: passwordResetEmail, refCode: passwordResetRefCode) {
                     passwordResetCompleted = true
-
+                    // Remove this device's saved session; server-side JWT revocation is separate.
                     do {
                         let remaining = savedAccounts.filter {
                             $0.email.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() != passwordResetEmail
@@ -515,7 +515,7 @@ struct LoginView: View {
             Text("กรุณาเข้าสู่ระบบด้วยรหัสผ่านใหม่")
         }
     }
-
+    
     private func showError(_ message: String) {
         withAnimation(.easeInOut(duration: 0.45)) {
             errorMessage = message
@@ -573,43 +573,43 @@ struct LoginView: View {
                 showError("ชื่อผู้ใช้ต้องมีอย่างน้อย 5 ตัวอักษร")
                 return
             }
-
+            
             let emailRegex = "^[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}$"
             if email.range(of: emailRegex, options: .regularExpression) == nil {
                 showError("รูปแบบอีเมลไม่ถูกต้อง")
                 return
             }
-
+            
             if password.count < 8 {
                 showError("รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร")
                 return
             }
-
+            
             let hasUppercase = password.contains(where: { $0.isUppercase })
             let hasLowercase = password.contains(where: { $0.isLowercase })
             let hasNumber = password.contains(where: { $0.isNumber })
             let hasSpecial = password.contains(where: { !$0.isLetter && !$0.isNumber })
-
+            
             if !hasUppercase || !hasLowercase || !hasNumber || !hasSpecial {
                 showError("รหัสผ่านต้องมีตัวพิมพ์ใหญ่ ตัวพิมพ์เล็ก ตัวเลข และอักขระพิเศษ")
                 return
             }
-
+            
             guard password == confirmPassword else {
                 showError("รหัสผ่านและการยืนยันรหัสผ่านไม่ตรงกัน")
                 return
             }
         }
-
+        
         isLoading = true
         clearError()
-
+        
         do {
             let success: Bool
             let returnedName: String?
-
+            
             var backendErrorMsg: String? = nil
-
+            
             if isSignUpMode {
                 let result = try await APIService.shared.register(name: name, email: email, password: password)
                 success = result.0
@@ -620,7 +620,7 @@ struct LoginView: View {
                 success = result.0
                 returnedName = result.1
             }
-
+            
             if success {
                 await MainActor.run {
                     userEmail = email
@@ -631,7 +631,7 @@ struct LoginView: View {
                     } else if userName.isEmpty {
                         userName = String(email.split(separator: "@").first ?? "ผู้ใช้")
                     }
-
+                    
                     if securityTokenEnabled && !isSignUpMode {
                         passcodeInput = ""
                         passcodeError = nil
@@ -644,12 +644,12 @@ struct LoginView: View {
                             }
                         }
                     } else {
-
+                        // Fade out LoginView before switching screens
                         withAnimation(.easeOut(duration: 0.2)) {
                             isScreenReady = false
                         }
-
-
+                        
+                        // Switch to Dashboard after the login UI has faded out
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                             withAnimation(.easeInOut(duration: 0.6)) {
                                 isLoggedIn = true
@@ -665,10 +665,10 @@ struct LoginView: View {
             showError("เกิดปัญหาเครือข่าย หรือเซิร์ฟเวอร์ไม่ตอบสนอง")
             print("Auth Error: \(error)")
         }
-
+        
         isLoading = false
     }
-
+    
     private func handleForgotPassword() async {
         let normalizedEmail = email.trimmingCharacters(in: .whitespacesAndNewlines)
         let emailRegex = "^[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}$"
@@ -697,7 +697,7 @@ struct LoginView: View {
             }
         } catch { showError(error.localizedDescription) }
     }
-
+    
     private func saveAccount() {
         var accounts = savedAccounts
         accounts.removeAll(where: { $0.email == email })
@@ -714,17 +714,17 @@ struct LoginView: View {
             ),
             at: 0
         )
-
+        
         if accounts.count > 5 {
             accounts = Array(accounts.prefix(5))
         }
-
+        
         do {
             try credentials.setSavedAccountsData(JSONEncoder().encode(accounts))
             savedAccounts = accounts
         } catch { showError(error.localizedDescription) }
     }
-
+    
     private func clearSavedAccounts() {
         do {
             try credentials.setSavedAccountsData(nil)
@@ -793,7 +793,7 @@ struct LoginView: View {
             }
         }
     }
-
+    
     private func verifyPasscode() {
         guard !isVerifyingPasscode else { return }
 
@@ -810,7 +810,7 @@ struct LoginView: View {
             withAnimation(.easeInOut(duration: 0.2)) {
                 showingPasscodeModal = false
             }
-
+            
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
                 if let account = pendingSavedAccount, let token = account.token, !token.isEmpty {
                     do { try restoreSavedAccount(account, token: token) }

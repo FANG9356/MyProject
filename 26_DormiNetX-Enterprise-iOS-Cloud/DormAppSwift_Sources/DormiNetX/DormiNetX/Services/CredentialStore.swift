@@ -47,7 +47,7 @@ struct KeychainValueStore: SecureValueStore {
 @MainActor
 final class CredentialStore: ObservableObject {
     static let shared = CredentialStore()
-
+    // No actor-bound cleanup; avoid the Swift 6.2 isolated-deinit runtime crash (swiftlang/swift#85663).
     nonisolated deinit {}
     @Published private(set) var token: String?
     @Published private(set) var passcode: String?
@@ -73,7 +73,7 @@ final class CredentialStore: ObservableObject {
                 defaults.removeObject(forKey: key)
             }
         }
-
+        // Older builds supplied this default without necessarily persisting it.
         if !defaults.bool(forKey: "credentialsMigrated"), defaults.bool(forKey: "securityTokenEnabled"),
            try secure.read("securityPasscode") == nil {
             try secure.write(Data("123456".utf8), key: "securityPasscode")

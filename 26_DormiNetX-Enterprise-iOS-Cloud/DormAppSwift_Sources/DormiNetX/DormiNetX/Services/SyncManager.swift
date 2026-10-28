@@ -248,7 +248,7 @@ class SyncManager: ObservableObject {
 
     private var accountID: Int { defaults.integer(forKey: "adminID") }
     private var checkpoint: SyncCheckpoint { SyncCheckpoint(accountID: accountID, defaults: defaults) }
-
+    
     @Published var isSyncing = false
     @Published var lastSyncTime: Date?
     @Published var state: SyncState = .idle
@@ -256,7 +256,7 @@ class SyncManager: ObservableObject {
     @Published var message: String = ""
 
     private let recentRemoteAutoPullWindow: TimeInterval = 120
-
+    
     @MainActor
     func syncWithGoBackend(modelContext: ModelContext) async {
         if hasDirtyLocalChanges() || hasDirtyRecords(modelContext) {
@@ -269,7 +269,7 @@ class SyncManager: ObservableObject {
     func autoPushLocalChanges(modelContext: ModelContext) async {
         markLocalChangesPending()
         guard !isSyncing else { return }
-
+        
         isSyncing = true
         operation = .autoPush
         defer {
@@ -279,7 +279,7 @@ class SyncManager: ObservableObject {
                 message = String(localized: "บันทึกขึ้น cloud แล้ว")
             }
         }
-
+        
         do {
             state = .preparing
             message = String(localized: "กำลังบันทึกขึ้น cloud")
@@ -289,11 +289,13 @@ class SyncManager: ObservableObject {
                 do {
                     try await pushCurrentSnapshot(modelContext: modelContext)
                 } catch SyncError.conflict {
-
-
+                    // LINE and another device can publish a newer snapshot while
+                    // this device still has unsent edits. Pull that snapshot and
+                    // rebase the dirty records instead of leaving the user on a
+                    // conflict screen where the new LINE record never appears.
                     state = .downloading
                     message = String(localized: "กำลังรวมข้อมูลใหม่จาก LINE กับข้อมูลในเครื่อง")
-                    print("ℹ Sync conflict detected; rebasing pending local records")
+                    print("ℹ️ Sync conflict detected; rebasing pending local records")
                     try await fetchAndApplyLatestSnapshot(
                         modelContext: modelContext,
                         onlyIfRecent: false,
@@ -305,7 +307,7 @@ class SyncManager: ObservableObject {
             state = .completed
         } catch {
             let text = error.localizedDescription
-            print("[ERROR] Automatic sync failed: \(text)")
+            print("❌ Automatic sync failed: \(text)")
             state = .failed(text)
             message = text
         }
@@ -324,8 +326,8 @@ class SyncManager: ObservableObject {
 
         do {
             if hasDirtyLocalChanges(), !hasDirtyRecords(modelContext) {
-
-
+                // A stale pending flag/outbox must not permanently block a
+                // manual recovery when every local record is already clean.
                 try outbox.remove(accountID: accountID)
                 checkpoint.pending = false
             }
@@ -346,8 +348,10 @@ class SyncManager: ObservableObject {
         if case .completed = state, message.isEmpty {
             message = String(localized: "ดึงข้อมูลล่าสุดแล้ว")
         }
-
-
+        // A save can occur while a pull is awaiting the network. The save
+        // marks the checkpoint pending, but its immediate push returns because
+        // this pull owns the sync slot. Drain that pending edit now instead of
+        // leaving it local until the user manually syncs again.
         if hasDirtyLocalChanges() || hasDirtyRecords(modelContext) {
             await autoPushLocalChanges(modelContext: modelContext)
         }
@@ -401,7 +405,7 @@ class SyncManager: ObservableObject {
             try verifyChecksum(payload: payload, checksum: checksum)
             let snapshot = try decoder().decode(SyncEnvelope.self, from: payload)
             try validateSnapshot(snapshot)
-
+            // This path is only called after explicit confirmation, and never without a recovery copy.
             try exportLocalBackupData(modelContext: modelContext).write(to: backupURL, options: .atomic)
             try outbox.remove(accountID: accountID)
             try applySnapshot(snapshot, modelContext: modelContext)
@@ -463,34 +467,34 @@ class SyncManager: ObservableObject {
             if try context.fetchCount(FetchDescriptor(predicate: pRoomDirty)) > 0 { return true }
             let pRoomDeleted = #Predicate<Room> { $0.isDeletedLocally == true }
             if try context.fetchCount(FetchDescriptor(predicate: pRoomDeleted)) > 0 { return true }
-
+            
             let pUserDirty = #Predicate<DormUser> { $0.isDirty == true }
             if try context.fetchCount(FetchDescriptor(predicate: pUserDirty)) > 0 { return true }
             let pUserDeleted = #Predicate<DormUser> { $0.isDeletedLocally == true }
             if try context.fetchCount(FetchDescriptor(predicate: pUserDeleted)) > 0 { return true }
-
+            
             let pPaymentDirty = #Predicate<Payment> { $0.isDirty == true }
             if try context.fetchCount(FetchDescriptor(predicate: pPaymentDirty)) > 0 { return true }
             let pPaymentDeleted = #Predicate<Payment> { $0.isDeletedLocally == true }
             if try context.fetchCount(FetchDescriptor(predicate: pPaymentDeleted)) > 0 { return true }
-
+            
             let pTransaction = #Predicate<PaymentTransaction> { $0.isDirty == true }
             if try context.fetchCount(FetchDescriptor(predicate: pTransaction)) > 0 { return true }
-
+            
             let pReceipt = #Predicate<FinancialReceipt> { $0.isDirty == true }
             if try context.fetchCount(FetchDescriptor(predicate: pReceipt)) > 0 { return true }
-
+            
             let pMaintenanceDirty = #Predicate<Maintenance> { $0.isDirty == true }
             if try context.fetchCount(FetchDescriptor(predicate: pMaintenanceDirty)) > 0 { return true }
             let pMaintenanceDeleted = #Predicate<Maintenance> { $0.isDeletedLocally == true }
             if try context.fetchCount(FetchDescriptor(predicate: pMaintenanceDeleted)) > 0 { return true }
-
+            
             let pRoomType = #Predicate<RoomType> { $0.isDirty == true }
             if try context.fetchCount(FetchDescriptor(predicate: pRoomType)) > 0 { return true }
-
+            
             return false
-        } catch {
-            return true
+        } catch { 
+            return true 
         }
     }
 
@@ -651,7 +655,7 @@ class SyncManager: ObservableObject {
         try verifyChecksum(payload: payload, checksum: response.checksum)
         sentCheckpoint.version = response.version
         try outbox.remove(accountID: accountID)
-
+        // Only acknowledge the exact state that was uploaded. Edits during the await stay queued.
         let currentContent = try contentSignature(buildSnapshot(modelContext: modelContext))
         if revision == sentCheckpoint.revision && content == currentContent {
             try markAllClean(modelContext: modelContext)
@@ -736,25 +740,25 @@ class SyncManager: ObservableObject {
         let pRoomDirty = #Predicate<Room> { $0.isDirty == true }
         let pRoomDeleted = #Predicate<Room> { $0.isDeletedLocally == true }
         let dirtyRooms = (try modelContext.fetch(FetchDescriptor(predicate: pRoomDirty))) + (try modelContext.fetch(FetchDescriptor(predicate: pRoomDeleted)))
-
+        
         let pTenantDirty = #Predicate<DormUser> { $0.isDirty == true }
         let pTenantDeleted = #Predicate<DormUser> { $0.isDeletedLocally == true }
         let dirtyTenants = (try modelContext.fetch(FetchDescriptor(predicate: pTenantDirty))) + (try modelContext.fetch(FetchDescriptor(predicate: pTenantDeleted)))
-
+        
         let pPaymentDirty = #Predicate<Payment> { $0.isDirty == true }
         let pPaymentDeleted = #Predicate<Payment> { $0.isDeletedLocally == true }
         let dirtyPayments = (try modelContext.fetch(FetchDescriptor(predicate: pPaymentDirty))) + (try modelContext.fetch(FetchDescriptor(predicate: pPaymentDeleted)))
-
+        
         let pTransaction = #Predicate<PaymentTransaction> { $0.isDirty == true }
         let dirtyTransactions = try modelContext.fetch(FetchDescriptor(predicate: pTransaction))
-
+        
         let pReceipt = #Predicate<FinancialReceipt> { $0.isDirty == true }
         let dirtyReceipts = try modelContext.fetch(FetchDescriptor(predicate: pReceipt))
-
+        
         let pMaintenanceDirty = #Predicate<Maintenance> { $0.isDirty == true }
         let pMaintenanceDeleted = #Predicate<Maintenance> { $0.isDeletedLocally == true }
         let dirtyMaintenance = (try modelContext.fetch(FetchDescriptor(predicate: pMaintenanceDirty))) + (try modelContext.fetch(FetchDescriptor(predicate: pMaintenanceDeleted)))
-
+        
         let pRoomType = #Predicate<RoomType> { $0.isDirty == true }
         let dirtyRoomTypes = try modelContext.fetch(FetchDescriptor(predicate: pRoomType))
 
@@ -852,7 +856,7 @@ class SyncManager: ObservableObject {
 				let data = try await fetchTenantMediaWithRetry(fileName: fileName)
                 _ = try SlipImageManager.restoreImageData(data, fileName: fileName)
             } catch {
-
+                // Records remain usable even if an optional image cannot be downloaded.
             }
         }
     }
@@ -1029,8 +1033,9 @@ class SyncManager: ObservableObject {
         do {
             let migratedLegacyBalances = try PaymentLedger.migrateLegacyBalances(in: modelContext)
             try markAllClean(modelContext: modelContext)
-
-
+            // A legacy snapshot is a valid input, but the generated ledger is
+            // new local state and must be uploaded so every device converges on
+            // the same transaction and receipt identifiers.
             if migratedLegacyBalances > 0 {
                 checkpoint.markChanged()
             }

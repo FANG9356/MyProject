@@ -23,6 +23,7 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
+// Models moved to models.go
 
 func RunServer() {
 	defer func() {
@@ -46,15 +47,15 @@ func RunServer() {
 		log.Fatal(err)
 	}
 
-
+	// เปิด WAL mode และ Busy Timeout
 	db.Exec("PRAGMA journal_mode=WAL;")
 	db.Exec("PRAGMA busy_timeout=5000;")
-	db.SetMaxOpenConns(25)
+	db.SetMaxOpenConns(25) // อนุญาตให้เชื่อมต่อหลายครั้งพร้อมกัน
 	db.SetMaxIdleConns(25)
 	db.SetConnMaxLifetime(5 * time.Minute)
 	defer db.Close()
 
-
+	// Start P2P Node
 	if _, err := p2p.StartP2PNode(); err != nil {
 		log.Printf("Failed to start P2P node: %v\n", err)
 	}
@@ -133,16 +134,16 @@ func RunServer() {
 	http.Handle("/api/admins/login-qr/generate", handlers.AuthMiddleware(db, handlers.GenerateLoginTokenHandler(db)))
 	http.HandleFunc("/api/login/qr", handlers.LoginWithQRHandler(db))
 
-
+	// [NEW] Setup Forgot Password routes
 	handlers.SetupAuthResetRoutes(db)
 
-
+	// Start daily backup scheduler at 10 PM
 	go handlers.StartBackupScheduler(db, dbPath, "./uploads", "./backups")
 
-
+	// Start daily media cleanup scheduler at 3 AM
 	go handlers.StartMediaCleanupScheduler(db, "./uploads")
 
-
+	// Start hourly maintenance cleanup scheduler
 	go handlers.StartMaintenanceCleanupScheduler(db)
 
 	http.HandleFunc("/api/system/backup/auto", func(w http.ResponseWriter, r *http.Request) {
@@ -198,7 +199,7 @@ func RunServer() {
 		if r.Method == "GET" {
 			type BackupItem struct {
 				Name      string    `json:"name"`
-				Type      string    `json:"type"`
+				Type      string    `json:"type"` // "zip"
 				Size      int64     `json:"size"`
 				CreatedAt time.Time `json:"created_at"`
 			}
@@ -275,7 +276,7 @@ func RunServer() {
 				cmd = exec.Command("open", absPath)
 			case "windows":
 				cmd = exec.Command("explorer", absPath)
-			default:
+			default: // "linux", "freebsd", "openbsd", "netbsd"
 				cmd = exec.Command("xdg-open", absPath)
 			}
 
@@ -353,8 +354,10 @@ func RunServer() {
 			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 			return
 		}
-
-
+		// The legacy JSON restore mutates one database and replaces uploads before
+		// the database transaction starts. It cannot safely restore a server
+		// archive containing master plus tenant databases while the process is
+		// online, so fail closed until an atomic maintenance-mode restore exists.
 		http.Error(w, `{"error":"Online server restore is disabled; validate the archive and restore during a maintenance window"}`, http.StatusNotImplemented)
 	})
 
@@ -395,7 +398,7 @@ func RunServer() {
 		if r.Method != "POST" {
 			return
 		}
-
+		// Only the account owner can reset the entire system.
 		if !handlers.IsSuperadmin(r) {
 			http.Error(w, `{"error": "Unauthorized: Superadmin role required"}`, http.StatusForbidden)
 			return
@@ -435,7 +438,7 @@ func RunServer() {
 	setupLiffHandler()
 	setupStaticHandler()
 
-
+	// [เพิ่มใหม่] Reverse Proxy สำหรับส่งต่อคำสั่งเกี่ยวกับ WiFi ไปยัง backend-network (Port 8911) แบบซ่อนหลังบ้าน
 	targetUrl, _ := url.Parse("http://127.0.0.1:8911")
 	proxy := httputil.NewSingleHostReverseProxy(targetUrl)
 	http.HandleFunc("/api/wifi/", func(w http.ResponseWriter, r *http.Request) {
@@ -497,10 +500,11 @@ func setupStaticHandler() {
 }
 
 func InitializeDatabase(db *sql.DB) {
+	// Master Database: Only stores Auth (admins, password_resets, etc.)
 
-
+	// [เพิ่มใหม่] ตารางสำหรับแอดมินและรีเซ็ตรหัสผ่าน
 	db.Exec(`CREATE TABLE IF NOT EXISTS admins (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT UNIQUE, password TEXT, role TEXT DEFAULT 'services', profile_image TEXT DEFAULT '')`)
-
+	// Migrate existing admins table
 	db.Exec(`ALTER TABLE admins ADD COLUMN profile_image TEXT DEFAULT ''`)
 	db.Exec(`ALTER TABLE admins ADD COLUMN last_active DATETIME`)
 	db.Exec(`ALTER TABLE admins ADD COLUMN role TEXT DEFAULT 'services'`)
@@ -515,7 +519,7 @@ func InitializeDatabase(db *sql.DB) {
 	db.Exec(`ALTER TABLE admins ADD COLUMN account_name TEXT DEFAULT ''`)
 	db.Exec(`ALTER TABLE admins ADD COLUMN apns_token TEXT DEFAULT ''`)
 
-
+	// Populate missing dorm_code for superadmins
 	rows, err := db.Query("SELECT id FROM admins WHERE role = 'superadmin' AND dorm_code = ''")
 	if err == nil {
 		defer rows.Close()
@@ -527,7 +531,7 @@ func InitializeDatabase(db *sql.DB) {
 			}
 		}
 		for _, id := range ids {
-
+			// Quick unique code generation in migration
 			for i := 0; i < 100; i++ {
 				var code string
 				db.QueryRow("SELECT printf('%06d', abs(random() % 1000000))").Scan(&code)
@@ -546,8 +550,9 @@ func InitializeDatabase(db *sql.DB) {
 		token TEXT,
 		expires_at DATETIME
 	)`)
-
-
+	// One active OTP per normalized email. Remove legacy duplicates before
+	// enforcing the invariant so concurrent requests cannot leave many valid
+	// reset codes for one account.
 	db.Exec(`DELETE FROM password_resets
 		WHERE id NOT IN (SELECT MAX(id) FROM password_resets GROUP BY LOWER(email))`)
 	db.Exec(`CREATE UNIQUE INDEX IF NOT EXISTS idx_password_resets_email

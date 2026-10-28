@@ -6,7 +6,7 @@ struct GlassBackgroundView: View {
     @AppStorage(AppBackgroundManager.kindKey) private var customBackgroundKind = AppBackgroundKind.system.rawValue
     @AppStorage(AppBackgroundManager.fileNameKey) private var customBackgroundFileName = ""
     @AppStorage(AppBackgroundManager.updateTokenKey) private var customBackgroundUpdateToken = ""
-
+    
     var body: some View {
         ZStack {
             if let customBackground = activeCustomBackground {
@@ -77,9 +77,9 @@ struct GlassBackgroundView: View {
     private var systemBackground: some View {
         ZStack {
             if colorScheme == .dark {
-
+                // Dark Theme: Navy Base
                 Color(red: 0.1, green: 0.1, blue: 0.15).ignoresSafeArea()
-
+                
                 GeometryReader { geometry in
                     ZStack {
                         Circle()
@@ -88,7 +88,7 @@ struct GlassBackgroundView: View {
                             .blur(radius: 60)
                             .offset(x: isAnimating ? geometry.size.width / 2 : -geometry.size.width / 2,
                                     y: isAnimating ? geometry.size.height / 2 : -geometry.size.height / 2)
-
+                        
                         Circle()
                             .fill(LinearGradient(colors: [.pink, .orange], startPoint: .topLeading, endPoint: .bottomTrailing))
                             .frame(width: 250, height: 250)
@@ -98,14 +98,14 @@ struct GlassBackgroundView: View {
                     }
                 }
                 .ignoresSafeArea()
-
+                
                 Rectangle()
                     .fill(.ultraThinMaterial)
                     .ignoresSafeArea()
             } else {
-
+                // Light Theme: White Base
                 Color.white.ignoresSafeArea()
-
+                
                 GeometryReader { geometry in
                     ZStack {
                         Circle()
@@ -114,7 +114,7 @@ struct GlassBackgroundView: View {
                             .blur(radius: 80)
                             .offset(x: isAnimating ? geometry.size.width / 2 : -geometry.size.width / 4,
                                     y: isAnimating ? geometry.size.height / 3 : -geometry.size.height / 4)
-
+                        
                         Circle()
                             .fill(LinearGradient(colors: [Color(red: 0.8, green: 0.4, blue: 1.0).opacity(0.5), Color(red: 0.4, green: 0.8, blue: 1.0).opacity(0.5)], startPoint: .bottomLeading, endPoint: .topTrailing))
                             .frame(width: 300, height: 300)
@@ -124,7 +124,7 @@ struct GlassBackgroundView: View {
                     }
                 }
                 .ignoresSafeArea()
-
+                
                 Color.white.opacity(0.15)
                     .background(.ultraThinMaterial)
                     .ignoresSafeArea()

@@ -1,7 +1,7 @@
 import SwiftUI
 import Charts
 import SwiftData
-
+// MARK: - Overview Tab View
 struct OverviewTabView: View {
     @StateObject private var viewModel = DashboardViewModel()
     @Environment(\.colorScheme) var colorScheme
@@ -18,11 +18,11 @@ struct OverviewTabView: View {
             "\(maintenances.count):\(maintenances.first?.lastUpdated.timeIntervalSince1970 ?? 0)"
         ].joined(separator: "|")
     }
-
+    
     var body: some View {
         ScrollView {
             VStack(spacing: 20) {
-
+                // Header
                 HStack(alignment: .top) {
                     VStack(alignment: .leading, spacing: 6) {
                         Text("แดชบอร์ดวันนี้")
@@ -34,60 +34,60 @@ struct OverviewTabView: View {
                     }
 
                     Spacer()
-
+                    
                     if viewModel.isLoading {
                         ProgressView()
                             .padding(.top, 6)
                     }
                 }
                 .padding(.horizontal, 20)
-
+                
                 if let error = viewModel.errorMessage {
                     Text(error)
                         .foregroundColor(.red)
                         .font(.custom("SukhumvitSet-Text", size: 14))
                 }
-
-
+                
+                // KPIs
                 LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 15) {
-
+                    // KPI 1: Occupancy Rate
                     let totalRooms = viewModel.stats.total_residents + viewModel.stats.empty_rooms
                     let occRate = totalRooms > 0 ? (Double(viewModel.stats.total_residents) / Double(totalRooms)) * 100 : 0
                     GlassSummaryCard(title: "อัตราการเข้าพัก", value: "\(String(format: "%.0f", occRate))%", icon: "person.2.fill", color: .blue)
-
-
+                    
+                    // KPI 2: Room Status
                     GlassSummaryCard(title: "ห้องว่าง", value: "\(viewModel.stats.empty_rooms)", icon: "bed.double.fill", color: .indigo)
-
-
+                    
+                    // KPI 3: Income
                     GlassSummaryCard(title: "เงินสดรับเดือนนี้", value: moneyText(viewModel.stats.income_this_month), icon: "banknote.fill", color: .green)
-
-
+                    
+                    // KPI 4: Billing Cycle
                     GlassSummaryCard(title: "ยอดเก็บรอบบิลนี้", value: moneyText(viewModel.stats.billing_cycle_income), icon: "doc.text.fill", color: .cyan)
-
-
+                    
+                    // KPI 5: Deposit
                     GlassSummaryCard(title: "มัดจำแรกเข้า", value: moneyText(viewModel.depositThisMonth), icon: "archivebox.fill", color: .orange)
-
-
+                    
+                    // KPI 6: Pending
                     GlassSummaryCard(title: "บิลค้างชำระ", value: "\(viewModel.stats.pending_bills)", icon: "exclamationmark.triangle.fill", color: viewModel.stats.pending_bills > 0 ? .red : .gray)
                 }
                 .padding(.horizontal, 20)
-
-
+                
+                // Charts Section
                 VStack(spacing: 20) {
-
+                    // Revenue Chart
                     GlassCard {
                         VStack(alignment: .leading, spacing: 10) {
                             Label("แนวโน้มรายรับทางการเงิน", systemImage: "chart.line.uptrend.xyaxis")
                                 .font(.custom("SukhumvitSet-Bold", size: 14))
                                 .foregroundColor(.green)
-
+                            
                             Chart(viewModel.financialStats) { stat in
                                 AreaMark(
                                     x: .value("เดือน", stat.name),
                                     y: .value("รายรับ", stat.income)
                                 )
                                 .foregroundStyle(LinearGradient(colors: [Color.green.opacity(0.6), Color.green.opacity(0.0)], startPoint: .top, endPoint: .bottom))
-
+                                
                                 LineMark(
                                     x: .value("เดือน", stat.name),
                                     y: .value("รายรับ", stat.income)
@@ -109,14 +109,14 @@ struct OverviewTabView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding()
                     }
-
-
+                    
+                    // Move-in Chart
                     GlassCard {
                         VStack(alignment: .leading, spacing: 10) {
                             Label("สถิติผู้เช่าใหม่รายเดือน", systemImage: "person.crop.circle.badge.plus")
                                 .font(.custom("SukhumvitSet-Bold", size: 14))
                                 .foregroundColor(.blue)
-
+                            
                             Chart(viewModel.moveInStats) { stat in
                                 BarMark(
                                     x: .value("เดือน", stat.name),
@@ -130,20 +130,20 @@ struct OverviewTabView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding()
                     }
-
-
+                    
+                    // Occupancy Chart
                     GlassCard {
                         VStack(alignment: .leading, spacing: 10) {
                             Label("สถานะห้องพัก", systemImage: "bed.double.fill")
                                 .font(.custom("SukhumvitSet-Bold", size: 14))
                                 .foregroundColor(.indigo)
-
+                            
                             let totalRooms = viewModel.stats.total_residents + viewModel.stats.empty_rooms
                             let occData: [(String, Int, Color)] = [
                                 ("มีผู้เช่า", viewModel.stats.total_residents, .blue),
                                 ("ห้องว่าง", viewModel.stats.empty_rooms, .gray)
                             ]
-
+                            
                             if totalRooms > 0 {
                                 Chart(occData, id: \.0) { item in
                                     SectorMark(
@@ -166,14 +166,14 @@ struct OverviewTabView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding()
                     }
-
-
+                    
+                    // Maintenance Chart
                     GlassCard {
                         VStack(alignment: .leading, spacing: 10) {
                             Label("สถิติการแจ้งซ่อม", systemImage: "wrench.and.screwdriver.fill")
                                 .font(.custom("SukhumvitSet-Bold", size: 14))
                                 .foregroundColor(.orange)
-
+                            
                             let maintData: [(String, Int, Color)] = [
                                 ("รอดำเนินการ", viewModel.pendingMaints, .red),
                                 ("กำลังดำเนินงาน", viewModel.inProgressMaints, .orange),
@@ -215,16 +215,16 @@ struct OverviewTabView: View {
                     }
                 }
                 .padding(.horizontal, 20)
-
-
+                
+                // Lists Section
                 VStack(spacing: 20) {
-
+                    // Pending Bills
                     GlassCard {
                         VStack(alignment: .leading, spacing: 10) {
                             Label("รอชำระเงิน (\(viewModel.pendingUsers.count))", systemImage: "clock.fill")
                                 .font(.custom("SukhumvitSet-Bold", size: 14))
                                 .foregroundColor(.red)
-
+                            
                             if viewModel.pendingUsers.isEmpty {
                                 Text("ไม่มีบิลค้างชำระ")
                                     .font(.custom("SukhumvitSet-Text", size: 12))

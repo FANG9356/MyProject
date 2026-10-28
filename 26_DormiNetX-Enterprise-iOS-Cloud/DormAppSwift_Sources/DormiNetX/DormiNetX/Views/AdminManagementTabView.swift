@@ -6,19 +6,19 @@ struct AdminManagementTabView: View {
     @State private var isLoading = true
     @State private var errorMessage: String = ""
     @State private var showErrorAlert = false
-
-
+    
+    // For Add/Edit Modal
     @State private var showingAddAdmin = false
     @State private var editingAdmin: Admin? = nil
     @State private var newAdminName = ""
     @State private var newAdminEmail = ""
     @State private var newAdminPassword = ""
     @State private var isSubmitting = false
-
+    
     var body: some View {
         VStack(spacing: 20) {
-
-
+            
+            // Standard Settings Header
             VStack(alignment: .leading, spacing: 8) {
                 HStack {
                     Text("จัดการผู้ดูแลระบบ")
@@ -50,11 +50,11 @@ struct AdminManagementTabView: View {
             }
             .padding(.bottom, 6)
             .padding(.top, 20)
-
-
+            
+            // Dormitory Code Banner for LINE Bot
             let owner = admins.first(where: { $0.role == "superadmin" })
             let dormCode = owner?.dorm_code?.isEmpty == false ? owner!.dorm_code! : "000000"
-
+            
             HStack(spacing: 15) {
                 ZStack {
                     Circle()
@@ -64,19 +64,19 @@ struct AdminManagementTabView: View {
                         .foregroundColor(.indigo)
                         .font(.system(size: 20))
                 }
-
+                
                 VStack(alignment: .leading, spacing: 4) {
                     Text("รหัสหอพัก (Dormitory Code)")
                         .font(.custom("SukhumvitSet-Bold", size: 16))
                         .foregroundColor(.primary)
-
+                    
                     Text("รหัสสำหรับให้ลูกบ้านใช้ผูกบัญชี LINE Bot")
                         .font(.custom("SukhumvitSet-Text", size: 13))
                         .foregroundColor(.secondary)
                 }
-
+                
                 Spacer()
-
+                
                 Button(action: {
                     UIPasteboard.general.string = dormCode
                 }) {
@@ -84,7 +84,7 @@ struct AdminManagementTabView: View {
                         Text(dormCode)
                             .font(.system(.title3, design: .monospaced).bold())
                             .foregroundColor(.primary)
-
+                        
                         Image(systemName: "doc.on.doc")
                             .font(.system(size: 12))
                             .foregroundColor(.secondary)
@@ -102,7 +102,7 @@ struct AdminManagementTabView: View {
             .shadow(color: Color.black.opacity(0.03), radius: 8, x: 0, y: 4)
             .padding(.horizontal, 4)
             .padding(.bottom, 6)
-
+            
             if isLoading && admins.isEmpty {
                 Spacer()
                 ProgressView()
@@ -125,7 +125,7 @@ struct AdminManagementTabView: View {
             }
         }
         .padding(.horizontal, 20)
-        .padding(.top, 126)
+        .padding(.top, 126) // To clear floating header
         .alert("เกิดข้อผิดพลาด", isPresented: $showErrorAlert) {
             Button("ตกลง", role: .cancel) { }
         } message: {
@@ -151,7 +151,7 @@ struct AdminManagementTabView: View {
             .iphoneFullSheetStyle()
         }
     }
-
+    
     private func loadAdmins(showLoadingSpinner: Bool = false) async {
         if showLoadingSpinner {
             isLoading = true
@@ -167,7 +167,7 @@ struct AdminManagementTabView: View {
         }
         isLoading = false
     }
-
+    
     private func deleteAdmin(adminID: Int) {
         Task {
             do {
@@ -191,19 +191,19 @@ struct AdminRow: View {
     let onDelete: () -> Void
     let onEdit: () -> Void
     let onImageUpdate: () -> Void
-
+    
     @State private var showDeleteConfirm = false
-
+    
     var body: some View {
         GlassCard {
             HStack(spacing: 15) {
                 ProfileImageView(admin: admin, size: 50, onImageUpdate: onImageUpdate)
-
+                
                 VStack(alignment: .leading, spacing: 4) {
                     Text(admin.username)
                         .font(.custom("SukhumvitSet-Bold", size: 18))
                         .foregroundColor(.primary)
-
+                    
                     HStack {
                         Image(systemName: "envelope.fill")
                             .font(.custom("SukhumvitSet-Medium", size: 10))
@@ -214,14 +214,14 @@ struct AdminRow: View {
                     }
                     .foregroundColor(.secondary)
                 }
-                .contentShape(Rectangle())
+                .contentShape(Rectangle()) // Make the whole area tappable
                 .onTapGesture {
                     onEdit()
                 }
-
+                
                 Spacer()
-
-
+                
+                // Actions (No longer showing Super Admin badge)
                 Button(action: {
                     showDeleteConfirm = true
                 }) {
@@ -248,16 +248,16 @@ struct AdminRow: View {
 struct AddAdminSheet: View {
     @Binding var isPresented: Bool
     var onSuccess: () -> Void
-
+    
     @State private var name = ""
     @State private var primaryEmail = ""
     @State private var backupEmail = ""
     @State private var password = ""
     @State private var isLoading = false
     @State private var errorMessage: String? = nil
-
+    
     @AppStorage("userEmail") var userEmail: String = ""
-
+    
     var body: some View {
         NavigationStack {
             Form {
@@ -266,7 +266,7 @@ struct AddAdminSheet: View {
                         .font(.custom("SukhumvitSet-Text", size: 16))
                         .autocapitalization(.none)
                         .limitedText($name, maxLength: 60, trimNewlines: true)
-
+                    
                     TextField("อีเมลหลัก", text: $primaryEmail)
                         .font(.custom("SukhumvitSet-Text", size: 16))
                         .keyboardType(.emailAddress)
@@ -274,21 +274,21 @@ struct AddAdminSheet: View {
                         .normalizedEmail($primaryEmail)
                         .disabled(true)
                         .foregroundColor(.secondary)
-
+                    
                     TextField("อีเมลสำหรับผู้ดูแล", text: $backupEmail)
                         .font(.custom("SukhumvitSet-Text", size: 16))
                         .keyboardType(.emailAddress)
                         .autocapitalization(.none)
                         .normalizedEmail($backupEmail)
-
+                    
                     SecureField("รหัสผ่านชั่วคราว", text: $password)
                         .font(.custom("SukhumvitSet-Text", size: 16))
                         .limitedText($password, maxLength: 64, trimNewlines: true)
-
+                        
                     LabeledContent("สิทธิ์การใช้งาน", value: "ผู้ดูแลทั่วไป")
                         .font(.custom("SukhumvitSet-Text", size: 16))
                 }
-
+                
                 if let error = errorMessage {
                     Section {
                         Text(error)
@@ -333,11 +333,11 @@ struct AddAdminSheet: View {
             }
         }
     }
-
+    
     private func submit() async {
         isLoading = true
         errorMessage = nil
-
+        
         do {
             try await APIService.shared.createStaff(
                 username: name,
@@ -349,7 +349,7 @@ struct AddAdminSheet: View {
         } catch {
             errorMessage = String(localized: "เกิดข้อผิดพลาด: \(error.localizedDescription)")
         }
-
+        
         isLoading = false
     }
 }
@@ -358,7 +358,7 @@ struct EditAdminSheet: View {
     @Environment(\.dismiss) var dismiss
     let admin: Admin
     var onSuccess: () -> Void
-
+    
     @State private var username = ""
     @State private var email = ""
     @State private var backupEmail = ""
@@ -370,7 +370,7 @@ struct EditAdminSheet: View {
     @State private var newPassword = ""
     @State private var isLoading = false
     @State private var errorMessage: String? = nil
-
+    
     var body: some View {
         NavigationStack {
             Form {
@@ -383,13 +383,13 @@ struct EditAdminSheet: View {
                     }
                 }
                 .listRowBackground(Color.clear)
-
+                
                 Section(header: Text("ข้อมูลบัญชี")) {
                     TextField("ชื่อผู้ดูแลระบบ", text: $username)
                         .autocapitalization(.none)
                         .disableAutocorrection(true)
                         .limitedText($username, maxLength: 60, trimNewlines: true)
-
+                    
                     TextField("อีเมลหลัก", text: $email)
                         .keyboardType(.emailAddress)
                         .autocapitalization(.none)
@@ -397,7 +397,7 @@ struct EditAdminSheet: View {
                         .normalizedEmail($email)
                         .disabled(true)
                         .foregroundColor(.secondary)
-
+                    
                     TextField("อีเมลสำรอง (ไม่บังคับ)", text: $backupEmail)
                         .keyboardType(.emailAddress)
                         .autocapitalization(.none)
@@ -405,7 +405,7 @@ struct EditAdminSheet: View {
                         .foregroundColor(.secondary)
                         .normalizedEmail($backupEmail)
                 }
-
+                
                 if admin.role == "superadmin" {
                     Section(header: Text("การรับชำระเงิน"), footer: Text("ข้อมูลบัญชีสำหรับให้ลูกบ้านสแกนจ่ายค่าเช่าและค่าซ่อม")) {
                         Picker("ประเภทการรับเงิน", selection: $paymentType) {
@@ -414,7 +414,7 @@ struct EditAdminSheet: View {
                         }
                         .pickerStyle(SegmentedPickerStyle())
                         .padding(.vertical, 5)
-
+                        
                         if paymentType == "promptpay" {
                             TextField("หมายเลข PromptPay (เบอร์โทร/บัตรประชาชน)", text: $promptPayID)
                                 .keyboardType(.numbersAndPunctuation)
@@ -426,20 +426,20 @@ struct EditAdminSheet: View {
                                 .autocapitalization(.none)
                                 .disableAutocorrection(true)
                         }
-
+                        
                         TextField("ชื่อบัญชีผู้รับเงิน", text: $accountName)
                             .autocapitalization(.words)
                             .disableAutocorrection(true)
                     }
                 }
-
+                
                 Section(header: Text("เปลี่ยนรหัสผ่าน"), footer: Text("หากไม่ต้องการเปลี่ยนรหัสผ่าน ให้เว้นว่างไว้\n(ระบบจะออกจากระบบอัตโนมัติหากเปลี่ยนรหัสผ่านของตนเอง)")) {
                     SecureField("รหัสผ่านเดิม", text: $oldPassword)
                         .limitedText($oldPassword, maxLength: 64, trimNewlines: true)
                     SecureField("รหัสผ่านใหม่", text: $newPassword)
                         .limitedText($newPassword, maxLength: 64, trimNewlines: true)
                 }
-
+                
                 if let errorMessage = errorMessage {
                     Section {
                         Text(LocalizedStringKey(errorMessage))
@@ -485,21 +485,21 @@ struct EditAdminSheet: View {
             }
         }
     }
-
+    
     private func submit() async {
         isLoading = true
         errorMessage = nil
-
+        
         do {
             let success = try await APIService.shared.updateAdmin(id: admin.id, username: username, email: email, backupEmail: backupEmail, promptPayID: promptPayID, paymentType: paymentType, bankAccount: bankAccount, accountName: accountName, oldPassword: oldPassword.isEmpty ? nil : oldPassword, newPassword: newPassword.isEmpty ? nil : newPassword)
             if success {
                 let currentAdminID = UserDefaults.standard.integer(forKey: "adminID")
                 if admin.id == currentAdminID && !newPassword.isEmpty {
-
+                    // Log out automatically if they changed their own password
                     try? CredentialStore.shared.setToken(nil)
                     NotificationCenter.default.post(name: Notification.Name("LogoutNotification"), object: nil)
                 }
-
+                
                 onSuccess()
                 dismiss()
             } else {
@@ -508,7 +508,7 @@ struct EditAdminSheet: View {
         } catch {
             errorMessage = String(localized: "เกิดข้อผิดพลาด: \(error.localizedDescription)")
         }
-
+        
         isLoading = false
     }
 }
@@ -517,11 +517,11 @@ struct ProfileImageView: View {
     let admin: Admin
     let size: CGFloat
     var onImageUpdate: (() -> Void)? = nil
-
+    
     @State private var selectedItem: PhotosPickerItem? = nil
     @State private var profileImage: Image? = nil
     @State private var isUploading = false
-
+    
     var fallbackAvatar: some View {
         Circle()
             .fill(LinearGradient(colors: [.blue, .cyan], startPoint: .topLeading, endPoint: .bottomTrailing))
@@ -532,7 +532,7 @@ struct ProfileImageView: View {
                     .foregroundColor(.white)
             )
     }
-
+    
     var body: some View {
         PhotosPicker(selection: $selectedItem, matching: .images, photoLibrary: .shared()) {
             ZStack {
@@ -555,7 +555,7 @@ struct ProfileImageView: View {
                 } else {
                     fallbackAvatar
                 }
-
+                
                 if isUploading {
                     Circle()
                         .fill(Color.black.opacity(0.5))
@@ -563,7 +563,7 @@ struct ProfileImageView: View {
                     ProgressView()
                         .tint(.white)
                 } else {
-
+                    // Small edit badge
                     Circle()
                         .fill(Color.white)
                         .frame(width: size * 0.32, height: size * 0.32)
