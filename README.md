@@ -984,15 +984,19 @@ node 25_DormiNetX-Windows-Desktop/test_simulation.js
 * **เทคโนโลยี:** Swift 5.9, SwiftUI, SwiftData, Go (Golang 1.22), Multi-Tenant SQLite, LINE Messaging API, LINE LIFF, SHA-256 Ledger
 
 #### สรุปโปรเจกต์
-ระบบบริหารจัดการหอพักและอพาร์ตเมนต์ระดับองค์กรแบบครบวงจร ประกอบด้วยแอปพลิเคชันเนทีฟสำหรับ iOS และ iPadOS ที่พัฒนาด้วย Swift 5.9, SwiftUI และ SwiftData ทำงานแบบ Local-First 100% เชื่อมต่อกับคลาวด์แบ็กเอนด์ภาษา Go 1.22 แยกฐานข้อมูล Multi-Tenant SQLite อิสระต่อหอพัก ป้องกันข้อมูลรั่วไหล มีระบบบัญชีพร้อม Immutable Financial Ledger ที่บันทึกประวัติธุรกรรมด้วย SHA-256 Hash Chain, ระบบแจ้งหนี้อัตโนมัติผ่าน LINE Official Account ด้วย Flex Messages และพอร์ทัลลูกบ้านผ่าน LINE LIFF สำหรับชำระเงินผ่าน PromptPay QR และตรวจสอบสลิปอัตโนมัติ พร้อมกระบวนการจัดการงานซ่อมแซม 6 ขั้นตอน และรองรับ 4 ภาษา
+ระบบบริหารจัดการหอพักและอพาร์ตเมนต์ระดับองค์กรแบบครบวงจร ออกแบบด้วยสถาปัตยกรรม **Local-First** สำหรับ iPhone และ iPad ทำงานร่วมกับ **Go High-Performance Backend**, **Multi-Tenant SQLite Database**, **LINE Official Account (OA)** และ **LIFF Web Application**
 
-![DormiNetX iOS Enterprise](./assets/real_app_26_dorminet_ios.png)
-
-![DormiNetX iOS Demo](./assets/demo_26_dorminet_ios.gif)
+* **Local-First Architecture:** ถือว่าข้อมูลบนอุปกรณ์ iOS เป็น Single Source of Truth สามารถทำงาน ออกบิล จัดการห้องพัก และรับชำระได้ทันทีแม้ไม่มีอินเทอร์เน็ต
+* **Dual-Database Multi-Tenant Isolation:** แยกฐานข้อมูลรายหอพักออกจากกัน 100% (Isolated SQLite files) ป้องกันปัญหาข้อมูลรั่วไหลข้ามองค์กร
+* **Sync Engine Protocol 2:** ระบบซิงก์ข้อมูลขึ้นคลาวด์แบบ Snapshot Versioning พร้อม SHA-256 Checksum และกลไก Rebase Conflict Resolution อัตโนมัติ
+* **Financial Immutable Ledger:** ตารางบันทึกธุรกรรมทางการเงินแบบแก้ไขย้อนหลังไม่ได้ (Void, Refund, Adjust) พร้อม SHA-256 Audit Trail รัดกุม
+* **LINE OA & LIFF Portal:** แจ้งหนี้ด้วย LINE Flex Message แบบ Interactive พร้อมพอร์ทัลลูกบ้าน LIFF สำหรับดูประวัติบิล ชำระเงินผ่าน PromptPay QR และระบบตรวจสอบสลิปอัตโนมัติ (Dual-Engine พร้อมนโยบาย Fail-Closed)
+* **Enterprise Security:** จัดเก็บข้อมูลลับใน Secure Enclave ผ่าน Apple Keychain, เข้ารหัส TLS 1.3, ป้องกัน Brute Force ด้วย PIN Rate Limiting และปิด Public Access โฟลเดอร์สลิป
+* **Multi-Language Engine:** รองรับการแปลภาษา 4 ภาษา (ไทย, อังกฤษ, พม่า, จีน) สมบูรณ์ 100% ครอบคลุมกว่า 670 คำศัพท์
 
 #### เอกสารประกอบโครงงาน
 * รายละเอียดโครงงาน: [26_DormiNetX-Enterprise-iOS-Cloud/PORTFOLIO_INFO.md](./26_DormiNetX-Enterprise-iOS-Cloud/PORTFOLIO_INFO.md)
-* คู่มือโครงการ: [26_DormiNetX-Enterprise-iOS-Cloud/README.md](./26_DormiNetX-Enterprise-iOS-Cloud/README.md)
+* คู่มือโครงการฉบับสมบูรณ์: [26_DormiNetX-Enterprise-iOS-Cloud/README.md](./26_DormiNetX-Enterprise-iOS-Cloud/README.md)
 
 #### วิธีรันระบบ (How to Run)
 เปิดหน้าต่างจำลองการทำงานแบบ Interactive (Web Preview):
