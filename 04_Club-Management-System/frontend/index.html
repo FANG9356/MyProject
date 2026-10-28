@@ -4,19 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>รายชื่อสมาชิกชมรม</title>
-    <script src="https://cdn.tailwindcss.com">
-</script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="icon" type="image/png" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_bAZkqDNIPIpN-E0ajt3jC6rSv0WUTZaC1Q&s">
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600&display=swap" rel="stylesheet">
-    <style>body { font-family: 'Sarabun', sans-serif; }
+    <style>
+        body { font-family: 'Sarabun', sans-serif; }
         .club-container { break-inside: avoid-column; }
-</style>
+    </style>
 
-    
-    <script src="auth.js">
-</script>
-    <script>blockDevTools();
-</script>
+    <script src="auth.js?v=2"></script>
+    <script>blockDevTools();</script>
 
 </head>
 <body class="bg-gray-100 p-6">
@@ -50,7 +47,8 @@
         </div>
     </div>
     
-    <script>let dynamicClubList = [];
+    <script>
+        let dynamicClubList = [];
         let membersData = [];
         let clubsStatusData = {};
 
@@ -65,7 +63,7 @@
                     <div class="flex-grow">
                         <p class="text-sm font-semibold text-gray-700">${member.titlePrefix}${member.name}</p>
                         <p class="text-xs text-gray-500">${member.grade} | ${member.major}</p>
-                    </div>
+                    </div> 
                 </div>
             `).join('');
         }
@@ -82,9 +80,9 @@
             dynamicClubList.forEach(clubName => {
                 const clubMembers = membersData[clubName] || [];
                 const isActive = clubsStatusData[clubName] === true;
-
-                const closedBadge = !isActive
-                    ? '<span class="bg-rose-100 text-rose-600 text-[10px] font-bold px-2 py-0.5 rounded-full ml-2 border border-rose-200">ปิดชั่วคราว</span>'
+                
+                const closedBadge = !isActive 
+                    ? '<span class="bg-rose-100 text-rose-600 text-[10px] font-bold px-2 py-0.5 rounded-full ml-2 border border-rose-200">ปิดชั่วคราว</span>' 
                     : '';
 
                 const cardHtml = `
@@ -110,10 +108,10 @@
                 const clubsRes = await fetch('/api/clubs');
                 clubsStatusData = await clubsRes.json();
                 dynamicClubList = Object.keys(clubsStatusData).sort();
-
+                
                 const membersRes = await fetch('/api/publicMembers');
-                membersData = await membersRes.json();
-
+                membersData = await membersRes.json(); 
+                
                 renderClubs();
             } catch (error) {
                 console.error("Error fetching data: ", error);
@@ -122,6 +120,6 @@
         }
 
         fetchData();
-</script>
+    </script>
 </body>
 </html>

@@ -1,4 +1,5 @@
-const SESSION_DURATION = 30 * 60 * 1000;
+
+const SESSION_DURATION = 30 * 60 * 1000; 
 
 function checkSession(loginPath = 'admin.html') {
     const adminName = sessionStorage.getItem('adminName');
@@ -77,26 +78,7 @@ function blockDevTools() {
         if (e.key === 'F12') { e.preventDefault(); return false; }
         if (e.ctrlKey && e.shiftKey && ['I', 'J', 'C', 'i', 'j', 'c'].includes(e.key)) { e.preventDefault(); return false; }
         if (e.ctrlKey && ['u', 'U'].includes(e.key)) { e.preventDefault(); return false; }
-        if (e.ctrlKey && e.shiftKey && e.key === 'K') { e.preventDefault(); return false; }
+        if (e.ctrlKey && e.shiftKey && e.key === 'K') { e.preventDefault(); return false; } 
     });
 
-    let devtoolsOpen = false;
-    const threshold = 160;
-    setInterval(() => {
-        const widthDiff = window.outerWidth - window.innerWidth;
-        const heightDiff = window.outerHeight - window.innerHeight;
-        if (widthDiff > threshold || heightDiff > threshold) {
-            if (!devtoolsOpen) {
-                devtoolsOpen = true;
-                document.body.innerHTML = `
-                    <div style="display:flex;align-items:center;justify-content:center;height:100vh;flex-direction:column;background:#f8fafc;font-family:sans-serif;">
-                        <div style="font-size:64px;"></div>
-                        <h1 style="color:#ef4444;font-size:28px;margin:16px 0 8px">การเข้าถึงถูกปิดกั้น</h1>
-                        <p style="color:#64748b;font-size:16px">ปิด Developer Tools แล้วรีเฟรชหน้าเว็บ</p>
-                    </div>`;
-            }
-        } else {
-            devtoolsOpen = false;
-        }
-    }, 1000);
 }

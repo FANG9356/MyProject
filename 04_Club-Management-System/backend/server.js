@@ -91,7 +91,7 @@ function initDb() {
                 db.run(`INSERT INTO admins (username, password, name) VALUES ('admin', 'admin', 'Administrator')`);
             }
         });
-
+        
         db.get('SELECT COUNT(*) as count FROM systemStatus', (err, row) => {
             if (row.count === 0) {
                 db.run(`INSERT INTO systemStatus (key, value) VALUES ('registrationOpen', 1)`);
@@ -152,7 +152,7 @@ app.get('/api/clubCounts', (req, res) => {
 app.get('/api/publicMembers', (req, res) => {
     db.all('SELECT titlePrefix, name, grade, major, club FROM members', [], (err, rows) => {
         if (err) return res.status(500).json({ error: err.message });
-
+        
         const result = {};
         rows.forEach(r => {
             if (!result[r.club]) result[r.club] = [];
@@ -269,8 +269,8 @@ app.get('/api/attendance/:activityId', (req, res) => {
 
 app.get('/api/publicAttendance/:activityId', (req, res) => {
     db.all(`
-        SELECT m.titlePrefix, m.name, m.grade, m.major, m.club, COALESCE(a.status, 'ไม่มา') as status
-        FROM members m
+        SELECT m.titlePrefix, m.name, m.grade, m.major, m.club, COALESCE(a.status, 'ไม่มา') as status 
+        FROM members m 
         LEFT JOIN attendance a ON m.studentId = a.studentId AND a.activityId = ?
     `, req.params.activityId, (err, rows) => {
         if (err) return res.status(500).json({ error: err.message });
@@ -374,8 +374,8 @@ app.get('/api/settings', (req, res) => {
 app.post('/api/settings', authenticateToken, (req, res) => {
     const { key, value } = req.body;
     db.run(`INSERT INTO settings (key, value) VALUES (?, ?)
-            ON CONFLICT(key) DO UPDATE SET value = excluded.value`,
-        [key, JSON.stringify(value)],
+            ON CONFLICT(key) DO UPDATE SET value = excluded.value`, 
+        [key, JSON.stringify(value)], 
         function(err) {
             if (err) return res.status(500).json({ error: err.message });
             res.json({ success: true });
@@ -385,7 +385,7 @@ app.post('/api/settings', authenticateToken, (req, res) => {
 
 app.get('/api/systemStats', authenticateToken, (req, res) => {
     let stats = {};
-
+    
     try {
         const statsObj = fs.statSync(DB_PATH);
         stats.dbSizeBytes = statsObj.size;

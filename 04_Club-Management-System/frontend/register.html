@@ -4,17 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ลงทะเบียนเลือกชมรม</title>
-    <script src="https://cdn.tailwindcss.com">
-</script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600&display=swap" rel="stylesheet">
-    <style>body { font-family: 'Sarabun', sans-serif; }
-</style>
+    <style>body { font-family: 'Sarabun', sans-serif; }</style>
 
-    
-    <script src="auth.js">
-</script>
-    <script>blockDevTools();
-</script>
+    <script src="auth.js?v=2"></script>
+    <script>blockDevTools();</script>
 
 </head>
 <body class="bg-gray-100 p-6">
@@ -107,7 +102,8 @@
     </div>
     </div>
 
-    <script>let majorList = {};
+    <script>
+        let majorList = {};
         let gradeList = [];
 
         const registrationForm = document.getElementById('registration-form');
@@ -120,22 +116,22 @@
         const submitBtn = document.getElementById('submit-btn');
 
         let membersData = [];
-        let clubQuotas = {};
-        let isSystemOpen = true;
+        let clubQuotas = {}; 
+        let isSystemOpen = true; 
         let dynamicClubList = [];
 
         async function fetchData() {
             try {
-
+                
                 try {
                     const setRes = await fetch('/api/settings');
                     const setData = await setRes.json();
                     if (setData.gradeList) gradeList = setData.gradeList;
                     if (setData.majorList) majorList = setData.majorList;
-
+                    
                     const currentGrade = gradeSelect.value;
                     const currentMajor = majorSelect.value;
-
+                    
                     gradeSelect.innerHTML = gradeList.map(g => `<option value="${g}">${g}</option>`).join('');
                     if (currentGrade && gradeList.includes(currentGrade)) {
                         gradeSelect.value = currentGrade;
@@ -146,13 +142,13 @@
                     }
                 } catch(e) {
                     console.error('Error fetching settings', e);
-
+                    
                     gradeList = ["ปวช. 1", "ปวส. 1"];
                     majorList = {'ปวช': ["เทคนิคคอมพิวเตอร์"], 'ปวส': ["เทคโนโลยีคอมพิวเตอร์"]};
-
+                    
                     const currentGrade = gradeSelect.value;
                     const currentMajor = majorSelect.value;
-
+                    
                     gradeSelect.innerHTML = gradeList.map(g => `<option value="${g}">${g}</option>`).join('');
                     if (currentGrade && gradeList.includes(currentGrade)) {
                         gradeSelect.value = currentGrade;
@@ -162,7 +158,7 @@
                         majorSelect.value = currentMajor;
                     }
                 }
-
+                
                 const sysRes = await fetch('/api/systemStatus');
                 const sysData = await sysRes.json();
                 isSystemOpen = sysData.registrationOpen;
@@ -179,14 +175,14 @@
 
                 const memRes = await fetch('/api/clubCounts');
                 const memData = await memRes.json();
-                membersData = memData;
+                membersData = memData; 
 
                 const quotaRes = await fetch('/api/clubQuotas');
                 clubQuotas = await quotaRes.json();
 
                 const clubsRes = await fetch('/api/clubs');
                 const allClubs = await clubsRes.json();
-
+                
                 dynamicClubList = Object.keys(allClubs).sort((a, b) => {
                     const activeA = allClubs[a] ? 1 : 0;
                     const activeB = allClubs[b] ? 1 : 0;
@@ -205,11 +201,11 @@
                 }).join('');
 
                 clubSelect.innerHTML = `<option value="">-- เลือกชมรม --</option>` + optionsHtml;
-
+                
                 if (currentSelected && allClubs[currentSelected] === true) {
                     clubSelect.value = currentSelected;
                 } else {
-                    clubSelect.value = '';
+                    clubSelect.value = ''; 
                 }
 
                 updateClubCount();
@@ -221,7 +217,7 @@
         function updateMajorOptions() {
             const selectedGrade = gradeSelect.value;
             if (!selectedGrade) return;
-            const gradeType = selectedGrade.split('.')[0].trim();
+            const gradeType = selectedGrade.split('.')[0].trim(); 
             const majors = majorList[gradeType] || [];
             majorSelect.innerHTML = majors.map(major => `<option value="${major}">${major}</option>`).join('');
         };
@@ -231,15 +227,15 @@
             if (selectedClub) {
                 const count = membersData[selectedClub] || 0;
                 const maxMembers = clubQuotas[selectedClub] || 25;
-
+                
                 if (count >= maxMembers) {
                     countDisplay.innerHTML = `ชมรมนี้เต็มแล้ว (${count}/${maxMembers})`;
                     countDisplay.className = "mt-2 text-sm font-semibold text-red-500";
-                    submitBtn.disabled = true;
+                    submitBtn.disabled = true; 
                 } else {
                     countDisplay.innerHTML = ` ว่างเหลืออีก ${maxMembers - count} คน (มีสมาชิกแล้ว ${count}/${maxMembers})`;
                     countDisplay.className = "mt-2 text-sm font-semibold text-indigo-500";
-                    submitBtn.disabled = false;
+                    submitBtn.disabled = false; 
                 }
             } else {
                 countDisplay.innerText = '';
@@ -253,12 +249,12 @@
 
         registrationForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-
+            
             if (!isSystemOpen) {
                 alert('ระบบปิดรับสมัครแล้ว ไม่สามารถบันทึกข้อมูลได้');
                 return;
             }
-
+            
             const selectedClub = clubSelect.value;
             const currentCount = membersData[selectedClub] || 0;
             const maxMembers = clubQuotas[selectedClub] || 25;
@@ -277,9 +273,9 @@
             const memberData = {
                 studentId: studentId,
                 titlePrefix: document.getElementById('titlePrefix').value,
-                name: fullName,
+                name: fullName, 
                 grade: gradeSelect.value,
-                major: majorSelect.value,
+                major: majorSelect.value, 
                 club: selectedClub
             };
 
@@ -289,7 +285,7 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(memberData)
                 });
-
+                
                 if (response.ok) {
                     alert('ลงทะเบียนเรียบร้อยแล้ว');
                     window.location.href = "index.html";
@@ -303,7 +299,7 @@
         });
 
         fetchData();
-        setInterval(fetchData, 10000);
-</script>
+        setInterval(fetchData, 10000); 
+    </script>
 </body>
 </html>
