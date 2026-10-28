@@ -1,0 +1,1124 @@
+import SwiftUI
+import SwiftData
+import Charts
+import Combine
+
+
+struct RoomListView: View {
+    @Environment(\.modelContext) private var modelContext
+    @Query private var rooms: [Room]
+    @Query private var users: [DormUser]
+    @Query(sort: \RoomType.name) private var roomTypes: [RoomType]
+    @Query(sort: \Payment.lastUpdated, order: .reverse) private var allPayments: [Payment]
+    @StateObject private var syncManager = SyncManager.shared
+    @Environment(\.scenePhase) private var scenePhase
+    @State private var isSidebarOpen = false
+    @State private var isSettingsMode = false
+    @State private var selectedTab: DashboardTab = .overview
+    @AppStorage("isLoggedIn") var isLoggedIn: Bool = false
+    @AppStorage("hasSeenNotificationOnboarding") private var hasSeenNotificationOnboarding = false
+    @State private var showNotificationOnboarding = false
+    @Environment(\.colorScheme) var colorScheme
+    @State private var isLoggingOut = false
+    @State private var showAddTenantSheet = false
+    @State private var showAddRoomType = false
+    @State private var showAddRoom = false
+    @State private var showAddPayment = false
+    @State private var showAddBill = false
+    @State private var showAddMaintenance = false
+    @State private var addButtonRotation = 0.0
+    @State private var showSyncOverlay = false
+    @State private var syncButtonRotation = 0.0
+    @State private var lastAutoPullCheck: Date?
+    @State private var lastBookingPromotionCheck: Date?
+
+
+    private let pollingTimer = Timer.publish(every: 10, on: .main, in: .common).autoconnect()
+
+    var body: some View {
+        ZStack(alignment: .leading) {
+
+            ZStack {
+                Color.clear
+                    .ignoresSafeArea()
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        hideKeyboard()
+                    }
+
+                if selectedTab == .tenants {
+                    currentTabView
+                        .id(selectedTab)
+                        .transition(.asymmetric(
+                            insertion: .opacity.combined(with: .scale(scale: 0.98)),
+                            removal: .opacity
+                        ))
+                        .animation(.easeInOut(duration: 0.25), value: selectedTab)
+                } else {
+                    ScrollView(showsIndicators: false) {
+                        currentTabView
+                            .id(selectedTab)
+                            .transition(.asymmetric(
+                                insertion: .opacity.combined(with: .scale(scale: 0.98)),
+                                removal: .opacity
+                            ))
+                            .animation(.easeInOut(duration: 0.25), value: selectedTab)
+                    }
+                    .scrollDisabled(selectedTab == .securityToken)
+                    .scrollDismissesKeyboard(.interactively)
+                    .refreshable {
+                        if !syncManager.isSyncing {
+                            await syncManager.syncWithGoBackend(modelContext: modelContext)
+                        }
+                    }
+                    .contentShape(Rectangle())
+                    .simultaneousGesture(TapGesture().onEnded {
+                        hideKeyboard()
+                    })
+                }
+
+                VStack {
+                    HStack {
+                        Button(action: {
+                            withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) {
+                                isSidebarOpen = true
+                            }
+                        }) {
+                            ZStack {
+                                Circle()
+                                    .fill(.ultraThinMaterial)
+                                    .frame(width: 44, height: 44)
+                                    .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 2)
+                                Image(systemName: selectedTab.icon)
+                                    .font(.custom("SukhumvitSet-Medium", size: 18))
+                                    .foregroundColor(.primary)
+                                    .rotationEffect(Angle(degrees: isSidebarOpen ? 90 : 0))
+                            }
+                        }
+                        .buttonStyle(PressableButtonStyle())
+
+                        Text(LocalizedStringKey(selectedTab.rawValue))
+                            .font(.custom("SukhumvitSet-Bold", size: 24))
+                            .foregroundColor(.primary)
+                            .padding(.leading, 8)
+
+                        Spacer()
+
+                        HStack(spacing: 12) {
+                            ThemeToggleButton()
+
+                            Button(action: syncData) {
+                                ZStack {
+                                    Circle()
+                                        .fill(.ultraThinMaterial)
+                                        .frame(width: 44, height: 44)
+                                        .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 2)
+
+                                    Image(systemName: "arrow.triangle.2.circlepath")
+                                        .font(.custom("SukhumvitSet-Medium", size: 18))
+                                        .foregroundColor(colorScheme == .dark ? .white : .indigo)
+                                        .rotationEffect(.degrees(syncButtonRotation))
+                                }
+                            }
+                            .buttonStyle(PressableButtonStyle())
+                            .disabled(syncManager.isSyncing)
+                        }
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.top, 10)
+                    .padding(.bottom, 15)
+                    Spacer()
+                }
+            }
+            .overlay(alignment: .bottomTrailing) {
+                if showsFloatingAddButton {
+                    FloatingGlassAddButton(action: {
+                        withAnimation(.easeInOut(duration: 0.42)) {
+                            addButtonRotation += 360
+                        }
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.08) {
+                            openAddSheetForSelectedTab()
+                        }
+                    }, rotation: addButtonRotation)
+                    .padding(.trailing, 16)
+                    .padding(.bottom, 0)
+                    .ignoresSafeArea(.all, edges: .bottom)
+                    .transition(
+                        .asymmetric(
+                            insertion: .scale(scale: 0.72).combined(with: .opacity).combined(with: .offset(y: 18)),
+                            removal: .scale(scale: 0.2).combined(with: .opacity).combined(with: .offset(y: 28))
+                        )
+                    )
+                }
+            }
+            .animation(.spring(response: 0.35, dampingFraction: 0.75), value: selectedTab)
+            .scaleEffect(isSidebarOpen ? 0.92 : 1)
+            .disabled(isSidebarOpen)
+
+            if isSidebarOpen {
+                Rectangle()
+                    .fill(colorScheme == .dark ? Color.black.opacity(0.2) : Color.white.opacity(0.05))
+                    .background(.ultraThinMaterial)
+                    .ignoresSafeArea()
+                    .onTapGesture {
+                        withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) {
+                            isSidebarOpen = false
+                        }
+                    }
+                    .transition(.opacity)
+            }
+
+            SidebarMenu(isOpen: $isSidebarOpen, isLoggedIn: $isLoggedIn, isSettingsMode: $isSettingsMode, selectedTab: $selectedTab, isLoggingOut: $isLoggingOut)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .offset(x: isSidebarOpen ? 0 : -(UIApplication.shared.connectedScenes.compactMap { ($0 as? UIWindowScene)?.screen.bounds.width }.first ?? 400))
+                .ignoresSafeArea()
+        }
+        .overlay {
+            if showSyncOverlay {
+                SyncAnimationOverlay(state: syncManager.state, message: syncManager.message)
+                    .transition(.opacity)
+                    .zIndex(999)
+            }
+        }
+        .overlay {
+            if isLoggingOut {
+                ZStack {
+                    Rectangle()
+                        .fill(.ultraThinMaterial)
+                        .ignoresSafeArea()
+
+                    VStack(spacing: 30) {
+                        LogoutAnimationView(isLoggingOut: isLoggingOut)
+                            .frame(width: 86, height: 100)
+                            .scaleEffect(1.2)
+
+                        Text("ออกจากระบบ...")
+                            .font(.custom("SukhumvitSet-Bold", size: 16))
+                            .foregroundColor(.indigo)
+                    }
+                }
+                .transition(.opacity)
+                .zIndex(1000)
+            }
+        }
+        .animation(.easeInOut(duration: 0.4), value: isLoggingOut)
+        .ignoresSafeArea(.keyboard, edges: .bottom)
+        .simultaneousGesture(
+            DragGesture(minimumDistance: 15)
+                .onEnded { value in
+                    let translation = value.translation.width
+                    let predicted = value.predictedEndTranslation.width
+                    let startedNearLeadingEdge = value.startLocation.x <= 28
+
+                    if !isSidebarOpen && startedNearLeadingEdge && (translation > 40 || predicted > 80) {
+                        withAnimation(.spring(response: 0.35, dampingFraction: 0.7)) {
+                            isSidebarOpen = true
+                        }
+                    } else if isSidebarOpen && (translation < -40 || predicted < -80) {
+                        withAnimation(.spring(response: 0.35, dampingFraction: 0.7)) {
+                            isSidebarOpen = false
+                        }
+                    }
+                }
+        )
+        .task {
+            await syncManager.syncWithGoBackend(modelContext: modelContext)
+        }
+        .onAppear {
+            ensureCurrentMonthPaymentsIfNeeded()
+            scheduleAutoPullCheck()
+            scheduleBookingPromotionCheck()
+
+            if !hasSeenNotificationOnboarding {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+                    showNotificationOnboarding = true
+                }
+            }
+        }
+        .fullScreenCover(isPresented: $showNotificationOnboarding) {
+            NotificationOnboardingView()
+        }
+        .onChange(of: scenePhase) { _, phase in
+            if phase == .active {
+                ensureCurrentMonthPaymentsIfNeeded()
+                scheduleBookingPromotionCheck()
+                if !syncManager.isSyncing {
+                    Task {
+                        await syncManager.syncWithGoBackend(modelContext: modelContext)
+                    }
+                }
+            }
+        }
+        .onReceive(pollingTimer) { _ in
+            guard scenePhase == .active, !syncManager.isSyncing else { return }
+            Task {
+                await syncManager.syncWithGoBackend(modelContext: modelContext)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var currentTabView: some View {
+        switch selectedTab {
+        case .overview:
+            OverviewTabView()
+        case .tenants:
+            TenantsTabView(showAddSheet: $showAddTenantSheet)
+        case .finance:
+            FinanceTabView(showingPaymentEditor: $showAddPayment)
+        case .bills:
+            BillsTabView(showingEditor: $showAddBill)
+        case .rooms:
+            RoomsTabView(showingEditor: $showAddRoom)
+        case .pricing:
+            PricingTabView(showAddRoomType: $showAddRoomType)
+        case .transfers:
+            TransfersTabView()
+        case .maintenance:
+            MaintenanceTabView(showingEditor: $showAddMaintenance)
+        case .adminManagement:
+            AdminManagementTabView()
+        case .securityToken:
+            SecurityTokenTabView()
+        case .language:
+            LanguageSettingsTabView()
+        case .appIcon:
+            AppIconSettingsTabView()
+        case .appBackground:
+            AppBackgroundSettingsTabView()
+        case .backup:
+            BackupTabView()
+        case .systemLogs:
+            SystemLogsTabView()
+        }
+    }
+
+    private func scheduleAutoPullCheck() {
+        if let lastAutoPullCheck, Date().timeIntervalSince(lastAutoPullCheck) < 20 {
+            return
+        }
+        lastAutoPullCheck = Date()
+        Task {
+            try? await Task.sleep(nanoseconds: 1_200_000_000)
+            guard !syncManager.isSyncing else { return }
+            await syncManager.autoPullRecentRemoteIfNeeded(modelContext: modelContext)
+            await MainActor.run {
+                scheduleBookingPromotionCheck(force: true)
+            }
+        }
+    }
+
+    private func scheduleBookingPromotionCheck(force: Bool = false) {
+        Task { @MainActor in
+            try? await Task.sleep(nanoseconds: force ? 250_000_000 : 700_000_000)
+            promoteDueBookedTenantsIfNeeded(force: force)
+        }
+    }
+
+    private func promoteDueBookedTenantsIfNeeded(force: Bool = false) {
+        if !force, let lastBookingPromotionCheck, Date().timeIntervalSince(lastBookingPromotionCheck) < 30 {
+            return
+        }
+        lastBookingPromotionCheck = Date()
+
+        let today = AppDate.gregorianCalendar.startOfDay(for: Date())
+        let bookedUsers = users
+        var didPromote = false
+        var promotedRooms: [String] = []
+
+        for user in bookedUsers where !user.isDeletedLocally && user.status == "จอง" {
+            guard let moveInDate = AppDate.date(fromStorageDate: user.moveInDate) else {
+                continue
+            }
+
+            if AppDate.gregorianCalendar.startOfDay(for: moveInDate) <= today {
+                user.status = "กำลังพักอาศัย"
+                user.bookingStatus = "auto_converted"
+                user.lastUpdated = Date()
+                user.isDirty = true
+                didPromote = true
+                promotedRooms.append(user.roomNumber)
+            }
+        }
+
+        guard didPromote else { return }
+
+        do {
+            modelContext.insert(LocalSystemLog(
+                action: "เปลี่ยนสถานะจองอัตโนมัติ",
+                details: "เลื่อนห้อง \(promotedRooms.joined(separator: ", ")) เป็นกำลังพักอาศัย"
+            ))
+            try modelContext.save()
+            Task {
+                await syncManager.autoPushLocalChanges(modelContext: modelContext)
+            }
+        } catch {
+            print("Failed to promote booked tenants: \(error.localizedDescription)")
+        }
+    }
+
+    private func ensureCurrentMonthPaymentsIfNeeded() {
+        let activeUsers = users.filter {
+            !$0.isDeletedLocally &&
+            !$0.roomNumber.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&
+            $0.status != "ย้ายออกแล้ว"
+        }
+        guard !activeUsers.isEmpty else { return }
+
+        let month = currentMonthKey()
+        let payments = allPayments.filter { !$0.isDeletedLocally }
+        var didCreate = false
+
+        for user in activeUsers {
+            let hasMoveInInstallment = month == moveInMonth(for: user) && payments.contains { payment in
+                BillingCycle.normalizedMonthKey(payment.month) == month &&
+                payment.paymentPlan == "installment" &&
+                isPayment(payment, for: user)
+            }
+            let hasRegularPayment = payments.contains { payment in
+                BillingCycle.normalizedMonthKey(payment.month) == month &&
+                payment.paymentPlan != "installment" &&
+                isPayment(payment, for: user)
+            }
+
+            guard shouldCreatePayment(for: user, month: month),
+                  !hasMoveInInstallment,
+                  !hasRegularPayment else {
+                continue
+            }
+
+            let payment = generatedPayment(for: user, month: month)
+            modelContext.insert(payment)
+            do {
+                _ = try PaymentLedger.recordUnrecordedBalance(for: payment, in: modelContext, source: "automatic-billing")
+            } catch {
+                modelContext.rollback()
+                print("Payment ledger error: \(error.localizedDescription)")
+                return
+            }
+            modelContext.insert(LocalSystemLog(action: "สร้างรายการชำระอัตโนมัติ", details: "สร้างรายการห้อง \(payment.roomNumber) รอบ \(payment.month)"))
+            didCreate = true
+        }
+
+        guard didCreate else { return }
+
+        do {
+            try modelContext.save()
+            Task {
+                await syncManager.autoPushLocalChanges(modelContext: modelContext)
+            }
+        } catch {
+            print("Failed to create current month payments: \(error.localizedDescription)")
+        }
+    }
+
+    private func generatedPayment(for user: DormUser, month: String) -> Payment {
+        let payment = Payment(month: month)
+        let roomType = roomType(for: user)
+        let rent = roomType?.price ?? 0
+        let isBooking = user.status == "จอง"
+        let isMoveInMonth = month == moveInMonth(for: user)
+        let amount = isBooking ? user.deposit : rent + (isMoveInMonth ? user.deposit : 0)
+
+        payment.userId = stableLocalUserID(for: user)
+        payment.roomNumber = user.roomNumber
+        payment.rentFee = isBooking ? user.deposit : rent
+        payment.waterFee = 0
+        payment.electricFee = 0
+        payment.commonFee = 0
+        payment.lateFee = 0
+        payment.applianceFee = 0
+        payment.amount = amount
+        payment.method = paymentMethodLabel(for: user)
+        payment.slipPath = user.bookingSlips.first ?? ""
+        payment.slipPathArray = user.bookingSlips
+        payment.paymentPlan = isBooking ? "booking" : "monthly"
+        payment.installmentPhase = user.installmentMonths
+        payment.dueDate = dueDateKey(for: month)
+        payment.paymentStatus = inferredPaymentStatus(for: user, isMoveInMonth: isMoveInMonth)
+        payment.paidAmount = payment.paymentStatus == "paid" ? amount : (payment.paymentStatus == "partial" ? user.installmentAmount : 0)
+        payment.paymentDate = payment.paymentStatus == "pending" ? "" : currentDateString()
+        payment.lastUpdated = Date()
+        payment.isDirty = true
+        return payment
+    }
+
+    private func shouldCreatePayment(for user: DormUser, month: String) -> Bool {
+        if user.status == "จอง" {
+            return month == moveInMonth(for: user)
+        }
+
+        let moveInMonth = moveInMonth(for: user)
+        guard !moveInMonth.isEmpty else { return true }
+        return month >= moveInMonth
+    }
+
+    private func inferredPaymentStatus(for user: DormUser, isMoveInMonth: Bool) -> String {
+        guard isMoveInMonth else { return "pending" }
+        if user.paymentMethod == "installment" { return "partial" }
+        if user.paymentMethod == "full_payment" { return "paid" }
+        return "pending"
+    }
+
+    private func paymentMethodLabel(for user: DormUser) -> String {
+        let method = user.paymentMethod == "installment" ? String(localized: "ผ่อนชำระ") : (user.paymentMethod == "full_payment" ? String(localized: "ชำระเต็มจำนวน") : String(localized: "รอระบุ"))
+        let channel = user.paymentChannel == "cash" ? String(localized: "เงินสด") : (user.paymentChannel == "bank_transfer" ? String(localized: "โอนผ่านธนาคาร") : String(localized: "ยังไม่ได้ระบุช่องทาง"))
+        return String(localized: "\(method) • \(channel)")
+    }
+
+    private func roomType(for user: DormUser) -> RoomType? {
+        guard let room = rooms.first(where: { clean($0.roomNumber) == clean(user.roomNumber) && !$0.isDeletedLocally }) else { return nil }
+        return roomTypes.first { clean($0.name) == clean(room.roomType) }
+    }
+
+    private func isPayment(_ payment: Payment, for user: DormUser) -> Bool {
+        if payment.userId > 0 {
+            return stableLocalUserID(for: user) == payment.userId
+        }
+        return clean(payment.roomNumber) == clean(user.roomNumber)
+    }
+
+    private func moveInMonth(for user: DormUser) -> String {
+        BillingCycle.normalizedMonthKey(String(user.moveInDate.prefix(7))) ?? ""
+    }
+
+    private func currentMonthKey() -> String {
+        AppDate.monthKey(from: Date())
+    }
+
+    private func dueDateKey(for month: String) -> String {
+        guard let date = AppDate.date(fromStorageMonth: month) else { return "" }
+
+        var components = AppDate.gregorianCalendar.dateComponents([.year, .month], from: date)
+        components.month = (components.month ?? 1) + 1
+        components.day = 0
+        let dueDate = AppDate.gregorianCalendar.date(from: components) ?? date
+        return AppDate.dateKey(from: dueDate)
+    }
+
+    private func currentDateString() -> String {
+        AppDate.dateKey(from: Date())
+    }
+
+    private func clean(_ value: String) -> String {
+        value.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
+    private func syncData() {
+        guard !showSyncOverlay, !syncManager.isSyncing else { return }
+
+        Task {
+            let startedAt = Date()
+            withAnimation(.linear(duration: 5)) {
+                syncButtonRotation += 1080
+            }
+            withAnimation(.easeInOut(duration: 0.25)) {
+                showSyncOverlay = true
+            }
+
+            await syncManager.pullLatestSnapshot(modelContext: modelContext)
+
+            let elapsed = Date().timeIntervalSince(startedAt)
+            let remaining = max(0, 4.0 - elapsed)
+            try? await Task.sleep(nanoseconds: UInt64(remaining * 1_000_000_000))
+            withAnimation(.easeInOut(duration: 0.5)) {
+                showSyncOverlay = false
+            }
+        }
+    }
+
+    private var showsFloatingAddButton: Bool {
+        switch selectedTab {
+        case .tenants, .pricing, .maintenance:
+            return true
+        default:
+            return false
+        }
+    }
+
+    private func openAddSheetForSelectedTab() {
+        switch selectedTab {
+        case .tenants:
+            showAddTenantSheet = true
+        case .pricing:
+            showAddRoomType = true
+        case .maintenance:
+            showAddMaintenance = true
+        default:
+            break
+        }
+    }
+}
+
+struct CloudOutlineShape: Shape {
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        let w = rect.width
+        let h = rect.height
+
+        path.move(to: CGPoint(x: w * 0.15, y: h * 0.85))
+        path.addLine(to: CGPoint(x: w * 0.85, y: h * 0.85))
+        path.addQuadCurve(to: CGPoint(x: w * 0.92, y: h * 0.62), control: CGPoint(x: w * 1.0, y: h * 0.85))
+        path.addQuadCurve(to: CGPoint(x: w * 0.72, y: h * 0.38), control: CGPoint(x: w * 0.92, y: h * 0.38))
+        path.addQuadCurve(to: CGPoint(x: w * 0.45, y: h * 0.22), control: CGPoint(x: w * 0.65, y: h * 0.12))
+        path.addQuadCurve(to: CGPoint(x: w * 0.22, y: h * 0.42), control: CGPoint(x: w * 0.25, y: h * 0.15))
+        path.addQuadCurve(to: CGPoint(x: w * 0.15, y: h * 0.85), control: CGPoint(x: w * -0.02, y: h * 0.7))
+
+        return path
+    }
+}
+
+struct SyncAnimationOverlay: View {
+    let state: SyncState
+    let message: String
+    @State private var cloudProgress: CGFloat = 0.0
+    @State private var arrowOffset: CGFloat = -40
+    @State private var arrowOpacity: Double = 0.0
+    @State private var dotOffsets: [CGSize] = [
+        CGSize(width: -120, height: -180),
+        CGSize(width: 150, height: -160),
+        CGSize(width: -100, height: 130),
+        CGSize(width: 130, height: 150),
+        CGSize(width: -160, height: 20),
+        CGSize(width: 170, height: -30)
+    ]
+    @State private var dotOpacities: [Double] = Array(repeating: 0.0, count: 6)
+    @State private var statusOpacity: Double = 0.0
+    @State private var pulseArrow = false
+    @State private var bgOpacity: Double = 0.0
+
+    private let scatteredOffsets: [CGSize] = [
+        CGSize(width: -120, height: -180),
+        CGSize(width: 150, height: -160),
+        CGSize(width: -100, height: 130),
+        CGSize(width: 130, height: 150),
+        CGSize(width: -160, height: 20),
+        CGSize(width: 170, height: -30)
+    ]
+
+    private var statusText: String {
+        switch state {
+        case .failed:
+            return message.isEmpty ? "ซิงค์ข้อมูลไม่สำเร็จ" : message
+        case .completed:
+            return message.isEmpty ? "ซิงค์ข้อมูลสำเร็จ" : message
+        case .applying:
+            return "กำลังอัปเดตข้อมูลในเครื่อง..."
+        case .downloading:
+            return "กำลังดาวน์โหลดข้อมูล..."
+        case .preparing, .uploading:
+            return message.isEmpty ? "กำลังเตรียมข้อมูล..." : message
+        case .idle:
+            return "กำลังเชื่อมต่อ..."
+        }
+    }
+
+    var body: some View {
+        ZStack {
+            Rectangle()
+                .fill(.ultraThinMaterial)
+                .ignoresSafeArea()
+                .opacity(bgOpacity)
+
+            VStack(spacing: 24) {
+                ZStack {
+                    ForEach(0..<6, id: \.self) { i in
+                        RoundedRectangle(cornerRadius: 4)
+                            .fill(Color.indigo.opacity(0.8))
+                            .frame(width: 12, height: 12)
+                            .offset(dotOffsets[i])
+                            .opacity(dotOpacities[i])
+                    }
+
+                    CloudOutlineShape()
+                        .trim(from: 0, to: cloudProgress)
+                        .stroke(
+                            Color.indigo,
+                            style: StrokeStyle(lineWidth: 4, lineCap: .round, lineJoin: .round)
+                        )
+                        .frame(width: 140, height: 110)
+
+                    VStack(spacing: 2) {
+                        Image(systemName: "arrow.down")
+                            .font(.custom("SukhumvitSet-Bold", size: 28))
+                            .foregroundColor(.indigo)
+                    }
+                    .offset(y: arrowOffset)
+                    .opacity(arrowOpacity)
+                    .scaleEffect(pulseArrow ? 1.15 : 1.0)
+                }
+                .frame(width: 140, height: 110)
+
+                Text(LocalizedStringKey(statusText))
+                    .font(.custom("SukhumvitSet-Bold", size: 16))
+                    .foregroundColor(.indigo)
+                    .opacity(statusOpacity)
+            }
+        }
+        .onAppear {
+            startSyncAnimation()
+        }
+    }
+
+    private func startSyncAnimation() {
+        withAnimation(.easeIn(duration: 0.3)) {
+            bgOpacity = 1.0
+        }
+
+        for i in 0..<6 {
+            withAnimation(.spring(response: 0.8, dampingFraction: 0.7).delay(Double(i) * 0.08)) {
+                dotOffsets[i] = .zero
+                dotOpacities[i] = 1.0
+            }
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+            withAnimation(.easeInOut(duration: 1.2)) {
+                cloudProgress = 1.0
+            }
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
+            withAnimation(.spring(response: 0.6, dampingFraction: 0.6)) {
+                arrowOffset = 12
+                arrowOpacity = 1.0
+            }
+            withAnimation(.easeIn(duration: 0.4)) {
+                statusOpacity = 1.0
+            }
+            withAnimation(.easeInOut(duration: 0.8).repeatForever(autoreverses: true).delay(0.3)) {
+                pulseArrow = true
+            }
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+            pulseArrow = false
+
+            withAnimation(.easeOut(duration: 0.3)) {
+                arrowOpacity = 0.0
+                arrowOffset = 20
+                statusOpacity = 0.0
+            }
+
+            withAnimation(.easeInOut(duration: 0.8)) {
+                cloudProgress = 0.0
+            }
+
+            for i in 0..<6 {
+                withAnimation(.spring(response: 0.8, dampingFraction: 0.8).delay(Double(5 - i) * 0.05)) {
+                    dotOffsets[i] = scatteredOffsets[i]
+                    dotOpacities[i] = 0.0
+                }
+            }
+
+            withAnimation(.easeOut(duration: 0.4).delay(0.6)) {
+                bgOpacity = 0.0
+            }
+        }
+    }
+}
+
+struct GlassSummaryCard: View {
+    var title: String
+    var value: String
+    var icon: String
+    var color: Color
+
+    var body: some View {
+        GlassCard {
+            VStack(alignment: .leading, spacing: 12) {
+                HStack {
+                    Image(systemName: icon)
+                        .foregroundColor(color)
+                        .font(.custom("SukhumvitSet-Bold", size: 22))
+                    Spacer()
+                }
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(value)
+                        .font(.custom("SukhumvitSet-Bold", size: 22))
+                        .foregroundColor(.primary)
+                    Text(LocalizedStringKey(title))
+                        .font(.custom("SukhumvitSet-Text", size: 12))
+                        .foregroundColor(.secondary)
+                }
+            }
+            .padding(10)
+        }
+    }
+}
+
+struct SidebarMenu: View {
+    @Binding var isOpen: Bool
+    @Binding var isLoggedIn: Bool
+    @Binding var isSettingsMode: Bool
+    @Binding var selectedTab: DashboardTab
+    @Binding var isLoggingOut: Bool
+    @Environment(\.colorScheme) var colorScheme
+    @AppStorage("userName") var userName: String = ""
+    @AppStorage("userEmail") var userEmail: String = ""
+    @AppStorage("userRole") var userRole: String = "admin"
+    @AppStorage("adminID") var adminID: Int = 0
+    @AppStorage("profileImageUpdateToken") var profileImageUpdateToken: Double = 0
+    @AppStorage("selectedHomeIconName") private var selectedHomeIconName: String = "default"
+    @State private var showingEditProfile = false
+    @State private var currentEditingAdmin: Admin? = nil
+    @State private var gearRotation: Double = 0
+
+    var body: some View {
+        ZStack(alignment: .leading) {
+            Color.clear
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    withAnimation(.spring(response: 0.35, dampingFraction: 0.7)) {
+                        isOpen = false
+                    }
+                }
+
+            VStack(alignment: .leading, spacing: 0) {
+                HStack(spacing: 12) {
+                    Image(selectedSidebarIconAssetName)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 35, height: 35)
+                        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                .stroke(Color.white.opacity(colorScheme == .dark ? 0.18 : 0.42), lineWidth: 1)
+                        )
+                        .shadow(color: .black.opacity(colorScheme == .dark ? 0.18 : 0.08), radius: 8, x: 0, y: 4)
+
+                    Text(isSettingsMode ? "MAINTENANCE" : "DORMINET ADMIN")
+                        .font(.custom("SukhumvitSet-Bold", size: 14))
+                        .tracking(1.5)
+                        .foregroundColor(.primary)
+                }
+                .padding(.top, 60)
+                .padding(.horizontal, 25)
+                .padding(.bottom, 30)
+
+                Text("MENU")
+                    .font(.custom("SukhumvitSet-Bold", size: 11))
+                    .foregroundColor(.secondary)
+                    .tracking(2)
+                    .padding(.horizontal, 25)
+                    .padding(.bottom, 10)
+
+                VStack(spacing: 5) {
+                    let tabsToShow = DashboardTab.allCases.filter { $0.isSettingsMenu == isSettingsMode }
+                    ForEach(tabsToShow) { tab in
+                        SidebarItem(tab: tab, selectedTab: $selectedTab) {
+                            withAnimation(.spring(response: 0.35, dampingFraction: 0.7)) {
+                                isOpen = false
+                            }
+                        }
+                    }
+                }
+                .padding(.horizontal, 15)
+                .padding(.vertical, 15)
+                .frame(width: 280, alignment: .leading)
+
+                Spacer()
+
+                VStack(spacing: 15) {
+                    Divider()
+                        .background(Color.secondary.opacity(0.3))
+
+                    HStack(spacing: 12) {
+                        let displayChar = userName.isEmpty ? "A" : String(userName.prefix(1).uppercased())
+                        let displayName = userName.isEmpty ? "Admin" : userName
+
+                        ZStack {
+                            let _ = profileImageUpdateToken
+                            if let localURL = APIService.shared.getLocalProfileImageURL(adminID: adminID),
+                               let uiImage = UIImage(contentsOfFile: localURL.path) {
+                                Image(uiImage: uiImage)
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: 40, height: 40)
+                                    .clipShape(Circle())
+                            } else {
+                                Circle()
+                                    .fill(LinearGradient(colors: [.indigo, .pink], startPoint: .topLeading, endPoint: .bottomTrailing))
+                                    .frame(width: 40, height: 40)
+                                    .overlay(Text(displayChar).font(.custom("SukhumvitSet-Bold", size: 17)).foregroundColor(.white))
+                            }
+                        }
+
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(LocalizedStringKey(displayName))
+                                .font(.custom("SukhumvitSet-Bold", size: 14))
+                                .foregroundColor(.primary)
+                                .lineLimit(1)
+                            Text("Administrator")
+                                .font(.custom("SukhumvitSet-Medium", size: 10))
+                                .foregroundColor(.secondary)
+                        }
+
+                        Spacer()
+
+                        Button(action: {
+                            let generator = UIImpactFeedbackGenerator(style: .medium)
+                            generator.impactOccurred()
+
+                            withAnimation(.spring(response: 0.5, dampingFraction: 0.6)) {
+                                gearRotation += 90
+                            }
+
+                            if userRole == "superadmin" {
+                                withAnimation(.spring(response: 0.4, dampingFraction: 0.75)) {
+                                    isSettingsMode.toggle()
+                                    selectedTab = isSettingsMode ? .adminManagement : .overview
+                                }
+                            } else {
+                                showingEditProfile = true
+                            }
+                        }) {
+                            Image(systemName: "gearshape.fill")
+                                .font(.custom("SukhumvitSet-Bold", size: 18))
+                                .foregroundColor(.indigo)
+                                .rotationEffect(.degrees(gearRotation))
+                                .padding(10)
+                                .background(
+                                    Circle()
+                                        .fill(Color.indigo.opacity(isSettingsMode ? 0.25 : 0.1))
+                                        .scaleEffect(isSettingsMode ? 1.15 : 1.0)
+                                )
+                                .clipShape(Circle())
+                                .overlay(
+                                    Circle()
+                                        .stroke(Color.indigo.opacity(isSettingsMode ? 0.4 : 0), lineWidth: 2)
+                                        .scaleEffect(isSettingsMode ? 1.15 : 1.0)
+                                )
+                        }
+                        .animation(.spring(response: 0.4, dampingFraction: 0.7), value: isSettingsMode)
+
+                        Button(action: {
+                            do { try CredentialStore.shared.setSavedAccountsData(nil) }
+                            catch { return }
+                            let generator = UINotificationFeedbackGenerator()
+                            generator.notificationOccurred(.success)
+                        }) {
+                            Image(systemName: "clock.badge.xmark")
+                                .font(.custom("SukhumvitSet-Bold", size: 18))
+                                .foregroundColor(.orange)
+                                .padding(10)
+                                .background(Color.orange.opacity(0.1))
+                                .clipShape(Circle())
+                        }
+
+                        Button(action: {
+                            let generator = UIImpactFeedbackGenerator(style: .heavy)
+                            generator.impactOccurred()
+
+                            isOpen = false
+
+                            withAnimation(.easeInOut(duration: 0.4)) {
+                                isLoggingOut = true
+                            }
+
+                            APIService.shared.authToken = nil
+                            APIService.shared.currentEmail = nil
+                            APIService.shared.userRole = nil
+
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+
+                                withAnimation(.easeInOut(duration: 0.8)) {
+                                    isLoggedIn = false
+                                }
+
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+                                    isLoggingOut = false
+                                }
+                            }
+                        }) {
+                            Image(systemName: "rectangle.portrait.and.arrow.right")
+                                .font(.custom("SukhumvitSet-Bold", size: 18))
+                                .foregroundColor(.red.opacity(0.8))
+                                .padding(10)
+                                .background(Color.red.opacity(0.1))
+                                .clipShape(Circle())
+                        }
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 20)
+                }
+                .frame(maxWidth: .infinity)
+            }
+        }
+        .sheet(item: $currentEditingAdmin) { admin in
+            EditAdminSheet(admin: admin, onSuccess: {
+            })
+            .iphoneFullSheetStyle()
+        }
+        .onChange(of: showingEditProfile) { _, newValue in
+            if newValue {
+                Task {
+                    do {
+                        let admins = try await APIService.shared.fetchAdmins()
+                        if let me = admins.first(where: { $0.id == adminID }) {
+                            currentEditingAdmin = me
+                        }
+                    } catch {
+                        print("Failed to fetch admin data: \(error)")
+                    }
+                    showingEditProfile = false
+                }
+            }
+        }
+    }
+
+    private var selectedSidebarIconAssetName: String {
+        switch selectedHomeIconName {
+        case "light":
+            return "AppIconPreviewLight"
+        case "dark":
+            return "AppIconPreviewDark"
+        case "minimal":
+            return "AppIconPreviewMinimal"
+        default:
+            return "AppIconPreviewDefault"
+        }
+    }
+}
+
+struct SidebarItem: View {
+    var tab: DashboardTab
+    @Binding var selectedTab: DashboardTab
+    var action: () -> Void
+    @Environment(\.colorScheme) var colorScheme
+
+    var isActive: Bool {
+        selectedTab == tab
+    }
+
+    var body: some View {
+        Button(action: {
+            selectedTab = tab
+            action()
+        }) {
+            HStack(spacing: 15) {
+                Image(systemName: tab.icon)
+                    .font(.custom("SukhumvitSet-Text", size: 16))
+                    .frame(width: 24)
+                Text(LocalizedStringKey(tab.rawValue))
+                    .font(.custom("SukhumvitSet-Medium", size: 14))
+                Spacer()
+            }
+            .foregroundColor(isActive ? (colorScheme == .dark ? .white : .blue) : .primary.opacity(0.7))
+            .padding(.vertical, 12)
+            .padding(.horizontal, 15)
+            .accessibilityIdentifier("Tab_\(tab.identifier)")
+            .background(
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(isActive ? (colorScheme == .dark ? Color.indigo.opacity(0.5) : Color.blue.opacity(0.2)) : Color.clear)
+            )
+        }
+    }
+}
+
+struct LogoutAnimationView: View {
+    var isLoggingOut: Bool
+
+    let scatteredOffsets: [CGSize] = [
+        CGSize(width: -200, height: -250),
+        CGSize(width: -100, height: -300),
+        CGSize(width: -250, height: -80),
+        CGSize(width: -150, height: -120),
+        CGSize(width: -300, height: 80),
+        CGSize(width: -200, height: 100),
+        CGSize(width: -250, height: 250),
+        CGSize(width: -100, height: 200)
+    ]
+    @State private var dotOffsets: [CGSize]
+    @State private var dotOpacities: [Double] = Array(repeating: 0.0, count: 8)
+
+    let scatteredOffsets2: [CGSize] = [
+        CGSize(width: 250, height: -200),
+        CGSize(width: 200, height: 50),
+        CGSize(width: 300, height: 250)
+    ]
+    @State private var dotOffsets2: [CGSize]
+    @State private var dotOpacities2: [Double] = Array(repeating: 0.0, count: 3)
+
+    @State private var outlineProgress: CGFloat = 0.0
+
+    init(isLoggingOut: Bool) {
+        self.isLoggingOut = isLoggingOut
+        _dotOffsets = State(initialValue: scatteredOffsets)
+        _dotOffsets2 = State(initialValue: scatteredOffsets2)
+    }
+
+    var body: some View {
+        ZStack(alignment: .bottomLeading) {
+            LazyVGrid(columns: [GridItem(.fixed(16)), GridItem(.fixed(16))], spacing: 10) {
+                ForEach(0..<8, id: \.self) { index in
+                    RoundedRectangle(cornerRadius: 3)
+                        .fill(Color.indigo)
+                        .frame(width: 14, height: 14)
+                        .offset(dotOffsets[index])
+                        .opacity(dotOpacities[index])
+                }
+            }
+            .frame(width: 38, height: 86)
+            .offset(x: 7, y: -7)
+
+            LazyVGrid(columns: [GridItem(.fixed(16))], spacing: 10) {
+                ForEach(0..<3, id: \.self) { index in
+                    RoundedRectangle(cornerRadius: 3)
+                        .fill(Color.indigo)
+                        .frame(width: 14, height: 14)
+                        .offset(dotOffsets2[index])
+                        .opacity(dotOpacities2[index])
+                }
+            }
+            .frame(width: 14, height: 62)
+            .offset(x: 65, y: -7)
+
+            TwinBuildingsOutline()
+                .trim(from: 0, to: outlineProgress)
+                .stroke(Color.indigo, style: StrokeStyle(lineWidth: 4, lineCap: .round, lineJoin: .round))
+                .frame(width: 86, height: 100)
+        }
+        .onAppear {
+            if isLoggingOut {
+                withAnimation(.easeInOut(duration: 0.8)) {
+                    outlineProgress = 1.0
+                }
+
+                for i in 0..<8 {
+                    withAnimation(.spring(response: 0.6, dampingFraction: 0.7).delay(Double(i) * 0.05 + 0.3)) {
+                        dotOffsets[i] = .zero
+                        dotOpacities[i] = 1.0
+                    }
+                }
+
+                for i in 0..<3 {
+                    withAnimation(.spring(response: 0.6, dampingFraction: 0.7).delay(Double(i) * 0.07 + 0.4)) {
+                        dotOffsets2[i] = .zero
+                        dotOpacities2[i] = 1.0
+                    }
+                }
+
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.6) {
+                    withAnimation(.easeInOut(duration: 0.8)) {
+                        outlineProgress = 0.0
+                    }
+
+                    for i in 0..<8 {
+                        withAnimation(.spring(response: 0.8, dampingFraction: 0.8).delay(Double(7 - i) * 0.05)) {
+                            dotOffsets[i] = scatteredOffsets[i]
+                            dotOpacities[i] = 0.0
+                        }
+                    }
+
+                    for i in 0..<3 {
+                        withAnimation(.spring(response: 0.8, dampingFraction: 0.8).delay(Double(2 - i) * 0.07)) {
+                            dotOffsets2[i] = scatteredOffsets2[i]
+                            dotOpacities2[i] = 0.0
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

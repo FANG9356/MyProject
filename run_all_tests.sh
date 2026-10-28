@@ -3,7 +3,7 @@ set -e
 
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 echo "================================================================================"
-echo "EXECUTING AUTOMATED TEST SUITE FOR ALL 25 PROJECTS"
+echo "EXECUTING AUTOMATED TEST SUITE FOR ALL 26 PROJECTS"
 echo "================================================================================"
 
 pass_count=0
@@ -125,7 +125,11 @@ run_test "25" "DormiNetX Windows Desktop Standalone" \
     "node test_simulation.js" \
     "$DIR/25_DormiNetX-Windows-Desktop"
 
+run_test "26" "DormiNetX Enterprise Native iOS & Cloud" \
+    "node test_simulation.js" \
+    "$DIR/26_DormiNetX-Enterprise-iOS-Cloud"
+
 echo ""
 echo "================================================================================"
-echo "FINAL TEST REPORT: $pass_count / 25 PROJECTS PASSED ALL TESTS SUCCESSFULLY"
+echo "FINAL TEST REPORT: $pass_count / 26 PROJECTS PASSED ALL TESTS SUCCESSFULLY"
 echo "================================================================================"

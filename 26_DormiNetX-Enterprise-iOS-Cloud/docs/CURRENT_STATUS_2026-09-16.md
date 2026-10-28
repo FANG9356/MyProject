@@ -1,0 +1,162 @@
+# สถานะปัจจุบันของ DormiNetX
+
+> **สถานะอ้างอิงล่าสุด 5 ตุลาคม 2569:** ให้ใช้ [แบบประเมิน 5 ตุลาคม](../project-review/DormiNetX-Assessment-2026-10-05.md), [WORK_STATUS.md](../project-tracking/WORK_STATUS.md) และ [PENDING_WORK.md](../project-tracking/PENDING_WORK.md) แทนคะแนนในเอกสารฉบับนี้ ซึ่งเป็นสถานะยาวจากวันที่ 16–17 กันยายน
+
+| มิติ | สถานะล่าสุด |
+| --- | ---: |
+| ความครบของฟีเจอร์ | 97% |
+| Controlled pilot | 92% |
+| Engineering readiness | 90% |
+| Release confidence | 86% |
+
+P0 ปิดในระดับโค้ดและ automated verification แล้ว แต่ยังต้องทำ maintenance E2E, production restore/rollback drill ที่เปลี่ยนข้อมูลจริง, UI automation target, APNs verification และ TestFlight pilot ก่อนประกาศ production-ready 100%
+
+วันที่อัปเดต: 17 กันยายน 2569
+
+เอกสารนี้เป็นสรุปสถานะฉบับยาว เอกสารวันที่ 9–17 กันยายนยังเก็บไว้เป็นประวัติการพัฒนา สำหรับการรับช่วงงานให้เริ่มที่ [Project Tracking](../project-tracking/README.md) และใช้ [แบบประเมิน 5 ตุลาคม](../project-review/DormiNetX-Assessment-2026-10-05.md) เป็นคะแนนล่าสุด
+
+## สรุปความพร้อม
+
+| ขอบเขต | ความพร้อม | คำตัดสิน |
+| --- | ---: | --- |
+| ความครบของฟีเจอร์ | 92% | งานหลักมีแล้ว และงานซ่อมเพิ่ม consent/quote/billing flow ก่อนซ่อม |
+| Controlled pilot | 89% | ใช้กับหอจำกัดได้เมื่อมี backup และผู้ดูแลติดตามปัญหา |
+| Production readiness | **79%** | ยังมี release blockers ด้าน secret, multi-device, media, ledger และ restore |
+
+คะแนนเป็น risk-weighted readiness ไม่ใช่ test coverage หรือ SLA ผล build/test ผ่านไม่ได้ทำให้ release blocker หายไปโดยอัตโนมัติ
+
+## สิ่งที่ทำเสร็จแล้ว
+
+### แอป iOS และข้อมูลในเครื่อง
+
+- แยก SwiftData store ตาม account ID และตรวจ account/session ก่อนเปิด store
+- เก็บ JWT, local passcode และ saved sessions ใน Keychain พร้อม migration และ lockout
+- มี flow ห้อง ราคา ลูกบ้าน จอง เข้าพัก ย้ายห้อง ย้ายออก และงานซ่อม
+- บิลรอบเดือนใช้ Gregorian storage key และแสดงปี พ.ศ. โดยไม่แปลงซ้ำ
+- รวมการแปลงวันที่ไว้ที่ `AppDate`: อ่านข้อมูลเก่าที่เก็บปี พ.ศ. (`2569-*`) และข้อมูลใหม่ปี ค.ศ. (`2026-*`) ได้เหมือนกัน บันทึกใหม่เป็น Gregorian และป้องกันปี 3112 ใน DatePicker/หน้ารายละเอียด
+- รองรับรับชำระบางส่วน/เต็มจำนวน สตางค์ มัดจำ รายการเดิมที่ยังไม่แยก และป้องกันลดยอดที่รับแล้ว
+- เริ่ม append-only `PaymentTransaction` และ `FinancialReceipt` พร้อม referential-integrity checks
+- บิลค้างตาม stable user ID เมื่อย้ายห้อง ส่วนบิลที่ชำระแล้วเก็บห้องเดิมเป็นประวัติ
+- มี local backup/import ที่ตรวจ account, format, UUID ซ้ำ และ ledger integrity ก่อนแทนที่ข้อมูล
+- หน้าจัดการงานซ่อมแสดงห้องแบบคงที่ มีปุ่มสถานะขนาดเท่ากัน ตัวเลือกช่องทางชำระ และเปิดรูปหลักฐานเต็มจอ/ซูมได้
+- การ์ดงานซ่อมออกแบบใหม่เป็น read-only card แสดงความคืบหน้าครบ 6 ขั้นด้วย timeline แบบ monochrome; ไม่มีปุ่มเปลี่ยนสถานะ, swipe หรือ context menu บนรายการ แตะทั้งการ์ดเพื่อเปิดรายละเอียดก่อนแก้ไข โดย validation บังคับเส้นทางงานมีค่าใช้จ่ายผ่าน consent/payment และอนุญาตทางลัดเฉพาะงานฟรี ส่วนการลบอยู่ท้ายหน้าแก้ไขและต้องยืนยันอีกครั้ง
+- หน้าแก้ไขงานซ่อมเปลี่ยนจาก Form กล่องใหญ่เป็น ScrollView ที่ใช้ material cards แบบบางและ spacing สม่ำเสมอ; สถานะเป็น timeline แนวตั้ง ใช้ indigo เฉพาะจุดที่เลือก แสดงสถานะเดิม/สถานะใหม่/ขั้นล็อกชัดเจน และปรับค่าใช้จ่าย ช่องทางชำระ หลักฐาน และปุ่มลบให้เป็น visual language เดียวกัน โดยยืนยันการลบด้วย system alert กลางจอแทน adaptive popover ที่ลอยตามตำแหน่งปุ่ม
+- หน้าบิล การเงิน ห้องพัก ตั้งราคา หลักฐานโอน และแจ้งซ่อมมีช่องค้นหารูปแบบเดียวกับทะเบียนลูกบ้าน พร้อมค้นเลขห้อง ชื่อ รอบบิล สถานะ และรายละเอียดที่เกี่ยวข้อง
+- หน้าการเงินรวมช่องค้นหา รอบบิล และตัวกรองสถานะไว้ในการ์ดกระจกฝ้าใบเดียว; รอบบิลแสดงเฉพาะเดือน–ปี และแท็บสถานะแตะหรือกดลากเลือกพร้อม haptic ได้
+- หน้าบิลยกเลิก swipe/context gesture ที่แย่งการเลื่อน เหลือปุ่มแก้ไขและลบที่เห็นชัดบนการ์ด
+
+### Sync และความปลอดภัยของข้อมูล
+
+- แยก snapshot/checkpoint/outbox ตามบัญชี
+- มี protocol 2, version, checksum, device ID และ atomic `base_version` conflict check
+- exact-payload retry รองรับกรณี server บันทึกแล้วแต่อุปกรณ์ไม่ได้รับคำตอบ
+- ไม่ mark clean ให้รายการที่ถูกแก้ระหว่าง upload และไม่ apply ผลของบัญชีเก่าหลังสลับบัญชี
+- manual sync ซ่อม local data ที่ขาดแม้ version เท่ากันได้
+- manual sync รวม local dirty/deleted records เข้ากับ remote snapshot แล้ว push บน remote base version ได้
+- ปิดช่องว่าง sync slot: หากผู้ใช้บันทึกข้อมูลระหว่าง manual/auto pull แอปจะระบาย dirty checkpoint ต่อเป็น push ทันทีหลัง pull จบ ทำให้สถานะงานซ่อมไม่ค้างเฉพาะในเครื่องและ LINE ได้รับ transition
+- เมื่อ LINE รับสลิปหรือแจ้งซ่อม backend รวมการเปลี่ยนแปลงกลับเข้า immutable snapshot ทันที
+- มี tenant-scoped authenticated media hydration สำหรับสลิป รูปแจ้งซ่อม รูปจอง และหลักฐานสภาพห้อง พร้อมตรวจ SHA-256 และ retry สูงสุด 3 ครั้งก่อนบันทึกลงเครื่อง
+
+### Backend และความปลอดภัย
+
+- session อยู่ฝั่ง server และถูก revoke เมื่อเปลี่ยน/รีเซ็ตรหัสผ่าน
+- ตรวจ HS256, nonce, expiry, role และ account scope ฝั่ง server
+- มี login/OTP/LIFF rate limits และ OTP lockout ที่คงอยู่หลัง restart
+- แยก admin, superadmin และ system operator พร้อม regression tests สำหรับ cross-account และ staff scope
+- ถอน `.env` ออกจาก Git index และบังคับ backend หยุดเมื่อ JWT secret หายหรือสั้นเกินไป
+- server backup รวม master/tenant database, uploads, manifest, checksum และ scheduler
+- offline restore drill ผ่านการตรวจ archive/hash/size และ SQLite `PRAGMA quick_check`
+- online restore รุ่นที่ไม่ปลอดภัยถูกปิดแบบ fail closed ด้วย HTTP 501
+- ปิด static `/uploads` แบบสาธารณะแล้ว; LINE ใช้ HMAC signed URL อายุ 24 ชั่วโมง ส่วนแอปใช้ `/api/media` ที่ตรวจ session, account และการอ้างอิงไฟล์ใน tenant database
+
+### LINE, LIFF และลูกบ้าน
+
+- production webhook ใช้ `https://dorminet.studio/api/webhook/line`
+- LIFF ใช้ `https://dorminet.studio/liff` และตรวจ LINE client ID/access token
+- ผูกบัญชีแบบกรอกเบอร์ก่อน ไม่เปิดรายการห้องทั้งหมด และ fail closed เมื่อเบอร์ตรงหลายห้อง
+- บัญชีที่ผูกแล้วเห็นหน้า “ข้อมูลของฉัน” แทนฟอร์มผูกซ้ำ
+- ข้อมูลห้อง/สัญญา/บิลค้างอ่านจาก tenant database ปัจจุบัน จึงเปลี่ยนตามเมื่อแอดมินย้ายห้องและซิงก์
+- ใบแจ้งหนี้ของบอทแสดงเลขบิล รอบบิล ครบกำหนด วัน–เวลาอัปเดต รายการค่าใช้จ่าย ยอดชำระและคงเหลือ
+- rich menu เชื่อมไปยังผูกบัญชี การเงิน และแจ้งซ่อม
+- เมื่อแอดมินเปลี่ยนสถานะงานซ่อมจากแอป backend จะบันทึกเหตุการณ์ลง persistent outbox หลัง transaction commit ก่อนส่ง Flex Message, กันซ้ำด้วย event key และ retry อัตโนมัติสูงสุด 8 ครั้ง; แถวที่ค้างระหว่าง process จะถูกกู้กลับเมื่อ service เริ่มใหม่
+- Flex Message สถานะงานซ่อมใช้การ์ดขาว–เทาแบบกระชับ แสดงห้อง อาการ วันที่แจ้ง วัน–เวลาเปลี่ยนสถานะจริง ค่าใช้จ่าย ช่องทางชำระ เวลาปิดงาน และ progress แบบ `n/6` โดยวัน–เวลาแปลงเป็นประเทศไทย/ปี พ.ศ. จาก source event และ outbox คง payload เดิมระหว่าง retry
+- เพิ่ม workflow ค่าซ่อมล่วงหน้า: เมื่อยอดมากกว่าศูนย์ แอดมินต้องเลือก “รออนุมัติค่าใช้จ่าย” ระบบส่ง Flex ใบเสนอราคาให้ลูกบ้านกดอนุมัติ/ปฏิเสธ และปฏิเสธการข้ามไปซ่อมจากแอป/แบ็กเอนด์; ยอดในใบเสนอราคาถูกล็อกจนกว่าจะย้อนกลับไปออกใบเสนอราคาใหม่ และสถานะรอชำระจะส่ง Flex บิลพร้อมปุ่มอัปโหลดสลิป
+- วันที่ 17 กันยายนแก้ snapshot งานซ่อมไม่เข้าแอปจาก UUID เดียวกันที่ต่างกันเฉพาะตัวพิมพ์: backend canonicalize ID และ deduplicate โดยเก็บรายการ `lastUpdated` ล่าสุดทั้งขณะ materialize และ publish; production ล้างแถวซ้ำหลังสำรองฐานข้อมูลและสร้าง snapshot `v82` ซึ่งมีงานซ่อม 2 รายการถูกต้อง
+
+### หลักฐานการทดสอบและ deploy
+
+- iOS baseline ก่อนรอบนี้ผ่าน **52/52**; รอบเพิ่ม maintenance workflow test มี 52 tests ผ่านและ Keychain integration test เดิมล้มบน Simulator 1 รายการด้วย environment `storage(-34018)` ขณะที่ test ใหม่ผ่านและ signed device build/install สำเร็จ
+- backend `go test -count=1 -race ./...` และ `go vet ./...` ผ่าน
+- Debug device build/sign/install บน iPhone “F” ผ่าน และมี UAT จริงบาง flow
+- production binary ก่อนรอบ restore/media hardening คือ SHA-256 `a7d882c536839ba86c78382499d8a074341211580168539e90445ec7f3ea5e51` และถูกเก็บไว้ใน rollback set
+- production health ที่ `https://dorminet.studio/api/system/ping` ตอบ HTTP 200
+- production deploy binary ที่มี maintenance-mode restore/rollback แล้ว SHA-256 `2f069031e35d1a57eb5cefa8760849f651c5c6c57eaccc79f683f9b7660e5d6b`; archive ล่าสุดผ่าน `--verify-only` โดยพบ 2 databases และ 2 media files
+- production deploy private-media/checksum binary SHA-256 `75e357083809fce83d28a13c0b4332329a5cecc6318feaa0dd14e8a3a5ff68cd`; health ทั้ง loopback/โดเมนตอบ 200, known public upload ตอบ 404, tenant media ที่ไม่มี session ตอบ 401 และ unsigned LINE media ตอบ 404
+- วันที่ 17 กันยายน deploy maintenance notification outbox binary SHA-256 `0ee715d07ab469c8d61d19103b037fe238aab3d7c469210fb3402f02c7fcc783`; Linux tests, local unit/race/vet, loopback/public health และ SQLite master/tenant `quick_check` ผ่าน โดยยังรอ UAT เปลี่ยนสถานะจริงเพื่อยืนยันข้อความถึง LINE ปลายทาง
+- production binary หลังแก้ maintenance UUID deduplication เป็น SHA-256 `ca4718cfa6f43451394df4fe2830cbc6f280c13b1074765f4379faad9b587717`; external/loopback health และ SQLite quick check ผ่าน พร้อมเก็บ master/tenant database ก่อน cleanup ไว้สำหรับ rollback
+- วันที่ 17 กันยายน deploy Flex งานซ่อมรุ่นรายละเอียดใหม่เป็น production binary SHA-256 `9eac700fbc3e910107e14b2c9c8b36cff8031500caf479c7ddd1603ced0165f0`; `go test -count=1 ./...`, `go test -count=1 -race ./...` และ `go vet ./...` ผ่าน, service เป็น `active`, health ทั้ง loopback/โดเมนตอบ HTTP 200 และ SQLite master/tenant `quick_check` เป็น `ok` โดยเก็บ binary/master DB ก่อน deploy ที่ `/home/fang/line_migration_backups/20260916-232750-pre-flex-ui`; UAT requeue สถานะปัจจุบันไป LINE จริงสำเร็จด้วย outbox `sent`, attempts `0`
+- หลัง UAT พบว่าการบันทึกสถานะระหว่างแอปกำลัง pull ทำให้ immediate push คืนก่อนเพราะ sync slot ไม่ว่างและไม่มีการ drain ต่อ แก้ `SyncManager` ให้ push dirty records ต่อทันทีหลัง pull จบ, CoreDataSafetyTests ผ่าน 18/18 และ signed Debug build ถูกติดตั้งทับบน iPhone “F” โดยคง app container เดิม
+- ปรับ production Flex งานซ่อมตาม UAT ให้ใช้ monochrome compact layout; binary SHA-256 `b3f27cbe2696b9c6f809b8a6fa8e5145f3430890bdce1b70aa9004170838f908`, external health HTTP 200 และส่งตัวอย่างจริงสำเร็จ `sent`, attempts `0`; rollback อยู่ที่ `/home/fang/line_migration_backups/20260916-235225-pre-flex-ui`
+- เพิ่ม maintenance quote approval/billing workflow และ deploy production binary SHA-256 `f02deb959dde76647b366d24e1e804b7958af4552b4ca715b615333783e997c6`; external health HTTP 200, schema outbox มี `maintenance_record_id`, backup/rollback อยู่ที่ `/home/fang/line_migration_backups/20260917-002953-pre-flex-ui`; backend unit/race/vet และ iOS workflow/sync tests 21/21 ผ่าน พร้อม build/sign/install บน iPhone “F” สำเร็จ รวมแก้ outbox ให้เปรียบเทียบ timestamp ด้วย `julianday` และให้งานฟรีข้ามขั้นชำระไปเสร็จสิ้นได้ โดยไม่เปลี่ยนสถานะงานจริงเพื่อส่ง UAT โดยพลการ
+- วันที่ 17 กันยายนแก้ใบเสนอราคา/บิลค่าซ่อมไม่ถึง LINE: outbox ยืนยันว่า LINE API ปฏิเสธ `alignItems: baseline` ด้วย HTTP 400 จึงเปลี่ยนเป็น baseline layout และเพิ่ม error response body; deploy SHA-256 `2566537a63a22d3d591f2e845fe6389afc0412664094436999eaabb45e3aec4d`, rollback `/home/fang/line_migration_backups/20260917-050535-pre-flex-ui`, health ผ่าน และใบเสนอราคาห้อง 103 ยอด 200 บาทส่งซ้ำสำเร็จ (`sent`)
+- แก้ approval callback ที่เคยข้ามตรงไป “กำลังซ่อม”: หลังลูกบ้านอนุมัติระบบเปลี่ยนเป็น “กำลังติดต่อช่าง”, บันทึก `quote_approved_at`, ล็อกยอด และส่งทั้งข้อความกับ Flex; แอดมินจึงเลือก “กำลังซ่อม” ได้เองในแอป รุ่น production `d4e0f718...` พร้อม backup master/tenant, ห้อง 103 ถูก reconcile เป็นสถานะถูกต้อง, snapshot v129, outbox 34 `sent`, health ผ่าน และ signed app ติดตั้ง iPhone “F” แล้ว
+- ปิด `ALLOW_LEGACY_SYNC_PUSH=false` บน production แล้ว หลังไม่พบ legacy push ใน journal ตั้งแต่ 15 กันยายนและ snapshot จากอุปกรณ์ปัจจุบันเดินต่อถึง v76; ยังต้องกด manual sync จาก iPhone หลัง cutover เพื่อบันทึกหลักฐานปลายทาง
+- มี rollback set ก่อน deployment สำคัญและตรวจ SQLite master/tenant เป็น `ok`
+- CI workflow ถูก commit/push แล้ว แต่การประเมินรอบนี้ไม่สามารถอ่านผล GitHub Actions ของ private repository ได้ จึงไม่อ้างว่า online CI ผ่าน
+
+## สิ่งที่ทำแล้วบางส่วน
+
+| หัวข้อ | ส่วนที่มีแล้ว | ส่วนที่ยังขาด |
+| --- | --- | --- |
+| Financial ledger | append-only transaction/receipt, migration จากยอดเก่า, delete guard | Invoice migration เต็มรูปแบบ, refund, void, credit adjustment และ actor/reason audit |
+| Media | tenant-scoped hydration สำหรับสื่อธุรกิจ, SHA-256 verification, bounded retry, signed LINE URL และปิด public `/uploads` | orphan cleanup/retention policy และ UAT ดาวน์โหลดจริงข้ามสองเครื่อง; พื้นหลัง/วิดีโอเป็น client-local ตามสถาปัตยกรรมและรวมใน local backup |
+| Sync conflict | atomic version check, exact retry, backup-before-replace, self-healing, dirty rebase | UAT ชนกันจริงสองเครื่อง และ record-level merge/policy |
+| LINE delivery | core linking/invoice/payment/maintenance ทำงาน และสถานะแจ้งซ่อมมี outbox/retry/idempotency | ขยาย delivery log/retry/idempotency ไปทุก message, เพิ่ม opt-out, monitoring และ UAT ปลายทาง |
+| Restore | archive/manifest/checksum/offline drill, คำสั่ง maintenance-mode atomic swap/rollback, automated tests, production deploy และ verify-only ผ่าน | ทำ production maintenance-window restore/rollback drill พร้อม health checklist |
+| Device UAT | ทดสอบบาง flow บน iPhone จริงหนึ่งเครื่อง | สองเครื่อง/สองบัญชี, offline/interruption, Photos/AirPrint, disk-full และ performance soak |
+
+## งานที่ยังเหลือ
+
+### P0 — ต้องปิดก่อน production เต็มรูปแบบ
+
+1. หมุน/revoke JWT, LINE, Resend/email และ secret อื่นที่เคยอยู่ใน Git history พร้อม session cutover และบันทึกหลักฐานจาก provider
+2. ทำ UAT สอง iPhone/สองบัญชี: เพิ่ม/แก้ record เดียวกันและคนละ record, ตัดเน็ตกลาง push/pull, force quit และกู้จาก backup
+3. ยืนยัน manual sync จาก iPhone หลัง production ปิด `ALLOW_LEGACY_SYNC_PUSH` และเฝ้าดู rejection/log; ฝั่ง server cutover เป็น `false` แล้ว
+4. ทำ media lifecycle ส่วนสุดท้าย: orphan cleanup/retention และ UAT ข้ามสองเครื่อง; ownership, checksum, retry และ public `/uploads` closure deploy แล้ว
+5. ทำ Invoice/refund/void/credit-adjustment workflow และ immutable actor/reason audit พร้อม migration จาก `Payment` compatibility model
+6. ทำ production drill ของ atomic restore ใน maintenance mode ตาม [SERVER_RESTORE_RUNBOOK_2026-09-16.md](SERVER_RESTORE_RUNBOOK_2026-09-16.md); ตัวคำสั่ง deploy แล้วและ verify-only ผ่าน archive จริง แต่ยังต้องมีหลักฐาน restore, health checklist และ rollback จาก maintenance window
+
+### P1 — ต้องปิดก่อน rollout วงกว้าง
+
+1. ทำ controlled E2E UAT งานซ่อมแบบมี/ไม่มีค่าใช้จ่าย ครอบคลุม approve/reject/re-quote, unauthorized/stale action, bill/slip และ sync กลับแอป
+2. เพิ่ม UI automation สำหรับ login, tenant lifecycle, billing, partial/full payment, receipt, room move, maintenance และ backup
+3. ทดสอบอีเมล forgot-password จริงบน staging และ concurrency หลาย instance
+4. เพิ่ม SwiftData schema migration/recovery UI เมื่อ store เปิดไม่ได้ หรือพื้นที่ไม่พอ
+5. ทำ error/offline/sync state ให้สม่ำเสมอทุกหน้า และไม่มี silent failure
+6. เพิ่ม structured monitoring/alert, backup retention, incident runbook, privacy/retention policy และ release rollback checklist
+7. ยืนยัน deployment target `iOS 26.2` กับอุปกรณ์เป้าหมายจริง หรือลด target พร้อม compatibility testing
+
+### P2 — หลัง pilot
+
+- APNs และ local notification พร้อม permission onboarding
+- localization จริงด้วย String Catalog
+- VoiceOver, Dynamic Type, contrast, touch target, iPad/landscape และ accessibility audit
+- performance/memory/thermal soak สำหรับรูปใหญ่ วิดีโอ ใบเสร็จ และ snapshot ขนาดใหญ่
+- TestFlight pilot อย่างน้อยหนึ่งรอบบิลเต็ม
+
+## ลำดับที่ควรทำต่อ
+
+1. Controlled UAT ของ maintenance quote approve/reject, re-quote, bill/slip, free-job bypass และ sync กลับแอป
+2. Secret rotation/session cutover
+3. UAT สองเครื่องและ protocol-2 cutover
+4. Media lifecycle/UAT ส่วนที่เหลือ หลัง ownership/checksum/retry และ public-upload closure deploy แล้ว
+5. Financial refund/void/full invoice migration
+6. Atomic restore drill
+7. UI automation, monitoring และ release hardening
+8. APNs, localization, accessibility และ TestFlight pilot
+
+## เกณฑ์ที่จะขยับคะแนน
+
+- ขยับเกิน 85% เมื่อ secret rotation, UAT สองเครื่อง, protocol-2 cutover และ public-media closure มีหลักฐานครบ
+- ขยับเกิน 90% เมื่อ media ทุก flow, refund/void ledger และ atomic restore ผ่าน
+- 100% เมื่อไม่มี P0/P1 ค้าง, CI/Release/UI tests ผ่าน, TestFlight pilot ครบหนึ่งรอบบิล, ไม่เกิด data-loss incident และ restore drill ผ่าน

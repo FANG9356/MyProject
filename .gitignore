@@ -72,6 +72,7 @@ cookies.txt
 # ==========================================
 dist/
 !25_DormiNetX-Windows-Desktop/wails_app/frontend/dist
+!26_DormiNetX-Enterprise-iOS-Cloud/backend-dorm/dist
 build/
 *.log
 server

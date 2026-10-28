@@ -1,0 +1,266 @@
+import SwiftUI
+import Charts
+import SwiftData
+
+struct OverviewTabView: View {
+    @StateObject private var viewModel = DashboardViewModel()
+    @Environment(\.colorScheme) var colorScheme
+    @Query(sort: \DormUser.lastUpdated, order: .reverse) private var users: [DormUser]
+    @Query(sort: \Room.lastUpdated, order: .reverse) private var rooms: [Room]
+    @Query(sort: \Payment.lastUpdated, order: .reverse) private var payments: [Payment]
+    @Query(sort: \Maintenance.lastUpdated, order: .reverse) private var maintenances: [Maintenance]
+
+    private var dashboardDataKey: String {
+        [
+            "\(users.count):\(users.first?.lastUpdated.timeIntervalSince1970 ?? 0)",
+            "\(rooms.count):\(rooms.first?.lastUpdated.timeIntervalSince1970 ?? 0)",
+            "\(payments.count):\(payments.first?.lastUpdated.timeIntervalSince1970 ?? 0)",
+            "\(maintenances.count):\(maintenances.first?.lastUpdated.timeIntervalSince1970 ?? 0)"
+        ].joined(separator: "|")
+    }
+
+    var body: some View {
+        ScrollView {
+            VStack(spacing: 20) {
+
+                HStack(alignment: .top) {
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text("แดชบอร์ดวันนี้")
+                            .font(.custom("SukhumvitSet-Bold", size: 28))
+                            .foregroundColor(.primary)
+                        Text("ข้อมูลเชิงลึกและสถานะการดำเนินงานของระบบ")
+                            .font(.custom("SukhumvitSet-Text", size: 13))
+                            .foregroundColor(.secondary)
+                    }
+
+                    Spacer()
+
+                    if viewModel.isLoading {
+                        ProgressView()
+                            .padding(.top, 6)
+                    }
+                }
+                .padding(.horizontal, 20)
+
+                if let error = viewModel.errorMessage {
+                    Text(error)
+                        .foregroundColor(.red)
+                        .font(.custom("SukhumvitSet-Text", size: 14))
+                }
+
+
+                LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 15) {
+
+                    let totalRooms = viewModel.stats.total_residents + viewModel.stats.empty_rooms
+                    let occRate = totalRooms > 0 ? (Double(viewModel.stats.total_residents) / Double(totalRooms)) * 100 : 0
+                    GlassSummaryCard(title: "อัตราการเข้าพัก", value: "\(String(format: "%.0f", occRate))%", icon: "person.2.fill", color: .blue)
+
+
+                    GlassSummaryCard(title: "ห้องว่าง", value: "\(viewModel.stats.empty_rooms)", icon: "bed.double.fill", color: .indigo)
+
+
+                    GlassSummaryCard(title: "เงินสดรับเดือนนี้", value: moneyText(viewModel.stats.income_this_month), icon: "banknote.fill", color: .green)
+
+
+                    GlassSummaryCard(title: "ยอดเก็บรอบบิลนี้", value: moneyText(viewModel.stats.billing_cycle_income), icon: "doc.text.fill", color: .cyan)
+
+
+                    GlassSummaryCard(title: "มัดจำแรกเข้า", value: moneyText(viewModel.depositThisMonth), icon: "archivebox.fill", color: .orange)
+
+
+                    GlassSummaryCard(title: "บิลค้างชำระ", value: "\(viewModel.stats.pending_bills)", icon: "exclamationmark.triangle.fill", color: viewModel.stats.pending_bills > 0 ? .red : .gray)
+                }
+                .padding(.horizontal, 20)
+
+
+                VStack(spacing: 20) {
+
+                    GlassCard {
+                        VStack(alignment: .leading, spacing: 10) {
+                            Label("แนวโน้มรายรับทางการเงิน", systemImage: "chart.line.uptrend.xyaxis")
+                                .font(.custom("SukhumvitSet-Bold", size: 14))
+                                .foregroundColor(.green)
+
+                            Chart(viewModel.financialStats) { stat in
+                                AreaMark(
+                                    x: .value("เดือน", stat.name),
+                                    y: .value("รายรับ", stat.income)
+                                )
+                                .foregroundStyle(LinearGradient(colors: [Color.green.opacity(0.6), Color.green.opacity(0.0)], startPoint: .top, endPoint: .bottom))
+
+                                LineMark(
+                                    x: .value("เดือน", stat.name),
+                                    y: .value("รายรับ", stat.income)
+                                )
+                                .foregroundStyle(Color.green)
+                            }
+                            .frame(height: 180)
+                            .chartYAxis {
+                                AxisMarks(position: .leading) { value in
+                                    AxisValueLabel() {
+                                        if let intValue = value.as(Double.self) {
+                                            Text(Int(intValue).formatted())
+                                                .font(.custom("SukhumvitSet-Text", size: 10))
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding()
+                    }
+
+
+                    GlassCard {
+                        VStack(alignment: .leading, spacing: 10) {
+                            Label("สถิติผู้เช่าใหม่รายเดือน", systemImage: "person.crop.circle.badge.plus")
+                                .font(.custom("SukhumvitSet-Bold", size: 14))
+                                .foregroundColor(.blue)
+
+                            Chart(viewModel.moveInStats) { stat in
+                                BarMark(
+                                    x: .value("เดือน", stat.name),
+                                    y: .value("จำนวน", stat.newResidents)
+                                )
+                                .foregroundStyle(Color.blue)
+                                .cornerRadius(4)
+                            }
+                            .frame(height: 180)
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding()
+                    }
+
+
+                    GlassCard {
+                        VStack(alignment: .leading, spacing: 10) {
+                            Label("สถานะห้องพัก", systemImage: "bed.double.fill")
+                                .font(.custom("SukhumvitSet-Bold", size: 14))
+                                .foregroundColor(.indigo)
+
+                            let totalRooms = viewModel.stats.total_residents + viewModel.stats.empty_rooms
+                            let occData: [(String, Int, Color)] = [
+                                ("มีผู้เช่า", viewModel.stats.total_residents, .blue),
+                                ("ห้องว่าง", viewModel.stats.empty_rooms, .gray)
+                            ]
+
+                            if totalRooms > 0 {
+                                Chart(occData, id: \.0) { item in
+                                    SectorMark(
+                                        angle: .value("จำนวน", item.1),
+                                        innerRadius: .ratio(0.6),
+                                        angularInset: 1.5
+                                    )
+                                    .foregroundStyle(item.2)
+                                    .cornerRadius(5)
+                                }
+                                .frame(height: 180)
+                                .chartLegend(position: .bottom, alignment: .center)
+                            } else {
+                                Text("ไม่มีข้อมูลห้องพัก")
+                                    .font(.custom("SukhumvitSet-Text", size: 12))
+                                    .foregroundColor(.secondary)
+                                    .frame(height: 180)
+                            }
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding()
+                    }
+
+
+                    GlassCard {
+                        VStack(alignment: .leading, spacing: 10) {
+                            Label("สถิติการแจ้งซ่อม", systemImage: "wrench.and.screwdriver.fill")
+                                .font(.custom("SukhumvitSet-Bold", size: 14))
+                                .foregroundColor(.orange)
+
+                            let maintData: [(String, Int, Color)] = [
+                                ("รอดำเนินการ", viewModel.pendingMaints, .red),
+                                ("กำลังดำเนินงาน", viewModel.inProgressMaints, .orange),
+                                ("เสร็จสิ้น", viewModel.completedMaints, .green)
+                            ]
+
+                            let maintenanceTotal = maintData.reduce(0) { $0 + $1.1 }
+                            if maintenanceTotal > 0 {
+                                Text("รวม \(maintenanceTotal) รายการ")
+                                    .font(.custom("SukhumvitSet-Text", size: 12))
+                                    .foregroundStyle(.secondary)
+
+                                Chart(maintData, id: \.0) { item in
+                                    BarMark(
+                                        x: .value("สถานะ", item.0),
+                                        y: .value("จำนวน", item.1)
+                                    )
+                                    .foregroundStyle(item.2)
+                                    .cornerRadius(4)
+                                    .annotation(position: .top) {
+                                        Text("\(item.1)")
+                                            .font(.caption.bold())
+                                            .foregroundStyle(item.2)
+                                    }
+                                }
+                                .chartYScale(domain: 0...max(1, (maintData.map { $0.1 }.max() ?? 0) + 1))
+                                .frame(height: 180)
+                            } else {
+                                ContentUnavailableView(
+                                    "ยังไม่มีรายการแจ้งซ่อม",
+                                    systemImage: "wrench.and.screwdriver",
+                                    description: Text("เมื่อมีรายการ สถิติทุกสถานะจะแสดงที่นี่")
+                                )
+                                .frame(height: 180)
+                            }
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding()
+                    }
+                }
+                .padding(.horizontal, 20)
+
+
+                VStack(spacing: 20) {
+
+                    GlassCard {
+                        VStack(alignment: .leading, spacing: 10) {
+                            Label("รอชำระเงิน (\(viewModel.pendingUsers.count))", systemImage: "clock.fill")
+                                .font(.custom("SukhumvitSet-Bold", size: 14))
+                                .foregroundColor(.red)
+
+                            if viewModel.pendingUsers.isEmpty {
+                                Text("ไม่มีบิลค้างชำระ")
+                                    .font(.custom("SukhumvitSet-Text", size: 12))
+                                    .foregroundColor(.secondary)
+                                    .padding(.vertical, 10)
+                            } else {
+                                ForEach(viewModel.pendingUsers) { user in
+                                    HStack {
+                                        Text("ห้อง \(user.room_number ?? "-")")
+                                            .font(.custom("SukhumvitSet-Bold", size: 14))
+                                        Spacer()
+                                        Text("รอชำระ")
+                                            .font(.custom("SukhumvitSet-Medium", size: 12))
+                                            .foregroundColor(.red)
+                                    }
+                                    Divider()
+                                }
+                            }
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding()
+                    }
+                }
+                .padding(.horizontal, 20)
+                .padding(.bottom, 30)
+            }
+            .padding(.top, 110)
+        }
+        .task(id: dashboardDataKey) {
+            await Task.yield()
+            viewModel.updateLocalData(users: users, rooms: rooms, payments: payments, maintenances: maintenances)
+        }
+    }
+
+    private func moneyText(_ amount: Double) -> String {
+        let formatted = amount.formatted(.number.precision(.fractionLength(0)))
+        return "\(formatted) \(String(localized: "บาท"))"
+    }
+}

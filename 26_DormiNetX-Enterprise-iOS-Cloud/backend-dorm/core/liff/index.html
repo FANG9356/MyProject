@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f8f9fa">
+  <title>ผูกบัญชีหอพัก · DormiNetX</title>
+  <link rel="stylesheet" href="/liff/styles.css">
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+  <script src="/liff/app.js" defer></script>
+</head>
+<body>
+  <main class="page">
+    <div class="decor decor-right" aria-hidden="true"></div>
+    <div class="decor decor-left" aria-hidden="true"></div>
+
+    <section class="shell" aria-labelledby="page-title">
+      <header class="profile-header">
+        <div class="avatar-shell">
+          <img id="profile-picture" class="profile-picture" alt="รูปโปรไฟล์ LINE" hidden>
+          <div id="profile-fallback" class="profile-fallback" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M16 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0ZM5 21a7 7 0 0 1 14 0"/></svg>
+          </div>
+        </div>
+        <h1 id="page-title">ยืนยันบัญชีลูกบ้าน</h1>
+        <p>เชื่อมต่อบัญชีสำหรับ <strong id="line-name">ลูกบ้าน</strong></p>
+      </header>
+
+      <section class="onboarding-steps" aria-label="ขั้นตอนการผูกบัญชี">
+        <p>ใช้เวลาเพียงไม่กี่ขั้นตอน</p>
+        <div class="step-list">
+          <div class="step-item is-active"><span>1</span><strong>กรอกเบอร์</strong></div>
+          <div class="step-item"><span>2</span><strong>ตรวจสอบห้อง</strong></div>
+          <div class="step-item"><span>3</span><strong>เชื่อมต่อบัญชี</strong></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div id="loading" class="status status-loading" role="status">
+          <span class="spinner" aria-hidden="true"></span>
+          <span>กำลังเชื่อมต่อกับ LINE…</span>
+        </div>
+
+        <div id="notice" class="status" role="alert" hidden></div>
+
+        <section id="resident-dashboard" class="resident-dashboard" hidden aria-live="polite">
+          <div class="room-overview">
+            <p>ห้องพักปัจจุบัน</p>
+            <h2>ห้อง <span id="resident-room"></span></h2>
+            <p class="room-meta"><span id="resident-room-type"></span><span aria-hidden="true">·</span><span id="resident-status"></span></p>
+          </div>
+
+          <section class="information-group" aria-labelledby="resident-info-heading">
+            <div class="section-heading">
+              <h3 id="resident-info-heading">ข้อมูลการเข้าพัก</h3>
+            </div>
+            <dl class="information-list">
+              <div><dt>ชื่อลูกบ้าน</dt><dd id="resident-name"></dd></div>
+              <div><dt>วันที่เข้าพัก</dt><dd id="resident-move-in"></dd></div>
+              <div><dt>สิ้นสุดสัญญา</dt><dd id="resident-contract"></dd></div>
+            </dl>
+          </section>
+
+          <section class="information-group billing-group" aria-labelledby="billing-heading">
+            <div class="section-heading">
+              <h3 id="billing-heading">ยอดค้างชำระ</h3>
+            </div>
+            <div class="balance-row">
+              <div><span>ยอดค้างรวมทั้งหมด</span><strong id="outstanding-amount"></strong></div>
+            </div>
+            <p id="outstanding-count" class="billing-status"></p>
+            <p id="billing-warning" class="billing-warning" hidden></p>
+            <div id="invoice-list" class="invoice-list"></div>
+            <p id="no-bill" class="empty-bill" hidden>ไม่มีรายการค้างชำระ</p>
+          </section>
+
+          <section class="information-group billing-group" aria-labelledby="projected-heading">
+            <div class="section-heading">
+              <h3 id="projected-heading">ยอดประเมินบิลรอบหน้า</h3>
+            </div>
+            <div class="balance-row">
+              <div><span>ค่าเช่าและส่วนกลาง (เริ่มต้น)</span><strong id="projected-bill-amount"></strong></div>
+            </div>
+            <p class="billing-status">ยังไม่รวมค่าน้ำ ค่าไฟ หรือค่าปรับเพิ่มเติม</p>
+          </section>
+
+          <section class="information-group billing-group" aria-labelledby="history-heading">
+            <div class="section-heading">
+              <h3 id="history-heading">ประวัติการชำระเงิน</h3>
+            </div>
+            <div id="history-list" class="invoice-list"></div>
+            <p id="no-history" class="empty-bill" hidden>ไม่มีประวัติการชำระเงิน</p>
+          </section>
+
+          <p class="dashboard-note">ข้อมูลจะอัปเดตหลังแอดมินบันทึกและซิงก์ขึ้นระบบ</p>
+          <button id="close-button" class="primary-button" type="button">กลับไปที่แชท</button>
+        </section>
+
+        <form id="link-form" hidden>
+          <div class="field-group">
+            <label for="dorm-code">รหัสหอพัก (Dormitory Code)</label>
+            <div class="control">
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"></path><path d="M9 8h1"></path><path d="M9 12h1"></path><path d="M9 16h1"></path><path d="M14 8h1"></path><path d="M14 12h1"></path><path d="M14 16h1"></path><path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"></path></svg>
+              <input
+                id="dorm-code"
+                name="dorm_code"
+                type="text"
+                inputmode="numeric"
+                autocomplete="off"
+                maxlength="5"
+                placeholder="กรอกรหัส 5 หลักจากหอพัก"
+                required
+              >
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label for="phone">เบอร์โทรศัพท์ยืนยัน</label>
+            <div class="control">
+              <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M7.2 3.5 9.7 8 7.9 9.8c1.1 2.5 3.1 4.5 5.6 5.6l1.8-1.8 4.5 2.5v3.1c0 1-1 1.8-2 1.7C9.7 20.2 3.2 13.7 2.5 5.6c-.1-1 .7-2 1.7-2h3Z"/></svg>
+              <input
+                id="phone"
+                name="phone"
+                type="tel"
+                inputmode="numeric"
+                autocomplete="tel"
+                maxlength="14"
+                placeholder="08X-XXX-XXXX"
+                required
+              >
+            </div>
+            <p class="hint">กรอกเบอร์ที่แจ้งไว้กับหอพัก ระบบจะค้นหาห้องให้คุณ</p>
+          </div>
+
+          <button id="verify-button" class="primary-button" type="submit">
+            <span>ตรวจสอบข้อมูล</span>
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
+          </button>
+        </form>
+
+        <section id="confirmation" class="confirmation" hidden aria-live="polite">
+          <div class="verified-card">
+            <div class="verified-icon" aria-hidden="true">[CHECK]</div>
+            <div>
+              <p>ข้อมูลผู้เช่าถูกต้อง</p>
+              <h2 id="confirmation-text"></h2>
+            </div>
+          </div>
+          <p class="confirmation-note">ตรวจสอบเลขห้องก่อนยืนยันการเชื่อมต่อ</p>
+          <button id="link-button" class="primary-button" type="button">เชื่อมต่อบัญชี</button>
+          <button id="back-button" class="button-secondary" type="button">แก้ไขเบอร์โทร</button>
+        </section>
+      </section>
+
+      <p class="privacy-note">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.7 2.8 8.5 7 10 4.2-1.5 7-5.3 7-10V6l-7-3Zm-3 9 2 2 4-4"/></svg>
+        ข้อมูลถูกเข้ารหัสและใช้เพื่อยืนยันบัญชีเท่านั้น
+      </p>
+    </section>
+  </main>
+
+  <template id="invoice-template">
+    <details class="invoice-item">
+      <summary>
+        <span class="invoice-summary-main">
+          <strong class="invoice-number"></strong>
+          <span class="invoice-period"></span>
+        </span>
+        <span class="invoice-summary-side">
+          <strong class="invoice-balance"></strong>
+          <span class="invoice-status"></span>
+        </span>
+        <span class="invoice-chevron" aria-hidden="true"></span>
+      </summary>
+      <p class="invoice-updated"></p>
+      <dl class="invoice-meta"></dl>
+      <div class="invoice-lines" aria-label="รายการค่าใช้จ่าย"></div>
+      <dl class="invoice-totals"></dl>
+    </details>
+  </template>
+</body>
+</html>

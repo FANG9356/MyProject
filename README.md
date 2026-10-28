@@ -45,12 +45,13 @@
 | **23** | [`23_Discord-Voice-Screen-Share`](./23_Discord-Voice-Screen-Share) | Socket Streaming / Voice | [![Download](https://img.shields.io/badge/ZIP-238636?style=flat-square&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/23_Discord-Voice-Screen-Share) | `python3 server.py` | พอร์ต 65432/65433 | `python3 test_simulation.py` |
 | **24** | [`24_LAN-Security-Intruder-Sentinel`](./24_LAN-Security-Intruder-Sentinel) | Network Security / IDS | [![Download](https://img.shields.io/badge/ZIP-238636?style=flat-square&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/24_LAN-Security-Intruder-Sentinel) | `node server.js` | `http://localhost:3080` | `node test_simulation.js` |
 | **25** | [`25_DormiNetX-Windows-Desktop`](./25_DormiNetX-Windows-Desktop) | Windows Desktop / Wails | [![Download](https://img.shields.io/badge/ZIP-238636?style=flat-square&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/25_DormiNetX-Windows-Desktop) | `bin/DormiNetX.exe` หรือ `open standalone_demo.html` | Standalone App / `standalone_demo.html` | `node test_simulation.js` |
+| **26** | [`26_DormiNetX-Enterprise-iOS-Cloud`](./26_DormiNetX-Enterprise-iOS-Cloud) | Native iOS & Cloud Platform | [![Download](https://img.shields.io/badge/ZIP-238636?style=flat-square&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/26_DormiNetX-Enterprise-iOS-Cloud) | `Xcode Build` หรือ `open standalone_demo.html` | iOS App / `standalone_demo.html` | `node test_simulation.js` |
 
 ---
 
 ## การรันชุดทดสอบ
 
-ในโฟลเดอร์หลักมีสคริปต์ [`run_all_tests.sh`](./run_all_tests.sh) สำหรับรัน Simulation Test ของทั้ง 25 โปรเจกต์ สามารถทดสอบได้ด้วยคำสั่ง:
+ในโฟลเดอร์หลักมีสคริปต์ [`run_all_tests.sh`](./run_all_tests.sh) สำหรับรัน Simulation Test ของทั้ง 26 โปรเจกต์ สามารถทดสอบได้ด้วยคำสั่ง:
 ```bash
 ./run_all_tests.sh
 ```
@@ -970,6 +971,41 @@ open 25_DormiNetX-Windows-Desktop/standalone_demo.html
 รันชุดทดสอบการคำนวณและสถาปัตยกรรมระบบ:
 ```bash
 node 25_DormiNetX-Windows-Desktop/test_simulation.js
+```
+
+---
+
+### 26. [26_DormiNetX-Enterprise-iOS-Cloud](./26_DormiNetX-Enterprise-iOS-Cloud) — ระบบบริหารจัดการหอพักระดับองค์กร Native iOS & Cloud Platform
+
+> [![Download Folder](https://img.shields.io/badge/Download-ZIP_Folder-238636?style=for-the-badge&logo=github)](https://download-directory.github.io/?url=https://github.com/FANG9356/MyProject/tree/main/26_DormiNetX-Enterprise-iOS-Cloud)
+> *ดาวน์โหลดเฉพาะโฟลเดอร์นี้เป็นไฟล์ ZIP (หรือ [ดาวน์โหลดผ่าน DownGit](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/FANG9356/MyProject/tree/main/26_DormiNetX-Enterprise-iOS-Cloud))*
+
+* **หมวดหมู่:** Enterprise Cloud Platform / Native iOS & iPadOS Application / Local-First Architecture
+* **เทคโนโลยี:** Swift 5.9, SwiftUI, SwiftData, Go (Golang 1.22), Multi-Tenant SQLite, LINE Messaging API, LINE LIFF, SHA-256 Ledger
+
+#### สรุปโปรเจกต์
+ระบบบริหารจัดการหอพักและอพาร์ตเมนต์ระดับองค์กรแบบครบวงจร ประกอบด้วยแอปพลิเคชันเนทีฟสำหรับ iOS และ iPadOS ที่พัฒนาด้วย Swift 5.9, SwiftUI และ SwiftData ทำงานแบบ Local-First 100% เชื่อมต่อกับคลาวด์แบ็กเอนด์ภาษา Go 1.22 แยกฐานข้อมูล Multi-Tenant SQLite อิสระต่อหอพัก ป้องกันข้อมูลรั่วไหล มีระบบบัญชีพร้อม Immutable Financial Ledger ที่บันทึกประวัติธุรกรรมด้วย SHA-256 Hash Chain, ระบบแจ้งหนี้อัตโนมัติผ่าน LINE Official Account ด้วย Flex Messages และพอร์ทัลลูกบ้านผ่าน LINE LIFF สำหรับชำระเงินผ่าน PromptPay QR และตรวจสอบสลิปอัตโนมัติ พร้อมกระบวนการจัดการงานซ่อมแซม 6 ขั้นตอน และรองรับ 4 ภาษา
+
+![DormiNetX iOS Enterprise](./assets/real_app_26_dorminet_ios.png)
+
+![DormiNetX iOS Demo](./assets/demo_26_dorminet_ios.gif)
+
+#### เอกสารประกอบโครงงาน
+* รายละเอียดโครงงาน: [26_DormiNetX-Enterprise-iOS-Cloud/PORTFOLIO_INFO.md](./26_DormiNetX-Enterprise-iOS-Cloud/PORTFOLIO_INFO.md)
+* คู่มือโครงการ: [26_DormiNetX-Enterprise-iOS-Cloud/README.md](./26_DormiNetX-Enterprise-iOS-Cloud/README.md)
+
+#### วิธีรันระบบ (How to Run)
+เปิดหน้าต่างจำลองการทำงานแบบ Interactive (Web Preview):
+```bash
+open 26_DormiNetX-Enterprise-iOS-Cloud/standalone_demo.html
+```
+รันแบ็กเอนด์ Go Cloud:
+```bash
+cd 26_DormiNetX-Enterprise-iOS-Cloud/backend-dorm && go run main.go
+```
+รันชุดทดสอบการทำงานของระบบ:
+```bash
+node 26_DormiNetX-Enterprise-iOS-Cloud/test_simulation.js
 ```
 
 ---

@@ -1,0 +1,600 @@
+import SwiftUI
+import PhotosUI
+
+struct AdminManagementTabView: View {
+    @State private var admins: [Admin] = []
+    @State private var isLoading = true
+    @State private var errorMessage: String = ""
+    @State private var showErrorAlert = false
+
+
+    @State private var showingAddAdmin = false
+    @State private var editingAdmin: Admin? = nil
+    @State private var newAdminName = ""
+    @State private var newAdminEmail = ""
+    @State private var newAdminPassword = ""
+    @State private var isSubmitting = false
+
+    var body: some View {
+        VStack(spacing: 20) {
+
+
+            VStack(alignment: .leading, spacing: 8) {
+                HStack {
+                    Text("จัดการผู้ดูแลระบบ")
+                        .font(.custom("SukhumvitSet-Bold", size: 30))
+                        .foregroundStyle(.primary)
+                    Spacer()
+                    Button(action: {
+                        showingAddAdmin = true
+                    }) {
+                        HStack {
+                            Image(systemName: "plus.circle.fill")
+                            Text("เพิ่ม")
+                                .font(.custom("SukhumvitSet-Bold", size: 14))
+                        }
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 10)
+                        .background(LinearGradient(colors: [.indigo, .purple], startPoint: .leading, endPoint: .trailing))
+                        .clipShape(Capsule())
+                        .shadow(color: .indigo.opacity(0.3), radius: 5, x: 0, y: 3)
+                    }
+                    .buttonStyle(PressableButtonStyle())
+                }
+
+                Text("ดูแลสิทธิ์และข้อมูลเข้าสู่ระบบของผู้ใช้งานทั้งหมด \(admins.count) บัญชี")
+                    .font(.custom("SukhumvitSet-Text", size: 13))
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            .padding(.bottom, 6)
+            .padding(.top, 20)
+
+
+            let owner = admins.first(where: { $0.role == "superadmin" })
+            let dormCode = owner?.dorm_code?.isEmpty == false ? owner!.dorm_code! : "000000"
+
+            HStack(spacing: 15) {
+                ZStack {
+                    Circle()
+                        .fill(Color.indigo.opacity(0.15))
+                        .frame(width: 45, height: 45)
+                    Image(systemName: "number.circle.fill")
+                        .foregroundColor(.indigo)
+                        .font(.system(size: 20))
+                }
+
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("รหัสหอพัก (Dormitory Code)")
+                        .font(.custom("SukhumvitSet-Bold", size: 16))
+                        .foregroundColor(.primary)
+
+                    Text("รหัสสำหรับให้ลูกบ้านใช้ผูกบัญชี LINE Bot")
+                        .font(.custom("SukhumvitSet-Text", size: 13))
+                        .foregroundColor(.secondary)
+                }
+
+                Spacer()
+
+                Button(action: {
+                    UIPasteboard.general.string = dormCode
+                }) {
+                    HStack(spacing: 6) {
+                        Text(dormCode)
+                            .font(.system(.title3, design: .monospaced).bold())
+                            .foregroundColor(.primary)
+
+                        Image(systemName: "doc.on.doc")
+                            .font(.system(size: 12))
+                            .foregroundColor(.secondary)
+                    }
+                    .padding(.horizontal, 14)
+                    .padding(.vertical, 8)
+                    .background(Color.primary.opacity(0.08))
+                    .clipShape(Capsule())
+                }
+                .buttonStyle(PlainButtonStyle())
+            }
+            .padding(16)
+            .background(.ultraThinMaterial)
+            .cornerRadius(16)
+            .shadow(color: Color.black.opacity(0.03), radius: 8, x: 0, y: 4)
+            .padding(.horizontal, 4)
+            .padding(.bottom, 6)
+
+            if isLoading && admins.isEmpty {
+                Spacer()
+                ProgressView()
+                    .scaleEffect(1.5)
+                Spacer()
+            } else {
+                LazyVStack(spacing: 15) {
+                    ForEach(admins) { admin in
+                        AdminRow(admin: admin, onDelete: {
+                            deleteAdmin(adminID: admin.id)
+                        }, onEdit: {
+                            editingAdmin = admin
+                        }, onImageUpdate: {
+                            Task { await loadAdmins(showLoadingSpinner: false) }
+                        })
+                        .transition(.scale(scale: 0.95).combined(with: .opacity))
+                    }
+                }
+                .padding(.bottom, 20)
+            }
+        }
+        .padding(.horizontal, 20)
+        .padding(.top, 126)
+        .alert("เกิดข้อผิดพลาด", isPresented: $showErrorAlert) {
+            Button("ตกลง", role: .cancel) { }
+        } message: {
+            Text(LocalizedStringKey(errorMessage))
+        }
+        .onAppear {
+            Task {
+                await loadAdmins(showLoadingSpinner: admins.isEmpty)
+            }
+        }
+        .sheet(isPresented: $showingAddAdmin) {
+            AddAdminSheet(isPresented: $showingAddAdmin, onSuccess: {
+                Task {
+                    await loadAdmins(showLoadingSpinner: false)
+                }
+            })
+            .iphoneSheetStyle()
+        }
+        .sheet(item: $editingAdmin) { admin in
+            EditAdminSheet(admin: admin, onSuccess: {
+                Task { await loadAdmins(showLoadingSpinner: false) }
+            })
+            .iphoneFullSheetStyle()
+        }
+    }
+
+    private func loadAdmins(showLoadingSpinner: Bool = false) async {
+        if showLoadingSpinner {
+            isLoading = true
+        }
+        do {
+            let fetchedAdmins = try await APIService.shared.fetchAdmins()
+            withAnimation(.easeInOut(duration: 0.25)) {
+                admins = fetchedAdmins
+            }
+        } catch {
+            errorMessage = String(localized: "ไม่สามารถดึงข้อมูลได้: \(error.localizedDescription)")
+            showErrorAlert = true
+        }
+        isLoading = false
+    }
+
+    private func deleteAdmin(adminID: Int) {
+        Task {
+            do {
+                let success = try await APIService.shared.deleteAdmin(id: adminID)
+                if success {
+                    await loadAdmins(showLoadingSpinner: true)
+                } else {
+                    errorMessage = String(localized: "ลบข้อมูลไม่สำเร็จ")
+                    showErrorAlert = true
+                }
+            } catch {
+                errorMessage = String(localized: "เกิดข้อผิดพลาดในการลบ: \(error.localizedDescription)")
+                showErrorAlert = true
+            }
+        }
+    }
+}
+
+struct AdminRow: View {
+    let admin: Admin
+    let onDelete: () -> Void
+    let onEdit: () -> Void
+    let onImageUpdate: () -> Void
+
+    @State private var showDeleteConfirm = false
+
+    var body: some View {
+        GlassCard {
+            HStack(spacing: 15) {
+                ProfileImageView(admin: admin, size: 50, onImageUpdate: onImageUpdate)
+
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(admin.username)
+                        .font(.custom("SukhumvitSet-Bold", size: 18))
+                        .foregroundColor(.primary)
+
+                    HStack {
+                        Image(systemName: "envelope.fill")
+                            .font(.custom("SukhumvitSet-Medium", size: 10))
+                        Text(admin.email)
+                            .font(.custom("SukhumvitSet-Text", size: 13))
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.8)
+                    }
+                    .foregroundColor(.secondary)
+                }
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    onEdit()
+                }
+
+                Spacer()
+
+
+                Button(action: {
+                    showDeleteConfirm = true
+                }) {
+                    Image(systemName: "trash.fill")
+                        .foregroundColor(.red.opacity(0.8))
+                        .padding(10)
+                        .background(Color.red.opacity(0.1))
+                        .clipShape(Circle())
+                }
+                .buttonStyle(PressableButtonStyle())
+                .alert("ยืนยันการลบ", isPresented: $showDeleteConfirm) {
+                    Button("ยกเลิก", role: .cancel) { }
+                    Button("ลบข้อมูล", role: .destructive) {
+                        onDelete()
+                    }
+                } message: {
+                    Text("คุณแน่ใจหรือไม่ว่าต้องการลบบัญชี \(admin.username)?")
+                }
+            }
+        }
+    }
+}
+
+struct AddAdminSheet: View {
+    @Binding var isPresented: Bool
+    var onSuccess: () -> Void
+
+    @State private var name = ""
+    @State private var primaryEmail = ""
+    @State private var backupEmail = ""
+    @State private var password = ""
+    @State private var isLoading = false
+    @State private var errorMessage: String? = nil
+
+    @AppStorage("userEmail") var userEmail: String = ""
+
+    var body: some View {
+        NavigationStack {
+            Form {
+                Section(header: Text("ข้อมูลผู้ดูแลระบบ").font(.custom("SukhumvitSet-Medium", size: 13))) {
+                    TextField("ชื่อผู้ดูแลระบบ", text: $name)
+                        .font(.custom("SukhumvitSet-Text", size: 16))
+                        .autocapitalization(.none)
+                        .limitedText($name, maxLength: 60, trimNewlines: true)
+
+                    TextField("อีเมลหลัก", text: $primaryEmail)
+                        .font(.custom("SukhumvitSet-Text", size: 16))
+                        .keyboardType(.emailAddress)
+                        .autocapitalization(.none)
+                        .normalizedEmail($primaryEmail)
+                        .disabled(true)
+                        .foregroundColor(.secondary)
+
+                    TextField("อีเมลสำหรับผู้ดูแล", text: $backupEmail)
+                        .font(.custom("SukhumvitSet-Text", size: 16))
+                        .keyboardType(.emailAddress)
+                        .autocapitalization(.none)
+                        .normalizedEmail($backupEmail)
+
+                    SecureField("รหัสผ่านชั่วคราว", text: $password)
+                        .font(.custom("SukhumvitSet-Text", size: 16))
+                        .limitedText($password, maxLength: 64, trimNewlines: true)
+
+                    LabeledContent("สิทธิ์การใช้งาน", value: "ผู้ดูแลทั่วไป")
+                        .font(.custom("SukhumvitSet-Text", size: 16))
+                }
+
+                if let error = errorMessage {
+                    Section {
+                        Text(error)
+                            .font(.custom("SukhumvitSet-Medium", size: 14))
+                            .foregroundColor(.red)
+                    }
+                }
+            }
+            .navigationTitle("เพิ่มผู้ดูแลระบบใหม่")
+            .navigationBarTitleDisplayMode(.inline)
+            .dismissKeyboardOnTap()
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("ยกเลิก") {
+                        isPresented = false
+                    }
+                    .font(.custom("SukhumvitSet-Bold", size: 16))
+                }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("บันทึก") {
+                        Task {
+                            await submit()
+                        }
+                    }
+                    .font(.custom("SukhumvitSet-Bold", size: 16))
+                    .disabled(name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
+                              backupEmail.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
+                              password.isEmpty || isLoading)
+                }
+            }
+            .overlay(
+                Group {
+                    if isLoading {
+                        Color.black.opacity(0.2).ignoresSafeArea()
+                        ProgressView()
+                            .scaleEffect(1.5)
+                    }
+                }
+            )
+            .onAppear {
+                primaryEmail = userEmail
+            }
+        }
+    }
+
+    private func submit() async {
+        isLoading = true
+        errorMessage = nil
+
+        do {
+            try await APIService.shared.createStaff(
+                username: name,
+                recoveryEmail: backupEmail,
+                temporaryPassword: password
+            )
+            onSuccess()
+            isPresented = false
+        } catch {
+            errorMessage = String(localized: "เกิดข้อผิดพลาด: \(error.localizedDescription)")
+        }
+
+        isLoading = false
+    }
+}
+
+struct EditAdminSheet: View {
+    @Environment(\.dismiss) var dismiss
+    let admin: Admin
+    var onSuccess: () -> Void
+
+    @State private var username = ""
+    @State private var email = ""
+    @State private var backupEmail = ""
+    @State private var promptPayID = ""
+    @State private var paymentType = "promptpay"
+    @State private var bankAccount = ""
+    @State private var accountName = ""
+    @State private var oldPassword = ""
+    @State private var newPassword = ""
+    @State private var isLoading = false
+    @State private var errorMessage: String? = nil
+
+    var body: some View {
+        NavigationStack {
+            Form {
+                Section {
+                    HStack {
+                        Spacer()
+                        ProfileImageView(admin: admin, size: 100)
+                            .padding(.vertical, 10)
+                        Spacer()
+                    }
+                }
+                .listRowBackground(Color.clear)
+
+                Section(header: Text("ข้อมูลบัญชี")) {
+                    TextField("ชื่อผู้ดูแลระบบ", text: $username)
+                        .autocapitalization(.none)
+                        .disableAutocorrection(true)
+                        .limitedText($username, maxLength: 60, trimNewlines: true)
+
+                    TextField("อีเมลหลัก", text: $email)
+                        .keyboardType(.emailAddress)
+                        .autocapitalization(.none)
+                        .disableAutocorrection(true)
+                        .normalizedEmail($email)
+                        .disabled(true)
+                        .foregroundColor(.secondary)
+
+                    TextField("อีเมลสำรอง (ไม่บังคับ)", text: $backupEmail)
+                        .keyboardType(.emailAddress)
+                        .autocapitalization(.none)
+                        .disableAutocorrection(true)
+                        .foregroundColor(.secondary)
+                        .normalizedEmail($backupEmail)
+                }
+
+                if admin.role == "superadmin" {
+                    Section(header: Text("การรับชำระเงิน"), footer: Text("ข้อมูลบัญชีสำหรับให้ลูกบ้านสแกนจ่ายค่าเช่าและค่าซ่อม")) {
+                        Picker("ประเภทการรับเงิน", selection: $paymentType) {
+                            Text("พร้อมเพย์").tag("promptpay")
+                            Text("เลขบัญชีธนาคาร").tag("bank_account")
+                        }
+                        .pickerStyle(SegmentedPickerStyle())
+                        .padding(.vertical, 5)
+
+                        if paymentType == "promptpay" {
+                            TextField("หมายเลข PromptPay (เบอร์โทร/บัตรประชาชน)", text: $promptPayID)
+                                .keyboardType(.numbersAndPunctuation)
+                                .autocapitalization(.none)
+                                .disableAutocorrection(true)
+                        } else {
+                            TextField("เลขบัญชีธนาคาร", text: $bankAccount)
+                                .keyboardType(.numberPad)
+                                .autocapitalization(.none)
+                                .disableAutocorrection(true)
+                        }
+
+                        TextField("ชื่อบัญชีผู้รับเงิน", text: $accountName)
+                            .autocapitalization(.words)
+                            .disableAutocorrection(true)
+                    }
+                }
+
+                Section(header: Text("เปลี่ยนรหัสผ่าน"), footer: Text("หากไม่ต้องการเปลี่ยนรหัสผ่าน ให้เว้นว่างไว้\n(ระบบจะออกจากระบบอัตโนมัติหากเปลี่ยนรหัสผ่านของตนเอง)")) {
+                    SecureField("รหัสผ่านเดิม", text: $oldPassword)
+                        .limitedText($oldPassword, maxLength: 64, trimNewlines: true)
+                    SecureField("รหัสผ่านใหม่", text: $newPassword)
+                        .limitedText($newPassword, maxLength: 64, trimNewlines: true)
+                }
+
+                if let errorMessage = errorMessage {
+                    Section {
+                        Text(LocalizedStringKey(errorMessage))
+                            .foregroundColor(.red)
+                            .font(.custom("SukhumvitSet-Medium", size: 14))
+                    }
+                }
+            }
+            .navigationTitle("แก้ไขข้อมูล")
+            .navigationBarTitleDisplayMode(.inline)
+            .dismissKeyboardOnTap()
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("ยกเลิก") {
+                        dismiss()
+                    }
+                }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button(action: {
+                        Task { await submit() }
+                    }) {
+                        if isLoading {
+                            ProgressView()
+                        } else {
+                            Text("บันทึก")
+                                .bold()
+                        }
+                    }
+                    .disabled(isLoading || username.isEmpty || email.isEmpty)
+                }
+            }
+            .onAppear {
+                username = admin.username
+                email = admin.email
+                backupEmail = admin.backup_email ?? ""
+                promptPayID = admin.promptpay_id ?? ""
+                paymentType = admin.payment_type ?? "promptpay"
+                bankAccount = admin.bank_account ?? ""
+                accountName = admin.account_name ?? ""
+            }
+            .onTapGesture {
+                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+            }
+        }
+    }
+
+    private func submit() async {
+        isLoading = true
+        errorMessage = nil
+
+        do {
+            let success = try await APIService.shared.updateAdmin(id: admin.id, username: username, email: email, backupEmail: backupEmail, promptPayID: promptPayID, paymentType: paymentType, bankAccount: bankAccount, accountName: accountName, oldPassword: oldPassword.isEmpty ? nil : oldPassword, newPassword: newPassword.isEmpty ? nil : newPassword)
+            if success {
+                let currentAdminID = UserDefaults.standard.integer(forKey: "adminID")
+                if admin.id == currentAdminID && !newPassword.isEmpty {
+
+                    try? CredentialStore.shared.setToken(nil)
+                    NotificationCenter.default.post(name: Notification.Name("LogoutNotification"), object: nil)
+                }
+
+                onSuccess()
+                dismiss()
+            } else {
+                errorMessage = String(localized: "การแก้ไขข้อมูลล้มเหลว")
+            }
+        } catch {
+            errorMessage = String(localized: "เกิดข้อผิดพลาด: \(error.localizedDescription)")
+        }
+
+        isLoading = false
+    }
+}
+
+struct ProfileImageView: View {
+    let admin: Admin
+    let size: CGFloat
+    var onImageUpdate: (() -> Void)? = nil
+
+    @State private var selectedItem: PhotosPickerItem? = nil
+    @State private var profileImage: Image? = nil
+    @State private var isUploading = false
+
+    var fallbackAvatar: some View {
+        Circle()
+            .fill(LinearGradient(colors: [.blue, .cyan], startPoint: .topLeading, endPoint: .bottomTrailing))
+            .frame(width: size, height: size)
+            .overlay(
+                Text(String(admin.username.prefix(1)).uppercased())
+                    .font(.custom("SukhumvitSet-Bold", size: size * 0.4))
+                    .foregroundColor(.white)
+            )
+    }
+
+    var body: some View {
+        PhotosPicker(selection: $selectedItem, matching: .images, photoLibrary: .shared()) {
+            ZStack {
+                if let profileImage = profileImage {
+                    profileImage
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: size, height: size)
+                        .clipShape(Circle())
+                } else if let localURL = APIService.shared.getLocalProfileImageURL(adminID: admin.id) {
+                    if let uiImage = UIImage(contentsOfFile: localURL.path) {
+                        Image(uiImage: uiImage)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: size, height: size)
+                            .clipShape(Circle())
+                    } else {
+                        fallbackAvatar
+                    }
+                } else {
+                    fallbackAvatar
+                }
+
+                if isUploading {
+                    Circle()
+                        .fill(Color.black.opacity(0.5))
+                        .frame(width: size, height: size)
+                    ProgressView()
+                        .tint(.white)
+                } else {
+
+                    Circle()
+                        .fill(Color.white)
+                        .frame(width: size * 0.32, height: size * 0.32)
+                        .shadow(radius: 2)
+                        .overlay(
+                            Image(systemName: "pencil")
+                                .font(.system(size: size * 0.18, weight: .bold))
+                                .foregroundColor(.blue)
+                        )
+                        .offset(x: size * 0.34, y: size * 0.34)
+                }
+            }
+        }
+        .buttonStyle(PlainButtonStyle())
+        .disabled(isUploading)
+        .onChange(of: selectedItem) { _, newItem in
+            Task {
+                guard let data = try? await newItem?.loadTransferable(type: Data.self) else { return }
+                guard let uiImage = UIImage(data: data) else { return }
+                profileImage = Image(uiImage: uiImage)
+                isUploading = true
+                do {
+                    let success = try await APIService.shared.saveProfileImageLocally(adminID: admin.id, imageData: data)
+                    if success {
+                        onImageUpdate?()
+                    }
+                } catch {
+                    print("Upload failed: \(error)")
+                }
+                isUploading = false
+            }
+        }
+    }
+}

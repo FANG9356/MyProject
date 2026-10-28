@@ -1,0 +1,84 @@
+import os
+import re
+from flask import Flask, request, jsonify
+import pytesseract
+import cv2
+import numpy as np
+from PIL import Image
+
+app = Flask(__name__)
+
+
+RECEIVER_NAME = os.getenv("RECEIVER_NAME", "ภคพล")
+
+def preprocess_image(image_path):
+    img = cv2.imread(image_path)
+    if img is None:
+        return None
+
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+
+    scale_percent = 150
+    width = int(gray.shape[1] * scale_percent / 100)
+    height = int(gray.shape[0] * scale_percent / 100)
+    dim = (width, height)
+    resized = cv2.resize(gray, dim, interpolation = cv2.INTER_LINEAR)
+
+    return resized
+
+@app.route('/verify', methods=['POST'])
+def verify_slip():
+    data = request.json
+    filepath = data.get("filepath")
+    expected_amount = data.get("amount")
+    expected_receiver = data.get("expected_receiver")
+
+    if not filepath or expected_amount is None:
+        return jsonify({"valid": False, "reason": "Missing filepath or amount"}), 400
+
+    if not os.path.isabs(filepath):
+        base_dir = os.getenv("BACKEND_DIR", "../backend-dorm")
+        filepath = os.path.join(base_dir, filepath)
+
+    if not os.path.exists(filepath):
+        return jsonify({"valid": False, "reason": f"Slip image file not found: {filepath}"}), 404
+
+    try:
+        img = preprocess_image(filepath)
+        if img is None:
+            return jsonify({"valid": False, "reason": "Failed to read image"}), 400
+
+
+        custom_config = r'--oem 3 --psm 4'
+        text = pytesseract.image_to_string(img, lang='tha+eng', config=custom_config)
+
+
+        clean_text = text.replace(" ", "").replace(",", "")
+
+
+        receiver_to_check = expected_receiver if expected_receiver else RECEIVER_NAME
+
+
+        if receiver_to_check:
+
+            search_term = receiver_to_check[-4:] if receiver_to_check.replace("-", "").isdigit() and len(receiver_to_check) >= 4 else receiver_to_check
+            if search_term not in clean_text:
+                return jsonify({"valid": False, "reason": f"Recipient identifier '{search_term}' not found on slip"}), 200
+
+
+        amount_exact = f"{float(expected_amount):.2f}"
+        amount_int = f"{int(float(expected_amount))}"
+
+
+        amount_pattern = rf"(?<![\dA-Za-z])({amount_int}|{amount_exact})(?![\dA-Za-z])"
+        if not re.search(amount_pattern, clean_text):
+            return jsonify({"valid": False, "reason": f"Expected amount {amount_exact} not found on slip"}), 200
+
+        return jsonify({"valid": True, "reason": "Verified locally via OCR"}), 200
+
+    except Exception as e:
+        return jsonify({"valid": False, "reason": f"OCR Processing Error: {str(e)}"}), 500
+
+if __name__ == '__main__':
+    app.run(host='127.0.0.1', port=5001)
